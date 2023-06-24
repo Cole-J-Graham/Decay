@@ -4,7 +4,7 @@ World world;
 
 int main()
 {
-    while (!world.stop)
+    while (!world.getStop())
     {
         world.bootUp();
     }

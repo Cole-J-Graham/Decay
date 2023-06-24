@@ -27,28 +27,30 @@ private:
 	sf::Text text;
 	sf::Text playerText;
 
-	//Variables
+	//Core
 	std::string input;
+	int unicode;
+
+	//Bool
+	bool stop;
 	bool keyPress;
+	bool initialized;
+	bool questone;
 
 	//Player Stats
 	int level;
-	int unicode;
 
 public:
-	bool stop = false;
-	bool initialized;
 	//Constructors & Destructors
 	World();
 	~World();
 
-	//Functions
-	void bootUp();
-	void bonFire();
-	void userInput();
-
 	//Menu Functions
-	void questBoard();
+	void bonFire();
+
+	//CoreFunctions
+	void bootUp();
+	void userInput();
 
 	//Drawing Objects
 	void drawTextBox();
@@ -57,6 +59,9 @@ public:
 
 	//Map Locations
 	void questOne();
+
+	//Getters and Setters
+	bool& getStop() { return this->stop; };
 };
 
 #endif

@@ -3,18 +3,26 @@
 //Constructors and Destructors
 World::World()
 {
+    //Core
+    this->input = input;
+    this->unicode = unicode;
+
+    //Bool
+    this->stop = false;
     this->keyPress = true;
     this->initialized = false;
-    this->input = input;
+    this->questone = false;
+
+    //Player Stats
     this->level = 1;
-    this->unicode = 0;
 }
 
-World::~World() {
+World::~World() 
+{
 
 }
 
-//Functions
+//Core Functions
 void World::bootUp()
 {
     buffer.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/Text 1.wav");
@@ -27,16 +35,22 @@ void World::bootUp()
     // run the program as long as the window is open
     while (window.isOpen()) {
         // check all the window's events that were triggered since the last iteration of the loop
-        while (window.pollEvent(event)) {
+        std::cout << unicode;
+        while (window.pollEvent(event) && initialized == false) {
             //Main Bonfire Function For Options
             this->bonFire();
-
-            // "close requested" event: we close the window
-            if (event.type == sf::Event::Closed) {
-                this->stop = true;
-                window.close();
-            }
         }
+
+        while (window.pollEvent(event) && questone == true) {
+            this->questOne();
+        }
+
+        // "close requested" event: we close the window
+        if (event.type == sf::Event::Closed) {
+            this->stop = true;
+            window.close();
+        }
+    
         
         // clear the window with black color
         window.clear(sf::Color::Black);
@@ -56,23 +70,6 @@ void World::bootUp()
     }
 }
 
-void World::bonFire()
-{
-    //Get User Input
-    this->userInput();
-    if (initialized == false) {
-        this->initialized = true;
-        text.setString("  BonFire Options\n 1:|Quest Board");
-    }
-
-    //Main Choices For Menu
-    switch (event.text.unicode) {
-    case '1':
-        this->questBoard();
-        break;
-    }
-}
-
 void World::userInput()
 {
     font.loadFromFile("C:/Windows/Fonts/arial.ttf");
@@ -85,14 +82,12 @@ void World::userInput()
     if (event.type == sf::Event::TextEntered) {
         playerInput += event.text.unicode;
         input = event.text.unicode;
+        unicode = event.text.unicode;
         playerText.setString(playerInput);
         sound.play();
         
         //Clearing string with backspace
         if (input == "\b") {
-            //this->initialized = false; just work with initializer
-            //playerInput.erase(playerInput.getSize() - 1, 1);
-            //playerText.setString(playerInput);
             playerText.setString("");
             playerText.setCharacterSize(24);
             playerInput = "";
@@ -101,22 +96,22 @@ void World::userInput()
 }
 
 //Menu Functions
-void World::questBoard()
+void World::bonFire()
 {
-    //unicode = event.text.unicode;
-    //playerText.setString(""); ATTEMPT TO GET A DIFFERENT USER INPUT OF SOME KIND SETTING THE UNICODE VALUE  unicode = event.text.unicode;
-    //text.setString(""); IDEA: CLEAR UNICODE VALUE AFTER EVERY INPUT?
-    //playerInput.clear();
-    if (this->level == 0) {
-        text.setString("  Quests\n  None Currently Available...");
-        return;
+    //Get User Input
+    this->userInput();
+    if (initialized == false) {
+        text.setString("  BonFire Options\n 1:|Quest Board");
     }
-    else if (this->level >= 1) {
-        text.setString("  Quests\n 1:|Quest One");
-        switch (event.text.unicode) {
-        case '1':
-            this->questOne();
-        }
+
+    //Main Choices For Menu
+    switch (unicode) {
+    case 49:
+        text.setString("  Quests\n 2:|Quest One");
+        break;
+    case 50:
+        this->questOne();
+        break;
     }
 }
 
