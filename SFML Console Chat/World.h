@@ -26,9 +26,11 @@ private:
 	sf::Event event;
 	sf::Text text;
 	sf::Text playerText;
+	sf::Text combatText;
 
 	//Core
 	std::string input;
+	std::string targetHpView;
 	int unicode;
 
 	//Bool
@@ -36,26 +38,39 @@ private:
 	bool keyPress;
 	bool initialized;
 	bool questone;
+	bool statsmenu;
+	bool questboard;
+	bool combat;
 
 	//Player Stats
 	int level;
+
+	//Enemy Stats
+	int targetHp;
+	int targetHpMax;
 
 public:
 	//Constructors & Destructors
 	World();
 	~World();
 
-	//Menu Functions
-	void bonFire();
-
 	//CoreFunctions
 	void bootUp();
 	void userInput();
+
+	//Menu Functions
+	void bonFire();
+	void statsMenu();
+	void questBoard();
+
+	//Combat Functions
+	void combatInit();
 
 	//Drawing Objects
 	void drawTextBox();
 	void zinSprite();
 	void drawOutputBox();
+	void drawCombatText();
 
 	//Map Locations
 	void questOne();
