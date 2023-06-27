@@ -22,6 +22,8 @@ private:
 	sf::String playerInput;
 	sf::SoundBuffer buffer;
 	sf::Sound sound;
+	sf::SoundBuffer bufferCom;
+	sf::Sound soundCom;
 	sf::Music music;
 	sf::Event event;
 	sf::Text text;
@@ -32,6 +34,7 @@ private:
 	std::string input;
 	std::string targetHpView;
 	int unicode;
+	int random;
 
 	//Bool
 	bool stop;
@@ -41,13 +44,21 @@ private:
 	bool statsmenu;
 	bool questboard;
 	bool combat;
+	bool combatPlayer;
+	bool combatTarget;
+	bool playerturn;
+	bool targetturn;
 
 	//Player Stats
 	int level;
+	int strike;
+	int hp;
+	int hpMax;
 
 	//Enemy Stats
 	int targetHp;
 	int targetHpMax;
+	int targetStrike;
 
 public:
 	//Constructors & Destructors
@@ -65,6 +76,8 @@ public:
 
 	//Combat Functions
 	void combatInit();
+	void playerTurn();
+	void targetTurn();
 
 	//Drawing Objects
 	void drawTextBox();

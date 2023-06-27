@@ -7,6 +7,7 @@ World::World()
     this->input = input;
     this->targetHpView = targetHpView;
     this->unicode = unicode;
+    this->random = random;
 
     //Bool
     this->stop = false;
@@ -15,13 +16,21 @@ World::World()
     this->questone = false;
     this->questboard = false;
     this->combat = false;
+    this->combatPlayer = false;
+    this->combatTarget = false;
+    this->playerturn = true;
+    this->targetturn = true;
 
     //Player Stats
     this->level = 1;
+    this->strike = 10;
+    this->hp = 100;
+    this->hpMax = 100;
 
     //Enemy Stats
     this->targetHp = 50;
     this->targetHpMax = 50;
+    this->targetStrike = 15;
 }
 
 World::~World() 
@@ -32,10 +41,16 @@ World::~World()
 //Core Functions
 void World::bootUp()
 {
+    //Load Combat Sound Effects
+    bufferCom.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/Boss hit 1.wav");
+    soundCom.setBuffer(bufferCom);
+    //Load Text Sound Effects
     buffer.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/Text 1.wav");
     sound.setBuffer(buffer);
+    //Load and stream music
     music.openFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Music/track1.wav");
     //music.play();
+
     //create the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat"/*, sf::Style::Fullscreen*/);
 
@@ -72,6 +87,18 @@ void World::bootUp()
             while (window.pollEvent(event)) {
                 this->userInput();
                 this->combatInit();
+            }
+        }
+        else if (combatPlayer == true) {
+            while (window.pollEvent(event)) {
+                this->userInput();
+                this->playerTurn();
+            }
+        }
+        else if (combatTarget == true) {
+            while (window.pollEvent(event)) {
+                this->userInput();
+                this->targetTurn();
             }
         }
 
@@ -206,20 +233,85 @@ void World::statsMenu()
 void World::combatInit()
 {
     if (combat == true) {
-        text.setString("A combatant Ambushes you!");
-        combatText.setString("HP ->" + std::to_string(targetHpMax));
+        text.setString("A combatant Ambushes you!\n 0:|Flee\n 1:|Strike");
+        combatText.setString("Target HP ->" + std::to_string(targetHp) + "/" + std::to_string(targetHpMax)
+            + "\n Your HP ->" + std::to_string(hp) + "/" + std::to_string(hpMax));
     }
+    
 
     switch (unicode) {
     case 48:
         playerInput = "";
+        combatText.setString("");
         this->initialized = false;
         this->questboard = false;
         this->bonFire();
         break;
     case 49:
         playerInput = "";
+        this->combat = false;
+        this->combatPlayer = true;
+        this->playerTurn();
         break;
+    }
+}
+
+void World::playerTurn()
+{
+    if (combatPlayer == true && playerturn == true) {
+        text.setString("You strike the combatant! Press '0' to continue...");
+        soundCom.play();
+        targetHp -= strike;
+        combatText.setString("Target HP ->" + std::to_string(targetHp) + "/" + std::to_string(targetHpMax)
+            + "\n Your HP ->" + std::to_string(hp) + "/" + std::to_string(hpMax));
+        this->playerturn = false;
+    }
+
+    switch (unicode) {
+    case 48:
+        playerInput = "";
+        this->combatPlayer = false;
+        this->combatTarget = true;
+        this->targetTurn();
+        break;
+    }
+}
+
+void World::targetTurn()
+{
+    //Deinitialize combat to continue combat loop
+    if (combatTarget == true && targetturn == false) {
+        this->playerturn = true;
+        this->targetturn = true;
+        this->combatInit();
+    }
+
+    text.setString("Target attacking! Press '1' to continue...");
+    if (combatTarget == true && targetturn == true) {
+        combatText.setString("Target HP ->" + std::to_string(targetHp) + "/" + std::to_string(targetHpMax)
+            + "\n Your HP ->" + std::to_string(hp) + "/" + std::to_string(hpMax));
+    //Assign Random Chance
+    srand((unsigned)time(NULL));
+    this->random = 100 + (rand() % 20);
+
+    switch (unicode) {
+    case 49:
+        //Targets Turn
+            if (this->random < 110) {
+                soundCom.play();
+                playerInput = "";
+                text.setString("The target strikes you!");
+                this->hp -= this->targetStrike;
+                this->targetturn = false;
+                
+            }
+            else {
+                playerInput = "";
+                text.setString("Target Missed!");
+                this->targetturn = false;
+            }
+            break;
+        }
     }
 }
 
@@ -253,7 +345,7 @@ void World::drawCombatText()
     combatText.setFont(font);
     combatText.setCharacterSize(18);
     combatText.setFillColor(sf::Color(sf::Color::White));
-    combatText.setPosition(325, 825);
+    combatText.setPosition(500, 825);
 }
 
 void World::zinSprite()
