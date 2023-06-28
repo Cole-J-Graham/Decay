@@ -14,9 +14,13 @@ class World
 private:
 	sf::Font font;
 	sf::RenderWindow window;
+	sf::RenderWindow combatWindow;
 	sf::Texture texture;
+	sf::Texture textureCombat;
+	sf::Texture combatTexture;
 	sf::Image image;
 	sf::Sprite sprite;
+	sf::Sprite spriteCombat;
 	sf::RectangleShape rectangle;
 	sf::RectangleShape outputRect;
 	sf::String playerInput;
@@ -35,11 +39,15 @@ private:
 	std::string targetHpView;
 	int unicode;
 	int random;
+	float xCord;
+	float yCord;
 
 	//Bool
 	bool stop;
+	bool combatStop;
 	bool keyPress;
 	bool initialized;
+	bool comInitialized;
 	bool questone;
 	bool statsmenu;
 	bool questboard;
@@ -48,6 +56,7 @@ private:
 	bool combatTarget;
 	bool playerturn;
 	bool targetturn;
+	bool initCombatWindow;
 
 	//Player Stats
 	int level;
@@ -84,6 +93,7 @@ public:
 	void zinSprite();
 	void drawOutputBox();
 	void drawCombatText();
+	void combatSprite();
 
 	//Map Locations
 	void questOne();
