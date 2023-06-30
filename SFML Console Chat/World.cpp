@@ -21,7 +21,7 @@ World::World()
     this->combatTarget = false;
     this->playerturn = true;
     this->targetturn = true;
-    this->initCombatWindow = false;
+    this->hostile1 = false;
     this->combatStop = false;
 
     //Player Stats
@@ -58,6 +58,10 @@ void World::bootUp()
     music.openFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Music/track1.wav");
     //music.play();
 
+    World multi;
+    sf::Thread thread(&World::combatScreen, &multi);
+    thread.launch();
+
     //create the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat"/*, sf::Style::Fullscreen*/);
 
@@ -66,6 +70,7 @@ void World::bootUp()
         // check all the window's events that were triggered since the last iteration of the loop
         while (window.pollEvent(event)) {
             //Main Bonfire Function For Options
+            std::cout << this->unicode;
             this->userInput();
             this->bonFire();
             this->questBoard();
@@ -116,6 +121,7 @@ void World::userInput()
         playerInput += event.text.unicode;
         input = event.text.unicode;
         unicode = event.text.unicode;
+        unicode = static_cast<char>(event.text.unicode);
         playerText.setString(playerInput);
         sound.play();
         
@@ -128,6 +134,13 @@ void World::userInput()
     }
 }
 
+void World::clearInput()
+{
+    this->unicode = -1;
+    playerInput = "";
+    return;
+}
+
 //Menu Functions
 void World::bonFire()
 {
@@ -137,20 +150,20 @@ void World::bonFire()
         //Main Choices For Menu
         switch (unicode) {
         case 49:
-            playerInput = "";
+            this->clearInput();
             this->initialized = true;
             this->questboard = true;
             this->questBoard();
             break;
         case 50:
-            playerInput = "";
+            this->clearInput();
             this->initialized = true;
             this->questboard = false;
             this->statsmenu = true;
             this->statsMenu();
             break;
         case 51:
-            playerInput = "";
+            this->clearInput();
             this->initialized = true;
             this->questboard = false;
             this->statsmenu = false;
@@ -164,7 +177,7 @@ void World::bonFire()
 void World::questBoard()
 {
     if (questboard == true) {
-        text.setString("  Quests\n 0:|Return\n 2:|Quest One");
+        text.setString("  Quests\n 0:|Return\n 1:|Quest One");
     
         switch (unicode) {
         case 48:
@@ -173,7 +186,7 @@ void World::questBoard()
             this->questboard = false;
             this->bonFire();
             break;
-        case 50:
+        case 49:
             playerInput = "";
             this->questboard = false;
             this->questone = true;
@@ -186,7 +199,7 @@ void World::questBoard()
 void World::statsMenu()
 {
     if (statsmenu == true) {
-        text.setString("  Statistics\n 0:|Return\n 1:|View Stats");
+        text.setString("  Statistics\n 0:|Return\n 2:|View Stats");
 
         switch (unicode) {
         case 48:
@@ -195,7 +208,7 @@ void World::statsMenu()
             this->statsmenu = false;
             this->bonFire();
             break;
-        case 49:
+        case 50:
             playerInput = "";
             text.setString("  ATTACK: 12\n DEF: 2...");
             break;
@@ -207,39 +220,13 @@ void World::statsMenu()
 void World::combatInit()
 {
     if (combat == true) {
-        if (initCombatWindow == false) {
-            sf::RenderWindow windowCombat(sf::VideoMode(700, 450), "Malice"/*, sf::Style::Fullscreen*/);
-            this->initCombatWindow = true;
-            while (windowCombat.isOpen()) {
-                // check all the window's events that were triggered since the last iteration of the loop
-                while (windowCombat.pollEvent(event)) {
-                   
-                }
-
-                // "close requested" event: we close the window
-                if (event.type == sf::Event::Closed) {
-                    this->combatStop = true;
-                    windowCombat.close();
-                }
-
-                // clear the window with black color
-                windowCombat.clear(sf::Color::Black);
-
-                // draw everything here...
-                this->combatSprite();
-                windowCombat.draw(spriteCombat);
-
-                // end the current frame
-                windowCombat.display();
-            }
-        }
         this->playerturn = true;
         this->targetturn = true;
-        text.setString("A combatant Ambushes you from the dark! \n2:|Strike");
+        text.setString("A combatant Ambushes you from the dark! \n1:|Strike");
 
         switch (unicode) {
-        case 50:
-            playerInput = "";
+        case 49:
+            this->clearInput();
             this->combat = false;
             this->combatPlayer = true;
             this->playerTurn();
@@ -251,7 +238,7 @@ void World::combatInit()
 void World::playerTurn()
 {
     if (combatPlayer == true && playerturn == true) {
-        text.setString("You strike the combatant! Enemy revealed! \nPress '0' to continue...");
+        text.setString("You strike the combatant! Enemy revealed! \nPress '1' to continue...");
         soundCom.play();
         targetHp -= strike;
         combatText.setString("Target HP ->" + std::to_string(targetHp) + "/" + std::to_string(targetHpMax)
@@ -260,8 +247,8 @@ void World::playerTurn()
     }
     else if (combatPlayer == true) {
         switch (unicode) {
-        case 48:
-            playerInput = "";
+        case 49:
+            this->clearInput();
             this->combatPlayer = false;
             this->combatTarget = true;
             this->targetTurn();
@@ -285,7 +272,7 @@ void World::targetTurn()
             //Targets Turn
             if (this->random < 110) {
                 soundCom.play();
-                playerInput = "";
+                this->clearInput();
                 this->hp -= this->targetStrike;
                 combatText.setString("Target hit!\n Target HP ->" + std::to_string(targetHp) + "/" + std::to_string(targetHpMax)
                     + "\n Your HP ->" + std::to_string(hp) + "/" + std::to_string(hpMax));
@@ -295,7 +282,7 @@ void World::targetTurn()
                 this->combatInit();
             }
             else {
-                playerInput = "";
+                this->clearInput();
                 combatText.setString("Target missed!\n Target HP ->" + std::to_string(targetHp) + "/" + std::to_string(targetHpMax)
                     + "\n Your HP ->" + std::to_string(hp) + "/" + std::to_string(hpMax));
                 this->combatTarget = false;
@@ -305,6 +292,33 @@ void World::targetTurn()
             }
             break;
         }
+    }
+}
+
+//Drawing Windows
+void World::combatScreen()
+{
+    sf::RenderWindow windowCombat(sf::VideoMode(700, 450), "Threat Finder"/*, sf::Style::Fullscreen*/);
+    while (windowCombat.isOpen()) {
+        // check all the window's events that were triggered since the last iteration of the loop
+        while (windowCombat.pollEvent(event)) {
+        }
+
+        // "close requested" event: we close the window
+        if (event.type == sf::Event::Closed) {
+            this->combatStop = true;
+            windowCombat.close();
+        }
+
+        // clear the window with black color
+        windowCombat.clear(sf::Color::Black);
+
+        // draw everything here...
+        this->combatSprite();
+        windowCombat.draw(spriteCombat);
+
+        //end the current frame
+        windowCombat.display();
     }
 }
 

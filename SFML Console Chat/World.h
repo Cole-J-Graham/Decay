@@ -56,7 +56,7 @@ private:
 	bool combatTarget;
 	bool playerturn;
 	bool targetturn;
-	bool initCombatWindow;
+	bool hostile1;
 
 	//Player Stats
 	int level;
@@ -77,6 +77,7 @@ public:
 	//CoreFunctions
 	void bootUp();
 	void userInput();
+	void clearInput();
 
 	//Menu Functions
 	void bonFire();
@@ -87,6 +88,9 @@ public:
 	void combatInit();
 	void playerTurn();
 	void targetTurn();
+
+	//Drawing Windows
+	void combatScreen();
 
 	//Drawing Objects
 	void drawTextBox();
