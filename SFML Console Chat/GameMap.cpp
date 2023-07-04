@@ -8,7 +8,7 @@ void World::questOne()
 
         switch (unicode) {
         case 49:
-            playerInput = "";
+            this->clearInput();
             text.setString("You begin to run away");
             break;
         }

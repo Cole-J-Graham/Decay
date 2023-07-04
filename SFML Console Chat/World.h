@@ -39,30 +39,43 @@ private:
 	std::string targetHpView;
 	int unicode;
 	int random;
-	float xCord;
-	float yCord;
 
-	//Bool
+	//Core Bool
 	bool stop;
 	bool combatStop;
 	bool keyPress;
 	bool initialized;
 	bool comInitialized;
-	bool questone;
+
+	//Menu Bool
 	bool statsmenu;
+
+	//Quest Bool
+	bool questone;
 	bool questboard;
+
+	//Combat Bool
 	bool combat;
 	bool combatPlayer;
 	bool combatTarget;
+	bool hostile1;
+	bool combatvictory;
 	bool playerturn;
 	bool targetturn;
-	bool hostile1;
+
+	//Sprite Bool
+	bool sprite1;
+	bool sprite2;
 
 	//Player Stats
 	int level;
 	int strike;
 	int hp;
 	int hpMax;
+
+	//Coordinate Plane
+	float xCord;
+	float yCord;
 
 	//Enemy Stats
 	int targetHp;
@@ -78,6 +91,7 @@ public:
 	void bootUp();
 	void userInput();
 	void clearInput();
+	void mouseInput();
 
 	//Menu Functions
 	void bonFire();
@@ -88,6 +102,7 @@ public:
 	void combatInit();
 	void playerTurn();
 	void targetTurn();
+	void combatVictory();
 
 	//Drawing Windows
 	void combatScreen();

@@ -9,20 +9,32 @@ World::World()
     this->unicode = unicode;
     this->random = random;
 
-    //Bool
+    //Core Bool
     this->stop = false;
     this->keyPress = true;
     this->initialized = false;
     this->comInitialized = false;
+
+    //Menu Bool
+    this->statsmenu = false;
+
+    //Quest Bool
     this->questone = false;
     this->questboard = false;
+
+    //Combat Bool
     this->combat = false;
     this->combatPlayer = false;
     this->combatTarget = false;
-    this->playerturn = true;
-    this->targetturn = true;
     this->hostile1 = false;
     this->combatStop = false;
+    this->combatvictory = false;
+    this->playerturn = true;
+    this->targetturn = true;
+
+    //Sprite Bool
+    this->sprite1 = false;
+    this->sprite2 = false;
 
     //Player Stats
     this->level = 1;
@@ -30,7 +42,7 @@ World::World()
     this->hp = 100;
     this->hpMax = 100;
 
-    //Coordinate plane
+    //Coordinate Plane
     this->xCord = 1920;
     this->yCord = 600;
 
@@ -60,7 +72,7 @@ void World::bootUp()
 
     World multi;
     sf::Thread thread(&World::combatScreen, &multi);
-    thread.launch();
+    //thread.launch();
 
     //create the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat"/*, sf::Style::Fullscreen*/);
@@ -69,9 +81,20 @@ void World::bootUp()
     while (window.isOpen()) {
         // check all the window's events that were triggered since the last iteration of the loop
         while (window.pollEvent(event)) {
-            //Main Bonfire Function For Options
-            std::cout << this->unicode;
+            //std::cout << this->unicode; //Debug Code
+
+            //Get Mouse User Input
+            if (sf::Event::MouseButtonPressed) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+                if (sprite.getGlobalBounds().contains(mousePosF))
+                {
+                    std::cout << "Clicked, yay!" << std::endl;
+                }
+            }
+            //Run Main Functions
             this->userInput();
+            this->mouseInput();
             this->bonFire();
             this->questBoard();
             this->statsMenu();
@@ -79,6 +102,7 @@ void World::bootUp()
             this->combatInit();
             this->playerTurn();
             this->targetTurn();
+            this->combatVictory();
         }
 
         // "close requested" event: we close the window
@@ -141,11 +165,19 @@ void World::clearInput()
     return;
 }
 
+void World::mouseInput()
+{
+
+}
+
 //Menu Functions
 void World::bonFire()
 {
     if (initialized == false) {
+        //Change Text
         text.setString("  BonFire Options\n 1:|Quest Board\n 2:|View Stats\n 3:|Hunt");
+        //Add Sprite
+        this->sprite1 = true;
 
         //Main Choices For Menu
         switch (unicode) {
@@ -181,13 +213,13 @@ void World::questBoard()
     
         switch (unicode) {
         case 48:
-            playerInput = "";
+            clearInput();
             this->initialized = false;
             this->questboard = false;
             this->bonFire();
             break;
         case 49:
-            playerInput = "";
+            clearInput();
             this->questboard = false;
             this->questone = true;
             this->questOne();
@@ -199,18 +231,19 @@ void World::questBoard()
 void World::statsMenu()
 {
     if (statsmenu == true) {
-        text.setString("  Statistics\n 0:|Return\n 2:|View Stats");
+        text.setString("  Statistics\n 0:|Return\n 1:|View Stats");
 
         switch (unicode) {
         case 48:
-            playerInput = "";
+            clearInput();
+            combatText.setString("");
             this->initialized = false;
             this->statsmenu = false;
             this->bonFire();
             break;
-        case 50:
-            playerInput = "";
-            text.setString("  ATTACK: 12\n DEF: 2...");
+        case 49:
+            clearInput();
+            combatText.setString("  ATTACK: 12\n DEF: 2...");
             break;
         }
     }
@@ -223,6 +256,10 @@ void World::combatInit()
         this->playerturn = true;
         this->targetturn = true;
         text.setString("A combatant Ambushes you from the dark! \n1:|Strike");
+        //Change Sprites
+        this->sprite1 = false;
+        this->sprite2 = true;
+
 
         switch (unicode) {
         case 49:
@@ -241,6 +278,13 @@ void World::playerTurn()
         text.setString("You strike the combatant! Enemy revealed! \nPress '1' to continue...");
         soundCom.play();
         targetHp -= strike;
+        if (targetHp <= 0) {
+            this->clearInput();
+            this->combatPlayer = false;
+            this->playerturn = false;
+            this->combatvictory = true;
+            this->combatVictory();
+        }
         combatText.setString("Target HP ->" + std::to_string(targetHp) + "/" + std::to_string(targetHpMax)
             + "\n Your HP ->" + std::to_string(hp) + "/" + std::to_string(hpMax));
         this->playerturn = false;
@@ -295,6 +339,24 @@ void World::targetTurn()
     }
 }
 
+void World::combatVictory()
+{
+    if (this->combatvictory == true)
+    {
+        text.setString("The abomination has fallen! Victory is yours! Press '0' to continue...");
+        combatText.setString("");
+
+        switch (unicode) {
+        case 48:
+            this->clearInput();
+            this->initialized = false;
+            this->combatvictory = false;
+            this->bonFire();
+            break;
+        }
+    }
+}
+
 //Drawing Windows
 void World::combatScreen()
 {
@@ -330,12 +392,12 @@ void World::drawOutputBox()
     text.setFont(font);
     text.setCharacterSize(18);
     text.setFillColor(sf::Color(sf::Color::White));
-    text.setPosition(0, 825);
+    text.setPosition(0.0f, 825.0f);
 
     //Draw Output Box
-    outputRect.setSize(sf::Vector2f(1920, 125));
+    outputRect.setSize(sf::Vector2f(1920.0f, 125.0f));
     outputRect.setFillColor(sf::Color(55, 55, 55));
-    outputRect.setPosition(0, 825);
+    outputRect.setPosition(0.0f, 825.0f);
 }
 
 void World::drawTextBox()
@@ -343,7 +405,7 @@ void World::drawTextBox()
     //Draw Input Box
     rectangle.setSize(sf::Vector2f(xCord, yCord));
     rectangle.setFillColor(sf::Color(50, 50, 50));
-    rectangle.setPosition(0, 950);
+    rectangle.setPosition(0.0f, 950.0f);
 }
 
 void World::drawCombatText()
@@ -352,18 +414,23 @@ void World::drawCombatText()
     combatText.setFont(font);
     combatText.setCharacterSize(18);
     combatText.setFillColor(sf::Color(sf::Color::White));
-    combatText.setPosition(500, 825);
+    combatText.setPosition(500.0f, 825.0f);
 }
 
 void World::zinSprite()
 {
-    texture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite.png");
+    if (sprite1 == true) {
+        texture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite.png");
+    }
+    else if (sprite2 == true) {
+        texture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite2.png");
+    }
     texture.update(window);
     texture.setSmooth(true);
     texture.setRepeated(false);
     sprite.setTexture(texture);
-    sprite.setScale(1.5, 1.5);
-    sprite.setPosition(sf::Vector2f(1700, 650)); // absolute position
+    sprite.setScale(1.5f, 1.5f);
+    sprite.setPosition(sf::Vector2f(50.0f, 650.0f)); // absolute position
 }
 
 void World::combatSprite()
@@ -373,6 +440,6 @@ void World::combatSprite()
     textureCombat.setSmooth(true);
     textureCombat.setRepeated(false);
     spriteCombat.setTexture(textureCombat);
-    spriteCombat.setScale(0.6, 0.5);
-    spriteCombat.setPosition(sf::Vector2f(0, 0)); // absolute position
+    spriteCombat.setScale(0.6f, 0.5f);
+    spriteCombat.setPosition(sf::Vector2f(0.0f, 0.0f)); // absolute position
 }
