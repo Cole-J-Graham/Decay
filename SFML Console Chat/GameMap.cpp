@@ -9,9 +9,10 @@ void World::questOne()
         switch (unicode) {
         case 49:
             this->clearInput();
-            text.setString("You begin to run away");
+            //this->travelScreen();
             break;
         }
     }
 }
+
 

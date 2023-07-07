@@ -8,50 +8,47 @@
 #include<sstream>
 #include<string>
 #include<SFML/Audio.hpp>
+#include"Travel.h"
+#include"Assets.h"
 
 class World
 {
 private:
-	sf::Font font;
 	sf::RenderWindow window;
-	sf::RenderWindow combatWindow;
-	sf::Texture texture;
-	sf::Texture textureCombat;
-	sf::Texture combatTexture;
 	sf::Image image;
-	sf::Sprite sprite;
-	sf::Sprite spriteCombat;
-	sf::RectangleShape rectangle;
-	sf::RectangleShape outputRect;
+
 	sf::String playerInput;
 	sf::SoundBuffer buffer;
 	sf::Sound sound;
+	sf::Sound blipsound;
+	sf::SoundBuffer blipbuffer;
 	sf::SoundBuffer bufferCom;
 	sf::Sound soundCom;
 	sf::Music music;
+
 	sf::Event event;
-	sf::Text text;
-	sf::Text playerText;
-	sf::Text combatText;
+
+	Assets assets;
+	Travel travel;
 
 	//Core
 	std::string input;
 	std::string targetHpView;
+
 	int unicode;
 	int random;
 
 	//Core Bool
 	bool stop;
-	bool combatStop;
 	bool keyPress;
 	bool initialized;
 	bool comInitialized;
+	bool bonfire;
 
 	//Menu Bool
 	bool statsmenu;
 
 	//Quest Bool
-	bool questone;
 	bool questboard;
 
 	//Combat Bool
@@ -62,10 +59,6 @@ private:
 	bool combatvictory;
 	bool playerturn;
 	bool targetturn;
-
-	//Sprite Bool
-	bool sprite1;
-	bool sprite2;
 
 	//Player Stats
 	int level;
@@ -87,11 +80,13 @@ public:
 	World();
 	~World();
 
-	//CoreFunctions
+	//Core Functions
 	void bootUp();
+	void mainLoop();
+
+	//User Input
 	void userInput();
 	void clearInput();
-	void mouseInput();
 
 	//Menu Functions
 	void bonFire();
@@ -103,19 +98,6 @@ public:
 	void playerTurn();
 	void targetTurn();
 	void combatVictory();
-
-	//Drawing Windows
-	void combatScreen();
-
-	//Drawing Objects
-	void drawTextBox();
-	void zinSprite();
-	void drawOutputBox();
-	void drawCombatText();
-	void combatSprite();
-
-	//Map Locations
-	void questOne();
 
 	//Getters and Setters
 	bool& getStop() { return this->stop; };
