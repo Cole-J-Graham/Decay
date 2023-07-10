@@ -16,6 +16,7 @@ class World
 private:
 	sf::RenderWindow window;
 	sf::Image image;
+	sf::Clock clock;
 
 	sf::String playerInput;
 	sf::SoundBuffer buffer;

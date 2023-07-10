@@ -1,6 +1,8 @@
 #ifndef ASSETS_H
 #define ASSETS_H
 
+#include <iostream>
+#include<vector>
 #include<SFML/Graphics.hpp>
 #include<SFML/Graphics/Text.hpp>
 #include<SFML/Audio.hpp>
@@ -25,6 +27,9 @@ public:
 	sf::Sprite button;
 	sf::Sprite spriteTravel;
 
+	//Rectangles
+	sf::RectangleShape rect;
+
 	//Text
 	sf::Font font;
 	sf::Text text;
@@ -32,10 +37,15 @@ public:
 	sf::Text combatText;
 
 	//Sprite Bool
-	bool sprite1;
-	bool sprite2;
+	bool spriteZinNormal;
+	bool spriteZinSmug;
 	bool buttonClicked;
-	bool travelsprite;
+	bool spriteMainWindow;
+	bool arrows;
+
+	//Dungeon Frames
+	bool castleRoom1;
+	bool castleRoom2;
 
 	//Constructors & Destructors
 	Assets();
@@ -43,11 +53,9 @@ public:
 
 	//Drawing Objects
 	void drawObjects();
-	void drawOutputBox();
-	void drawCombatText();
-	void drawMap();
+	void drawMainWindow();
+	void drawText();
 	void zinSprite();
-	void travelSprite();
 
 	//Getters and Setters
 

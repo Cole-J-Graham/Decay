@@ -70,12 +70,14 @@ void World::bootUp()
 
     //create the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat"/*, sf::Style::Fullscreen*/);
+    window.setFramerateLimit(144);
 
     // run the program as long as the window is open
     while (window.isOpen()) {
+        std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
+        clock.restart();
         // check all the window's events that were triggered since the last iteration of the loop
         while (window.pollEvent(event)) {
-
             switch (event.type) { // Close Window on Closed Event
             case sf::Event::Closed:
                 this->stop = true;
@@ -102,10 +104,15 @@ void World::bootUp()
                     if (assets.button.getGlobalBounds().contains(mousePosF))
                     {
                         blipsound.play();
-                        assets.buttonClicked = true;
-                        assets.travelsprite = true;
-                        travel.setTravelingTrue();
-                        travel.travelScreen();
+                        if (assets.spriteMainWindow == true && assets.castleRoom1 == false) {
+                            assets.spriteMainWindow = false;
+                            assets.castleRoom1 = true;
+                        }
+                        else if (assets.castleRoom1 == true && assets.castleRoom2 == false) {
+                            assets.castleRoom1 = false;
+                            assets.castleRoom2 = true;
+                        }
+                        //travel.setTravelingTrue();
                     }
                 }
                 break;
@@ -118,18 +125,15 @@ void World::bootUp()
         window.clear(sf::Color::Black);
 
         // draw everything here...
-        // assets.texture.update(window);
-        //assets.textureTravel.update(window);
         assets.drawObjects();
 
-        window.draw(assets.playerText);
-        window.draw(assets.box);
+        window.draw(assets.rect);
         window.draw(assets.map);
         window.draw(assets.button);
+        window.draw(assets.playerText);
         window.draw(assets.text);
         window.draw(assets.combatText);
         window.draw(assets.sprite);
-        window.draw(assets.spriteTravel);
 
         // end the current frame
         window.display();
@@ -192,7 +196,7 @@ void World::bonFire()
         //Change Text
         assets.text.setString("  BonFire Options\n 1:|Quest Board\n 2:|View Stats\n 3:|Hunt");
         //Add Sprite
-        assets.sprite1 = true;
+        assets.spriteZinNormal = true;
 
         //Main Choices For Menu
         switch (unicode) {
@@ -270,9 +274,8 @@ void World::combatInit()
         this->targetturn = true;
         assets.text.setString("A combatant Ambushes you from the dark! \n1:|Strike");
         //Change Sprites
-        assets.sprite1 = false;
-        assets.sprite2 = true;
-
+        assets.spriteZinNormal = false;
+        assets.spriteZinSmug = true;
 
         switch (unicode) {
         case 49:

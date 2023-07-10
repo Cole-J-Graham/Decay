@@ -8,31 +8,24 @@
 #include<sstream>
 #include<string>
 #include<SFML/Audio.hpp>
+#include"Assets.h"
 
 class Travel
 {
 private:
-	sf::Font font;
-	sf::Event eventTravel;
-	sf::RenderWindow windowTravel;
-
-	sf::Sound sound;
-	sf::Text playerText;
-	sf::String playerInput;
-	int unicode;
-	std::string input;
+	Assets assets;
 
 
 	//Bool
 	bool traveling;
 
 public:
+	int travel;
 	//Constructors & Destructors
 	Travel();
 	~Travel();
 
 	//Core
-	void userInput();
 
 	//Main Window
 	void travelScreen();
