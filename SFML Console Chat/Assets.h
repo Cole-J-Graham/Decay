@@ -18,6 +18,7 @@ public:
 	sf::Texture boxTexture;
 	sf::Texture mapTexture;
 	sf::Texture buttonTexture;
+	sf::Texture buttonBackTexture;
 	sf::Texture textureTravel;
 
 	//Sprites
@@ -25,7 +26,10 @@ public:
 	sf::Sprite box;
 	sf::Sprite map;
 	sf::Sprite button;
+	sf::Sprite buttonBack;
 	sf::Sprite spriteTravel;
+
+	int testTexture;
 
 	//Rectangles
 	sf::RectangleShape rect;
@@ -35,6 +39,7 @@ public:
 	sf::Text text;
 	sf::Text playerText;
 	sf::Text combatText;
+	sf::Text locationText;
 
 	//Sprite Bool
 	bool spriteZinNormal;
@@ -54,6 +59,7 @@ public:
 	//Drawing Objects
 	void drawObjects();
 	void drawMainWindow();
+	void drawCastle();
 	void drawText();
 	void zinSprite();
 

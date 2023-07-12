@@ -38,6 +38,7 @@ private:
 
 	int unicode;
 	int random;
+	int test;
 
 	//Core Bool
 	bool stop;

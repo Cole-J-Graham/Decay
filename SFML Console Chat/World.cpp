@@ -45,6 +45,8 @@ World::World()
     this->targetHp = 50;
     this->targetHpMax = 50;
     this->targetStrike = 15;
+
+    this->test = 0;
 }
 
 World::~World() 
@@ -91,9 +93,15 @@ void World::bootUp()
                     {
                         assets.button.setColor(sf::Color(155, 155, 155));
                     }
-                    else 
-                    {
+                    else {
                         assets.button.setColor(sf::Color(255, 255, 255));
+                    }
+
+                    if (assets.buttonBack.getGlobalBounds().contains(mousePosF)) {
+                        assets.buttonBack.setColor(sf::Color(155, 155, 155));
+                    }
+                    else {
+                        assets.buttonBack.setColor(sf::Color(255, 255, 255));
                     }
                 }
                 break;
@@ -103,16 +111,14 @@ void World::bootUp()
                     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
                     if (assets.button.getGlobalBounds().contains(mousePosF))
                     {
+                        assets.testTexture++;
                         blipsound.play();
-                        if (assets.spriteMainWindow == true && assets.castleRoom1 == false) {
-                            assets.spriteMainWindow = false;
-                            assets.castleRoom1 = true;
-                        }
-                        else if (assets.castleRoom1 == true && assets.castleRoom2 == false) {
-                            assets.castleRoom1 = false;
-                            assets.castleRoom2 = true;
-                        }
                         //travel.setTravelingTrue();
+                    }
+                    else if (assets.buttonBack.getGlobalBounds().contains(mousePosF))
+                    {
+                        blipsound.play();
+                        assets.testTexture--;
                     }
                 }
                 break;
@@ -130,7 +136,9 @@ void World::bootUp()
         window.draw(assets.rect);
         window.draw(assets.map);
         window.draw(assets.button);
+        window.draw(assets.buttonBack);
         window.draw(assets.playerText);
+        window.draw(assets.locationText);
         window.draw(assets.text);
         window.draw(assets.combatText);
         window.draw(assets.sprite);
