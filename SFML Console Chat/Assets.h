@@ -45,12 +45,7 @@ public:
 	bool spriteZinNormal;
 	bool spriteZinSmug;
 	bool buttonClicked;
-	bool spriteMainWindow;
 	bool arrows;
-
-	//Dungeon Frames
-	bool castleRoom1;
-	bool castleRoom2;
 
 	//Constructors & Destructors
 	Assets();

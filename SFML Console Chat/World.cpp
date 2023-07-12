@@ -117,8 +117,8 @@ void World::bootUp()
                     }
                     else if (assets.buttonBack.getGlobalBounds().contains(mousePosF))
                     {
-                        blipsound.play();
                         assets.testTexture--;
+                        blipsound.play();
                     }
                 }
                 break;

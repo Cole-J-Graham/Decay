@@ -6,11 +6,7 @@ Assets::Assets()
     //Sprite Bool
     this->spriteZinNormal = false;
     this->spriteZinSmug = false;
-    this->spriteMainWindow = true;
     this->buttonClicked = false;
-
-    this->castleRoom1 = false;
-    this->castleRoom2 = false;
 }
 
 Assets::~Assets()
@@ -60,36 +56,6 @@ void Assets::drawMainWindow()
         map.setTexture(mapTexture);
         break;
     }
-   /*if (spriteMainWindow == true && castleRoom1 == false) {
-       locationText.setString("Castle Entrance");
-        //Draw Map Sprite
-        mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castleentrance.jpeg");
-        map.setTexture(mapTexture);
-        map.setPosition(440.0f, -200.0f); // absolute position
-        //Draw Menu Box
-        rect.setFillColor(sf::Color::Black);
-        rect.setPosition(0.0f, 825.0f);
-        rect.setSize(sf::Vector2f(1920.0f, 825.0f));
-        rect.setOutlineColor(sf::Color::White);
-        rect.setOutlineThickness(1.0f);
-        //Draw Button
-        buttonTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/buttonsolidfix.png");
-        button.setTexture(buttonTexture);
-        button.setPosition(1400.0f, 765.0f);
-        //Draw Back Button
-        buttonBackTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/buttonsolidfix.png");
-        buttonBack.setTexture(buttonBackTexture);
-        buttonBack.setPosition(445.0f, 765.0f);
-   }
-   else if (spriteMainWindow == false && castleRoom1 == true) {
-        locationText.setString("Castle Halls");
-        mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/download.jpeg");
-        map.setTexture(mapTexture);
-   }
-   else if (castleRoom1 == false && castleRoom2 == true) {
-       mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/down.jpeg");
-       map.setTexture(mapTexture);
-   }*/
 }
 
 void Assets::drawCastle()
