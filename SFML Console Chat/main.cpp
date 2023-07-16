@@ -1,6 +1,7 @@
 #include"World.h"
 
 World world;
+sf::RenderWindow window;
 
 int main()
 {

@@ -66,18 +66,21 @@ void World::bootUp()
     //Load Button Sfx
     blipbuffer.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/blipSelect.wav");
     blipsound.setBuffer(blipbuffer);
+    blipmenubuffer.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/menuclick.wav");
+    blipmenu.setBuffer(blipmenubuffer);
     //Load and stream music
     music.openFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Music/track1.wav");
     //music.play();
 
     //create the window
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat"/*, sf::Style::Fullscreen*/);
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat" /*, sf::Style::Fullscreen*/);
     window.setFramerateLimit(144);
 
     // run the program as long as the window is open
     while (window.isOpen()) {
         std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
         clock.restart();
+        clickTime.restart();
         // check all the window's events that were triggered since the last iteration of the loop
         while (window.pollEvent(event)) {
             switch (event.type) { // Close Window on Closed Event
@@ -86,22 +89,40 @@ void World::bootUp()
                 window.close();
                 break;
             case sf::Event::MouseMoved:
-                { //Get Mouse Location Input
+                { //Mouse Hover Actions
+                    //Turn forward button grey on hover
                     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
                     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
                     if (assets.button.getGlobalBounds().contains(mousePosF))
                     {
                         assets.button.setColor(sf::Color(155, 155, 155));
-                    }
+                    }//Turn forward button grey on hover
                     else {
                         assets.button.setColor(sf::Color(255, 255, 255));
                     }
-
+                    //Turn back button grey on hover
                     if (assets.buttonBack.getGlobalBounds().contains(mousePosF)) {
                         assets.buttonBack.setColor(sf::Color(155, 155, 155));
                     }
                     else {
                         assets.buttonBack.setColor(sf::Color(255, 255, 255));
+                    }
+                    if (assets.buttonMap.getGlobalBounds().contains(mousePosF)) {
+                        assets.buttonMap.setFillColor(sf::Color::Transparent);
+                        assets.menuText.setFillColor(sf::Color::White);
+                    }
+                    else {
+                        assets.buttonMap.setFillColor(sf::Color::White);
+                        assets.menuText.setFillColor(sf::Color::Black);
+                    }
+
+                    if (assets.initMap == true) {
+                        if (assets.buttonMapSprite.getGlobalBounds().contains(mousePosF)) {
+                            assets.buttonMapSprite.setColor(sf::Color(155, 155, 155));
+                        }
+                        else {
+                            assets.buttonMapSprite.setColor(sf::Color(255, 255, 255));
+                        }
                     }
                 }
                 break;
@@ -109,23 +130,60 @@ void World::bootUp()
                 { //Get Mouse Click Input
                     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
                     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+                    //Main View Buttons Control
                     if (assets.button.getGlobalBounds().contains(mousePosF))
                     {
                         assets.testTexture++;
+                        assets.init = false;
                         blipsound.play();
                         //travel.setTravelingTrue();
                     }
                     else if (assets.buttonBack.getGlobalBounds().contains(mousePosF))
                     {
                         assets.testTexture--;
+                        assets.init = false;
                         blipsound.play();
+                    }
+                    //If button in map is clicked, do something
+                    if (assets.initMap == true) {
+                        if (assets.buttonMapSprite.getGlobalBounds().contains(mousePosF)) {
+                            assets.castleEntrance = false;
+                            assets.castleDepths = true;
+                            assets.init = false;
+                        }
+                        else {
+
+                        }
+                    }
+                    //Map Menu Bar Control
+                    if (assets.rectMap.getGlobalBounds().contains(mousePosF) && clickTime.getElapsedTime().asSeconds() < 0.1) {
+                        assets.movable = true;
+                    }
+                    if (assets.buttonMap.getGlobalBounds().contains(mousePosF) && assets.initMap == false) {
+                        assets.testMap++;
+                        assets.initMap = true;
+                        blipmenu.play();
+                    }
+                    else if (assets.buttonMap.getGlobalBounds().contains(mousePosF) && assets.initMap == true) {
+                        assets.initMap = false;
+                        assets.rectMapX = 25;
+                        assets.rectMapY = 50;
+                        assets.spriteMapView.setPosition(assets.rectMapX, assets.rectMapY);
+                        assets.buttonMapSprite.setPosition(assets.rectMapX + 20, assets.rectMapY + 20);
+                        blipmenu.play();
                     }
                 }
                 break;
+            case sf::Event::MouseButtonReleased:
+                {
+                    assets.movable = false;
+                }
             }
             //Run Main Function Loop
             this->mainLoop();
         }
+        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+        sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
         // clear the window with black color
         window.clear(sf::Color::Black);
@@ -135,6 +193,7 @@ void World::bootUp()
 
         window.draw(assets.rect);
         window.draw(assets.map);
+        window.draw(assets.buttonMap);
         window.draw(assets.button);
         window.draw(assets.buttonBack);
         window.draw(assets.playerText);
@@ -142,6 +201,19 @@ void World::bootUp()
         window.draw(assets.text);
         window.draw(assets.combatText);
         window.draw(assets.sprite);
+        window.draw(assets.spriteText);
+        window.draw(assets.menuText);
+        if (assets.initMap == true) {
+            window.draw(assets.rectMap);
+            window.draw(assets.spriteMapView);
+            window.draw(assets.buttonMapSprite);
+            if (assets.movable == true) {
+                assets.rectMapX = mousePos.x - 190;
+                assets.rectMapY = mousePos.y;
+                assets.spriteMapView.setPosition(assets.rectMapX, assets.rectMapY);
+                assets.buttonMapSprite.setPosition(assets.rectMapX + 20, assets.rectMapY + 20);
+            }
+        }
 
         // end the current frame
         window.display();

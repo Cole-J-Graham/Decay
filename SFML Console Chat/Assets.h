@@ -1,7 +1,7 @@
 #ifndef ASSETS_H
 #define ASSETS_H
 
-#include <iostream>
+#include<iostream>
 #include<vector>
 #include<SFML/Graphics.hpp>
 #include<SFML/Graphics/Text.hpp>
@@ -21,6 +21,9 @@ public:
 	sf::Texture buttonBackTexture;
 	sf::Texture textureTravel;
 
+	//Map Textures
+	sf::Texture textureMapView;
+
 	//Sprites
 	sf::Sprite sprite;
 	sf::Sprite box;
@@ -29,10 +32,23 @@ public:
 	sf::Sprite buttonBack;
 	sf::Sprite spriteTravel;
 
+	//Map Sprites
+	sf::Sprite spriteMapView;
+	sf::Sprite buttonMapSprite;
+
 	int testTexture;
+	int testMap;
+
+	bool castleEntrance;
+	bool castleDepths;
+	bool movable;
+	float rectMapX;
+	float rectMapY;
 
 	//Rectangles
 	sf::RectangleShape rect;
+	sf::RectangleShape buttonMap;
+	sf::RectangleShape rectMap;
 
 	//Text
 	sf::Font font;
@@ -40,12 +56,16 @@ public:
 	sf::Text playerText;
 	sf::Text combatText;
 	sf::Text locationText;
+	sf::Text menuText;
+	sf::Text spriteText;
 
 	//Sprite Bool
 	bool spriteZinNormal;
 	bool spriteZinSmug;
 	bool buttonClicked;
-	bool arrows;
+	bool init;
+	bool initMapTexture;
+	bool initMap;
 
 	//Constructors & Destructors
 	Assets();
@@ -54,7 +74,7 @@ public:
 	//Drawing Objects
 	void drawObjects();
 	void drawMainWindow();
-	void drawCastle();
+	void drawMap();
 	void drawText();
 	void zinSprite();
 

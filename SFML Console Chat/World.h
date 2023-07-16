@@ -17,12 +17,15 @@ private:
 	sf::RenderWindow window;
 	sf::Image image;
 	sf::Clock clock;
+	sf::Clock clickTime;
 
 	sf::String playerInput;
 	sf::SoundBuffer buffer;
 	sf::Sound sound;
 	sf::Sound blipsound;
+	sf::Sound blipmenu;
 	sf::SoundBuffer blipbuffer;
+	sf::SoundBuffer blipmenubuffer;
 	sf::SoundBuffer bufferCom;
 	sf::Sound soundCom;
 	sf::Music music;
