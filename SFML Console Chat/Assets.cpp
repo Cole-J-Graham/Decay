@@ -9,15 +9,22 @@ Assets::Assets()
     this->buttonClicked = false; //Control flow
     this->initMapTexture = false;
     this->initMap = false;
-    this->castleEntrance = true;
-    this->castleDepths = false;
-    this->init = false; //To initialize and uninitialize the textures loaded to manage performance
+    this->initStats = false;
 
+    //Sprite Control Flow Bool
+    this->zinInit = true;
+    this->zinInitAngry = false;
+    this->spriteInit = true;
+
+    this->zinTest = -1;
     this->testMap = -1;
 
     this->movable = false;
+    this->movableStatsBox = false;
     this->rectMapX = 25;
     this->rectMapY = 50;
+    this->rectStatsBoxX = 1490;
+    this->rectStatsBoxY = 50;
 
     buttonTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/buttonsolidfix.png");
 }
@@ -34,6 +41,8 @@ void Assets::drawObjects()
     this->zinSprite();
     this->drawText();
     this->drawMap();
+    this->drawStats();
+    this->drawSpriteBox();
 }
 
 void Assets::drawMainWindow()
@@ -49,6 +58,11 @@ void Assets::drawMainWindow()
     buttonMap.setSize(sf::Vector2f(100.0f, 25.0f));
     buttonMap.setOutlineColor(sf::Color::White);
     buttonMap.setOutlineThickness(1.0f);
+    //Draw Stats Button
+    rectStats.setPosition(105.0f, 795.0f);
+    rectStats.setSize(sf::Vector2f(100.0f, 25.0f));
+    rectStats.setOutlineColor(sf::Color::White);
+    rectStats.setOutlineThickness(1.0f);
     //Draw Button
     button.setTexture(buttonTexture);
     button.setPosition(1400.0f, 765.0f);
@@ -56,48 +70,6 @@ void Assets::drawMainWindow()
     buttonBackTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/buttonsolidfix.png");
     buttonBack.setTexture(buttonBackTexture);
     buttonBack.setPosition(445.0f, 765.0f);
-
-    if (castleEntrance == true) {
-        switch (testTexture) {
-        case 0:
-            //Draw Map Sprite
-            locationText.setString("Castle Entrance");
-            if (this->init == false) {
-                mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castleentrance.jpeg");
-                this->init = true;
-            }
-            map.setTexture(mapTexture);
-            map.setPosition(440.0f, -200.0f); // absolute position
-            break;
-        case 1:
-            locationText.setString("Castle Halls");
-            if (this->init == false) {
-                mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/download.jpeg");
-                this->init = true;
-            }
-            map.setTexture(mapTexture);
-            break;
-        case 2:
-            if (this->init == false) {
-                mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/down.jpeg");
-                this->init = true;
-            }
-            map.setTexture(mapTexture);
-            break;
-        }
-    }
-    else if (castleEntrance == false && castleDepths == true) {
-        this->testTexture = 0;
-        switch (testTexture) {
-        case 0:
-            if (this->init == false) {
-                std::cout << "Ping!";
-                mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castleDepths.jpeg");
-                this->init = true;
-            }
-            break;
-        }
-    }
 }
 
 void Assets::drawMap()
@@ -116,15 +88,30 @@ void Assets::drawMap()
             spriteMapView.setPosition(rectMapX, rectMapY);
             spriteMapView.setScale(0.38f, 0.38f);
 
-            buttonMapSprite.setTexture(buttonTexture);
-            buttonMapSprite.setPosition(rectMapX +20, rectMapY +20);
-            buttonMapSprite.setScale(0.5f, 0.5f);
+            buttonCastleEntrance.setTexture(buttonTexture);
+            buttonCastleEntrance.setPosition(rectMapX +34, rectMapY +20);
+            buttonCastleEntrance.setScale(0.5f, 0.5f);
+
+            buttonCastleDepths.setTexture(buttonTexture);
+            buttonCastleDepths.setPosition(rectMapX + 75, rectMapY + 240);
+            buttonCastleDepths.setScale(0.5f, 0.5f);
+
+            castleEntranceText.setString("Castle Entrance");
+            castleDepthsText.setString("Castle Depths");
             this->initMapTexture = true;
         }
         break;
     }
 }
 
+void Assets::drawStats()
+{
+    rectStatsBox.setFillColor(sf::Color::Black);
+    rectStatsBox.setPosition(rectStatsBoxX, rectStatsBoxY);
+    rectStatsBox.setSize(sf::Vector2f(200.0f, 600.0f));
+    rectStatsBox.setOutlineColor(sf::Color::White);
+    rectStatsBox.setOutlineThickness(1.0f);
+}
 
 void Assets::drawText()
 {
@@ -154,26 +141,82 @@ void Assets::drawText()
     menuText.setCharacterSize(18);
     menuText.setPosition(1.0f, 797.0f);
     menuText.setString("Map");
-    //Sprite Name Text
-    spriteText.setFont(font);
-    spriteText.setCharacterSize(18);
-    spriteText.setPosition(50.0f, 715.0f);
-    spriteText.setFillColor(sf::Color::White);
-    spriteText.setString("Zin");
+    rectStatsText.setFont(font);
+    rectStatsText.setCharacterSize(18);
+    rectStatsText.setPosition(105.0f, 797.0f);
+    rectStatsText.setString("Stats");
+    //Castle Entrance Text
+    castleEntranceText.setFont(font);
+    castleEntranceText.setCharacterSize(12);
+    castleEntranceText.setPosition(this->rectMapX, this->rectMapY + 5);
+    castleEntranceText.setFillColor(sf::Color::White);
+    //Castle Depths Text
+    castleDepthsText.setFont(font);
+    castleDepthsText.setCharacterSize(12);
+    castleDepthsText.setPosition(this->rectMapX + 40, this->rectMapY + 220);
+    castleDepthsText.setFillColor(sf::Color::White);
+}
+
+void Assets::drawSpriteBox()
+{
+    if (this->spriteInit == true) {
+        //Draw Sprite Box
+        rectSpriteBox.setFillColor(sf::Color::Black);
+        rectSpriteBox.setPosition(50.0f, 560.0f);
+        rectSpriteBox.setSize(sf::Vector2f(153.0f, 153.0f));
+        rectSpriteBox.setOutlineColor(sf::Color::White);
+        rectSpriteBox.setOutlineThickness(2.0f);
+        //Sprite Name Text
+        spriteText.setFont(font);
+        spriteText.setCharacterSize(18);
+        spriteText.setPosition(50.0f, 715.0f);
+        spriteText.setFillColor(sf::Color::White);
+    }
 }
 
 void Assets::zinSprite()
 {
-    if (spriteZinNormal == true) {
-        texture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite.png");
+    if (this->zinInit == true) {
+        spriteText.setString("Spade");
+        texture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixel.png");
+        this->zinInit = false;
     }
-    else if (spriteZinSmug == true) {
-        texture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite2.png");
+    
+    if (this->zinInitAngry == true) {
+        spriteText.setString("Spade");
+        texture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixelAngry.png");
+        this->zinInitAngry = false;
     }
+   
+
+    //Sprite Location, ect
     texture.setSmooth(true);
     texture.setRepeated(false);
     sprite.setTexture(texture);
-    sprite.setScale(1.5f, 1.5f);
-    sprite.setPosition(sf::Vector2f(50.0f, 575.0f)); // absolute position
-    
+    sprite.setScale(0.050f, 0.050f);
+    sprite.setPosition(sf::Vector2f(50.0f, 560.0f)); // absolute position
+}
+
+//Sound Functions
+void Assets::loadSFX()
+{
+    bufferWalk.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/moveRoom.wav");
+    soundWalk.setBuffer(bufferWalk);
+    //Load Combat Sound Effects
+    bufferCom.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/Boss hit 1.wav");
+    soundCom.setBuffer(bufferCom);
+    //Load Text Sfx
+    buffer.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/Text 1.wav");
+    sound.setBuffer(buffer);
+    //Load Button Sfx
+    blipbuffer.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/blipSelect.wav");
+    blipsound.setBuffer(blipbuffer);
+    blipmenubuffer.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/menuclick.wav");
+    blipmenu.setBuffer(blipmenubuffer);
+    //Load Anger Sfx
+    bufferAngry.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/angry.wav");
+    soundAngry.setBuffer(bufferAngry);
+    //Load and stream music
+    music.openFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Music/track1.wav");
+    //music.play();
 }

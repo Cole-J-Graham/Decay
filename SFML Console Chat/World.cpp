@@ -21,6 +21,7 @@ World::World()
 
     //Quest Bool
     this->questboard = false;
+    this->buttonClick = false;
 
     //Combat Bool
     this->combat = false;
@@ -57,21 +58,8 @@ World::~World()
 //Core Functions
 void World::bootUp()
 {
-    //Load Combat Sound Effects
-    bufferCom.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/Boss hit 1.wav");
-    soundCom.setBuffer(bufferCom);
-    //Load Text Sfx
-    buffer.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/Text 1.wav");
-    sound.setBuffer(buffer);
-    //Load Button Sfx
-    blipbuffer.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/blipSelect.wav");
-    blipsound.setBuffer(blipbuffer);
-    blipmenubuffer.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/menuclick.wav");
-    blipmenu.setBuffer(blipmenubuffer);
-    //Load and stream music
-    music.openFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Music/track1.wav");
-    //music.play();
-
+    //Load SFX
+    assets.loadSFX();
     //create the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat" /*, sf::Style::Fullscreen*/);
     window.setFramerateLimit(144);
@@ -90,133 +78,30 @@ void World::bootUp()
                 break;
             case sf::Event::MouseMoved:
                 { //Mouse Hover Actions
-                    //Turn forward button grey on hover
-                    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-                    if (assets.button.getGlobalBounds().contains(mousePosF))
-                    {
-                        assets.button.setColor(sf::Color(155, 155, 155));
-                    }//Turn forward button grey on hover
-                    else {
-                        assets.button.setColor(sf::Color(255, 255, 255));
-                    }
-                    //Turn back button grey on hover
-                    if (assets.buttonBack.getGlobalBounds().contains(mousePosF)) {
-                        assets.buttonBack.setColor(sf::Color(155, 155, 155));
-                    }
-                    else {
-                        assets.buttonBack.setColor(sf::Color(255, 255, 255));
-                    }
-                    if (assets.buttonMap.getGlobalBounds().contains(mousePosF)) {
-                        assets.buttonMap.setFillColor(sf::Color::Transparent);
-                        assets.menuText.setFillColor(sf::Color::White);
-                    }
-                    else {
-                        assets.buttonMap.setFillColor(sf::Color::White);
-                        assets.menuText.setFillColor(sf::Color::Black);
-                    }
-
-                    if (assets.initMap == true) {
-                        if (assets.buttonMapSprite.getGlobalBounds().contains(mousePosF)) {
-                            assets.buttonMapSprite.setColor(sf::Color(155, 155, 155));
-                        }
-                        else {
-                            assets.buttonMapSprite.setColor(sf::Color(255, 255, 255));
-                        }
-                    }
+                    //Turn buttons grey on hover
+                    this->greyOnHover(window);
                 }
                 break;
             case sf::Event::MouseButtonPressed:
                 { //Get Mouse Click Input
-                    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-                    //Main View Buttons Control
-                    if (assets.button.getGlobalBounds().contains(mousePosF))
-                    {
-                        assets.testTexture++;
-                        assets.init = false;
-                        blipsound.play();
-                        //travel.setTravelingTrue();
-                    }
-                    else if (assets.buttonBack.getGlobalBounds().contains(mousePosF))
-                    {
-                        assets.testTexture--;
-                        assets.init = false;
-                        blipsound.play();
-                    }
+                    this->travelButtons(window);
                     //If button in map is clicked, do something
-                    if (assets.initMap == true) {
-                        if (assets.buttonMapSprite.getGlobalBounds().contains(mousePosF)) {
-                            assets.castleEntrance = false;
-                            assets.castleDepths = true;
-                            assets.init = false;
-                        }
-                        else {
-
-                        }
-                    }
-                    //Map Menu Bar Control
-                    if (assets.rectMap.getGlobalBounds().contains(mousePosF) && clickTime.getElapsedTime().asSeconds() < 0.1) {
-                        assets.movable = true;
-                    }
-                    if (assets.buttonMap.getGlobalBounds().contains(mousePosF) && assets.initMap == false) {
-                        assets.testMap++;
-                        assets.initMap = true;
-                        blipmenu.play();
-                    }
-                    else if (assets.buttonMap.getGlobalBounds().contains(mousePosF) && assets.initMap == true) {
-                        assets.initMap = false;
-                        assets.rectMapX = 25;
-                        assets.rectMapY = 50;
-                        assets.spriteMapView.setPosition(assets.rectMapX, assets.rectMapY);
-                        assets.buttonMapSprite.setPosition(assets.rectMapX + 20, assets.rectMapY + 20);
-                        blipmenu.play();
-                    }
+                    this->mapButtons(window);
+                    //Map Menu Bar Functionality
+                    this->menuBar(window);
                 }
                 break;
             case sf::Event::MouseButtonReleased:
                 {
                     assets.movable = false;
+                    assets.movableStatsBox = false;
                 }
             }
-            //Run Main Function Loop
+            //Run Main Function Loop...
             this->mainLoop();
         }
-        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-        sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-
-        // clear the window with black color
-        window.clear(sf::Color::Black);
-
-        // draw everything here...
-        assets.drawObjects();
-
-        window.draw(assets.rect);
-        window.draw(assets.map);
-        window.draw(assets.buttonMap);
-        window.draw(assets.button);
-        window.draw(assets.buttonBack);
-        window.draw(assets.playerText);
-        window.draw(assets.locationText);
-        window.draw(assets.text);
-        window.draw(assets.combatText);
-        window.draw(assets.sprite);
-        window.draw(assets.spriteText);
-        window.draw(assets.menuText);
-        if (assets.initMap == true) {
-            window.draw(assets.rectMap);
-            window.draw(assets.spriteMapView);
-            window.draw(assets.buttonMapSprite);
-            if (assets.movable == true) {
-                assets.rectMapX = mousePos.x - 190;
-                assets.rectMapY = mousePos.y;
-                assets.spriteMapView.setPosition(assets.rectMapX, assets.rectMapY);
-                assets.buttonMapSprite.setPosition(assets.rectMapX + 20, assets.rectMapY + 20);
-            }
-        }
-
-        // end the current frame
-        window.display();
+        //Draw Everything...
+        this->Draw(window);
     }
 }
 
@@ -231,8 +116,6 @@ void World::mainLoop()
     this->playerTurn();
     this->targetTurn();
     this->combatVictory();
-
-    travel.travelScreen();
 }
 
 //User Input
@@ -251,7 +134,7 @@ void World::userInput()
         unicode = event.text.unicode;
         unicode = static_cast<char>(event.text.unicode);
         assets.playerText.setString(playerInput);
-        sound.play();
+        assets.sound.play();
         
         //Clearing string with backspace
         if (input == "\b") {
@@ -267,6 +150,198 @@ void World::clearInput()
     this->unicode = -1;
     playerInput = "";
     return;
+}
+
+//Display Functions
+void World::Draw(sf::RenderWindow& window)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+
+    // clear the window with black color
+    window.clear(sf::Color::Black);
+
+    // draw everything here...
+    assets.drawObjects();
+    travel.travelCore(assets);
+
+    window.draw(assets.rect);
+    window.draw(assets.map);
+    window.draw(assets.buttonMap);
+    window.draw(assets.button);
+    window.draw(assets.buttonBack);
+    window.draw(assets.playerText);
+    window.draw(assets.locationText);
+    window.draw(assets.text);
+    window.draw(assets.combatText);
+    window.draw(assets.rectSpriteBox);
+    window.draw(assets.sprite);
+    window.draw(assets.spriteText);
+    window.draw(assets.menuText);
+    window.draw(assets.rectStats);
+    window.draw(assets.rectStatsText);
+    if (assets.initMap == true) {
+        window.draw(assets.rectMap);
+        window.draw(assets.spriteMapView);
+        window.draw(assets.buttonCastleEntrance);
+        window.draw(assets.buttonCastleDepths);
+        window.draw(assets.castleEntranceText);
+        window.draw(assets.castleDepthsText);
+        if (assets.movable == true) {
+            assets.rectMapX = mousePos.x - 190;
+            assets.rectMapY = mousePos.y;
+            assets.spriteMapView.setPosition(assets.rectMapX, assets.rectMapY);
+            assets.buttonCastleEntrance.setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
+            assets.buttonCastleDepths.setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
+        }
+    }
+    if (assets.initStats == true) {
+        window.draw(assets.rectStatsBox);
+        if (assets.movableStatsBox == true) {
+            assets.rectStatsBoxX = mousePos.x - 190;
+            assets.rectStatsBoxY = mousePos.y;
+        }
+    }
+
+    // end the current frame
+    window.display();
+}
+
+void World::greyOnHover(sf::RenderWindow& window)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+    if (assets.button.getGlobalBounds().contains(mousePosF))
+    {
+        assets.button.setColor(sf::Color(155, 155, 155));
+    }//Turn forward button grey on hover
+    else {
+        assets.button.setColor(sf::Color(255, 255, 255));
+    }
+    //Turn back button grey on hover
+    if (assets.buttonBack.getGlobalBounds().contains(mousePosF)) {
+        assets.buttonBack.setColor(sf::Color(155, 155, 155));
+    }
+    else {
+        assets.buttonBack.setColor(sf::Color(255, 255, 255));
+    }
+    if (assets.buttonMap.getGlobalBounds().contains(mousePosF)) {
+        assets.buttonMap.setFillColor(sf::Color::Transparent);
+        assets.menuText.setFillColor(sf::Color::White);
+    }
+    else {
+        assets.buttonMap.setFillColor(sf::Color::White);
+        assets.menuText.setFillColor(sf::Color::Black);
+    }
+
+    //Turn rect button grey on hover
+    if (assets.rectStats.getGlobalBounds().contains(mousePosF)) {
+        assets.rectStats.setFillColor(sf::Color::Transparent);
+        assets.rectStatsText.setFillColor(sf::Color::White);
+    }
+    else {
+        assets.rectStats.setFillColor(sf::Color::White);
+        assets.rectStatsText.setFillColor(sf::Color::Black);
+    }
+    //Turn map travel buttons grey on hover
+    if (assets.initMap == true) {
+        if (assets.buttonCastleEntrance.getGlobalBounds().contains(mousePosF)) {
+            assets.buttonCastleEntrance.setColor(sf::Color(155, 155, 155));
+        }
+        else {
+            assets.buttonCastleEntrance.setColor(sf::Color(255, 255, 255));
+        }
+    }
+    if (assets.initMap == true) {
+        if (assets.buttonCastleDepths.getGlobalBounds().contains(mousePosF)) {
+            assets.buttonCastleDepths.setColor(sf::Color(155, 155, 155));
+        }
+        else {
+            assets.buttonCastleDepths.setColor(sf::Color(255, 255, 255));
+        }
+    }
+}
+
+void World::travelButtons(sf::RenderWindow& window)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+    //Main View Buttons Control
+    if (assets.button.getGlobalBounds().contains(mousePosF))
+    {
+        travel.frame++;
+        travel.frameInit = false;
+        assets.blipsound.play();
+    }
+    else if (assets.buttonBack.getGlobalBounds().contains(mousePosF))
+    {
+        travel.frame--;
+        travel.frameInit = false;
+        assets.blipsound.play();
+    }
+}
+
+void World::mapButtons(sf::RenderWindow& window)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+    //Castle Entrance Button Functionality
+    if (assets.initMap == true) {
+        if (assets.buttonCastleEntrance.getGlobalBounds().contains(mousePosF)) {
+            assets.soundWalk.play();
+            travel.castleEntranceInit = true;
+            travel.castleDepthsInit = false;
+            travel.frameInit = false;
+            this->buttonClick = true;
+        }
+        else if (assets.buttonCastleDepths.getGlobalBounds().contains(mousePosF)){
+            assets.soundWalk.play();
+            travel.castleEntranceInit = false;
+            travel.castleDepthsInit = true;
+            travel.frameInit = false;
+            this->buttonClick = true;
+        }
+    }
+}
+
+void World::menuBar(sf::RenderWindow& window)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+    //Map Menu Bar Functionaliy
+    if (assets.rectMap.getGlobalBounds().contains(mousePosF) && clickTime.getElapsedTime().asSeconds() < 0.3 && buttonClick == false) {
+        assets.movable = true;
+    }
+    else if (assets.rectStatsBox.getGlobalBounds().contains(mousePosF) && clickTime.getElapsedTime().asSeconds() < 0.3 && buttonClick == false) {
+        assets.movableStatsBox = true;
+    }
+    if (assets.buttonMap.getGlobalBounds().contains(mousePosF) && assets.initMap == false) {
+        assets.testMap++;
+        assets.initMap = true;
+        assets.blipmenu.play();
+    }
+    else if (assets.buttonMap.getGlobalBounds().contains(mousePosF) && assets.initMap == true) {
+        //Click to close map 
+        assets.initMap = false;
+        assets.rectMapX = 25;
+        assets.rectMapY = 50;
+        assets.spriteMapView.setPosition(assets.rectMapX, assets.rectMapY);
+        assets.buttonCastleEntrance.setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
+        assets.buttonCastleDepths.setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
+        assets.castleDepthsText.setPosition(assets.rectMapX + 40, assets.rectMapY + 220);
+        assets.castleEntranceText.setPosition(assets.rectMapX, assets.rectMapY + 5);
+        assets.blipmenu.play();
+    }
+    this->buttonClick = false;
+    //Stats Menu Bar Functionality
+    if (assets.rectStats.getGlobalBounds().contains(mousePosF) && assets.initStats == false) {
+        assets.initStats = true;
+        assets.blipmenu.play();
+    }
+    else if (assets.rectStats.getGlobalBounds().contains(mousePosF) && assets.initStats == true) {
+        assets.initStats = false;
+        assets.blipmenu.play();
+    }
 }
 
 //Menu Functions
@@ -372,7 +447,7 @@ void World::playerTurn()
 {
     if (combatPlayer == true && playerturn == true) {
         assets.text.setString("You strike the combatant! Enemy revealed! \nPress '1' to continue...");
-        soundCom.play();
+        assets.soundCom.play();
         targetHp -= strike;
         if (targetHp <= 0) {
             this->clearInput();
@@ -411,7 +486,7 @@ void World::targetTurn()
         case 49:
             //Targets Turn
             if (this->random < 110) {
-                soundCom.play();
+                assets.soundCom.play();
                 this->clearInput();
                 this->hp -= this->targetStrike;
                 assets.combatText.setString("Target hit!\n Target HP ->" + std::to_string(targetHp) + "/" + std::to_string(targetHpMax)

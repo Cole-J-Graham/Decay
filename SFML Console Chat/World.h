@@ -20,15 +20,6 @@ private:
 	sf::Clock clickTime;
 
 	sf::String playerInput;
-	sf::SoundBuffer buffer;
-	sf::Sound sound;
-	sf::Sound blipsound;
-	sf::Sound blipmenu;
-	sf::SoundBuffer blipbuffer;
-	sf::SoundBuffer blipmenubuffer;
-	sf::SoundBuffer bufferCom;
-	sf::Sound soundCom;
-	sf::Music music;
 
 	sf::Event event;
 
@@ -55,6 +46,7 @@ private:
 
 	//Quest Bool
 	bool questboard;
+	bool buttonClick;
 
 	//Combat Bool
 	bool combat;
@@ -92,6 +84,13 @@ public:
 	//User Input
 	void userInput();
 	void clearInput();
+
+	//Display Functions
+	void Draw(sf::RenderWindow& window);
+	void greyOnHover(sf::RenderWindow& window);
+	void travelButtons(sf::RenderWindow& window);
+	void mapButtons(sf::RenderWindow& window);
+	void menuBar(sf::RenderWindow& window);
 
 	//Menu Functions
 	void bonFire();

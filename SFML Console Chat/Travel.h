@@ -9,32 +9,37 @@
 #include<string>
 #include<SFML/Audio.hpp>
 #include"Assets.h"
+#include"Event.h"
 
 class Travel
 {
 private:
-	Assets assets;
-
-
-	//Bool
-	bool traveling;
+	Event event;
 
 public:
+	//Int
+	int frame;
+
+	//Core Bools
+	bool frameInit;
+
+	//Init Bools
+	bool castleEntranceInit;
+	bool castleDepthsInit;
+
+	Assets assets;
+
 	int travel;
 	//Constructors & Destructors
 	Travel();
 	~Travel();
 
 	//Core
+	void travelCore(Assets& assets);
 
-	//Main Window
-	void travelScreen();
-
-	//Getters
-	bool& getTraveling() { return this->traveling; };
-
-	//setters
-	bool& setTravelingTrue() { return this->traveling = true; };
+	//Draw Castle
+	void castleEntrance(Assets& assets);
+	void castleDepths(Assets& assets);
 };
 
 
