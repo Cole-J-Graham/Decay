@@ -20,17 +20,7 @@ World::World()
     this->statsmenu = false;
 
     //Quest Bool
-    this->questboard = false;
     this->buttonClick = false;
-
-    //Combat Bool
-    this->combat = false;
-    this->combatPlayer = false;
-    this->combatTarget = false;
-    this->hostile1 = false;
-    this->combatvictory = false;
-    this->playerturn = true;
-    this->targetturn = true;
 
     //Player Stats
     this->level = 1;
@@ -41,11 +31,6 @@ World::World()
     //Coordinate Plane
     this->xCord = 1920;
     this->yCord = 600;
-
-    //Enemy Stats
-    this->targetHp = 50;
-    this->targetHpMax = 50;
-    this->targetStrike = 15;
 
     this->test = 0;
 }
@@ -88,7 +73,10 @@ void World::bootUp()
                     //If button in map is clicked, do something
                     this->mapButtons(window);
                     //Map Menu Bar Functionality
+                    this->menuBarStats(window); //Must be loaded before menuBar(window); to withhold functionality
                     this->menuBar(window);
+                    //Dialogue Box Functionality...
+                    this->dialogueBox(window);
                 }
                 break;
             case sf::Event::MouseButtonReleased:
@@ -109,13 +97,7 @@ void World::mainLoop()
 {
     //Run Main Functions
     this->userInput();
-    this->bonFire();
-    this->questBoard();
-    this->statsMenu();
-    this->combatInit();
-    this->playerTurn();
-    this->targetTurn();
-    this->combatVictory();
+    travel.travelCore(assets);
 }
 
 //User Input
@@ -180,6 +162,20 @@ void World::Draw(sf::RenderWindow& window)
     window.draw(assets.menuText);
     window.draw(assets.rectStats);
     window.draw(assets.rectStatsText);
+    //Draw Combat Stuff
+    if (assets.playerTurnAssets == true) {
+        window.draw(assets.rectAttack);
+        window.draw(assets.rectFlee);
+        window.draw(assets.attackText);
+        window.draw(assets.fleeText);
+    }
+    window.draw(assets.playerSpriteBorder);
+    window.draw(assets.playerNameText);
+    window.draw(assets.zinSpriteBorder);
+    window.draw(assets.zinText);
+    window.draw(assets.hostileSpriteBorder);
+    window.draw(assets.hostileNameText);
+    window.draw(assets.zin);
     if (assets.initMap == true) {
         window.draw(assets.rectMap);
         window.draw(assets.spriteMapView);
@@ -197,8 +193,16 @@ void World::Draw(sf::RenderWindow& window)
     }
     if (assets.initStats == true) {
         window.draw(assets.rectStatsBox);
+        window.draw(assets.statsText);
+        window.draw(assets.rectStatsPointsBox);
+        window.draw(assets.rectStrengthPointsBox);
+        window.draw(assets.statsPointsText);
+        window.draw(assets.statsPointsTextTitle);
+        window.draw(assets.statsStrengthTextTitle);
+        window.draw(assets.statsStrengthText);
+        assets.statsText.setString("HP: " + std::to_string(combat.playerHp) + "/" + std::to_string(combat.playerHpMax) + "\nSP: " + std::to_string(player.sp));
         if (assets.movableStatsBox == true) {
-            assets.rectStatsBoxX = mousePos.x - 190;
+            assets.rectStatsBoxX = mousePos.x - 100;
             assets.rectStatsBoxY = mousePos.y;
         }
     }
@@ -260,8 +264,60 @@ void World::greyOnHover(sf::RenderWindow& window)
             assets.buttonCastleDepths.setColor(sf::Color(255, 255, 255));
         }
     }
+    //Turn Stats Points Button Grey
+    if (assets.initStats == true) {
+        if (assets.rectStatsPointsBox.getGlobalBounds().contains(mousePosF)) {
+            assets.rectStatsPointsBox.setFillColor(sf::Color::Black);
+            assets.statsPointsText.setFillColor(sf::Color(sf::Color::White));
+        }
+        else {
+            assets.rectStatsPointsBox.setFillColor(sf::Color(255, 255, 255));
+            assets.statsPointsText.setFillColor(sf::Color(sf::Color::Black));
+        }
+    }
+    if (assets.initStats == true) {
+        if (assets.rectStrengthPointsBox.getGlobalBounds().contains(mousePosF)) {
+            assets.rectStrengthPointsBox.setFillColor(sf::Color::Black);
+            assets.statsStrengthText.setFillColor(sf::Color(sf::Color::White));
+        }
+        else {
+            assets.rectStrengthPointsBox.setFillColor(sf::Color(255, 255, 255));
+            assets.statsStrengthText.setFillColor(sf::Color(sf::Color::Black));
+        }
+    }
+ 
+    //Turn Combat Menu Buttons Grey On Hover
+    if (assets.rectAttack.getGlobalBounds().contains(mousePosF)) {
+        assets.rectAttack.setFillColor(sf::Color::Transparent);
+        assets.attackText.setFillColor(sf::Color::White);
+        assets.rectFlee.setFillColor(sf::Color::White);
+        assets.fleeText.setFillColor(sf::Color::Black);
+        assets.rect.setFillColor(sf::Color::Black);
+    } else if (assets.rectFlee.getGlobalBounds().contains(mousePosF)) {
+        assets.rectFlee.setFillColor(sf::Color::Transparent);
+        assets.fleeText.setFillColor(sf::Color::White);
+        assets.rectAttack.setFillColor(sf::Color::White);
+        assets.attackText.setFillColor(sf::Color::Black);
+        assets.rect.setFillColor(sf::Color::Black);
+    }
+    else if (assets.rect.getGlobalBounds().contains(mousePosF)) {
+        assets.rect.setFillColor(sf::Color(10, 10, 10));
+        assets.rectAttack.setFillColor(sf::Color::White);
+        assets.attackText.setFillColor(sf::Color::Black);
+        assets.rectFlee.setFillColor(sf::Color::White);
+        assets.fleeText.setFillColor(sf::Color::Black);
+    }
+    else { //Turn dialogue box grey on hover
+        assets.rectAttack.setFillColor(sf::Color::White);
+        assets.attackText.setFillColor(sf::Color::Black);
+        assets.rectFlee.setFillColor(sf::Color::White);
+        assets.fleeText.setFillColor(sf::Color::Black);
+
+        assets.rect.setFillColor(sf::Color::Black);
+    }
 }
 
+//Display Element Functionality
 void World::travelButtons(sf::RenderWindow& window)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
@@ -316,7 +372,7 @@ void World::menuBar(sf::RenderWindow& window)
         assets.movableStatsBox = true;
     }
     if (assets.buttonMap.getGlobalBounds().contains(mousePosF) && assets.initMap == false) {
-        assets.testMap++;
+        assets.mapCounter++;
         assets.initMap = true;
         assets.blipmenu.play();
     }
@@ -344,186 +400,67 @@ void World::menuBar(sf::RenderWindow& window)
     }
 }
 
-//Menu Functions
-void World::bonFire()
+void World::menuBarStats(sf::RenderWindow& window)
 {
-    if (initialized == false) {
-        //Change Text
-        assets.text.setString("  BonFire Options\n 1:|Quest Board\n 2:|View Stats\n 3:|Hunt");
-        //Add Sprite
-        assets.spriteZinNormal = true;
-
-        //Main Choices For Menu
-        switch (unicode) {
-        case 49:
-            this->clearInput();
-            this->initialized = true;
-            this->questboard = true;
-            this->questBoard();
-            break;
-        case 50:
-            this->clearInput();
-            this->initialized = true;
-            this->questboard = false;
-            this->statsmenu = true;
-            this->statsMenu();
-            break;
-        case 51:
-            this->clearInput();
-            this->initialized = true;
-            this->questboard = false;
-            this->statsmenu = false;
-            this->combat = true;
-            this->combatInit();
-            break;
-        }
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+    //Level Up Functionality
+    if (assets.initStats == false) {
+        assets.statsPointsTextTitle.setString("LEVEL " + std::to_string(player.level));
     }
-}
-
-void World::questBoard()
-{
-    if (questboard == true) {
-        assets.text.setString("  Quests\n 0:|Return\n 1:|Quest One");
-    
-        switch (unicode) {
-        case 48:
-            clearInput();
-            this->initialized = false;
-            this->questboard = false;
-            this->bonFire();
-            break;
-        case 49:
-            clearInput();
-            this->questboard = false;
-            break;
-        }
-    }
-}
-
-void World::statsMenu()
-{
-    if (statsmenu == true) {
-        assets.text.setString("  Statistics\n 0:|Return\n 1:|View Stats");
-
-        switch (unicode) {
-        case 48:
-            clearInput();
-            assets.combatText.setString("");
-            this->initialized = false;
-            this->statsmenu = false;
-            this->bonFire();
-            break;
-        case 49:
-            clearInput();
-            assets.combatText.setString("  ATTACK: 12\n DEF: 2...");
-            break;
-        }
-    }
-}
-
-//Combat Functions
-void World::combatInit()
-{
-    if (combat == true) {
-        this->playerturn = true;
-        this->targetturn = true;
-        assets.text.setString("A combatant Ambushes you from the dark! \n1:|Strike");
-        //Change Sprites
-        assets.spriteZinNormal = false;
-        assets.spriteZinSmug = true;
-
-        switch (unicode) {
-        case 49:
-            this->clearInput();
-            this->combat = false;
-            this->combatPlayer = true;
-            this->playerTurn();
-            break;
-        }
-    }
-}
-
-void World::playerTurn()
-{
-    if (combatPlayer == true && playerturn == true) {
-        assets.text.setString("You strike the combatant! Enemy revealed! \nPress '1' to continue...");
-        assets.soundCom.play();
-        targetHp -= strike;
-        if (targetHp <= 0) {
-            this->clearInput();
-            this->combatPlayer = false;
-            this->playerturn = false;
-            this->combatvictory = true;
-            this->combatVictory();
-        }
-        assets.combatText.setString("Target HP ->" + std::to_string(targetHp) + "/" + std::to_string(targetHpMax)
-            + "\n Your HP ->" + std::to_string(hp) + "/" + std::to_string(hpMax));
-        this->playerturn = false;
-    }
-    else if (combatPlayer == true) {
-        switch (unicode) {
-        case 49:
-            this->clearInput();
-            this->combatPlayer = false;
-            this->combatTarget = true;
-            this->targetTurn();
-            break;
-        }
-    }
-}
-
-void World::targetTurn()
-{
-    if (combatTarget == true && targetturn == true) {
-        assets.text.setString("Target attacking! Press '1' to continue...");
-        assets.combatText.setString("Target HP ->" + std::to_string(targetHp) + "/" + std::to_string(targetHpMax)
-            + "\n Your HP ->" + std::to_string(hp) + "/" + std::to_string(hpMax));
-        //Assign Random Chance
-        srand((unsigned)time(NULL));
-        this->random = 100 + (rand() % 20);
-
-        switch (unicode) {
-        case 49:
-            //Targets Turn
-            if (this->random < 110) {
-                assets.soundCom.play();
-                this->clearInput();
-                this->hp -= this->targetStrike;
-                assets.combatText.setString("Target hit!\n Target HP ->" + std::to_string(targetHp) + "/" + std::to_string(targetHpMax)
-                    + "\n Your HP ->" + std::to_string(hp) + "/" + std::to_string(hpMax));
-                this->combatTarget = false;
-                this->targetturn = false;
-                this->combat = true;
-                this->combatInit();
+    if (assets.initStats == true) {
+        if (assets.rectStatsPointsBox.getGlobalBounds().contains(mousePosF)) {
+            if (player.exp >= player.expNext) {
+                player.level++;
+                player.sp++;
+                player.exp -= player.expNext;
+                assets.statsPointsTextTitle.setString("LEVEL " + std::to_string(player.level));
+                assets.text.setString("Level up achieved. Level " + std::to_string(player.level) + " reached. One SP point acquired...");
             }
-            else {
-                this->clearInput();
-                assets.combatText.setString("Target missed!\n Target HP ->" + std::to_string(targetHp) + "/" + std::to_string(targetHpMax)
-                    + "\n Your HP ->" + std::to_string(hp) + "/" + std::to_string(hpMax));
-                this->combatTarget = false;
-                this->targetturn = false;
-                this->combat = true;
-                this->combatInit();
+            else if (player.exp <= player.expNext) {
+                assets.text.setString("Required Exp not met...");
             }
-            break;
+            this->buttonClick = true;
+        }
+    }
+    //Strength up functionality
+    if (assets.initStats == false) {
+        assets.statsStrengthTextTitle.setString("STRENGTH " + std::to_string(player.strength));
+    }
+    if (assets.initStats == true) {
+        if (assets.rectStrengthPointsBox.getGlobalBounds().contains(mousePosF)) {
+            if (player.sp >= 1) {
+                player.strength++;
+                player.sp--;
+                assets.statsStrengthTextTitle.setString("STRENGTH " + std::to_string(player.strength));
+                assets.text.setString("Strength improved. Level " + std::to_string(player.strength) + " in strength reached. One SP point spent...");
+            }
+            else if (player.sp <= 0) {
+                assets.text.setString("Required SP not met...");
+            }
+            this->buttonClick = true;
         }
     }
 }
 
-void World::combatVictory()
+void World::dialogueBox(sf::RenderWindow& window)
 {
-    if (this->combatvictory == true)
-    {
-        assets.text.setString("The abomination has fallen! Victory is yours! Press '0' to continue...");
-        assets.combatText.setString("");
-
-        switch (unicode) {
-        case 48:
-            this->clearInput();
-            this->initialized = false;
-            this->combatvictory = false;
-            this->bonFire();
-            break;
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+    if (assets.rectAttack.getGlobalBounds().contains(mousePosF)) { //If attack button is clicked...
+        std::cout << "\nAttack Button Clicked...";
+        assets.attackCounter = 1;
+    } 
+    else if (assets.rectFlee.getGlobalBounds().contains(mousePosF)) { //If flee button is clicked...
+        std::cout << "\nFlee Button Clicked...";
+        assets.attackCounter = 2;
+    } 
+    else if (assets.rect.getGlobalBounds().contains(mousePosF)) { //If dialogue box is clicked...
+        std::cout << "\nDialogue Box Clicked...";
+        assets.dialogueCounter++;
+        if (assets.combatAssets == true) {
+            assets.combatCounter++;
         }
+        assets.spadeInit = false;
     }
 }

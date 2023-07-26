@@ -17,15 +17,16 @@ Travel::~Travel()
 //Core
 void Travel::travelCore(Assets& assets)
 {
-    this->castleEntrance(assets);
-    this->castleDepths(assets);
+    this->castleEntrance(assets, notevent);
+    this->castleDepths(assets, notevent);
 }
 
 //Draw Castle
-void Travel::castleEntrance(Assets& assets)
+void Travel::castleEntrance(Assets& assets, Event& notevent)
 {
-    if (this->castleEntranceInit == true) {
-        assets.spriteInit = false;
+    if (this->castleEntranceInit == true && this->castleDepthsInit == false) {
+        //Uninitialize && Reinitialize castleDepth Event
+        notevent.reInitialize(assets);
         switch (this->frame) {
         case 0:
             //Draw Map Sprite
@@ -43,6 +44,7 @@ void Travel::castleEntrance(Assets& assets)
                 this->frameInit = true;
             }
             assets.map.setTexture(assets.mapTexture);
+            combat.combatLoop(assets);
             break;
         case 2:
             if (this->frameInit == false) {
@@ -55,9 +57,9 @@ void Travel::castleEntrance(Assets& assets)
     }
 }
 
-void Travel::castleDepths(Assets& assets)
+void Travel::castleDepths(Assets& assets, Event& notevent)
 {
-    if (this->castleEntranceInit == false && this->castleDepthsInit) {
+    if (this->castleEntranceInit == false && this->castleDepthsInit == true) {
         this->frame = 0;
         switch (this->frame) {
         case 0:
@@ -66,7 +68,8 @@ void Travel::castleDepths(Assets& assets)
                 assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castleDepths.jpeg");
                 this->frameInit = true;
             }
-            event.spadeEncounter(assets);
+            //Initialize Spade and Sprite
+            notevent.spadeEncounter(assets);
             break;
         }
     }

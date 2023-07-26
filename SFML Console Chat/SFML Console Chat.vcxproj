@@ -148,14 +148,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Assets.cpp" />
+    <ClCompile Include="Combat.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Travel.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assets.h" />
+    <ClInclude Include="Combat.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Travel.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>

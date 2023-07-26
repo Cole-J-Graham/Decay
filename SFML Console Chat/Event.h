@@ -5,12 +5,19 @@
 class Event
 {
 private:
-	bool encounterInit;
 
 public:
+	bool encounterInit;
+	bool encounterInitTwo;
+
+	int dialogue;
+
 	//Constructors & Destructors
 	Event();
 	~Event();
+
+	//Core Functions
+	void reInitialize(Assets& assets);
 
 	//Castle Events
 	void spadeEncounter(Assets& assets);

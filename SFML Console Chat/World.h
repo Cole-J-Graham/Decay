@@ -10,6 +10,8 @@
 #include<SFML/Audio.hpp>
 #include"Travel.h"
 #include"Assets.h"
+#include"Event.h"
+#include"Combat.h"
 
 class World
 {
@@ -25,6 +27,9 @@ private:
 
 	Assets assets;
 	Travel travel;
+	Event notevent;
+	Combat combat;
+	Player player;
 
 	//Core
 	std::string input;
@@ -45,17 +50,7 @@ private:
 	bool statsmenu;
 
 	//Quest Bool
-	bool questboard;
 	bool buttonClick;
-
-	//Combat Bool
-	bool combat;
-	bool combatPlayer;
-	bool combatTarget;
-	bool hostile1;
-	bool combatvictory;
-	bool playerturn;
-	bool targetturn;
 
 	//Player Stats
 	int level;
@@ -66,11 +61,6 @@ private:
 	//Coordinate Plane
 	float xCord;
 	float yCord;
-
-	//Enemy Stats
-	int targetHp;
-	int targetHpMax;
-	int targetStrike;
 
 public:
 	//Constructors & Destructors
@@ -88,20 +78,13 @@ public:
 	//Display Functions
 	void Draw(sf::RenderWindow& window);
 	void greyOnHover(sf::RenderWindow& window);
+
+	//Display Element Functionality
 	void travelButtons(sf::RenderWindow& window);
 	void mapButtons(sf::RenderWindow& window);
 	void menuBar(sf::RenderWindow& window);
-
-	//Menu Functions
-	void bonFire();
-	void statsMenu();
-	void questBoard();
-
-	//Combat Functions
-	void combatInit();
-	void playerTurn();
-	void targetTurn();
-	void combatVictory();
+	void menuBarStats(sf::RenderWindow& window);
+	void dialogueBox(sf::RenderWindow& window);
 
 	//Getters and Setters
 	bool& getStop() { return this->stop; };

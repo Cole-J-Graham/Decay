@@ -10,11 +10,13 @@
 #include<SFML/Audio.hpp>
 #include"Assets.h"
 #include"Event.h"
+#include"Combat.h"
 
 class Travel
 {
 private:
-	Event event;
+	Event notevent;
+	Combat combat;
 
 public:
 	//Int
@@ -38,8 +40,8 @@ public:
 	void travelCore(Assets& assets);
 
 	//Draw Castle
-	void castleEntrance(Assets& assets);
-	void castleDepths(Assets& assets);
+	void castleEntrance(Assets& assets, Event& notevent);
+	void castleDepths(Assets& assets, Event& notevent);
 };
 
 
