@@ -4,9 +4,16 @@
 Assets::Assets()
 {
     //Sprite Bool
+    this->initialDrawIn = false;
     this->initMapTexture = false;
     this->initMap = false;
     this->initStats = false;
+    this->initInventory = false;
+    this->plusboxes = false;
+
+    //Menu Control Flow
+    this->playerStatsInit = true;
+    this->zinStatsInit = false;
 
     //Sprite Control Flow
     this->spadeInit = false;
@@ -23,7 +30,7 @@ Assets::Assets()
     this->zinCounter = -1;
     this->mapCounter = -1;
     this->dialogueCounter = 0;
-    this->combatCounter = -1;
+    this->combatCounter = 0;
 
     //Movable
     this->movable = false;
@@ -32,14 +39,16 @@ Assets::Assets()
     //Rect Coordinates
     this->rectMapX = 25;
     this->rectMapY = 50;
-    this->rectStatsBoxX = 1490;
-    this->rectStatsBoxY = 50;
+    this->rectStatsBoxX = 1470;
+    this->rectStatsBoxY = 10;
+    this->rectInventoryBoxX = 1700;
+    this->rectInventoryBoxY = 10;
+
 
     //Initialize Combat Assets
     this->combatAssets = false;
     this->playerTurnAssets = false;
-    //Combat Control Flow
-    this->attackCounter = -1;
+    this->zinTurnAssets = false;
 
     //Strings
     this->playerName = "player";
@@ -59,6 +68,8 @@ void Assets::drawObjects()
     this->drawText();
     this->drawMap();
     this->drawStats();
+    this->drawInventory();
+    this->drawZinStats();
     //Sprite Assets
     this->spadeSprite();
     this->zinSprite();
@@ -76,28 +87,35 @@ void Assets::drawMainWindow()
     rect.setOutlineThickness(1.0f);
     if (combatAssets == false) {
         //Draw Map Button
-        buttonMap.setPosition(1.0f, 795.0f);
-        buttonMap.setSize(sf::Vector2f(100.0f, 25.0f));
-        buttonMap.setOutlineColor(sf::Color::White);
-        buttonMap.setOutlineThickness(1.0f);
+        rectElements[2].setPosition(1.0f, 795.0f);
+        rectElements[2].setSize(sf::Vector2f(100.0f, 25.0f));
+        rectElements[2].setOutlineColor(sf::Color::White);
+        rectElements[2].setOutlineThickness(1.0f);
         //Draw Stats Button
-        rectStats.setPosition(105.0f, 795.0f);
-        rectStats.setSize(sf::Vector2f(100.0f, 25.0f));
-        rectStats.setOutlineColor(sf::Color::White);
-        rectStats.setOutlineThickness(1.0f);
+        rectElements[0].setPosition(105.0f, 795.0f);
+        rectElements[0].setSize(sf::Vector2f(100.0f, 25.0f));
+        rectElements[0].setOutlineColor(sf::Color::White);
+        rectElements[0].setOutlineThickness(1.0f);
+        //Draw Inventory Button
+        rectElements[1].setPosition(209.0f, 795.0f);
+        rectElements[1].setSize(sf::Vector2f(100.0f, 25.0f));
+        rectElements[1].setOutlineColor(sf::Color::White);
+        rectElements[1].setOutlineThickness(1.0f);
         //Draw Button
-        button.setTexture(buttonTexture);
-        button.setPosition(1400.0f, 765.0f);
+        spriteElements[0].setTexture(buttonTexture);
+        spriteElements[0].setPosition(1400.0f, 765.0f);
         //Draw Back Button
         buttonBackTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/buttonsolidfix.png");
-        buttonBack.setTexture(buttonBackTexture);
-        buttonBack.setPosition(445.0f, 765.0f);
+        spriteElements[1].setTexture(buttonBackTexture);
+        spriteElements[1].setPosition(445.0f, 765.0f);
     }
     else if (combatAssets == true) {
-        buttonMap.setPosition(1.0f, 10000.0f);
-        rectStats.setPosition(105.0f, 10000.0f);
-        button.setPosition(1400.0f, 10000.0f);
-        buttonBack.setPosition(445.0f, 10000.0f);
+        //Make assets hidden during combat
+        rectElements[2].setPosition(1.0f, 10000.0f);
+        rectElements[1].setPosition(209.0f, 10000.0f);
+        rectElements[0].setPosition(105.0f, 10000.0f);
+        spriteElements[0].setPosition(1400.0f, 10000.0f);
+        spriteElements[0].setPosition(445.0f, 10000.0f);
     }
 }
 
@@ -117,16 +135,16 @@ void Assets::drawMap()
             spriteMapView.setPosition(rectMapX, rectMapY);
             spriteMapView.setScale(0.38f, 0.38f);
 
-            buttonCastleEntrance.setTexture(buttonTexture);
-            buttonCastleEntrance.setPosition(rectMapX +34, rectMapY +20);
-            buttonCastleEntrance.setScale(0.5f, 0.5f);
+            mapCastleElements[0].setTexture(buttonTexture);
+            mapCastleElements[0].setPosition(rectMapX +34, rectMapY +20);
+            mapCastleElements[0].setScale(0.5f, 0.5f);
 
-            buttonCastleDepths.setTexture(buttonTexture);
-            buttonCastleDepths.setPosition(rectMapX + 75, rectMapY + 240);
-            buttonCastleDepths.setScale(0.5f, 0.5f);
+            mapCastleElements[1].setTexture(buttonTexture);
+            mapCastleElements[1].setPosition(rectMapX + 75, rectMapY + 240);
+            mapCastleElements[1].setScale(0.5f, 0.5f);
 
-            castleEntranceText.setString("Castle Entrance");
-            castleDepthsText.setString("Castle Depths");
+            mapCastleElementsText[0].setString("Castle Entrance");
+            mapCastleElementsText[1].setString("Castle Depths");
             this->initMapTexture = true;
         }
         break;
@@ -141,39 +159,189 @@ void Assets::drawStats()
     rectStatsBox.setSize(sf::Vector2f(200.0f, 600.0f));
     rectStatsBox.setOutlineColor(sf::Color::White);
     rectStatsBox.setOutlineThickness(1.0f);
+    //Side Menu Player Stats Menu Rect
+    playerStatElements[4].setPosition(rectStatsBoxX + 200, rectStatsBoxY);
+    playerStatElements[4].setSize(sf::Vector2f(20.0f, 120.0f));
+    playerStatElements[4].setOutlineColor(sf::Color::White);
+    playerStatElements[4].setOutlineThickness(1.0f);
+    //Side Menu Player Stats Menu Rect Text
+    playerTextElements[8].setFont(font);
+    playerTextElements[8].setCharacterSize(16);
+    playerTextElements[8].setPosition(rectStatsBoxX + 205, rectStatsBoxY);
+    playerTextElements[8].setString("P\nL\nA\nY\nE\nR");
+    playerTextElements[8].setFillColor(sf::Color::Red);
+    //Side Menu Zin Stats Menu Rect
+    playerStatElements[5].setPosition(rectStatsBoxX + 200, rectStatsBoxY + 120);
+    playerStatElements[5].setSize(sf::Vector2f(20.0f, 100.0f));
+    playerStatElements[5].setOutlineColor(sf::Color::White);
+    playerStatElements[5].setOutlineThickness(1.0f);
+    //Side Menu Zin Stats Menu Rect Text
+    playerTextElements[9].setFont(font);
+    playerTextElements[9].setCharacterSize(16);
+    playerTextElements[9].setPosition(rectStatsBoxX + 205, rectStatsBoxY + 120);
+    playerTextElements[9].setString("\nZ\nI\nN");
+    playerTextElements[9].setFillColor(sf::Color::Blue);
     //Hp text
-    statsText.setFont(font);
-    statsText.setCharacterSize(16);
-    statsText.setFillColor(sf::Color(sf::Color::White));
-    statsText.setPosition(rectStatsBoxX, rectStatsBoxY);
+    playerTextElements[10].setFont(font);
+    playerTextElements[10].setCharacterSize(16);
+    playerTextElements[10].setFillColor(sf::Color(sf::Color::White));
+    playerTextElements[10].setPosition(rectStatsBoxX, rectStatsBoxY);
     //Level up plus Box
-    rectStatsPointsBox.setPosition(rectStatsBoxX, rectStatsBoxY + 580);
-    rectStatsPointsBox.setSize(sf::Vector2f(20.0f, 20.0f));
-    rectStatsPointsBox.setOutlineColor(sf::Color::White);
-    rectStatsPointsBox.setOutlineThickness(1.0f);
+    playerStatElements[0].setPosition(rectStatsBoxX, rectStatsBoxY + 100);
+    playerStatElements[0].setSize(sf::Vector2f(20.0f, 20.0f));
+    playerStatElements[0].setOutlineColor(sf::Color::White);
+    playerStatElements[0].setOutlineThickness(1.0f);
     //Strength plus box
-    rectStrengthPointsBox.setPosition(rectStatsBoxX, rectStatsBoxY + 560);
-    rectStrengthPointsBox.setSize(sf::Vector2f(20.0f, 20.0f));
-    rectStrengthPointsBox.setOutlineColor(sf::Color::White);
-    rectStrengthPointsBox.setOutlineThickness(1.0f);
+    playerStatElements[1].setPosition(rectStatsBoxX, rectStatsBoxY + 180);
+    playerStatElements[1].setSize(sf::Vector2f(20.0f, 20.0f));
+    playerStatElements[1].setOutlineColor(sf::Color::White);
+    playerStatElements[1].setOutlineThickness(1.0f);
+    //Fortitude plus box
+    playerStatElements[2].setPosition(rectStatsBoxX, rectStatsBoxY + 160);
+    playerStatElements[2].setSize(sf::Vector2f(20.0f, 20.0f));
+    playerStatElements[2].setOutlineColor(sf::Color::White);
+    playerStatElements[2].setOutlineThickness(1.0f);
+    //Vitality plus box
+    playerStatElements[3].setPosition(rectStatsBoxX, rectStatsBoxY + 140);
+    playerStatElements[3].setSize(sf::Vector2f(20.0f, 20.0f));
+    playerStatElements[3].setOutlineColor(sf::Color::White);
+    playerStatElements[3].setOutlineThickness(1.0f);
     //Plus sign text for level up
-    statsPointsText.setFont(font);
-    statsPointsText.setCharacterSize(24);
-    statsPointsText.setPosition(rectStatsBoxX + 3, rectStatsBoxY + 574);
-    statsPointsText.setString("+");
+    playerTextElements[0].setFont(font);
+    playerTextElements[0].setCharacterSize(24);
+    playerTextElements[0].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 94);
+    playerTextElements[0].setString("+");
     //plus sign text for strength
-    statsStrengthText.setFont(font);
-    statsStrengthText.setCharacterSize(24);
-    statsStrengthText.setPosition(rectStatsBoxX + 3, rectStatsBoxY + 552);
-    statsStrengthText.setString("+");
+    playerTextElements[1].setFont(font);
+    playerTextElements[1].setCharacterSize(24);
+    playerTextElements[1].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 174);
+    playerTextElements[1].setString("+");
+    //plus sign text for fortitude
+    playerTextElements[2].setFont(font);
+    playerTextElements[2].setCharacterSize(24);
+    playerTextElements[2].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 154);
+    playerTextElements[2].setString("+");
+    //plus sign text for vitality
+    playerTextElements[3].setFont(font);
+    playerTextElements[3].setCharacterSize(24);
+    playerTextElements[3].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 133);
+    playerTextElements[3].setString("+");
     //Title next to level box
-    statsPointsTextTitle.setFont(font);
-    statsPointsTextTitle.setCharacterSize(14);
-    statsPointsTextTitle.setPosition(rectStatsBoxX + 25, rectStatsBoxY + 580);
+    playerTextElements[4].setFont(font);
+    playerTextElements[4].setCharacterSize(14);
+    playerTextElements[4].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 100);
+    playerTextElements[4].setFillColor(sf::Color::White);
     //Title next to strength box
-    statsStrengthTextTitle.setFont(font);
-    statsStrengthTextTitle.setCharacterSize(14);
-    statsStrengthTextTitle.setPosition(rectStatsBoxX + 25, rectStatsBoxY + 560);
+    playerTextElements[5].setFont(font);
+    playerTextElements[5].setCharacterSize(14);
+    playerTextElements[5].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 180);
+    playerTextElements[5].setFillColor(sf::Color::White);
+    //Title next to fortitude box
+    playerTextElements[6].setFont(font);
+    playerTextElements[6].setCharacterSize(14);
+    playerTextElements[6].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 160);
+    playerTextElements[6].setFillColor(sf::Color::White);
+    //Title next to vitality box
+    playerTextElements[7].setFont(font);
+    playerTextElements[7].setCharacterSize(14);
+    playerTextElements[7].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 140);
+    playerTextElements[7].setFillColor(sf::Color::White);
+}
+
+void Assets::drawInventory()
+{
+    //Main Rect
+    rectInventoryBox.setFillColor(sf::Color::Black);
+    rectInventoryBox.setPosition(rectInventoryBoxX, rectInventoryBoxY);
+    rectInventoryBox.setSize(sf::Vector2f(200.0f, 600.0f));
+    rectInventoryBox.setOutlineColor(sf::Color::White);
+    rectInventoryBox.setOutlineThickness(1.0f);
+    //Inventory Text
+    inventoryText.setFont(font);
+    inventoryText.setCharacterSize(16);
+    inventoryText.setFillColor(sf::Color(sf::Color::White));
+    inventoryText.setPosition(rectInventoryBoxX, rectInventoryBoxY);
+}
+
+void Assets::drawZinStats()
+{
+    //Level up plus Box
+    zinStatElements[0].setPosition(rectStatsBoxX, rectStatsBoxY + 100);
+    zinStatElements[0].setSize(sf::Vector2f(20.0f, 20.0f));
+    zinStatElements[0].setOutlineColor(sf::Color::White);
+    zinStatElements[0].setOutlineThickness(1.0f);
+    //Resolve plus box
+    zinStatElements[1].setPosition(rectStatsBoxX, rectStatsBoxY + 180);
+    zinStatElements[1].setSize(sf::Vector2f(20.0f, 20.0f));
+    zinStatElements[1].setOutlineColor(sf::Color::White);
+    zinStatElements[1].setOutlineThickness(1.0f);
+    //Patience plus box
+    zinStatElements[2].setPosition(rectStatsBoxX, rectStatsBoxY + 160);
+    zinStatElements[2].setSize(sf::Vector2f(20.0f, 20.0f));
+    zinStatElements[2].setOutlineColor(sf::Color::White);
+    zinStatElements[2].setOutlineThickness(1.0f);
+    //Resilience plus box
+    zinStatElements[3].setPosition(rectStatsBoxX, rectStatsBoxY + 140);
+    zinStatElements[3].setSize(sf::Vector2f(20.0f, 20.0f));
+    zinStatElements[3].setOutlineColor(sf::Color::White);
+    zinStatElements[3].setOutlineThickness(1.0f);
+    //Plus sign text for level up
+    zinTextElements[0].setFont(font);
+    zinTextElements[0].setCharacterSize(24);
+    zinTextElements[0].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 94);
+    zinTextElements[0].setString("+");
+    //plus sign text for resolve
+    zinTextElements[1].setFont(font);
+    zinTextElements[1].setCharacterSize(24);
+    zinTextElements[1].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 174);
+    zinTextElements[1].setString("+");
+    //plus sign text for patience
+    zinTextElements[2].setFont(font);
+    zinTextElements[2].setCharacterSize(24);
+    zinTextElements[2].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 154);
+    zinTextElements[2].setString("+");
+    //plus sign text for resilience
+    zinTextElements[3].setFont(font);
+    zinTextElements[3].setCharacterSize(24);
+    zinTextElements[3].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 133);
+    zinTextElements[3].setString("+");
+    //Title next to level box
+    zinTextElements[4].setFont(font);
+    zinTextElements[4].setCharacterSize(14);
+    zinTextElements[4].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 100);
+    zinTextElements[4].setFillColor(sf::Color::White);
+    //Title next to resolve box
+    zinTextElements[5].setFont(font);
+    zinTextElements[5].setCharacterSize(14);
+    zinTextElements[5].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 180);
+    zinTextElements[5].setFillColor(sf::Color::White);
+    //Title next to patience box
+    zinTextElements[6].setFont(font);
+    zinTextElements[6].setCharacterSize(14);
+    zinTextElements[6].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 160);
+    zinTextElements[6].setFillColor(sf::Color::White);
+    //Title next to resilience box
+    zinTextElements[7].setFont(font);
+    zinTextElements[7].setCharacterSize(14);
+    zinTextElements[7].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 140);
+    zinTextElements[7].setFillColor(sf::Color::White);
+    //Side Menu Player Stats Menu Rect Text
+    zinTextElements[8].setFont(font);
+    zinTextElements[8].setCharacterSize(16);
+    zinTextElements[8].setPosition(rectStatsBoxX + 205, rectStatsBoxY);
+    zinTextElements[8].setString("P\nL\nA\nY\nE\nR");
+    zinTextElements[8].setFillColor(sf::Color::Blue);
+    //Side Menu Zin Stats Menu Rect Text
+    zinTextElements[9].setFont(font);
+    zinTextElements[9].setCharacterSize(16);
+    zinTextElements[9].setPosition(rectStatsBoxX + 205, rectStatsBoxY + 120);
+    zinTextElements[9].setString("\nZ\nI\nN");
+    zinTextElements[9].setFillColor(sf::Color::Red);
+    //Hp text
+    zinTextElements[10].setFont(font);
+    zinTextElements[10].setCharacterSize(16);
+    zinTextElements[10].setFillColor(sf::Color(sf::Color::White));
+    zinTextElements[10].setPosition(rectStatsBoxX, rectStatsBoxY);
 }
 
 void Assets::drawText()
@@ -200,24 +368,28 @@ void Assets::drawText()
     locationText.setFillColor(sf::Color(sf::Color::White));
     locationText.setPosition(275.0f, 10.0f);
     //Menu Bar Text
-    menuText.setFont(font);
-    menuText.setCharacterSize(18);
-    menuText.setPosition(1.0f, 797.0f);
-    menuText.setString("Map");
-    rectStatsText.setFont(font);
-    rectStatsText.setCharacterSize(18);
-    rectStatsText.setPosition(105.0f, 797.0f);
-    rectStatsText.setString("Stats");
+    textElements[2].setFont(font);
+    textElements[2].setCharacterSize(18);
+    textElements[2].setPosition(1.0f, 797.0f);
+    textElements[2].setString("Map");
+    textElements[0].setFont(font);
+    textElements[0].setCharacterSize(18);
+    textElements[0].setPosition(105.0f, 797.0f);
+    textElements[0].setString("Stats");
+    textElements[1].setFont(font);
+    textElements[1].setCharacterSize(18);
+    textElements[1].setPosition(210.0f, 797.0f);
+    textElements[1].setString("Inventory");
     //Castle Entrance Text
-    castleEntranceText.setFont(font);
-    castleEntranceText.setCharacterSize(12);
-    castleEntranceText.setPosition(this->rectMapX, this->rectMapY + 5);
-    castleEntranceText.setFillColor(sf::Color::White);
+    mapCastleElementsText[0].setFont(font);
+    mapCastleElementsText[0].setCharacterSize(12);
+    mapCastleElementsText[0].setPosition(this->rectMapX, this->rectMapY + 5);
+    mapCastleElementsText[0].setFillColor(sf::Color::White);
     //Castle Depths Text
-    castleDepthsText.setFont(font);
-    castleDepthsText.setCharacterSize(12);
-    castleDepthsText.setPosition(this->rectMapX + 40, this->rectMapY + 220);
-    castleDepthsText.setFillColor(sf::Color::White);
+    mapCastleElementsText[1].setFont(font);
+    mapCastleElementsText[1].setCharacterSize(12);
+    mapCastleElementsText[1].setPosition(this->rectMapX + 40, this->rectMapY + 220);
+    mapCastleElementsText[1].setFillColor(sf::Color::White);
 }
 
 //Sprite Functions
@@ -225,20 +397,20 @@ void Assets::drawSpriteBox()
 {
     if (this->spriteInit == true) {
         //Draw Sprite Box
-        rectSpriteBox.setFillColor(sf::Color::Black);
-        rectSpriteBox.setPosition(50.0f, 560.0f);
-        rectSpriteBox.setSize(sf::Vector2f(153.0f, 153.0f));
-        rectSpriteBox.setOutlineColor(sf::Color::White);
-        rectSpriteBox.setOutlineThickness(2.0f);
+        rectElements[5].setFillColor(sf::Color::Black);
+        rectElements[5].setPosition(50.0f, 560.0f);
+        rectElements[5].setSize(sf::Vector2f(153.0f, 153.0f));
+        rectElements[5].setOutlineColor(sf::Color::White);
+        rectElements[5].setOutlineThickness(2.0f);
         //Sprite Name Text
-        spriteText.setFont(font);
-        spriteText.setCharacterSize(18);
-        spriteText.setPosition(50.0f, 715.0f);
-        spriteText.setFillColor(sf::Color::White);
+        textElements[5].setFont(font);
+        textElements[5].setCharacterSize(18);
+        textElements[5].setPosition(50.0f, 715.0f);
+        textElements[5].setFillColor(sf::Color::White);
     }
     else if (this->spriteInit == false) {
-        rectSpriteBox.setPosition(10000.0f, 560.0f);
-        spriteText.setPosition(10000.0f, 715.0f);
+        rectElements[5].setPosition(10000.0f, 560.0f);
+        textElements[5].setPosition(10000.0f, 715.0f);
     }
 }
 
@@ -247,18 +419,18 @@ void Assets::spadeSprite()
     //Initialize Spade Sprite
     if (this->spadeLoadOnce == true) {
         texture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixel.png");
-        sprite.setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
+        spriteElements[2].setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
         this->spadeLoadOnce = false;
     }
     //Pick Spade Sprite Emotion
     switch (this->spadeCounter) {
     case -1:
-        sprite.setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
+        spriteElements[2].setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
         break;
     case 0:
         if (this->spadeInit == false) {
             texture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixel.png");
-            sprite.setPosition(sf::Vector2f(50.0f, 560.0f)); // absolute position
+            spriteElements[2].setPosition(sf::Vector2f(50.0f, 560.0f)); // absolute position
             spriteText.setString("Spade");
             this->spadeInit = true;
         }
@@ -276,8 +448,8 @@ void Assets::spadeSprite()
     //Sprite Options, ect
     texture.setSmooth(true);
     texture.setRepeated(false);
-    sprite.setTexture(texture);
-    sprite.setScale(0.050f, 0.050f);
+    spriteElements[2].setTexture(texture);
+    spriteElements[2].setScale(0.050f, 0.050f);
 }
 
 void Assets::zinSprite()
@@ -285,18 +457,18 @@ void Assets::zinSprite()
     //Initialize Spade Sprite
     if (this->zinLoadOnce == true) {
         zinTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite.png");
-        zin.setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
+        spriteElements[3].setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
         this->zinLoadOnce = false;
     }
     //Pick Spade Sprite Emotion
     switch (this->zinCounter) {
     case -1:
-        zin.setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
+        spriteElements[3].setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
         break;
     case 0:
         if (this->zinInit == false) {
             zinTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite.png");
-            zin.setPosition(sf::Vector2f(50.0f, 345.0f)); // absolute position
+            spriteElements[3].setPosition(sf::Vector2f(50.0f, 345.0f)); // absolute position
             this->zinInit = true;
         }
         break;
@@ -312,8 +484,8 @@ void Assets::zinSprite()
     //Sprite Options, ect
     //zinTexture.setSmooth(true);
     zinTexture.setRepeated(false);
-    zin.setTexture(zinTexture);
-    zin.setScale(1.70f, 1.70f);
+    spriteElements[3].setTexture(zinTexture);
+    spriteElements[3].setScale(1.70f, 1.70f);
 }
 
 //Combat Asset Functions
@@ -321,70 +493,84 @@ void Assets::initCombatAssets()
 {
     if (combatAssets == true) {
         //Draw Player Sprite Box
-        playerSpriteBorder.setFillColor(sf::Color::Black);
-        playerSpriteBorder.setPosition(50.0f, 145.0f);
-        playerSpriteBorder.setSize(sf::Vector2f(153.0f, 153.0f));
-        playerSpriteBorder.setOutlineColor(sf::Color::White);
-        playerSpriteBorder.setOutlineThickness(2.0f);
+        rectElements[6].setFillColor(sf::Color::Black);
+        rectElements[6].setPosition(50.0f, 145.0f);
+        rectElements[6].setSize(sf::Vector2f(153.0f, 153.0f));
+        rectElements[6].setOutlineColor(sf::Color::White);
+        rectElements[6].setOutlineThickness(2.0f);
         //Sprite Player Name Text
-        playerNameText.setFont(font);
-        playerNameText.setCharacterSize(18);
-        playerNameText.setPosition(50.0f, 300.0f);
-        playerNameText.setFillColor(sf::Color::White);
+        textElements[6].setFont(font);
+        textElements[6].setCharacterSize(18);
+        textElements[6].setPosition(50.0f, 300.0f);
+        textElements[6].setFillColor(sf::Color::White);
         //Draw Zin Sprite Box
-        zinSpriteBorder.setFillColor(sf::Color::Black);
-        zinSpriteBorder.setPosition(50.0f, 345.0f);
-        zinSpriteBorder.setSize(sf::Vector2f(153.0f, 153.0f));
-        zinSpriteBorder.setOutlineColor(sf::Color::White);
-        zinSpriteBorder.setOutlineThickness(2.0f);
+        rectElements[7].setFillColor(sf::Color::Black);
+        rectElements[7].setPosition(50.0f, 345.0f);
+        rectElements[7].setSize(sf::Vector2f(153.0f, 153.0f));
+        rectElements[7].setOutlineColor(sf::Color::White);
+        rectElements[7].setOutlineThickness(2.0f);
         //Sprite Zin Name Text
-        zinText.setFont(font);
-        zinText.setCharacterSize(18);
-        zinText.setPosition(50.0f, 500.0f);
-        zinText.setFillColor(sf::Color::White);
+        textElements[7].setFont(font);
+        textElements[7].setCharacterSize(18);
+        textElements[7].setPosition(50.0f, 500.0f);
+        textElements[7].setFillColor(sf::Color::White);
         //Draw Hostile Sprite Box
-        hostileSpriteBorder.setFillColor(sf::Color::Black);
-        hostileSpriteBorder.setPosition(1650.0f, 300.0f);
-        hostileSpriteBorder.setSize(sf::Vector2f(153.0f, 153));
-        hostileSpriteBorder.setOutlineColor(sf::Color::White);
-        hostileSpriteBorder.setOutlineThickness(2.0f);
+        rectElements[8].setFillColor(sf::Color::Black);
+        rectElements[8].setPosition(1650.0f, 300.0f);
+        rectElements[8].setSize(sf::Vector2f(153.0f, 153));
+        rectElements[8].setOutlineColor(sf::Color::White);
+        rectElements[8].setOutlineThickness(2.0f);
         //Sprite Hostile Name Text
-        hostileNameText.setFont(font);
-        hostileNameText.setCharacterSize(18);
-        hostileNameText.setPosition(1650.0f, 455.0f);
-        hostileNameText.setFillColor(sf::Color::White);
-        //Combat Bar Text
-        attackText.setFont(font);
-        attackText.setCharacterSize(18);
-        attackText.setPosition(450.0f, 825.0f);
-        attackText.setString("Attack");
-        fleeText.setFont(font);
-        fleeText.setCharacterSize(18);
-        fleeText.setPosition(555.0f, 825.0f);
-        fleeText.setString("Flee");
-        //Draw Attack Button
-        rectAttack.setPosition(450.0f, 825.0f);
-        rectAttack.setSize(sf::Vector2f(100.0f, 25.0f));
-        rectAttack.setOutlineColor(sf::Color::White);
-        rectAttack.setOutlineThickness(1.0f);
-        //Draw Flee Button
-        rectFlee.setPosition(555.0f, 825.0f);
-        rectFlee.setSize(sf::Vector2f(100.0f, 25.0f));
-        rectFlee.setOutlineColor(sf::Color::White);
-        rectFlee.setOutlineThickness(1.0f);
+        textElements[8].setFont(font);
+        textElements[8].setCharacterSize(18);
+        textElements[8].setPosition(1650.0f, 455.0f);
+        textElements[8].setFillColor(sf::Color::White);
+        if (this->playerTurnAssets == true) {
+            //Draw Player Slash Text
+            textElements[3].setFont(font);
+            textElements[3].setCharacterSize(18);
+            textElements[3].setPosition(335.0f, 795.0f);
+            textElements[3].setString("Slash");
+            //Draw Player Slash Button
+            rectElements[3].setPosition(335.0f, 795.0f);
+            rectElements[3].setSize(sf::Vector2f(100.0f, 25.0f));
+            rectElements[3].setOutlineColor(sf::Color::White);
+            rectElements[3].setOutlineThickness(1.0f);
+        }
+        else if (this->playerTurnAssets == false) {
+            textElements[3].setPosition(335.0f, 10000.0f);
+            rectElements[3].setPosition(335.0f, 10000.0f);
+        }
+        if (this->zinTurnAssets == true) {
+            //Draw Zin Smite Text
+            textElements[4].setFont(font);
+            textElements[4].setCharacterSize(18);
+            textElements[4].setPosition(335.0f, 795.0f);
+            textElements[4].setString("Smite");
+            //Draw Zin Smite Button
+            rectElements[4].setPosition(335.0f, 795.0f);
+            rectElements[4].setSize(sf::Vector2f(100.0f, 25.0f));
+            rectElements[4].setOutlineColor(sf::Color::White);
+            rectElements[4].setOutlineThickness(1.0f);
+        }
+        else if (this->zinTurnAssets == false) {
+            textElements[4].setPosition(335.0f, 10000.0f);
+            rectElements[4].setPosition(335.0f, 10000.0f);
+        }
     }
     else if (combatAssets == false) {
         //Hide all combat assets
         playerSpriteBorder.setPosition(50.0f, 10000.0f);
-        playerNameText.setPosition(50.0f, 10000.0f);
-        zinSpriteBorder.setPosition(50.0f, 10000.0f);
-        zinText.setPosition(50.0f, 10000.0f);
-        attackText.setPosition(800.0f, 10000.0f);
-        fleeText.setPosition(905.0f, 10000.0f);
-        rectAttack.setPosition(800.0f, 10000.0f);
-        rectFlee.setPosition(905.0f, 10000.0f);
-        hostileSpriteBorder.setPosition(1650.0f, 10000.0f);
-        hostileNameText.setPosition(1650.0f, 10000.0f);
+        textElements[3].setPosition(335.0f, 10000.0f);
+        rectElements[3].setPosition(335.0f, 10000.0f);
+        textElements[4].setPosition(335.0f, 10000.0f);
+        rectElements[4].setPosition(335.0f, 10000.0f);
+        rectElements[6].setPosition(50.0f, 10000.0f);
+        textElements[6].setPosition(50.0f, 10000.0f);
+        rectElements[7].setPosition(50.0f, 10000.0f);
+        textElements[7].setPosition(50.0f, 10000.0f);
+        textElements[8].setPosition(1650.0f, 10000.0f);
+        rectElements[8].setPosition(1650.0f, 10000.0f);
         zinCounter = -1;
     }
 }

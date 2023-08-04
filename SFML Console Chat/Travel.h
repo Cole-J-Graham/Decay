@@ -11,12 +11,11 @@
 #include"Assets.h"
 #include"Event.h"
 #include"Combat.h"
+#include"Player.h"
 
 class Travel
 {
 private:
-	Event notevent;
-	Combat combat;
 
 public:
 	//Int
@@ -37,11 +36,11 @@ public:
 	~Travel();
 
 	//Core
-	void travelCore(Assets& assets);
+	void travelCore(Assets& assets, Event& notevent, Combat& combat, Player& player);
 
 	//Draw Castle
-	void castleEntrance(Assets& assets, Event& notevent);
-	void castleDepths(Assets& assets, Event& notevent);
+	void castleEntrance(Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void castleDepths(Assets& assets, Event& notevent, Combat& combat, Player& player);
 };
 
 

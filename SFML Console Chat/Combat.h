@@ -8,7 +8,6 @@ class Combat
 private:
 
 public:
-	Player player;
 
 	//Hp
 	int playerHp;
@@ -17,10 +16,21 @@ public:
 	int zinHpMax;
 
 	//Zin Attributes
-	int strengthZin;
-	int fortitudeZin;
-	int vitalityZin;
+	int zinLevel;
+	int zinSp;
+	int zinExp;
+	int zinExpNext;
 
+	int zinResolve;
+	int zinPatience;
+	int zinResilience;
+
+	//Zin Moves
+	int zinSmite;
+
+	//Attack Counters
+	int attackCounter;
+	int zinAttackCounter;
 
 	//Player Moves
 	int playerStrike;
@@ -37,7 +47,12 @@ public:
 	bool reInitCombatOnce;
 
 	//Combat Control Flow Bool
+	bool turnPlayer;
+	bool turnZin;
+	bool turnHostile;
+
 	bool playerAttack;
+	bool zinAttack;
 	bool hostileAttack;
 	bool hostileAttackZin;
 
@@ -46,15 +61,17 @@ public:
 	~Combat();
 
 	//Core Stat Functions
-	void updateStats();
+	void updateStats(Player& player);
+	void updateStatsZin();
 
 	//Core Combat Functions
-	void combatLoop(Assets& assets);
-	void initCombat(Assets& assets);
+	void combatLoop(Assets& assets, Player& player);
+	void initCombat(Assets& assets, Player& player);
 	void reInitCombat(Assets& assets);
 
 	//Combat Functions
 	void playerTurn(Assets& assets);
+	void zinTurn(Assets& assets);
 	void hostileTurn(Assets& assets);
 };
 

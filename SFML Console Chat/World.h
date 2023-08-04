@@ -25,11 +25,9 @@ private:
 
 	sf::Event event;
 
-	Assets assets;
+	std::string stringtest;
+
 	Travel travel;
-	Event notevent;
-	Combat combat;
-	Player player;
 
 	//Core
 	std::string input;
@@ -37,6 +35,7 @@ private:
 
 	int unicode;
 	int random;
+	int map;
 	int test;
 
 	//Core Bool
@@ -52,12 +51,6 @@ private:
 	//Quest Bool
 	bool buttonClick;
 
-	//Player Stats
-	int level;
-	int strike;
-	int hp;
-	int hpMax;
-
 	//Coordinate Plane
 	float xCord;
 	float yCord;
@@ -68,23 +61,29 @@ public:
 	~World();
 
 	//Core Functions
-	void bootUp();
-	void mainLoop();
+	void bootUp(Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void mainLoop(Assets& assets, Event& notevent, Combat& combat, Player& player);
 
 	//User Input
-	void userInput();
+	void userInput(Assets& assets);
 	void clearInput();
 
 	//Display Functions
-	void Draw(sf::RenderWindow& window);
-	void greyOnHover(sf::RenderWindow& window);
+	void Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void greyOnHover(sf::RenderWindow& window, Assets& assets);
+	void printPlayerStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void printZinStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void printInventory(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
 
 	//Display Element Functionality
-	void travelButtons(sf::RenderWindow& window);
-	void mapButtons(sf::RenderWindow& window);
-	void menuBar(sf::RenderWindow& window);
-	void menuBarStats(sf::RenderWindow& window);
-	void dialogueBox(sf::RenderWindow& window);
+	void travelButtons(sf::RenderWindow& window, Assets& assets);
+	void mapButtons(sf::RenderWindow& window, Assets& assets);
+	void menuBar(sf::RenderWindow& window, Assets& assets);
+	void menuBarStats(sf::RenderWindow& window, Combat& combat, Player& player, Assets& assets);
+	void dialogueBox(sf::RenderWindow& window, Combat& combat, Assets& assets);
+
+	//Map Functions
+	void drawCastleMap(sf::RenderWindow& window, Assets& assets);
 
 	//Getters and Setters
 	bool& getStop() { return this->stop; };

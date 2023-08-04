@@ -10,8 +10,8 @@ public:
 
 	//Leveling
 	int level;
-	float exp;
-	float expNext;
+	int exp;
+	int expNext;
 	int sp;
 
 	//Attributes
