@@ -8,7 +8,6 @@ World::World()
     this->targetHpView = targetHpView;
     this->unicode = unicode;
     this->random = random;
-    this->map = 0;
 
     //Core Bool
     this->stop = false;
@@ -16,6 +15,7 @@ World::World()
     this->initialized = false;
     this->comInitialized = false;
     this->bonfire = true;
+    this->mainMenu = true;
 
     //Menu Bool
     this->statsmenu = false;
@@ -72,6 +72,11 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                     this->menuBar(window, assets);
                     //Dialogue Box Functionality...
                     this->dialogueBox(window, combat, assets);
+                    //Main Menu Functionality
+                    this->mainMenuButtons(window, assets);
+                    //Bonfire Functionality
+                    notevent.healCharacters(window, assets, combat);
+                    notevent.smithingSharpenBlade(window, assets, player);
                 }
                 break;
             case sf::Event::MouseButtonReleased:
@@ -92,7 +97,7 @@ void World::mainLoop(Assets& assets, Event& notevent, Combat& combat, Player& pl
 {
     //Run Main Functions
     this->userInput(assets);
-    travel.travelCore(assets, notevent, combat, player);
+    travel.travelCore(window, assets, notevent, combat, player);
 }
 
 //User Input
@@ -144,66 +149,83 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
     window.clear(sf::Color::Black);
 
     // draw everything here...
-    assets.drawObjects();
-    travel.travelCore(assets, notevent, combat, player);
+    if (this->mainMenu == false) {
+        assets.drawObjects();
+        travel.travelCore(window, assets, notevent, combat, player);
 
-    window.draw(assets.rect);
-    window.draw(assets.map);
-    window.draw(assets.playerText);
-    window.draw(assets.locationText);
-    window.draw(assets.text);
-    window.draw(assets.combatText);
+        window.draw(assets.rect);
+        window.draw(assets.map);
+        window.draw(assets.playerText);
+        window.draw(assets.locationText);
+        window.draw(assets.text);
+        window.draw(assets.combatText);
 
-    if (assets.initMap == true) {
-        //Draw main map rect
-        window.draw(assets.rectMap);
-        //Choose which map is selected
-        switch (this->map) {
-        case 0:
-            this->drawCastleMap(window, assets);
-            break;
+        //Draw Bonfire Detection Rect
+        if (travel.forestBonfireInit == true) {
+            assets.bonfireHealDetectionText.setPosition(mousePos.x - 5, mousePos.y + 15);
+            assets.bonfireSmithDetectionText.setPosition(mousePos.x - 5, mousePos.y + 15);
+            //Healing
+            window.draw(assets.bonfireHealDetectionRect);
+            window.draw(assets.bonfireHealDetectionText);
+            //Smithing
+            window.draw(assets.bonfireSmithDetectionRect);
+            window.draw(assets.bonfireSmithDetectionText);
         }
-        if (assets.movable == true) {
-            assets.rectMapX = mousePos.x - 190;
-            assets.rectMapY = mousePos.y;
-            assets.spriteMapView.setPosition(assets.rectMapX, assets.rectMapY);
-            assets.mapCastleElements[0].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
-            assets.mapCastleElements[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
-        }
-    }
-    if (assets.initStats == true) {
-        window.draw(assets.rectStatsBox);
-        if (assets.playerStatsInit == true) {
-            this->printPlayerStats(window, assets, notevent, combat, player);
-        }
-        else if (assets.zinStatsInit = true) {
-            this->printZinStats(window, assets, notevent, combat, player);
-        }
-        window.draw(assets.rectStatsSideMenu);
-        window.draw(assets.playerStatsBoxButtonText);
-        window.draw(assets.zinStatsBoxButtonText);
-        if (assets.movableStatsBox == true) {
-            assets.rectStatsBoxX = mousePos.x - 100;
-            assets.rectStatsBoxY = mousePos.y;
-        }
-    }
-    if (assets.initInventory == true) {
-        this->printInventory(window, assets, notevent, combat, player);
-        window.draw(assets.rectInventoryBox);
-        window.draw(assets.inventoryText);
-    }
 
-    //Draw all rectangle elements
-    for (int i = 0; i < assets.rectElements.size(); i++) {
-        window.draw(assets.rectElements[i]);
+        //Draw all rectangle elements
+        for (int i = 0; i < assets.rectElements.size(); i++) {
+            window.draw(assets.rectElements[i]);
+        }
+        //Draw all text elements
+        for (int i = 0; i < assets.textElements.size(); i++) {
+            window.draw(assets.textElements[i]);
+        }
+        //Draw all sprite elements
+        for (int i = 0; i < assets.spriteElements.size(); i++) {
+            window.draw(assets.spriteElements[i]);
+        }
+
+        if (assets.initMap == true) {
+            //Draw main map rect
+            window.draw(assets.rectMap);
+            //Choose which map is selected
+            switch (assets.mapCounter) {
+            case 0:
+                this->drawForestMap(window, assets);
+                break;
+            case 1:
+                this->drawCastleMap(window, assets);
+                break;
+            }
+            //Make Box Movable if clicked...
+            this->movableBox(window, assets);
+        }
+        if (assets.initStats == true) {
+            window.draw(assets.rectStatsBox);
+            if (assets.playerStatsInit == true) {
+                this->printPlayerStats(window, assets, notevent, combat, player);
+            }
+            else if (assets.zinStatsInit = true) {
+                this->printZinStats(window, assets, notevent, combat, player);
+            }
+            window.draw(assets.rectStatsSideMenu);
+            window.draw(assets.playerStatsBoxButtonText);
+            window.draw(assets.zinStatsBoxButtonText);
+        }
+        if (assets.initInventory == true) {
+            this->printInventory(window, assets, notevent, combat, player);
+            window.draw(assets.rectInventoryBox);
+            window.draw(assets.inventoryText);
+        }
     }
-    //Draw all text elements
-    for (int i = 0; i < assets.textElements.size(); i++) {
-        window.draw(assets.textElements[i]);
-    }
-    //Draw all sprite elements
-    for (int i = 0; i < assets.spriteElements.size(); i++) {
-        window.draw(assets.spriteElements[i]);
+    else if (this->mainMenu == true) {
+        assets.drawMainMenu();
+        for (int i = 0; i < assets.menuScreenElements.size(); i++) {
+            window.draw(assets.menuScreenElements[i]);
+        }
+        for (int i = 0; i < assets.menuScreenElementsText.size(); i++) {
+            window.draw(assets.menuScreenElementsText[i]);
+        }
     }
 
     // end the current frame
@@ -233,6 +255,18 @@ void World::greyOnHover(sf::RenderWindow& window, Assets& assets)
     }
     else {
         assets.rect.setFillColor(sf::Color::Black);
+    }
+
+    //Main Menu Buttons Grey On Hover
+    for (int i = 0; i < assets.menuScreenElements.size(); i++) {
+        if (assets.menuScreenElements[i].getGlobalBounds().contains(mousePosF)) {
+            assets.menuScreenElements[i].setFillColor(sf::Color::Transparent);
+            assets.menuScreenElementsText[i].setFillColor(sf::Color::White);
+        }
+        else {
+            assets.menuScreenElements[i].setFillColor(sf::Color::White);
+            assets.menuScreenElementsText[i].setFillColor(sf::Color::Black);
+        }
     }
 
     //Sprites Grey On Hover
@@ -278,11 +312,22 @@ void World::greyOnHover(sf::RenderWindow& window, Assets& assets)
             assets.mapCastleElements[i].setColor(sf::Color(255, 255, 255));
         }
     }
+
+    for (int i = 0; i < assets.mapForestElements.size(); i++) {
+        if (assets.mapForestElements[i].getGlobalBounds().contains(mousePosF)) {
+            assets.mapForestElements[i].setColor(sf::Color(155, 155, 155));
+        }
+        else {
+            assets.mapForestElements[i].setColor(sf::Color(255, 255, 255));
+        }
+    }
 }
 
 void World::printPlayerStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
 {
-    assets.playerTextElements[10].setString("HP: " + std::to_string(combat.playerHp) + "/" + std::to_string(combat.playerHpMax) + "\nSP: " + std::to_string(player.sp) +
+    assets.playerTextElements[10].setString("HP: " + std::to_string(combat.playerHp) + "/" + 
+        std::to_string(combat.playerHpMax) + "\nDECAY: " + std::to_string(player.decay) + "/" +
+        std::to_string(player.decayMax) + "\n\nSP: " + std::to_string(player.sp) +
         "\nEXP: " + std::to_string(player.exp) + "/" + std::to_string(player.expNext));
 
     for (int i = 0; i < assets.playerStatElements.size(); i++) {
@@ -296,8 +341,8 @@ void World::printPlayerStats(sf::RenderWindow& window, Assets& assets, Event& no
 
 void World::printZinStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
 {
-    assets.zinTextElements[10].setString("HP: " + std::to_string(combat.zinHp) + "/" + std::to_string(combat.zinHpMax) + "\nSP: " + std::to_string(combat.zinSp) +
-        "\nEXP: " + std::to_string(combat.zinExp) + "/" + std::to_string(combat.zinExpNext));
+    assets.zinTextElements[10].setString("HP: " + std::to_string(combat.zinHp) + "/" + std::to_string(combat.zinHpMax) + "\n\n\nSP: " + std::to_string(player.zinSp) +
+        "\nEXP: " + std::to_string(player.zinExp) + "/" + std::to_string(player.zinExpNext));
 
     for (int i = 0; i < assets.zinStatElements.size(); i++) {
         window.draw(assets.playerStatElements[i]);
@@ -310,10 +355,39 @@ void World::printZinStats(sf::RenderWindow& window, Assets& assets, Event& notev
 
 void World::printInventory(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
 {
-    assets.inventoryText.setString("x1 A Fucking Gun");
+    assets.inventoryText.setString("[GENERAL ITEMS]\nGold: x" + std::to_string(player.gold) + "\nSmithing Stones: x"
+        + std::to_string(player.smithingStones) + "\n\n[EQUIPPED ITEMS]\n" + player.basicSword);
 }
 
 //Display Element Functionality
+void World::mainMenuButtons(sf::RenderWindow& window, Assets& assets)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+    if (assets.menuScreenElements[0].getGlobalBounds().contains(mousePosF)) {
+        //Continue to other buttons asking to skip intro or not (New Game Button)
+        assets.bootClicked = true;
+    }
+    else if (assets.menuScreenElements[1].getGlobalBounds().contains(mousePosF)) {
+        //Loading Game Button Funcionality (Not implemented yet...)
+        std::cout << "Loading a save hypothetically speaking lmao...";
+    }
+    else if (assets.menuScreenElements[2].getGlobalBounds().contains(mousePosF)) {
+        //Quit Game Button Functionality (ERROR Not working...)
+        stop = true;
+    }
+    else if (assets.menuScreenElements[3].getGlobalBounds().contains(mousePosF)) {
+        //Intro Button Functionality
+        this->mainMenu = false;
+        travel.introCounterDialogue = 0; //Allow the counter to load the main image specifically just for the intro to take place
+    }
+    else if (assets.menuScreenElements[4].getGlobalBounds().contains(mousePosF)) {
+        //Skip Intro Button Functionality
+        this->mainMenu = false;
+        assets.mapCounter = 0; //Skip intro and go straight to the forest
+    }
+}
+
 void World::travelButtons(sf::RenderWindow& window, Assets& assets)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
@@ -337,22 +411,49 @@ void World::mapButtons(sf::RenderWindow& window, Assets& assets)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-    //Castle Entrance Button Functionality
-    if (assets.initMap == true) {
-        if (assets.mapCastleElements[0].getGlobalBounds().contains(mousePosF)) {
-            assets.soundWalk.play();
-            travel.castleEntranceInit = true;
-            travel.castleDepthsInit = false;
-            travel.frameInit = false;
-            this->buttonClick = true;
-        }
-        else if (assets.mapCastleElements[1].getGlobalBounds().contains(mousePosF)) {
-            assets.soundWalk.play();
-            travel.castleEntranceInit = false;
-            travel.castleDepthsInit = true;
-            travel.frameInit = false;
-            this->buttonClick = true;
-        }
+    //Map Button Functionality (Switching between whch button on the map is selected to change areas...)
+    //Forest Button Functionality
+    if (assets.mapForestElements[0].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.forestCounter = 0;
+        travel.frameInit = false;
+        travel.frame = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.mapForestElements[1].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.forestCounter = 1;
+        travel.frameInit = false;
+        travel.frame = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.mapForestElements[2].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.forestCounter = 2;
+        travel.frameInit = false;
+        travel.frame = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.mapForestElements[3].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.forestCounter = 3;
+        travel.frameInit = false;
+        travel.frame = 0;
+        this->buttonClick = true;
+    }
+    
+    //Castle Button Functionality
+    if (assets.mapCastleElements[0].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.castleCounter = 0;
+        travel.frameInit = false;
+        this->buttonClick = true;
+    }
+    else if (assets.mapCastleElements[1].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.castleCounter = 1;
+        travel.frameInit = false;
+        this->buttonClick = true;
     }
 }
 
@@ -361,16 +462,16 @@ void World::menuBar(sf::RenderWindow& window, Assets& assets)
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Map Menu Bar Functionaliy
-    if (assets.rectMap.getGlobalBounds().contains(mousePosF) && clickTime.getElapsedTime().asSeconds() < 0.3 && buttonClick == false) {
+    if (assets.multiArrow.getGlobalBounds().contains(mousePosF) && buttonClick == false) {
+        //Click Multi Arrow to make map movable
         assets.movable = true;
     }
-    else if (assets.rectStatsBox.getGlobalBounds().contains(mousePosF) && clickTime.getElapsedTime().asSeconds() < 0.3 && buttonClick == false) {
+    else if (assets.multiArrow.getGlobalBounds().contains(mousePosF) && buttonClick == false) {
         assets.movableStatsBox = true;
     }
     if (assets.rectElements[2].getGlobalBounds().contains(mousePosF) && assets.initMap == false) {
         //Click to open map
         assets.initMap = true;
-        assets.mapCounter++;
         assets.blipmenu.play();
     }
     else if (assets.rectElements[2].getGlobalBounds().contains(mousePosF) && assets.initMap == true) {
@@ -378,11 +479,7 @@ void World::menuBar(sf::RenderWindow& window, Assets& assets)
         assets.initMap = false;
         assets.rectMapX = 25;
         assets.rectMapY = 50;
-        assets.spriteMapView.setPosition(assets.rectMapX, assets.rectMapY);
-        assets.mapCastleElements[0].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
-        assets.mapCastleElements[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
-        assets.mapCastleElementsText[0].setPosition(assets.rectMapX, assets.rectMapY + 5);
-        assets.mapCastleElementsText[1].setPosition(assets.rectMapX + 40, assets.rectMapY + 220);
+        this->resetMapPosition(window, assets);
         assets.blipmenu.play();
     }
     this->buttonClick = false;
@@ -506,19 +603,19 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
     }
     //Zin Stats Level up Functionality
     if (assets.initStats == true && assets.zinStatsInit == true) {
-        assets.zinTextElements[4].setString("LEVEL " + std::to_string(combat.zinLevel));
+        assets.zinTextElements[4].setString("LEVEL " + std::to_string(player.zinLevel));
     }
     if (assets.initStats == true && assets.zinStatsInit == true) {
         if (assets.zinStatElements[0].getGlobalBounds().contains(mousePosF)) {
-            if (combat.zinExp >= combat.zinExpNext) {
-                combat.zinLevel++;
-                combat.zinSp++;
-                combat.zinExp -= combat.zinExpNext;
-                assets.zinTextElements[4].setString("LEVEL " + std::to_string(combat.zinLevel));
-                assets.text.setString("Level up achieved. Level " + std::to_string(combat.zinLevel) + " reached for Zin. One SP point acquired...");
-                combat.updateStatsZin();
+            if (player.zinExp >= player.zinExpNext) {
+                player.zinLevel++;
+                player.zinSp++;
+                player.zinExp -= player.zinExpNext;
+                assets.zinTextElements[4].setString("LEVEL " + std::to_string(player.zinLevel));
+                assets.text.setString("Level up achieved. Level " + std::to_string(player.zinLevel) + " reached for Zin. One SP point acquired...");
+                combat.updateStatsZin(player);
             }
-            else if (combat.zinExp <= combat.zinExpNext) {
+            else if (player.zinExp <= player.zinExpNext) {
                 assets.text.setString("Zin's required Exp not met...");
             }
             this->buttonClick = true;
@@ -526,18 +623,18 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
     }
     //Zin Resolve up Functionality
     if (assets.initStats == true && assets.zinStatsInit == true) {
-        assets.zinTextElements[5].setString("RESOLVE " + std::to_string(combat.zinResolve));
+        assets.zinTextElements[5].setString("RESOLVE " + std::to_string(player.zinResolve));
     }
     if (assets.initStats == true && assets.zinStatsInit == true) {
         if (assets.zinStatElements[1].getGlobalBounds().contains(mousePosF)) {
-            if (combat.zinSp >= 1) {
-                combat.zinResolve++;
-                combat.zinSp--;
-                assets.zinTextElements[5].setString("RESOLVE " + std::to_string(combat.zinResolve));
-                assets.text.setString("Zin's resolve increased. Level " + std::to_string(combat.zinResolve) + " reached in resolve for Zin. One SP point spent...");
-                combat.updateStatsZin();
+            if (player.zinSp >= 1) {
+                player.zinResolve++;
+                player.zinSp--;
+                assets.zinTextElements[5].setString("RESOLVE " + std::to_string(player.zinResolve));
+                assets.text.setString("Zin's resolve increased. Level " + std::to_string(player.zinResolve) + " reached in resolve for Zin. One SP point spent...");
+                combat.updateStatsZin(player);
             }
-            else if (combat.zinExp <= 0) {
+            else if (player.zinExp <= 0) {
                 assets.text.setString("Zin's required Sp not met...");
             }
             this->buttonClick = true;
@@ -545,18 +642,18 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
     }
     //Zin Patience up Functionality
     if (assets.initStats == true && assets.zinStatsInit == true) {
-        assets.zinTextElements[6].setString("PATIENCE " + std::to_string(combat.zinPatience));
+        assets.zinTextElements[6].setString("PATIENCE " + std::to_string(player.zinPatience));
     }
     if (assets.initStats == true && assets.zinStatsInit == true) {
         if (assets.zinStatElements[2].getGlobalBounds().contains(mousePosF)) {
-            if (combat.zinSp >= 1) {
-                combat.zinPatience++;
-                combat.zinSp--;
-                assets.zinTextElements[6].setString("PATIENCE " + std::to_string(combat.zinPatience));
-                assets.text.setString("Zin's patience increased. Level " + std::to_string(combat.zinPatience) + " reached in patience for Zin. One SP point spent...");
-                combat.updateStatsZin();
+            if (player.zinSp >= 1) {
+                player.zinPatience++;
+                player.zinSp--;
+                assets.zinTextElements[6].setString("PATIENCE " + std::to_string(player.zinPatience));
+                assets.text.setString("Zin's patience increased. Level " + std::to_string(player.zinPatience) + " reached in patience for Zin. One SP point spent...");
+                combat.updateStatsZin(player);
             }
-            else if (combat.zinExp <= 0) {
+            else if (player.zinExp <= 0) {
                 assets.text.setString("Zin's required Sp not met...");
             }
             this->buttonClick = true;
@@ -564,18 +661,18 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
     }
     //Zin Resilience up Functionality
     if (assets.initStats == true && assets.zinStatsInit == true) {
-        assets.zinTextElements[7].setString("RESILIENCE " + std::to_string(combat.zinResilience));
+        assets.zinTextElements[7].setString("RESILIENCE " + std::to_string(player.zinResilience));
     }
     if (assets.initStats == true && assets.zinStatsInit == true) {
         if (assets.zinStatElements[3].getGlobalBounds().contains(mousePosF)) {
-            if (combat.zinSp >= 1) {
-                combat.zinResilience++;
-                combat.zinSp--;
-                assets.zinTextElements[7].setString("RESILIENCE " + std::to_string(combat.zinResilience));
-                assets.text.setString("Zin's resilience increased. Level " + std::to_string(combat.zinResilience) + " reached in resilience for Zin. One SP point spent...");
-                combat.updateStatsZin();
+            if (player.zinSp >= 1) {
+                player.zinResilience++;
+                player.zinSp--;
+                assets.zinTextElements[7].setString("RESILIENCE " + std::to_string(player.zinResilience));
+                assets.text.setString("Zin's resilience increased. Level " + std::to_string(player.zinResilience) + " reached in resilience for Zin. One SP point spent...");
+                combat.updateStatsZin(player);
             }
-            else if (combat.zinExp <= 0) {
+            else if (player.zinExp <= 0) {
                 assets.text.setString("Zin's required Sp not met...");
             }
             this->buttonClick = true;
@@ -599,6 +696,8 @@ void World::dialogueBox(sf::RenderWindow& window, Combat& combat, Assets& assets
     }
     else if (assets.rect.getGlobalBounds().contains(mousePosF)) { //If dialogue box is clicked...
         assets.dialogueCounter++;
+        travel.frameInit = false; //Allow images to be loaded again
+        travel.introCounterDialogue++;
         if (combat.attackCounter == 1) {
             combat.attackCounter = 2;
         }
@@ -612,11 +711,55 @@ void World::dialogueBox(sf::RenderWindow& window, Combat& combat, Assets& assets
     }
 }
 
+void World::movableBox(sf::RenderWindow& window, Assets& assets)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+
+    if (assets.movable == true) {
+        assets.rectMapX = mousePos.x - 365;
+        assets.rectMapY = mousePos.y - 23;
+        this->resetMapPosition(window, assets);
+    }
+}
+
+void World::resetMapPosition(sf::RenderWindow& window, Assets& assets)
+{
+    //Castle
+    assets.spriteMapView.setPosition(assets.rectMapX, assets.rectMapY);
+    assets.mapCastleElements[0].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
+    assets.mapCastleElements[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
+    //Forest
+    assets.forestMapView.setPosition(assets.rectMapX, assets.rectMapY);
+    assets.mapForestElements[0].setPosition(assets.rectMapX + 145, assets.rectMapY + 25);
+    assets.mapForestElements[1].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
+    assets.mapForestElements[2].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
+    assets.mapForestElements[3].setPosition(assets.rectMapX + 175, assets.rectMapY + 200);
+    assets.mapForestElementsText[0].setPosition(assets.rectMapX + 145, assets.rectMapY + 10);
+    assets.mapForestElementsText[1].setPosition(assets.rectMapX + 34, assets.rectMapY + 5);
+    assets.mapForestElementsText[2].setPosition(assets.rectMapX + 75, assets.rectMapY + 225);
+    assets.mapForestElementsText[3].setPosition(assets.rectMapX + 175, assets.rectMapY + 185);
+}
+
 //Map Functions
+void World::drawForestMap(sf::RenderWindow& window, Assets& assets)
+{
+    window.draw(assets.forestMapView);
+    window.draw(assets.multiArrow);
+    for (int i = 0; i < assets.mapForestElements.size(); i++) {
+        window.draw(assets.mapForestElements[i]);
+    }
+
+    for (int i = 0; i < assets.mapForestElementsText.size(); i++) {
+        window.draw(assets.mapForestElementsText[i]);
+    }
+}
+
 void World::drawCastleMap(sf::RenderWindow& window, Assets& assets)
 {
     //Draw Everything
     window.draw(assets.spriteMapView);
+    window.draw(assets.multiArrow);
     for (int i = 0; i < assets.mapCastleElements.size(); i++) {
         window.draw(assets.mapCastleElements[i]);
     }

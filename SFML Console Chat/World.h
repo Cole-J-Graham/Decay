@@ -35,7 +35,6 @@ private:
 
 	int unicode;
 	int random;
-	int map;
 	int test;
 
 	//Core Bool
@@ -44,6 +43,7 @@ private:
 	bool initialized;
 	bool comInitialized;
 	bool bonfire;
+	bool mainMenu;
 
 	//Menu Bool
 	bool statsmenu;
@@ -76,13 +76,17 @@ public:
 	void printInventory(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
 
 	//Display Element Functionality
+	void mainMenuButtons(sf::RenderWindow& window, Assets& assets);
 	void travelButtons(sf::RenderWindow& window, Assets& assets);
 	void mapButtons(sf::RenderWindow& window, Assets& assets);
 	void menuBar(sf::RenderWindow& window, Assets& assets);
 	void menuBarStats(sf::RenderWindow& window, Combat& combat, Player& player, Assets& assets);
 	void dialogueBox(sf::RenderWindow& window, Combat& combat, Assets& assets);
+	void movableBox(sf::RenderWindow& window, Assets& assets);
+	void resetMapPosition(sf::RenderWindow& window, Assets& assets);
 
 	//Map Functions
+	void drawForestMap(sf::RenderWindow& window, Assets& assets);
 	void drawCastleMap(sf::RenderWindow& window, Assets& assets);
 
 	//Getters and Setters

@@ -15,16 +15,6 @@ public:
 	int zinHp;
 	int zinHpMax;
 
-	//Zin Attributes
-	int zinLevel;
-	int zinSp;
-	int zinExp;
-	int zinExpNext;
-
-	int zinResolve;
-	int zinPatience;
-	int zinResilience;
-
 	//Zin Moves
 	int zinSmite;
 
@@ -62,7 +52,7 @@ public:
 
 	//Core Stat Functions
 	void updateStats(Player& player);
-	void updateStatsZin();
+	void updateStatsZin(Player& player);
 
 	//Core Combat Functions
 	void combatLoop(Assets& assets, Player& player);

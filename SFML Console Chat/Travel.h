@@ -20,11 +20,21 @@ private:
 public:
 	//Int
 	int frame;
+	int introCounterDialogue;
+	int introCounter;
+	int forestCounter;
+	int castleCounter;
 
 	//Core Bools
 	bool frameInit;
 
+	//Bonfire
+	bool forestBonfireInit;
+
 	//Init Bools
+	bool forestEntranceInit;
+	bool forestDepthsInit;
+
 	bool castleEntranceInit;
 	bool castleDepthsInit;
 
@@ -36,9 +46,21 @@ public:
 	~Travel();
 
 	//Core
-	void travelCore(Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void travelCore(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
+
+	//Draw Intro
+	void intro(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void introBeginning(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
+
+	//Draw Forest
+	void forestMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void forestBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void forestEntrance(Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void forestDepths(Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void forestAbyssal(Assets& assets, Event& notevent, Combat& combat, Player& player);
 
 	//Draw Castle
+	void castleMap(Assets& assets, Event& notevent, Combat& combat, Player& player);
 	void castleEntrance(Assets& assets, Event& notevent, Combat& combat, Player& player);
 	void castleDepths(Assets& assets, Event& notevent, Combat& combat, Player& player);
 };

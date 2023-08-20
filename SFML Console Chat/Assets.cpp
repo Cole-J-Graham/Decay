@@ -6,6 +6,7 @@ Assets::Assets()
     //Sprite Bool
     this->initialDrawIn = false;
     this->initMapTexture = false;
+    this->initForestMapTexture = false;
     this->initMap = false;
     this->initStats = false;
     this->initInventory = false;
@@ -14,6 +15,7 @@ Assets::Assets()
     //Menu Control Flow
     this->playerStatsInit = true;
     this->zinStatsInit = false;
+    this->bootClicked = false;
 
     //Sprite Control Flow
     this->spadeInit = false;
@@ -46,7 +48,9 @@ Assets::Assets()
 
 
     //Initialize Combat Assets
+    this->introAssets = true;
     this->combatAssets = false;
+    this->bonfireAssets = false;
     this->playerTurnAssets = false;
     this->zinTurnAssets = false;
 
@@ -54,6 +58,8 @@ Assets::Assets()
     this->playerName = "player";
 
     buttonTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/buttonsolidfix.png");
+    arrowTextureRight.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/arrowright.png");
+    arrowTextureLeft.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/arrowleft.png");
 }
 
 Assets::~Assets()
@@ -76,6 +82,9 @@ void Assets::drawObjects()
     this->drawSpriteBox();
     //Combat Asset Functions
     this->initCombatAssets();
+    //Detection
+    this->bonfireHealDetection();
+    this->bonfireSmithDetection();
 }
 
 void Assets::drawMainWindow()
@@ -85,7 +94,7 @@ void Assets::drawMainWindow()
     rect.setSize(sf::Vector2f(1920.0f, 825.0f));
     rect.setOutlineColor(sf::Color::White);
     rect.setOutlineThickness(1.0f);
-    if (combatAssets == false) {
+    if (combatAssets == false && bonfireAssets == false && introAssets == false) {
         //Draw Map Button
         rectElements[2].setPosition(1.0f, 795.0f);
         rectElements[2].setSize(sf::Vector2f(100.0f, 25.0f));
@@ -102,12 +111,14 @@ void Assets::drawMainWindow()
         rectElements[1].setOutlineColor(sf::Color::White);
         rectElements[1].setOutlineThickness(1.0f);
         //Draw Button
-        spriteElements[0].setTexture(buttonTexture);
+        spriteElements[0].setTexture(arrowTextureRight);
         spriteElements[0].setPosition(1400.0f, 765.0f);
+        spriteElements[0].setScale(0.04, 0.04);
         //Draw Back Button
         buttonBackTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/buttonsolidfix.png");
-        spriteElements[1].setTexture(buttonBackTexture);
+        spriteElements[1].setTexture(arrowTextureLeft);
         spriteElements[1].setPosition(445.0f, 765.0f);
+        spriteElements[1].setScale(0.04, 0.04);
     }
     else if (combatAssets == true) {
         //Make assets hidden during combat
@@ -115,7 +126,46 @@ void Assets::drawMainWindow()
         rectElements[1].setPosition(209.0f, 10000.0f);
         rectElements[0].setPosition(105.0f, 10000.0f);
         spriteElements[0].setPosition(1400.0f, 10000.0f);
-        spriteElements[0].setPosition(445.0f, 10000.0f);
+        spriteElements[1].setPosition(445.0f, 10000.0f);
+    }
+    else if (bonfireAssets == true) {
+        //Draw Map Button
+        rectElements[2].setPosition(1.0f, 795.0f);
+        rectElements[2].setSize(sf::Vector2f(100.0f, 25.0f));
+        rectElements[2].setOutlineColor(sf::Color::White);
+        rectElements[2].setOutlineThickness(1.0f);
+        //Draw Stats Button
+        rectElements[0].setPosition(105.0f, 795.0f);
+        rectElements[0].setSize(sf::Vector2f(100.0f, 25.0f));
+        rectElements[0].setOutlineColor(sf::Color::White);
+        rectElements[0].setOutlineThickness(1.0f);
+        //Draw Inventory Button
+        rectElements[1].setPosition(209.0f, 795.0f);
+        rectElements[1].setSize(sf::Vector2f(100.0f, 25.0f));
+        rectElements[1].setOutlineColor(sf::Color::White);
+        rectElements[1].setOutlineThickness(1.0f);
+        //Hide Back and Forward Buttons
+        spriteElements[0].setPosition(1400.0f, 10000.0f);
+        spriteElements[1].setPosition(445.0f, 10000.0f);
+        //Draw Zin Sprite Box
+        rectElements[7].setFillColor(sf::Color::Black);
+        rectElements[7].setPosition(50.0f, 345.0f);
+        rectElements[7].setSize(sf::Vector2f(153.0f, 153.0f));
+        rectElements[7].setOutlineColor(sf::Color::White);
+        rectElements[7].setOutlineThickness(2.0f);
+        //Sprite Zin Name Text
+        textElements[7].setFont(font);
+        textElements[7].setCharacterSize(18);
+        textElements[7].setPosition(50.0f, 500.0f);
+        textElements[7].setFillColor(sf::Color::White);
+    }
+    else if (introAssets == true) {
+        //Make assets hidden during intro
+        rectElements[2].setPosition(1.0f, 10000.0f);
+        rectElements[1].setPosition(209.0f, 10000.0f);
+        rectElements[0].setPosition(105.0f, 10000.0f);
+        spriteElements[0].setPosition(1400.0f, 10000.0f);
+        spriteElements[1].setPosition(445.0f, 10000.0f);
     }
 }
 
@@ -126,9 +176,67 @@ void Assets::drawMap()
     rectMap.setSize(sf::Vector2f(400.0f, 400.0f));
     rectMap.setOutlineColor(sf::Color::White);
     rectMap.setOutlineThickness(1.0f);
+
+    multiArrow.setPosition(rectMapX + 340, rectMapY + 10);
+    multiArrow.setScale(0.06, 0.06);
     switch (mapCounter) {
     case 0:
+        if (this->initForestMapTexture == false) {
+            //Load Movable Arrow
+            multiArrowTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/multiarrow.png");
+            multiArrow.setTexture(multiArrowTexture);
+  
+            //Load Map View
+            forestMapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestmap.jpeg");
+            forestMapView.setTexture(forestMapTexture);
+            forestMapView.setPosition(rectMapX, rectMapY);
+            forestMapView.setScale(0.39f, 0.39f);
+
+            mapForestElements[0].setTexture(buttonTexture);
+            mapForestElements[0].setPosition(rectMapX + 145, rectMapY + 25);
+            mapForestElements[0].setScale(0.5f, 0.5f);
+
+            mapForestElements[1].setTexture(buttonTexture);
+            mapForestElements[1].setPosition(rectMapX + 34, rectMapY + 20);
+            mapForestElements[1].setScale(0.5f, 0.5f);
+
+            mapForestElements[2].setTexture(buttonTexture);
+            mapForestElements[2].setPosition(rectMapX + 75, rectMapY + 240);
+            mapForestElements[2].setScale(0.5f, 0.5f);
+
+            mapForestElements[3].setTexture(buttonTexture);
+            mapForestElements[3].setPosition(rectMapX + 175, rectMapY + 200);
+            mapForestElements[3].setScale(0.5f, 0.5f);
+
+            mapForestElementsText[0].setFont(font);
+            mapForestElementsText[0].setFillColor(sf::Color::White);
+            mapForestElementsText[0].setPosition(rectMapX + 145, rectMapY + 10);
+            mapForestElementsText[0].setCharacterSize(12);
+            mapForestElementsText[0].setString("Forest Bonfire");
+            mapForestElementsText[1].setFont(font);
+            mapForestElementsText[1].setFillColor(sf::Color::White);
+            mapForestElementsText[1].setPosition(rectMapX + 34, rectMapY + 5);
+            mapForestElementsText[1].setCharacterSize(12);
+            mapForestElementsText[1].setString("Forest Entrance");
+            mapForestElementsText[2].setFont(font);
+            mapForestElementsText[2].setFillColor(sf::Color::White);
+            mapForestElementsText[2].setPosition(rectMapX + 75, rectMapY + 225);
+            mapForestElementsText[2].setCharacterSize(12);
+            mapForestElementsText[2].setString("Forest Depths");
+            mapForestElementsText[3].setFont(font);
+            mapForestElementsText[3].setFillColor(sf::Color::White);
+            mapForestElementsText[3].setPosition(rectMapX + 175, rectMapY + 185);
+            mapForestElementsText[3].setCharacterSize(12);
+            mapForestElementsText[3].setString("Abyssal Forest");
+            this->initForestMapTexture = true;
+        }
+        break;
+    case 1:
         if (this->initMapTexture == false) {
+            //Load Movable Arrow
+            multiArrowTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/multiarrow.png");
+            multiArrow.setTexture(multiArrowTexture);
+
             //Load Map View
             textureMapView.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/mapTexture.jpeg");
             spriteMapView.setTexture(textureMapView);
@@ -136,7 +244,7 @@ void Assets::drawMap()
             spriteMapView.setScale(0.38f, 0.38f);
 
             mapCastleElements[0].setTexture(buttonTexture);
-            mapCastleElements[0].setPosition(rectMapX +34, rectMapY +20);
+            mapCastleElements[0].setPosition(rectMapX + 34, rectMapY + 20);
             mapCastleElements[0].setScale(0.5f, 0.5f);
 
             mapCastleElements[1].setTexture(buttonTexture);
@@ -169,7 +277,7 @@ void Assets::drawStats()
     playerTextElements[8].setCharacterSize(16);
     playerTextElements[8].setPosition(rectStatsBoxX + 205, rectStatsBoxY);
     playerTextElements[8].setString("P\nL\nA\nY\nE\nR");
-    playerTextElements[8].setFillColor(sf::Color::Red);
+    playerTextElements[8].setFillColor(sf::Color::White);
     //Side Menu Zin Stats Menu Rect
     playerStatElements[5].setPosition(rectStatsBoxX + 200, rectStatsBoxY + 120);
     playerStatElements[5].setSize(sf::Vector2f(20.0f, 100.0f));
@@ -180,7 +288,7 @@ void Assets::drawStats()
     playerTextElements[9].setCharacterSize(16);
     playerTextElements[9].setPosition(rectStatsBoxX + 205, rectStatsBoxY + 120);
     playerTextElements[9].setString("\nZ\nI\nN");
-    playerTextElements[9].setFillColor(sf::Color::Blue);
+    playerTextElements[9].setFillColor(sf::Color::White);
     //Hp text
     playerTextElements[10].setFont(font);
     playerTextElements[10].setCharacterSize(16);
@@ -330,13 +438,13 @@ void Assets::drawZinStats()
     zinTextElements[8].setCharacterSize(16);
     zinTextElements[8].setPosition(rectStatsBoxX + 205, rectStatsBoxY);
     zinTextElements[8].setString("P\nL\nA\nY\nE\nR");
-    zinTextElements[8].setFillColor(sf::Color::Blue);
+    zinTextElements[8].setFillColor(sf::Color::White);
     //Side Menu Zin Stats Menu Rect Text
     zinTextElements[9].setFont(font);
     zinTextElements[9].setCharacterSize(16);
     zinTextElements[9].setPosition(rectStatsBoxX + 205, rectStatsBoxY + 120);
     zinTextElements[9].setString("\nZ\nI\nN");
-    zinTextElements[9].setFillColor(sf::Color::Red);
+    zinTextElements[9].setFillColor(sf::Color::White);
     //Hp text
     zinTextElements[10].setFont(font);
     zinTextElements[10].setCharacterSize(16);
@@ -390,6 +498,99 @@ void Assets::drawText()
     mapCastleElementsText[1].setCharacterSize(12);
     mapCastleElementsText[1].setPosition(this->rectMapX + 40, this->rectMapY + 220);
     mapCastleElementsText[1].setFillColor(sf::Color::White);
+}
+
+void Assets::drawMainMenu()
+{
+    font.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
+    //Draw Main Menu
+    //Main Menu Rect Elements
+    menuScreen.setSize(sf::Vector2f(1920.0f, 1080.0f));
+    menuScreen.setFillColor(sf::Color::Black);
+    menuScreenElements[0].setSize(sf::Vector2f(100.0f, 25.0f));
+    menuScreenElements[0].setOutlineColor(sf::Color::White);
+    menuScreenElements[0].setOutlineThickness(1.0f);
+    menuScreenElements[1].setSize(sf::Vector2f(100.0f, 25.0f));
+    menuScreenElements[1].setOutlineColor(sf::Color::White);
+    menuScreenElements[1].setOutlineThickness(1.0f);
+    menuScreenElements[2].setSize(sf::Vector2f(100.0f, 25.0f));
+    menuScreenElements[2].setOutlineColor(sf::Color::White);
+    menuScreenElements[2].setOutlineThickness(1.0f);
+    menuScreenElements[3].setSize(sf::Vector2f(150.0f, 25.0f));
+    menuScreenElements[3].setOutlineColor(sf::Color::White);
+    menuScreenElements[3].setOutlineThickness(1.0f);
+    menuScreenElements[4].setSize(sf::Vector2f(150.0f, 25.0f));
+    menuScreenElements[4].setOutlineColor(sf::Color::White);
+    menuScreenElements[4].setOutlineThickness(1.0f);
+
+    //Text Elements
+    menuScreenElementsText[0].setFont(font);
+    menuScreenElementsText[0].setCharacterSize(18);
+    menuScreenElementsText[0].setString("Boot");
+    menuScreenElementsText[1].setFont(font);
+    menuScreenElementsText[1].setCharacterSize(18);
+    menuScreenElementsText[1].setString("Load");
+    menuScreenElementsText[2].setFont(font);
+    menuScreenElementsText[2].setCharacterSize(18);
+    menuScreenElementsText[2].setString("Quit");
+    menuScreenElementsText[3].setFont(font);
+    menuScreenElementsText[3].setCharacterSize(18);
+    menuScreenElementsText[3].setString("Play Intro");
+    menuScreenElementsText[4].setFont(font);
+    menuScreenElementsText[4].setCharacterSize(18);
+    menuScreenElementsText[4].setString("Skip Intro");
+
+    //Choose which elements are currently visible on the screen for choosing whether to skip intro or not
+    if (this->bootClicked == false) {
+        menuScreenElements[3].setPosition(10.0f, 10000.0f);
+        menuScreenElements[4].setPosition(10.0f, 12500.0f);
+        menuScreenElementsText[3].setPosition(10.0f, 10000.0f);
+        menuScreenElementsText[4].setPosition(10.0f, 12500.0f);
+
+        menuScreenElements[0].setPosition(10.0f, 100.0f);
+        menuScreenElements[1].setPosition(10.0f, 125.0f);
+        menuScreenElements[2].setPosition(10.0f, 150.0f);
+        menuScreenElementsText[0].setPosition(10.0f, 100.0f);
+        menuScreenElementsText[1].setPosition(10.0f, 125.0f);
+        menuScreenElementsText[2].setPosition(10.0f, 150.0f);
+    }
+    else if (this->bootClicked == true) {
+        //Hide menu buttons
+        menuScreenElements[0].setPosition(10.0f, 10000.0f);
+        menuScreenElements[1].setPosition(10.0f, 10000.0f);
+        menuScreenElements[2].setPosition(10.0f, 10000.0f);
+        menuScreenElementsText[0].setPosition(10.0f, 10000.0f);
+        menuScreenElementsText[1].setPosition(10.0f, 10000.0f);
+        menuScreenElementsText[2].setPosition(10.0f, 10000.0f);
+        //Show skip or no skip intro
+        menuScreenElements[3].setPosition(10.0f, 100.0f);
+        menuScreenElements[4].setPosition(10.0f, 125.0f);
+        menuScreenElementsText[3].setPosition(10.0f, 100.0f);
+        menuScreenElementsText[4].setPosition(10.0f, 125.0f);
+    }
+}
+
+//Detection Functions
+void Assets::bonfireHealDetection()
+{
+    bonfireHealDetectionRect.setFillColor(sf::Color::Transparent);
+    bonfireHealDetectionRect.setSize(sf::Vector2f(300, 250));
+    bonfireHealDetectionRect.setPosition(650, 450);
+
+    bonfireHealDetectionText.setFont(font);
+    bonfireHealDetectionText.setCharacterSize(18);
+    bonfireHealDetectionText.setFillColor(sf::Color::White);
+}
+
+void Assets::bonfireSmithDetection()
+{
+    bonfireSmithDetectionRect.setFillColor(sf::Color::Transparent);
+    bonfireSmithDetectionRect.setSize(sf::Vector2f(150, 150));
+    bonfireSmithDetectionRect.setPosition(975, 450);
+
+    bonfireSmithDetectionText.setFont(font);
+    bonfireSmithDetectionText.setCharacterSize(18);
+    bonfireSmithDetectionText.setFillColor(sf::Color::White);
 }
 
 //Sprite Functions
@@ -485,7 +686,7 @@ void Assets::zinSprite()
     //zinTexture.setSmooth(true);
     zinTexture.setRepeated(false);
     spriteElements[3].setTexture(zinTexture);
-    spriteElements[3].setScale(1.70f, 1.70f);
+    spriteElements[3].setScale(0.05f, 0.05f);
 }
 
 //Combat Asset Functions
@@ -558,7 +759,7 @@ void Assets::initCombatAssets()
             rectElements[4].setPosition(335.0f, 10000.0f);
         }
     }
-    else if (combatAssets == false) {
+    else if (combatAssets == false && bonfireAssets == false) {
         //Hide all combat assets
         playerSpriteBorder.setPosition(50.0f, 10000.0f);
         textElements[3].setPosition(335.0f, 10000.0f);

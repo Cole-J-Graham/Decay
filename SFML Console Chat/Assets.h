@@ -22,8 +22,11 @@ public:
 	sf::Texture boxTexture;
 	sf::Texture mapTexture;
 	sf::Texture buttonTexture;
+	sf::Texture arrowTextureRight;
+	sf::Texture arrowTextureLeft;
 	sf::Texture buttonBackTexture;
 	sf::Texture textureTravel;
+	sf::Texture multiArrowTexture;
 
 	//Map Textures
 	sf::Texture textureMapView;
@@ -36,11 +39,8 @@ public:
 	sf::Sprite button;
 	sf::Sprite buttonBack;
 	sf::Sprite spriteTravel;
-
-	//Map Sprites
 	sf::Sprite spriteMapView;
-	sf::Sprite buttonCastleEntrance;
-	sf::Sprite buttonCastleDepths;
+	sf::Sprite multiArrow;
 
 	//Rectangles
 	sf::RectangleShape rect;
@@ -58,6 +58,24 @@ public:
 	sf::RectangleShape rectInventoryBox;
 	sf::RectangleShape rectAttackSmite;
 	sf::RectangleShape buttonMap;
+
+	//Main Menu
+	sf::RectangleShape menuScreen;
+	sf::RectangleShape menuStartButton;
+	sf::RectangleShape menuLoadButton;
+	sf::RectangleShape menuQuitButton;
+
+	sf::RectangleShape menuIntroButton;
+	sf::RectangleShape menuSkipIntroButton;
+
+	sf::Text menuStartButtonText;
+	sf::Text menuLoadButtonText;
+	sf::Text menuQuitButtonText;
+
+	std::vector<sf::RectangleShape> menuScreenElements {menuStartButton, menuLoadButton,
+		menuQuitButton, menuIntroButton, menuSkipIntroButton};
+	std::vector<sf::Text> menuScreenElementsText {menuStartButtonText, menuLoadButtonText,
+		menuQuitButtonText, menuLoadButtonText, menuQuitButtonText};
 
 	//Zin Stats Assets
 	sf::RectangleShape zinStatsBoxButton;
@@ -145,9 +163,37 @@ public:
 		statsResolveTextTitle, statsPatienceTextTitle, statsResilienceTextTitle, 
 		playerStatsBoxButtonText, zinStatsBoxButtonText, statsText};
 
+	//Forest Map Sprites
+	sf::Sprite forestMapView;
+	sf::Texture forestMapTexture;
+	sf::Sprite forestBonfire;
+	sf::Sprite forestMapEntrance;
+	sf::Sprite forestMapDepths;
+	sf::Sprite forestMapAbyssal;
+	sf::Text forestBonfireText;
+	sf::Text forestEntranceText;
+	sf::Text forestDepthsText;
+	sf::Text forestAbyssalText;
+
+	//Castle Map Sprites
+	sf::Sprite buttonCastleEntrance;
+	sf::Sprite buttonCastleDepths;
+
 	//Map Vectors
+	std::vector<sf::Sprite> mapForestElements {forestBonfire, forestMapEntrance, 
+		forestMapDepths, forestMapAbyssal};
+	std::vector<sf::Text> mapForestElementsText {forestBonfireText, forestEntranceText, 
+		forestDepthsText, forestAbyssalText};
+
 	std::vector<sf::Sprite> mapCastleElements {buttonCastleEntrance, buttonCastleDepths};
 	std::vector<sf::Text> mapCastleElementsText {castleEntranceText, castleDepthsText};
+
+	//Detection
+	sf::RectangleShape bonfireHealDetectionRect;
+	sf::Text bonfireHealDetectionText;
+
+	sf::RectangleShape bonfireSmithDetectionRect;
+	sf::Text bonfireSmithDetectionText;
 
 	//Sounds
 	sf::Sound sound;
@@ -175,6 +221,7 @@ public:
 	//Sprite Bool
 	bool initialDrawIn;
 	bool initMapTexture;
+	bool initForestMapTexture;
 	bool initMap;
 	bool initStats;
 	bool initInventory;
@@ -183,6 +230,7 @@ public:
 	//Menu Control Flow
 	bool playerStatsInit;
 	bool zinStatsInit;
+	bool bootClicked;
 
 	//Sprite Control Flow
 	bool spadeInit;
@@ -214,7 +262,9 @@ public:
 	float rectInventoryBoxY;
 
 	//Initialize Combat Assets
+	bool introAssets;
 	bool combatAssets;
+	bool bonfireAssets;
 	bool playerTurnAssets;
 	bool zinTurnAssets;
 
@@ -230,6 +280,11 @@ public:
 	void drawInventory();
 	void drawZinStats();
 	void drawText();
+	void drawMainMenu();
+
+	//Detection Functions
+	void bonfireHealDetection();
+	void bonfireSmithDetection();
 
 	//Sprite Functions
 	void drawSpriteBox();

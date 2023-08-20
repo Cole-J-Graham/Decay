@@ -9,16 +9,6 @@ Combat::Combat()
 	this->zinHp = 35;
 	this->zinHpMax = 35;
 
-	//Zin Attributes
-	this->zinLevel = 0;
-	this->zinSp = 0;
-	this->zinExp = 1000;
-	this->zinExpNext = 50;
-
-	this->zinResolve = 0;
-	this->zinPatience = 0;
-	this->zinResilience = 0;
-
 	//Zin Moves
 	this->zinSmite = 5;
 
@@ -59,15 +49,16 @@ Combat::~Combat()
 //Core Stat Functions
 void Combat::updateStats(Player& player)
 {
-	this->playerStrike = 5 + player.strength;
+	this->playerStrike = 5 + player.strength + player.swordPower;
 	this->playerHp = 50 + player.vitality;
+	player.decayMax = 25 + player.fortitude;
 	this->playerHpMax = this->playerHp;
 }
 
-void Combat::updateStatsZin()
+void Combat::updateStatsZin(Player& player)
 {
-	this->zinSmite = 5 + this->zinResolve;
-	this->zinHp = 35 + this->zinResilience;
+	this->zinSmite = 5 + player.zinResolve;
+	this->zinHp = 35 + player.zinResilience;
 	this->zinHpMax = this->zinHp;
 }
 
@@ -90,7 +81,8 @@ void Combat::combatLoop(Assets& assets, Player& player)
 	//Check if hostile is dead. If so, end combat
 	if (this->hostileHp <= 0) {
 		assets.combatAssets = false;
-		assets.text.setString("You have killed the abomination...");
+		player.combatReward();
+		assets.text.setString("You have killed the abomination... Player Exp increased " + std::to_string(player.exp) + "/" + std::to_string(player.expNext));
 	}
 	//Hostiles turn
 	this->hostileTurn(assets);
