@@ -70,6 +70,7 @@ public:
 
 	//Display Functions
 	void Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void DrawMapSelectorButtons(sf::RenderWindow& window, Assets& assets);
 	void greyOnHover(sf::RenderWindow& window, Assets& assets);
 	void printPlayerStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
 	void printZinStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
@@ -83,11 +84,13 @@ public:
 	void menuBarStats(sf::RenderWindow& window, Combat& combat, Player& player, Assets& assets);
 	void dialogueBox(sf::RenderWindow& window, Combat& combat, Assets& assets);
 	void movableBox(sf::RenderWindow& window, Assets& assets);
-	void resetMapPosition(sf::RenderWindow& window, Assets& assets);
 
 	//Map Functions
+	void resetMapPosition(sf::RenderWindow& window, Assets& assets);
+	void selectMapView(sf::RenderWindow& window, Assets& assets);
 	void drawForestMap(sf::RenderWindow& window, Assets& assets);
 	void drawCastleMap(sf::RenderWindow& window, Assets& assets);
+	void drawDecayMap(sf::RenderWindow& window, Assets& assets);
 
 	//Getters and Setters
 	bool& getStop() { return this->stop; };

@@ -7,6 +7,7 @@ Travel::Travel()
     this->introCounter = 0;
     this->forestCounter = 0;
     this->castleCounter = 0;
+    this->decayCounter = 0;
 
     //Frame Stuff
     this->frameInit = false;
@@ -33,7 +34,10 @@ void Travel::travelCore(sf::RenderWindow& window, Assets& assets, Event& noteven
         this->forestMap(window, assets, notevent, combat, player);
         break;
     case 1:
-        this->castleMap(assets, notevent, combat, player);
+        this->castleMap(window, assets, notevent, combat, player);
+        break;
+    case 2:
+        this->decayMap(window, assets, notevent, combat, player);
         break;
     }
 }
@@ -282,7 +286,6 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         assets.map.setPosition(440.0f, -200.0f); // absolute position
         break;
     case 1:
-        this->forestBonfireInit = false; //Unint bonfire
         assets.bonfireAssets = false;
         assets.locationText.setString("Forest Depths");
         if (this->frameInit == false) {
@@ -293,7 +296,6 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         assets.map.setPosition(440.0f, -200.0f); // absolute position
         break;
     case 2:
-        this->forestBonfireInit = false; //Unint bonfire
         assets.bonfireAssets = false;
         assets.locationText.setString("Forest Depths");
         if (this->frameInit == false) {
@@ -304,7 +306,6 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         assets.map.setPosition(440.0f, -200.0f); // absolute position
         break;
     case 3:
-        this->forestBonfireInit = false; //Unint bonfire
         assets.bonfireAssets = false;
         assets.locationText.setString("Forest Depths");
         if (this->frameInit == false) {
@@ -315,7 +316,6 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         assets.map.setPosition(440.0f, -200.0f); // absolute position
         break;
     case 4:
-        this->forestBonfireInit = false; //Unint bonfire
         assets.bonfireAssets = false;
         assets.locationText.setString("Forest Depths");
         if (this->frameInit == false) {
@@ -326,7 +326,6 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         assets.map.setPosition(440.0f, -200.0f); // absolute position
         break;
     case 5:
-        this->forestBonfireInit = false; //Unint bonfire
         assets.bonfireAssets = false;
         assets.locationText.setString("Forest Depths");
         if (this->frameInit == false) {
@@ -337,7 +336,6 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         assets.map.setPosition(440.0f, -200.0f); // absolute position
         break;
     case 6:
-        this->forestBonfireInit = false; //Unint bonfire
         assets.bonfireAssets = false;
         assets.locationText.setString("Forest Depths");
         if (this->frameInit == false) {
@@ -348,7 +346,6 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         assets.map.setPosition(440.0f, -200.0f); // absolute position
         break;
     case 7:
-        this->forestBonfireInit = false; //Unint bonfire
         assets.bonfireAssets = false;
         assets.locationText.setString("Forest Depths");
         if (this->frameInit == false) {
@@ -359,7 +356,6 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         assets.map.setPosition(440.0f, -200.0f); // absolute position
         break;
     case 8:
-        this->forestBonfireInit = false; //Unint bonfire
         assets.bonfireAssets = false;
         assets.locationText.setString("Forest Depths");
         if (this->frameInit == false) {
@@ -370,7 +366,6 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         assets.map.setPosition(440.0f, -200.0f); // absolute position
         break;
     case 9:
-        this->forestBonfireInit = false; //Unint bonfire
         assets.bonfireAssets = false;
         assets.locationText.setString("Forest Depths");
         if (this->frameInit == false) {
@@ -381,7 +376,6 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         assets.map.setPosition(440.0f, -200.0f); // absolute position
         break;
     case 10:
-        this->forestBonfireInit = false; //Unint bonfire
         assets.bonfireAssets = false;
         assets.locationText.setString("Forest Depths");
         if (this->frameInit == false) {
@@ -392,7 +386,6 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         assets.map.setPosition(440.0f, -200.0f); // absolute position
         break;
     case 11:
-        this->forestBonfireInit = false; //Unint bonfire
         assets.bonfireAssets = false;
         assets.locationText.setString("Forest Depths");
         if (this->frameInit == false) {
@@ -478,32 +471,58 @@ void Travel::forestAbyssal(Assets& assets, Event& notevent, Combat& combat, Play
 }
 
 //Draw Castle
-void Travel::castleMap(Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::castleMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
 {
     switch (this->castleCounter) {
     case 0:
-        this->castleEntrance(assets, notevent, combat, player);
+        this->castleBonfire(window, assets, notevent, combat, player);
         break;
     case 1:
+        this->castleHalls(assets, notevent, combat, player);
+        break;
+    case 2:
         this->castleDepths(assets, notevent, combat, player);
         break;
     }
 }
 
-void Travel::castleEntrance(Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::castleBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
+{
+    switch (this->frame) {
+    case 0:
+        assets.locationText.setString("Castle Bonfire");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleBonfire.jpeg");
+            this->frameInit = true;
+        }
+        notevent.healCharactersText(window, assets);
+        notevent.smithingText(window, assets);
+        assets.bonfireAssets = true;
+        assets.introAssets = false; //Disable intro hiding assets for further in the game
+        assets.zinCounter = 0; //Set correct frame for zins sprite to appear
+        this->forestBonfireInit = true; //Draw detection rects for healing and smithing
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    }
+}
+
+void Travel::castleHalls(Assets& assets, Event& notevent, Combat& combat, Player& player)
 {
     //Uninitialize && Reinitialize castleDepth Event
     notevent.reInitialize(assets);
     switch (this->frame) {
     case 0:
         //Draw Map Sprite
+        this->forestBonfireInit = false; //Uninit bonfire if switching via selector buttons
+        assets.bonfireAssets = false;
         assets.locationText.setString("Castle Entrance");
         if (this->frameInit == false) {
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castle1.jpeg");
+            assets.map.setTexture(assets.mapTexture);
+            assets.map.setPosition(440.0f, -200.0f); // absolute position
             this->frameInit = true;
         }
-        assets.map.setTexture(assets.mapTexture);
-        assets.map.setPosition(440.0f, -200.0f); // absolute position
         break;
     case 1:
         if (this->frameInit == false) {
@@ -584,6 +603,123 @@ void Travel::castleDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         }
         //Initialize Spade and Sprite
         notevent.spadeEncounter(assets);
+        break;
+    }
+}
+
+//Draw Decay
+void Travel::decayMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
+{
+    switch (this->decayCounter) {
+    case 0:
+        this->decayBonfire(window, assets, notevent, combat, player);
+        break;
+    case 1:
+        this->decayChasms(assets, notevent, combat, player);
+        break;
+    }
+}
+
+void Travel::decayBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
+{
+    switch (this->frame) {
+    case 0:
+        assets.locationText.setString("Decay Bonfire");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayBonfire.jpeg");
+            this->frameInit = true;
+        }
+        notevent.healCharactersText(window, assets);
+        notevent.smithingText(window, assets);
+        assets.bonfireAssets = true;
+        assets.introAssets = false; //Disable intro hiding assets for further in the game
+        assets.zinCounter = 0; //Set correct frame for zins sprite to appear
+        this->forestBonfireInit = true; //Draw detection rects for healing and smithing
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    }
+}
+
+void Travel::decayChasms(Assets& assets, Event& notevent, Combat& combat, Player& player)
+{
+    //Uninitialize && Reinitialize castleDepth Event
+    notevent.reInitialize(assets);
+    switch (this->frame) {
+    case 0:
+        //Draw Map Sprite
+        this->forestBonfireInit = false; //Uninit bonfire if switching via selector buttons
+        assets.bonfireAssets = false;
+        assets.locationText.setString("Decay Chasms");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimson1.jpeg");
+            assets.map.setTexture(assets.mapTexture);
+            assets.map.setPosition(440.0f, -200.0f); // absolute position
+            this->frameInit = true;
+        }
+        break;
+    case 1:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimson2.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 2:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimson3.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 3:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimson4.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 4:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimson5.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 5:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimson6.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 6:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimson7.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 7:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimson8.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 8:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimson9.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 9:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimson10.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
         break;
     }
 }

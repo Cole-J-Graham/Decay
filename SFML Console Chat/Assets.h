@@ -122,10 +122,6 @@ public:
 	sf::Text statsPatienceTextTitle;
 	sf::Text statsResilienceTextTitle;
 
-	//Button Text
-	sf::Text castleEntranceText;
-	sf::Text castleDepthsText;
-
 	//Combat Sprites
 	sf::RectangleShape playerSpriteBorder;
 	sf::RectangleShape zinSpriteBorder;
@@ -175,9 +171,40 @@ public:
 	sf::Text forestDepthsText;
 	sf::Text forestAbyssalText;
 
+	//Map Button Selectors
+	sf::RectangleShape buttonViewForestMap;
+	sf::RectangleShape buttonViewCastleMap;
+	sf::RectangleShape buttonViewDecayPlaneMap;
+	sf::Text buttonViewForestMapText;
+	sf::Text buttonViewCastleMapText;
+	sf::Text buttonViewDecayPlaneMapText;
+
+	//Decay Map Sprites
+	sf::Texture decayTexture;
+	sf::Sprite decayMapView;
+	sf::Sprite decayBonfire;
+	sf::Sprite decayMapChasms;
+
+	//Decay Map Text
+	sf::Text decayBonfireText;
+	sf::Text decayMapChasmsText;
+
+	//Button Map Vectors
+	std::vector<sf::RectangleShape> buttonViewMap{buttonViewForestMap,
+	buttonViewCastleMap, buttonViewDecayPlaneMap};
+
+	std::vector<sf::Text> buttonViewMapText{buttonViewForestMapText,
+	buttonViewCastleMapText, buttonViewDecayPlaneMapText};
+
 	//Castle Map Sprites
-	sf::Sprite buttonCastleEntrance;
+	sf::Sprite castleBonfire;
+	sf::Sprite buttoncastleHalls;
 	sf::Sprite buttonCastleDepths;
+
+	//Castle Button Text
+	sf::Text castleBonfireText;
+	sf::Text castleHallsText;
+	sf::Text castleDepthsText;
 
 	//Map Vectors
 	std::vector<sf::Sprite> mapForestElements {forestBonfire, forestMapEntrance, 
@@ -185,8 +212,13 @@ public:
 	std::vector<sf::Text> mapForestElementsText {forestBonfireText, forestEntranceText, 
 		forestDepthsText, forestAbyssalText};
 
-	std::vector<sf::Sprite> mapCastleElements {buttonCastleEntrance, buttonCastleDepths};
-	std::vector<sf::Text> mapCastleElementsText {castleEntranceText, castleDepthsText};
+	std::vector<sf::Sprite> mapCastleElements { castleBonfire, buttoncastleHalls,
+		buttonCastleDepths};
+	std::vector<sf::Text> mapCastleElementsText { castleBonfireText, castleHallsText,
+		castleDepthsText};
+
+	std::vector<sf::Sprite> mapDecayElements{ decayBonfire, decayMapChasms};
+	std::vector<sf::Text> mapDecayElementsText{ decayBonfireText, decayMapChasmsText};
 
 	//Detection
 	sf::RectangleShape bonfireHealDetectionRect;
@@ -222,6 +254,7 @@ public:
 	bool initialDrawIn;
 	bool initMapTexture;
 	bool initForestMapTexture;
+	bool initDecayMapTexture;
 	bool initMap;
 	bool initStats;
 	bool initInventory;
@@ -231,6 +264,12 @@ public:
 	bool playerStatsInit;
 	bool zinStatsInit;
 	bool bootClicked;
+
+	//Map Button Control Flow
+	int areaUnlocked;
+	int forestAreaUnlocked;
+	int castleAreaUnlocked;
+	int decayAreaUnlocked;
 
 	//Sprite Control Flow
 	bool spadeInit;
@@ -275,12 +314,17 @@ public:
 	//Drawing Objects
 	void drawObjects();
 	void drawMainWindow();
-	void drawMap();
 	void drawStats();
 	void drawInventory();
 	void drawZinStats();
 	void drawText();
 	void drawMainMenu();
+
+	//Draw Map Segments
+	void drawMap();
+	void drawForestMapButtons();
+	void drawCastleMapButtons();
+	void drawDecayMapButtons();
 
 	//Detection Functions
 	void bonfireHealDetection();

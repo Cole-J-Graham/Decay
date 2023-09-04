@@ -7,6 +7,7 @@ Assets::Assets()
     this->initialDrawIn = false;
     this->initMapTexture = false;
     this->initForestMapTexture = false;
+    this->initDecayMapTexture = false;
     this->initMap = false;
     this->initStats = false;
     this->initInventory = false;
@@ -16,6 +17,12 @@ Assets::Assets()
     this->playerStatsInit = true;
     this->zinStatsInit = false;
     this->bootClicked = false;
+
+    //Map Button Control Flow
+    this->areaUnlocked = 2;
+    this->forestAreaUnlocked = 3;
+    this->castleAreaUnlocked = 2;
+    this->decayAreaUnlocked = 1;
 
     //Sprite Control Flow
     this->spadeInit = false;
@@ -95,21 +102,18 @@ void Assets::drawMainWindow()
     rect.setOutlineColor(sf::Color::White);
     rect.setOutlineThickness(1.0f);
     if (combatAssets == false && bonfireAssets == false && introAssets == false) {
-        //Draw Map Button
+        //Draw Rect Element Similiarities
+        for (int i = 0; i < rectElements.size(); i++) {
+            rectElements[i].setSize(sf::Vector2f(100.0f, 25.0f));
+            rectElements[i].setOutlineColor(sf::Color::White);
+            rectElements[i].setOutlineThickness(1.0f);
+        }
+        //Draw Map Button position
         rectElements[2].setPosition(1.0f, 795.0f);
-        rectElements[2].setSize(sf::Vector2f(100.0f, 25.0f));
-        rectElements[2].setOutlineColor(sf::Color::White);
-        rectElements[2].setOutlineThickness(1.0f);
-        //Draw Stats Button
+        //Draw Stats Button position
         rectElements[0].setPosition(105.0f, 795.0f);
-        rectElements[0].setSize(sf::Vector2f(100.0f, 25.0f));
-        rectElements[0].setOutlineColor(sf::Color::White);
-        rectElements[0].setOutlineThickness(1.0f);
-        //Draw Inventory Button
+        //Draw Inventory Button position
         rectElements[1].setPosition(209.0f, 795.0f);
-        rectElements[1].setSize(sf::Vector2f(100.0f, 25.0f));
-        rectElements[1].setOutlineColor(sf::Color::White);
-        rectElements[1].setOutlineThickness(1.0f);
         //Draw Button
         spriteElements[0].setTexture(arrowTextureRight);
         spriteElements[0].setPosition(1400.0f, 765.0f);
@@ -166,96 +170,6 @@ void Assets::drawMainWindow()
         rectElements[0].setPosition(105.0f, 10000.0f);
         spriteElements[0].setPosition(1400.0f, 10000.0f);
         spriteElements[1].setPosition(445.0f, 10000.0f);
-    }
-}
-
-void Assets::drawMap()
-{
-    rectMap.setFillColor(sf::Color::Black);
-    rectMap.setPosition(rectMapX, rectMapY);
-    rectMap.setSize(sf::Vector2f(400.0f, 400.0f));
-    rectMap.setOutlineColor(sf::Color::White);
-    rectMap.setOutlineThickness(1.0f);
-
-    multiArrow.setPosition(rectMapX + 340, rectMapY + 10);
-    multiArrow.setScale(0.06, 0.06);
-    switch (mapCounter) {
-    case 0:
-        if (this->initForestMapTexture == false) {
-            //Load Movable Arrow
-            multiArrowTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/multiarrow.png");
-            multiArrow.setTexture(multiArrowTexture);
-  
-            //Load Map View
-            forestMapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestmap.jpeg");
-            forestMapView.setTexture(forestMapTexture);
-            forestMapView.setPosition(rectMapX, rectMapY);
-            forestMapView.setScale(0.39f, 0.39f);
-
-            mapForestElements[0].setTexture(buttonTexture);
-            mapForestElements[0].setPosition(rectMapX + 145, rectMapY + 25);
-            mapForestElements[0].setScale(0.5f, 0.5f);
-
-            mapForestElements[1].setTexture(buttonTexture);
-            mapForestElements[1].setPosition(rectMapX + 34, rectMapY + 20);
-            mapForestElements[1].setScale(0.5f, 0.5f);
-
-            mapForestElements[2].setTexture(buttonTexture);
-            mapForestElements[2].setPosition(rectMapX + 75, rectMapY + 240);
-            mapForestElements[2].setScale(0.5f, 0.5f);
-
-            mapForestElements[3].setTexture(buttonTexture);
-            mapForestElements[3].setPosition(rectMapX + 175, rectMapY + 200);
-            mapForestElements[3].setScale(0.5f, 0.5f);
-
-            mapForestElementsText[0].setFont(font);
-            mapForestElementsText[0].setFillColor(sf::Color::White);
-            mapForestElementsText[0].setPosition(rectMapX + 145, rectMapY + 10);
-            mapForestElementsText[0].setCharacterSize(12);
-            mapForestElementsText[0].setString("Forest Bonfire");
-            mapForestElementsText[1].setFont(font);
-            mapForestElementsText[1].setFillColor(sf::Color::White);
-            mapForestElementsText[1].setPosition(rectMapX + 34, rectMapY + 5);
-            mapForestElementsText[1].setCharacterSize(12);
-            mapForestElementsText[1].setString("Forest Entrance");
-            mapForestElementsText[2].setFont(font);
-            mapForestElementsText[2].setFillColor(sf::Color::White);
-            mapForestElementsText[2].setPosition(rectMapX + 75, rectMapY + 225);
-            mapForestElementsText[2].setCharacterSize(12);
-            mapForestElementsText[2].setString("Forest Depths");
-            mapForestElementsText[3].setFont(font);
-            mapForestElementsText[3].setFillColor(sf::Color::White);
-            mapForestElementsText[3].setPosition(rectMapX + 175, rectMapY + 185);
-            mapForestElementsText[3].setCharacterSize(12);
-            mapForestElementsText[3].setString("Abyssal Forest");
-            this->initForestMapTexture = true;
-        }
-        break;
-    case 1:
-        if (this->initMapTexture == false) {
-            //Load Movable Arrow
-            multiArrowTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/multiarrow.png");
-            multiArrow.setTexture(multiArrowTexture);
-
-            //Load Map View
-            textureMapView.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/mapTexture.jpeg");
-            spriteMapView.setTexture(textureMapView);
-            spriteMapView.setPosition(rectMapX, rectMapY);
-            spriteMapView.setScale(0.38f, 0.38f);
-
-            mapCastleElements[0].setTexture(buttonTexture);
-            mapCastleElements[0].setPosition(rectMapX + 34, rectMapY + 20);
-            mapCastleElements[0].setScale(0.5f, 0.5f);
-
-            mapCastleElements[1].setTexture(buttonTexture);
-            mapCastleElements[1].setPosition(rectMapX + 75, rectMapY + 240);
-            mapCastleElements[1].setScale(0.5f, 0.5f);
-
-            mapCastleElementsText[0].setString("Castle Entrance");
-            mapCastleElementsText[1].setString("Castle Depths");
-            this->initMapTexture = true;
-        }
-        break;
     }
 }
 
@@ -488,16 +402,6 @@ void Assets::drawText()
     textElements[1].setCharacterSize(18);
     textElements[1].setPosition(210.0f, 797.0f);
     textElements[1].setString("Inventory");
-    //Castle Entrance Text
-    mapCastleElementsText[0].setFont(font);
-    mapCastleElementsText[0].setCharacterSize(12);
-    mapCastleElementsText[0].setPosition(this->rectMapX, this->rectMapY + 5);
-    mapCastleElementsText[0].setFillColor(sf::Color::White);
-    //Castle Depths Text
-    mapCastleElementsText[1].setFont(font);
-    mapCastleElementsText[1].setCharacterSize(12);
-    mapCastleElementsText[1].setPosition(this->rectMapX + 40, this->rectMapY + 220);
-    mapCastleElementsText[1].setFillColor(sf::Color::White);
 }
 
 void Assets::drawMainMenu()
@@ -570,27 +474,408 @@ void Assets::drawMainMenu()
     }
 }
 
+//Drawing Map Segments
+void Assets::drawMap()
+{
+    rectMap.setFillColor(sf::Color::Black);
+    rectMap.setPosition(rectMapX, rectMapY);
+    rectMap.setSize(sf::Vector2f(400.0f, 400.0f));
+    rectMap.setOutlineColor(sf::Color::White);
+    rectMap.setOutlineThickness(1.0f);
+
+    //Switch map areas via map selectors
+    switch (this->areaUnlocked) {
+    case 0:
+        //Load no buttons
+        break;
+    case 1:
+        for (int i = 0; i < buttonViewMap.size(); i++) {
+            buttonViewMap[i].setSize(sf::Vector2f(200.0f, 25.0f));
+            buttonViewMap[i].setOutlineColor(sf::Color::White);
+            buttonViewMap[i].setOutlineThickness(1.0f);
+        }
+        //Set button map selector positions
+        buttonViewMap[0].setPosition(rectMapX, rectMapY - 25);
+        buttonViewMap[1].setPosition(rectMapX + 200, rectMapY - 25);
+        buttonViewMap[2].setPosition(rectMapX + 20000, rectMapY - 25);
+        for (int i = 0; i < buttonViewMapText.size(); i++) {
+            buttonViewMapText[i].setFont(font);
+            buttonViewMapText[i].setCharacterSize(12);
+        }
+        //Castle Map Button Selector Text
+        buttonViewMapText[0].setPosition(rectMapX, rectMapY - 25);
+        buttonViewMapText[0].setString("Forest Plane");
+
+        buttonViewMapText[1].setPosition(rectMapX + 200, rectMapY - 25);
+        buttonViewMapText[1].setString("Castle Plane");
+        break;
+    case 2:
+        for (int i = 0; i < buttonViewMap.size(); i++) {
+            buttonViewMap[i].setSize(sf::Vector2f(133.3f, 25.0f));
+            buttonViewMap[i].setOutlineColor(sf::Color::White);
+            buttonViewMap[i].setOutlineThickness(1.0f);
+        }
+        //Set button map selector positions
+        buttonViewMap[0].setPosition(rectMapX, rectMapY - 25);
+        buttonViewMap[1].setPosition(rectMapX + 133.3, rectMapY - 25);
+        buttonViewMap[2].setPosition(rectMapX + 266.6, rectMapY - 25);
+        for (int i = 0; i < buttonViewMapText.size(); i++) {
+            buttonViewMapText[i].setFont(font);
+            buttonViewMapText[i].setCharacterSize(14);
+        }
+        //Castle Map Button Selector Text
+        buttonViewMapText[0].setPosition(rectMapX, rectMapY - 25);
+        buttonViewMapText[0].setString("Forest Plane");
+
+        buttonViewMapText[1].setPosition(rectMapX + 133.3, rectMapY - 25);
+        buttonViewMapText[1].setString("Castle Plane");
+
+        buttonViewMapText[2].setPosition(rectMapX + 266.6, rectMapY - 25);
+        buttonViewMapText[2].setString("Decay Plane");
+        break;
+    }
+
+    multiArrow.setPosition(rectMapX + 340, rectMapY + 10);
+    multiArrow.setScale(0.06, 0.06);
+    switch (mapCounter) {
+    case 0:
+        this->drawForestMapButtons();
+        break;
+    case 1:
+        this->drawCastleMapButtons();
+        break;
+    case 2:
+        this->drawDecayMapButtons();
+        break;
+    }
+}
+
+void Assets::drawForestMapButtons()
+{
+    if (this->initForestMapTexture == false) {
+        //Hide Castle Textures
+        spriteMapView.setPosition(10000, 10000);
+        for (int i = 0; i < mapCastleElements.size(); i++) {
+            mapCastleElements[i].setPosition(10000, 10000);
+            mapCastleElementsText[i].setPosition(10000, 10000);
+        }
+        //Hide Decay Textures
+        decayMapView.setPosition(10000, 10000);
+        for (int i = 0; i < mapDecayElements.size(); i++) {
+            mapDecayElements[i].setPosition(10000, 10000);
+            mapDecayElementsText[i].setPosition(10000, 10000);
+        }
+
+        //Load Movable Arrow
+        multiArrowTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/multiarrow.png");
+        multiArrow.setTexture(multiArrowTexture);
+
+        //Load Map View
+        forestMapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestmap.jpeg");
+        forestMapView.setTexture(forestMapTexture);
+        forestMapView.setPosition(rectMapX, rectMapY);
+        forestMapView.setScale(0.39f, 0.39f);
+
+        //Forest areas unlocked
+        switch (this->forestAreaUnlocked) {
+        case 0:
+            mapForestElements[0].setTexture(buttonTexture);
+            mapForestElements[0].setPosition(rectMapX + 145, rectMapY + 25);
+            mapForestElements[0].setScale(0.5f, 0.5f);
+            mapForestElementsText[0].setFont(font);
+            mapForestElementsText[0].setFillColor(sf::Color::White);
+            mapForestElementsText[0].setPosition(rectMapX + 145, rectMapY + 10);
+            mapForestElementsText[0].setCharacterSize(12);
+            mapForestElementsText[0].setString("Forest Bonfire");
+            break;
+        case 1:
+            mapForestElements[0].setTexture(buttonTexture);
+            mapForestElements[0].setPosition(rectMapX + 145, rectMapY + 25);
+            mapForestElements[0].setScale(0.5f, 0.5f);
+            mapForestElementsText[0].setFont(font);
+            mapForestElementsText[0].setFillColor(sf::Color::White);
+            mapForestElementsText[0].setPosition(rectMapX + 145, rectMapY + 10);
+            mapForestElementsText[0].setCharacterSize(12);
+            mapForestElementsText[0].setString("Forest Bonfire");
+            mapForestElements[1].setTexture(buttonTexture);
+            mapForestElements[1].setPosition(rectMapX + 34, rectMapY + 20);
+            mapForestElements[1].setScale(0.5f, 0.5f);
+            mapForestElementsText[1].setFont(font);
+            mapForestElementsText[1].setFillColor(sf::Color::White);
+            mapForestElementsText[1].setPosition(rectMapX + 34, rectMapY + 5);
+            mapForestElementsText[1].setCharacterSize(12);
+            mapForestElementsText[1].setString("Forest Entrance");
+            break;
+        case 2:
+            mapForestElements[0].setTexture(buttonTexture);
+            mapForestElements[0].setPosition(rectMapX + 145, rectMapY + 25);
+            mapForestElements[0].setScale(0.5f, 0.5f);
+            mapForestElementsText[0].setFont(font);
+            mapForestElementsText[0].setFillColor(sf::Color::White);
+            mapForestElementsText[0].setPosition(rectMapX + 145, rectMapY + 10);
+            mapForestElementsText[0].setCharacterSize(12);
+            mapForestElementsText[0].setString("Forest Bonfire");
+            mapForestElements[1].setTexture(buttonTexture);
+            mapForestElements[1].setPosition(rectMapX + 34, rectMapY + 20);
+            mapForestElements[1].setScale(0.5f, 0.5f);
+            mapForestElementsText[1].setFont(font);
+            mapForestElementsText[1].setFillColor(sf::Color::White);
+            mapForestElementsText[1].setPosition(rectMapX + 34, rectMapY + 5);
+            mapForestElementsText[1].setCharacterSize(12);
+            mapForestElementsText[1].setString("Forest Entrance");
+            mapForestElements[2].setTexture(buttonTexture);
+            mapForestElements[2].setPosition(rectMapX + 75, rectMapY + 240);
+            mapForestElements[2].setScale(0.5f, 0.5f);
+            mapForestElementsText[2].setFont(font);
+            mapForestElementsText[2].setFillColor(sf::Color::White);
+            mapForestElementsText[2].setPosition(rectMapX + 75, rectMapY + 225);
+            mapForestElementsText[2].setCharacterSize(12);
+            mapForestElementsText[2].setString("Forest Depths");
+            break;
+        case 3:
+            for (int i = 0; i < mapForestElements.size(); i++) {
+                mapForestElements[i].setTexture(buttonTexture);
+                mapForestElements[i].setScale(0.5f, 0.5f);
+                mapForestElementsText[i].setFont(font);
+                mapForestElementsText[i].setFillColor(sf::Color::White);
+                mapForestElementsText[i].setCharacterSize(12);
+            }
+            mapForestElements[0].setPosition(rectMapX + 145, rectMapY + 25);
+            mapForestElementsText[0].setPosition(rectMapX + 145, rectMapY + 10);
+            mapForestElementsText[0].setString("Forest Bonfire");
+            mapForestElements[1].setPosition(rectMapX + 34, rectMapY + 20);
+            mapForestElementsText[1].setPosition(rectMapX + 34, rectMapY + 5);
+            mapForestElementsText[1].setString("Forest Entrance");
+            mapForestElements[2].setPosition(rectMapX + 75, rectMapY + 240);
+            mapForestElementsText[2].setPosition(rectMapX + 75, rectMapY + 225);
+            mapForestElementsText[2].setString("Forest Depths");
+            mapForestElements[3].setPosition(rectMapX + 175, rectMapY + 200);
+            mapForestElementsText[3].setPosition(rectMapX + 175, rectMapY + 185);
+            mapForestElementsText[3].setString("Abyssal Forest");
+            break;
+        }
+        this->initForestMapTexture = true;
+    }
+}
+
+void Assets::drawCastleMapButtons()
+{
+    if (this->initMapTexture == false) {
+        //Load Movable Arrow
+        multiArrowTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/multiarrow.png");
+        multiArrow.setTexture(multiArrowTexture);
+
+        //Hide Forest Textures
+        forestMapView.setPosition(10000, 10000);
+        for (int i = 0; i < mapForestElements.size(); i++) {
+            mapForestElements[i].setPosition(10000, 10000);
+            mapForestElementsText[i].setPosition(10000, 10000);
+        }
+        //Hide Decay Textures
+        decayMapView.setPosition(10000, 10000);
+        for (int i = 0; i < mapDecayElements.size(); i++) {
+            mapDecayElements[i].setPosition(10000, 10000);
+            mapDecayElementsText[i].setPosition(10000, 10000);
+        }
+
+        //Load Map View
+        textureMapView.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/mapTexture.jpeg");
+        spriteMapView.setTexture(textureMapView);
+        spriteMapView.setPosition(rectMapX, rectMapY);
+        spriteMapView.setScale(0.38f, 0.38f);
+
+        switch (this->castleAreaUnlocked) {
+        case 0:
+            mapCastleElements[0].setTexture(buttonTexture);
+            mapCastleElements[0].setPosition(rectMapX + 27, rectMapY + 322);
+            mapCastleElements[0].setScale(0.5f, 0.5f);
+            mapCastleElementsText[0].setFont(font);
+            mapCastleElementsText[0].setCharacterSize(12);
+            mapCastleElementsText[0].setPosition(rectMapX + 27, rectMapY + 307);
+            mapCastleElementsText[0].setFillColor(sf::Color::White);
+            mapCastleElementsText[0].setString("Castle Bonfire");
+            break;
+        case 1:
+            mapCastleElements[0].setTexture(buttonTexture);
+            mapCastleElements[0].setPosition(rectMapX + 27, rectMapY + 322);
+            mapCastleElements[0].setScale(0.5f, 0.5f);
+            mapCastleElementsText[0].setFont(font);
+            mapCastleElementsText[0].setCharacterSize(12);
+            mapCastleElementsText[0].setPosition(rectMapX + 27, rectMapY + 307);
+            mapCastleElementsText[0].setFillColor(sf::Color::White);
+            mapCastleElementsText[0].setString("Castle Bonfire");
+            mapCastleElements[1].setTexture(buttonTexture);
+            mapCastleElements[1].setPosition(rectMapX + 75, rectMapY + 240);
+            mapCastleElements[1].setScale(0.5f, 0.5f);
+            mapCastleElementsText[1].setFont(font);
+            mapCastleElementsText[1].setCharacterSize(12);
+            mapCastleElementsText[1].setPosition(rectMapX + 75, rectMapY + 225);
+            mapCastleElementsText[1].setFillColor(sf::Color::White);
+            mapCastleElementsText[1].setString("Castle Halls");
+            break;
+        case 2:
+            mapCastleElements[0].setTexture(buttonTexture);
+            mapCastleElements[0].setPosition(rectMapX + 27, rectMapY + 322);
+            mapCastleElements[0].setScale(0.5f, 0.5f);
+            mapCastleElementsText[0].setFont(font);
+            mapCastleElementsText[0].setCharacterSize(12);
+            mapCastleElementsText[0].setPosition(rectMapX + 27, rectMapY + 307);
+            mapCastleElementsText[0].setFillColor(sf::Color::White);
+            mapCastleElementsText[0].setString("Castle Bonfire");
+            mapCastleElements[1].setTexture(buttonTexture);
+            mapCastleElements[1].setPosition(rectMapX + 75, rectMapY + 240);
+            mapCastleElements[1].setScale(0.5f, 0.5f);
+            mapCastleElementsText[1].setFont(font);
+            mapCastleElementsText[1].setCharacterSize(12);
+            mapCastleElementsText[1].setPosition(rectMapX + 75, rectMapY + 225);
+            mapCastleElementsText[1].setFillColor(sf::Color::White);
+            mapCastleElementsText[1].setString("Castle Halls");
+            mapCastleElements[2].setTexture(buttonTexture);
+            mapCastleElements[2].setPosition(rectMapX + 34, rectMapY + 20);
+            mapCastleElements[2].setScale(0.5f, 0.5f);
+            mapCastleElementsText[2].setFont(font);
+            mapCastleElementsText[2].setCharacterSize(12);
+            mapCastleElementsText[2].setPosition(rectMapX + 34, rectMapY + 5);
+            mapCastleElementsText[2].setFillColor(sf::Color::White);
+            mapCastleElementsText[2].setString("Castle Depths");
+            break;
+        }
+        this->initMapTexture = true;
+    }
+}
+
+void Assets::drawDecayMapButtons()
+{
+    if (this->initDecayMapTexture == false) {
+        //Load Movable Arrow
+        multiArrowTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/multiarrow.png");
+        multiArrow.setTexture(multiArrowTexture);
+
+        //Hide Forest Textures
+        forestMapView.setPosition(10000, 10000);
+        for (int i = 0; i < mapForestElements.size(); i++) {
+            mapForestElements[i].setPosition(10000, 10000);
+            mapForestElementsText[i].setPosition(10000, 10000);
+        }
+        //Hide Castle Textures
+        spriteMapView.setPosition(10000, 10000);
+        for (int i = 0; i < mapCastleElements.size(); i++) {
+            mapCastleElements[i].setPosition(10000, 10000);
+            mapCastleElementsText[i].setPosition(10000, 10000);
+        }
+
+        //Load Map View
+        decayTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayMap.jpeg");
+        decayMapView.setTexture(decayTexture);
+        decayMapView.setPosition(rectMapX, rectMapY);
+        decayMapView.setScale(0.38f, 0.38f);
+
+        //Load Decay Buttons
+        switch (this->decayAreaUnlocked) {
+        case 0:
+            mapDecayElements[0].setTexture(buttonTexture);
+            mapDecayElements[0].setPosition(rectMapX + 220, rectMapY + 215);
+            mapDecayElements[0].setScale(0.5f, 0.5f);
+            mapDecayElementsText[0].setFont(font);
+            mapDecayElementsText[0].setCharacterSize(12);
+            mapDecayElementsText[0].setPosition(rectMapX + 220, rectMapY + 200);
+            mapDecayElementsText[0].setFillColor(sf::Color::White);
+            mapDecayElementsText[0].setString("Decay Bonfire");
+            break;
+        case 1:
+            mapDecayElements[0].setTexture(buttonTexture);
+            mapDecayElements[0].setPosition(rectMapX + 220, rectMapY + 215);
+            mapDecayElements[0].setScale(0.5f, 0.5f);
+            mapDecayElementsText[0].setFont(font);
+            mapDecayElementsText[0].setCharacterSize(12);
+            mapDecayElementsText[0].setPosition(rectMapX + 220, rectMapY + 200);
+            mapDecayElementsText[0].setFillColor(sf::Color::White);
+            mapDecayElementsText[0].setString("Decay Bonfire");
+            mapDecayElements[1].setTexture(buttonTexture);
+            mapDecayElements[1].setPosition(rectMapX + 245, rectMapY + 110);
+            mapDecayElements[1].setScale(0.5f, 0.5f);
+            mapDecayElementsText[1].setFont(font);
+            mapDecayElementsText[1].setCharacterSize(12);
+            mapDecayElementsText[1].setPosition(rectMapX + 245, rectMapY + 95);
+            mapDecayElementsText[1].setFillColor(sf::Color::White);
+            mapDecayElementsText[1].setString("Decay Chasms");
+            break;
+        } 
+        this->initDecayMapTexture = true;
+    }
+}
+
 //Detection Functions
 void Assets::bonfireHealDetection()
 {
-    bonfireHealDetectionRect.setFillColor(sf::Color::Transparent);
-    bonfireHealDetectionRect.setSize(sf::Vector2f(300, 250));
-    bonfireHealDetectionRect.setPosition(650, 450);
+    switch (this->mapCounter) {
+    case 0:
+        //Forest Bonfire Heal Detection
+        bonfireHealDetectionRect.setFillColor(sf::Color::Transparent);
+        bonfireHealDetectionRect.setSize(sf::Vector2f(300, 250));
+        bonfireHealDetectionRect.setPosition(650, 450);
 
-    bonfireHealDetectionText.setFont(font);
-    bonfireHealDetectionText.setCharacterSize(18);
-    bonfireHealDetectionText.setFillColor(sf::Color::White);
+        bonfireHealDetectionText.setFont(font);
+        bonfireHealDetectionText.setCharacterSize(18);
+        bonfireHealDetectionText.setFillColor(sf::Color::White);
+        break;
+    case 1:
+        //Castle Bonfire Heal Detection
+        bonfireHealDetectionRect.setFillColor(sf::Color::Transparent);
+        bonfireHealDetectionRect.setSize(sf::Vector2f(250, 250));
+        bonfireHealDetectionRect.setPosition(650, 500);
+
+        bonfireHealDetectionText.setFont(font);
+        bonfireHealDetectionText.setCharacterSize(18);
+        bonfireHealDetectionText.setFillColor(sf::Color::White);
+        break;
+    case 2:
+        //Decay Bonfire Heal Detection
+        bonfireHealDetectionRect.setFillColor(sf::Color::Transparent);
+        bonfireHealDetectionRect.setSize(sf::Vector2f(200, 200));
+        bonfireHealDetectionRect.setPosition(700, 250);
+
+        bonfireHealDetectionText.setFont(font);
+        bonfireHealDetectionText.setCharacterSize(18);
+        bonfireHealDetectionText.setFillColor(sf::Color::White);
+        break;
+    }
 }
 
 void Assets::bonfireSmithDetection()
 {
-    bonfireSmithDetectionRect.setFillColor(sf::Color::Transparent);
-    bonfireSmithDetectionRect.setSize(sf::Vector2f(150, 150));
-    bonfireSmithDetectionRect.setPosition(975, 450);
+    switch (this->mapCounter) {
+    case 0:
+        //Forest Bonfire Smith Detection
+        bonfireSmithDetectionRect.setFillColor(sf::Color::Transparent);
+        bonfireSmithDetectionRect.setSize(sf::Vector2f(150, 150));
+        bonfireSmithDetectionRect.setPosition(975, 450);
 
-    bonfireSmithDetectionText.setFont(font);
-    bonfireSmithDetectionText.setCharacterSize(18);
-    bonfireSmithDetectionText.setFillColor(sf::Color::White);
+        bonfireSmithDetectionText.setFont(font);
+        bonfireSmithDetectionText.setCharacterSize(18);
+        bonfireSmithDetectionText.setFillColor(sf::Color::White);
+        break;
+    case 1:
+        //Castle Bonfire Smith Detection
+        bonfireSmithDetectionRect.setFillColor(sf::Color::Transparent);
+        bonfireSmithDetectionRect.setSize(sf::Vector2f(600, 60));
+        bonfireSmithDetectionRect.setPosition(450, 755);
+
+        bonfireSmithDetectionText.setFont(font);
+        bonfireSmithDetectionText.setCharacterSize(18);
+        bonfireSmithDetectionText.setFillColor(sf::Color::White);
+        break;
+    case 2:
+        //Decay Bonfire Smith Detection
+        bonfireSmithDetectionRect.setFillColor(sf::Color::Transparent);
+        bonfireSmithDetectionRect.setSize(sf::Vector2f(100, 100));
+        bonfireSmithDetectionRect.setPosition(1350, 200);
+
+        bonfireSmithDetectionText.setFont(font);
+        bonfireSmithDetectionText.setCharacterSize(18);
+        bonfireSmithDetectionText.setFillColor(sf::Color::White);
+        break;
+    }
 }
 
 //Sprite Functions
@@ -668,14 +953,13 @@ void Assets::zinSprite()
         break;
     case 0:
         if (this->zinInit == false) {
-            zinTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite.png");
             spriteElements[3].setPosition(sf::Vector2f(50.0f, 345.0f)); // absolute position
             this->zinInit = true;
         }
         break;
     case 1:
         if (this->zinInit == false) {
-            zinTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite.png");
+            spriteElements[3].setPosition(sf::Vector2f(50.0f, 345.0f)); // absolute position
             this->zinInit = true;
         }
         break;

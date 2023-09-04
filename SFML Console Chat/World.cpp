@@ -74,6 +74,9 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                     this->dialogueBox(window, combat, assets);
                     //Main Menu Functionality
                     this->mainMenuButtons(window, assets);
+                    if (stop) { //Make quit button return to main function to stop program from running
+                        return;
+                    }
                     //Bonfire Functionality
                     notevent.healCharacters(window, assets, combat);
                     notevent.smithingSharpenBlade(window, assets, player);
@@ -196,6 +199,9 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
             case 1:
                 this->drawCastleMap(window, assets);
                 break;
+            case 2:
+                this->drawDecayMap(window, assets);
+                break;
             }
             //Make Box Movable if clicked...
             this->movableBox(window, assets);
@@ -230,6 +236,18 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
 
     // end the current frame
     window.display();
+}
+
+void World::DrawMapSelectorButtons(sf::RenderWindow& window, Assets& assets)
+{
+    //Draw all rectangle elements for map button selectors
+    for (int i = 0; i < assets.buttonViewMap.size(); i++) {
+        window.draw(assets.buttonViewMap[i]);
+    }
+    //Draw all rectangle elements for map button selectors text
+    for (int i = 0; i < assets.buttonViewMapText.size(); i++) {
+        window.draw(assets.buttonViewMapText[i]);
+    }
 }
 
 void World::greyOnHover(sf::RenderWindow& window, Assets& assets)
@@ -303,6 +321,17 @@ void World::greyOnHover(sf::RenderWindow& window, Assets& assets)
         }
     }
 
+    //Map Selector Buttons Grey On Hover
+    for (int i = 0; i < assets.buttonViewMap.size(); i++) {
+        if (assets.buttonViewMap[i].getGlobalBounds().contains(mousePosF)) {
+            assets.buttonViewMap[i].setFillColor(sf::Color::White);
+            assets.buttonViewMapText[i].setFillColor(sf::Color::Black);
+        }
+        else {
+            assets.buttonViewMap[i].setFillColor(sf::Color::Black);
+            assets.buttonViewMapText[i].setFillColor(sf::Color::White);
+        }
+    }
     //Map Buttons Grey On Hover
     for (int i = 0; i < assets.mapCastleElements.size(); i++) {
         if (assets.mapCastleElements[i].getGlobalBounds().contains(mousePosF)) {
@@ -319,6 +348,15 @@ void World::greyOnHover(sf::RenderWindow& window, Assets& assets)
         }
         else {
             assets.mapForestElements[i].setColor(sf::Color(255, 255, 255));
+        }
+    }
+
+    for (int i = 0; i < assets.mapDecayElements.size(); i++) {
+        if (assets.mapDecayElements[i].getGlobalBounds().contains(mousePosF)) {
+            assets.mapDecayElements[i].setColor(sf::Color(155, 155, 155));
+        }
+        else {
+            assets.mapDecayElements[i].setColor(sf::Color(255, 255, 255));
         }
     }
 }
@@ -373,8 +411,9 @@ void World::mainMenuButtons(sf::RenderWindow& window, Assets& assets)
         std::cout << "Loading a save hypothetically speaking lmao...";
     }
     else if (assets.menuScreenElements[2].getGlobalBounds().contains(mousePosF)) {
-        //Quit Game Button Functionality (ERROR Not working...)
+        //Quit Game Button Functionality
         stop = true;
+        return;
     }
     else if (assets.menuScreenElements[3].getGlobalBounds().contains(mousePosF)) {
         //Intro Button Functionality
@@ -411,13 +450,14 @@ void World::mapButtons(sf::RenderWindow& window, Assets& assets)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+    this->selectMapView(window, assets);
     //Map Button Functionality (Switching between whch button on the map is selected to change areas...)
     //Forest Button Functionality
     if (assets.mapForestElements[0].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
         travel.forestCounter = 0;
         travel.frameInit = false;
-        travel.frame = 0;
+        travel.frame = 0; //Ensures whenever you move from area to area on map, player stays on 1st frame
         this->buttonClick = true;
     }
     else if (assets.mapForestElements[1].getGlobalBounds().contains(mousePosF)) {
@@ -447,12 +487,37 @@ void World::mapButtons(sf::RenderWindow& window, Assets& assets)
         assets.soundWalk.play();
         travel.castleCounter = 0;
         travel.frameInit = false;
+        travel.frame = 0;
         this->buttonClick = true;
     }
     else if (assets.mapCastleElements[1].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
         travel.castleCounter = 1;
         travel.frameInit = false;
+        travel.frame = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.mapCastleElements[2].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.castleCounter = 2;
+        travel.frameInit = false;
+        travel.frame = 0;
+        this->buttonClick = true;
+    }
+
+    //Decay Button Functionality
+    if (assets.mapDecayElements[0].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.decayCounter = 0;
+        travel.frameInit = false;
+        travel.frame = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.mapDecayElements[1].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.decayCounter = 1;
+        travel.frameInit = false;
+        travel.frame = 0;
         this->buttonClick = true;
     }
 }
@@ -723,12 +788,18 @@ void World::movableBox(sf::RenderWindow& window, Assets& assets)
     }
 }
 
+
+//Map Functions
 void World::resetMapPosition(sf::RenderWindow& window, Assets& assets)
 {
     //Castle
     assets.spriteMapView.setPosition(assets.rectMapX, assets.rectMapY);
-    assets.mapCastleElements[0].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
+    assets.mapCastleElements[0].setPosition(assets.rectMapX + 27, assets.rectMapY + 322);
     assets.mapCastleElements[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
+    assets.mapCastleElements[2].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
+    assets.mapCastleElementsText[0].setPosition(assets.rectMapX + 27, assets.rectMapY + 307);
+    assets.mapCastleElementsText[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 225);
+    assets.mapCastleElementsText[2].setPosition(assets.rectMapX + 34, assets.rectMapY + 5);
     //Forest
     assets.forestMapView.setPosition(assets.rectMapX, assets.rectMapY);
     assets.mapForestElements[0].setPosition(assets.rectMapX + 145, assets.rectMapY + 25);
@@ -739,13 +810,60 @@ void World::resetMapPosition(sf::RenderWindow& window, Assets& assets)
     assets.mapForestElementsText[1].setPosition(assets.rectMapX + 34, assets.rectMapY + 5);
     assets.mapForestElementsText[2].setPosition(assets.rectMapX + 75, assets.rectMapY + 225);
     assets.mapForestElementsText[3].setPosition(assets.rectMapX + 175, assets.rectMapY + 185);
+    //Decay
+    assets.decayMapView.setPosition(assets.rectMapX, assets.rectMapY);
+    assets.mapDecayElements[0].setPosition(assets.rectMapX + 220, assets.rectMapY + 215);
+    assets.mapDecayElements[1].setPosition(assets.rectMapX + 245, assets.rectMapY + 110);
+    assets.mapDecayElementsText[0].setPosition(assets.rectMapX + 220, assets.rectMapY + 200);
+    assets.mapDecayElementsText[1].setPosition(assets.rectMapX + 245, assets.rectMapY + 95);
 }
 
-//Map Functions
+void World::selectMapView(sf::RenderWindow& window, Assets& assets)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+
+    if (assets.buttonViewMap[0].getGlobalBounds().contains(mousePosF)) {
+        //Click to view forest from map selector buttons
+        assets.mapCounter = 0;
+        this->resetMapPosition(window, assets);
+
+        travel.frame = 0;
+        assets.soundWalk.play();
+        travel.forestCounter = 0;
+        travel.frameInit = false;
+        travel.frame = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.buttonViewMap[1].getGlobalBounds().contains(mousePosF)) {
+        //Click to view castle from map selector buttons
+        assets.mapCounter = 1;
+        this->resetMapPosition(window, assets);
+
+        travel.frame = 0;
+        assets.soundWalk.play();
+        travel.castleCounter = 0;
+        travel.frameInit = false;
+        this->buttonClick = true;
+    }
+    else if (assets.buttonViewMap[2].getGlobalBounds().contains(mousePosF)) {
+        //Click to view decay from map selector buttons
+        assets.mapCounter = 2;
+        this->resetMapPosition(window, assets);
+
+        travel.frame = 0;
+        assets.soundWalk.play();
+        //travel.decayCounter = 0;
+        travel.frameInit = false;
+        this->buttonClick = true;
+    }
+}
+
 void World::drawForestMap(sf::RenderWindow& window, Assets& assets)
 {
     window.draw(assets.forestMapView);
     window.draw(assets.multiArrow);
+    this->DrawMapSelectorButtons(window, assets);
     for (int i = 0; i < assets.mapForestElements.size(); i++) {
         window.draw(assets.mapForestElements[i]);
     }
@@ -760,11 +878,27 @@ void World::drawCastleMap(sf::RenderWindow& window, Assets& assets)
     //Draw Everything
     window.draw(assets.spriteMapView);
     window.draw(assets.multiArrow);
+    this->DrawMapSelectorButtons(window, assets);
     for (int i = 0; i < assets.mapCastleElements.size(); i++) {
         window.draw(assets.mapCastleElements[i]);
     }
 
     for (int i = 0; i < assets.mapCastleElementsText.size(); i++) {
         window.draw(assets.mapCastleElementsText[i]);
+    }
+}
+
+void World::drawDecayMap(sf::RenderWindow& window, Assets& assets)
+{
+    //Draw Everything
+    window.draw(assets.decayMapView);
+    window.draw(assets.multiArrow);
+    this->DrawMapSelectorButtons(window, assets);
+    for (int i = 0; i < assets.mapDecayElements.size(); i++) {
+        window.draw(assets.mapDecayElements[i]);
+    }
+
+    for (int i = 0; i < assets.mapDecayElementsText.size(); i++) {
+        window.draw(assets.mapDecayElementsText[i]);
     }
 }

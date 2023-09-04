@@ -107,12 +107,12 @@ void Combat::initCombat(Assets& assets, Player& player)
 	assets.textElements[6].setString(assets.playerName + "     " + std::to_string(this->playerHp) + "/" + std::to_string(this->playerHpMax));
 	assets.textElements[7].setString("Zin            " + std::to_string(this->zinHp) + "/" + std::to_string(this->zinHpMax));
 	assets.textElements[8].setString("Abomination  " + std::to_string(this->hostileHp) + "/" + std::to_string(this->hostileHpMax));
-	assets.zinInit = false; //Make usable again
 	assets.zinCounter = 0; //Load Zins sprite with counter
+	assets.zinInit = false; //Make usable again           
 	assets.spadeCounter = -1;//Reset Spade sprite switch case counter
-	assets.spriteInit = false; //Uninitialize sprite border
 	assets.combatAssets = true; //Utilize all combat assets
 	assets.soundCombatStart.play(); //Play combat Sfx
+	assets.initMap = false; //Hide the map if its open
 }
 
 void Combat::reInitCombat(Assets& assets)

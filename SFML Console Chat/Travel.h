@@ -24,6 +24,7 @@ public:
 	int introCounter;
 	int forestCounter;
 	int castleCounter;
+	int decayCounter;
 
 	//Core Bools
 	bool frameInit;
@@ -35,7 +36,7 @@ public:
 	bool forestEntranceInit;
 	bool forestDepthsInit;
 
-	bool castleEntranceInit;
+	bool castleHallsInit;
 	bool castleDepthsInit;
 
 	Assets assets;
@@ -60,9 +61,15 @@ public:
 	void forestAbyssal(Assets& assets, Event& notevent, Combat& combat, Player& player);
 
 	//Draw Castle
-	void castleMap(Assets& assets, Event& notevent, Combat& combat, Player& player);
-	void castleEntrance(Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void castleMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void castleBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void castleHalls(Assets& assets, Event& notevent, Combat& combat, Player& player);
 	void castleDepths(Assets& assets, Event& notevent, Combat& combat, Player& player);
+
+	//Draw Decay
+	void decayMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void decayBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void decayChasms(Assets& assets, Event& notevent, Combat& combat, Player& player);
 };
 
 
