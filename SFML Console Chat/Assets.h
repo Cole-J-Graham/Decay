@@ -16,7 +16,8 @@ public:
 	sf::Image windowIcon;
 
 	//Textures
-	sf::Texture texture;
+	sf::Texture playerTexture;
+	sf::Texture spadeTexture;
 	sf::Texture zinTexture;
 	sf::Texture combatTexture;
 	sf::Texture boxTexture;
@@ -32,7 +33,8 @@ public:
 	sf::Texture textureMapView;
 
 	//Sprites
-	sf::Sprite sprite;
+	sf::Sprite player;
+	sf::Sprite spade;
 	sf::Sprite zin;
 	sf::Sprite box;
 	sf::Sprite map;
@@ -48,7 +50,7 @@ public:
 	sf::RectangleShape rectStats;
 	sf::RectangleShape rectInventory;
 	sf::RectangleShape rectStatsBox;
-	sf::RectangleShape rectSpriteBox;
+	sf::RectangleShape rectSpadeSpriteBox;
 	sf::RectangleShape rectStatsPointsBox;
 	sf::RectangleShape rectStrengthPointsBox;
 	sf::RectangleShape rectFortitudePointsBox;
@@ -86,6 +88,8 @@ public:
 
 	//Combat Assets
 	sf::RectangleShape rectAttack;
+	sf::RectangleShape rectGuard;
+	sf::RectangleShape rectMend;
 	sf::Text attackText;
 
 	//Text
@@ -97,7 +101,7 @@ public:
 	sf::Text menuText;
 	sf::Text rectStatsText;
 	sf::Text rectInventoryText;
-	sf::Text spriteText;
+	sf::Text spadeText;
 	sf::Text statsText;
 	sf::Text statsPointsText;
 	sf::Text statsPointsTextTitle;
@@ -110,6 +114,8 @@ public:
 	sf::Text playerStatsBoxButtonText;
 	sf::Text inventoryText;
 	sf::Text smiteText;
+	sf::Text textGuard;
+	sf::Text textMend;
 
 	//Zin Stats Assets Text
 	sf::Text zinStatsBoxButtonText;
@@ -134,14 +140,15 @@ public:
 
 	//Main Vectors
 	std::vector<sf::RectangleShape> rectElements {rectStats, rectInventory, buttonMap, 
-		rectAttack, rectAttackSmite, rectSpriteBox, playerSpriteBorder, zinSpriteBorder,
-		hostileSpriteBorder};
+		rectAttack, rectAttackSmite, rectSpadeSpriteBox, playerSpriteBorder, zinSpriteBorder,
+		hostileSpriteBorder, rectGuard, rectMend};
 
 	std::vector<sf::Text> textElements {rectStatsText, rectInventoryText, menuText, 
-		attackText, smiteText, spriteText, playerNameText, zinText,
-		hostileNameText};
+		attackText, smiteText, spadeText, playerNameText, zinText,
+		hostileNameText, textGuard, textMend};
 
-	std::vector<sf::Sprite> spriteElements {button, buttonBack, sprite, zin};
+	std::vector<sf::Sprite> spriteElements {button, buttonBack, spade, 
+		zin, player};
 
 	//Stats Menu Vectors
 	std::vector<sf::RectangleShape> playerStatElements {rectStatsPointsBox, rectStrengthPointsBox,
@@ -166,10 +173,12 @@ public:
 	sf::Sprite forestMapEntrance;
 	sf::Sprite forestMapDepths;
 	sf::Sprite forestMapAbyssal;
+	sf::Sprite forestMapAbyssalDepths;
 	sf::Text forestBonfireText;
 	sf::Text forestEntranceText;
 	sf::Text forestDepthsText;
 	sf::Text forestAbyssalText;
+	sf::Text forestMapAbyssalDepthsText;
 
 	//Map Button Selectors
 	sf::RectangleShape buttonViewForestMap;
@@ -184,10 +193,16 @@ public:
 	sf::Sprite decayMapView;
 	sf::Sprite decayBonfire;
 	sf::Sprite decayMapChasms;
+	sf::Sprite decayMapOcean;
+	sf::Sprite decayMapForest;
+	sf::Sprite decayMapGiants;
 
 	//Decay Map Text
 	sf::Text decayBonfireText;
 	sf::Text decayMapChasmsText;
+	sf::Text decayMapOceanText;
+	sf::Text decayMapForestText;
+	sf::Text decayMapGiantsText;
 
 	//Button Map Vectors
 	std::vector<sf::RectangleShape> buttonViewMap{buttonViewForestMap,
@@ -200,25 +215,31 @@ public:
 	sf::Sprite castleBonfire;
 	sf::Sprite buttoncastleHalls;
 	sf::Sprite buttonCastleDepths;
+	sf::Sprite buttonCastleChambers;
+	sf::Sprite buttonCastleLabyrinth;
 
 	//Castle Button Text
 	sf::Text castleBonfireText;
 	sf::Text castleHallsText;
 	sf::Text castleDepthsText;
+	sf::Text castleChambersText;
+	sf::Text buttonCastleLabyrinthText;
 
 	//Map Vectors
 	std::vector<sf::Sprite> mapForestElements {forestBonfire, forestMapEntrance, 
-		forestMapDepths, forestMapAbyssal};
+		forestMapDepths, forestMapAbyssal, forestMapAbyssalDepths};
 	std::vector<sf::Text> mapForestElementsText {forestBonfireText, forestEntranceText, 
-		forestDepthsText, forestAbyssalText};
+		forestDepthsText, forestAbyssalText, forestMapAbyssalDepthsText};
 
 	std::vector<sf::Sprite> mapCastleElements { castleBonfire, buttoncastleHalls,
-		buttonCastleDepths};
+		buttonCastleDepths, buttonCastleChambers, buttonCastleLabyrinth };
 	std::vector<sf::Text> mapCastleElementsText { castleBonfireText, castleHallsText,
-		castleDepthsText};
+		castleDepthsText, castleChambersText, buttonCastleLabyrinthText };
 
-	std::vector<sf::Sprite> mapDecayElements{ decayBonfire, decayMapChasms};
-	std::vector<sf::Text> mapDecayElementsText{ decayBonfireText, decayMapChasmsText};
+	std::vector<sf::Sprite> mapDecayElements{ decayBonfire, decayMapChasms,
+	decayMapOcean, decayMapForest, decayMapGiants };
+	std::vector<sf::Text> mapDecayElementsText{ decayBonfireText, decayMapChasmsText,
+	decayMapOceanText, decayMapForestText, decayMapGiantsText };
 
 	//Detection
 	sf::RectangleShape bonfireHealDetectionRect;
@@ -235,6 +256,12 @@ public:
 	sf::Sound soundWalk;
 	sf::Sound soundAngry;
 	sf::Sound soundCombatStart;
+	sf::Sound soundHover;
+	sf::Sound soundGuard;
+	sf::Sound soundGuarded;
+	sf::Sound soundMend;
+	sf::Sound soundSmite;
+	sf::Sound soundSlash;
 
 	sf::SoundBuffer buffer;
 	sf::SoundBuffer blipbuffer;
@@ -243,6 +270,12 @@ public:
 	sf::SoundBuffer bufferWalk;
 	sf::SoundBuffer bufferAngry;
 	sf::SoundBuffer bufferCombatStart;
+	sf::SoundBuffer bufferSoundHover;
+	sf::SoundBuffer bufferGuard;
+	sf::SoundBuffer bufferGuarded;
+	sf::SoundBuffer bufferMend;
+	sf::SoundBuffer bufferSmite;
+	sf::SoundBuffer bufferSlash;
 
 	//Music
 	sf::Music music;
@@ -272,6 +305,7 @@ public:
 	int decayAreaUnlocked;
 
 	//Sprite Control Flow
+	bool playerLoadOnce;
 	bool spadeInit;
 	bool spadeLoadOnce;
 
@@ -280,8 +314,10 @@ public:
 
 	//Sprite Border Control Flow
 	bool spriteInit;
+	bool playerInit;
 
 	//Sprite Integer Selection
+	int playerCounter;
 	int spadeCounter;
 	int zinCounter;
 	int mapCounter;
@@ -307,6 +343,10 @@ public:
 	bool playerTurnAssets;
 	bool zinTurnAssets;
 
+	//Combat Move Unlocks
+	int combatPlayerMoves;
+	int combatZinMoves;
+
 	//Constructors & Destructors
 	Assets();
 	~Assets();
@@ -330,8 +370,13 @@ public:
 	void bonfireHealDetection();
 	void bonfireSmithDetection();
 
+	//Draw Sprite Boxes
+	void drawSpadeSpriteBox();
+	void drawPlayerSpriteBox();
+	void drawZinSpriteBox();
+
 	//Sprite Functions
-	void drawSpriteBox();
+	void playerSprite();
 	void spadeSprite();
 	void zinSprite();
 
@@ -340,6 +385,8 @@ public:
 
 	//Combat Asset Functions
 	void initCombatAssets();
+	void playerCombatAssets();
+	void zinCombatAssets();
 
 	//Getters and Setters
 

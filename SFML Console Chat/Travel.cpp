@@ -136,6 +136,9 @@ void Travel::forestMap(sf::RenderWindow& window, Assets& assets, Event& notevent
     case 3:
         this->forestAbyssal(assets, notevent, combat, player);
         break;
+    case 4:
+        this->forestAbyssalDepths(assets, notevent, combat, player);
+        break;
     }
 }
 
@@ -261,6 +264,42 @@ void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Pla
         assets.locationText.setString("Forest Entrance");
         if (this->frameInit == false) {
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forest11.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 11:
+        assets.locationText.setString("Forest Entrance");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forest12.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 12:
+        assets.locationText.setString("Forest Entrance");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forest13.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 13:
+        assets.locationText.setString("Forest Entrance");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forest14.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 14:
+        assets.locationText.setString("Forest Entrance");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forest15.jpeg");
             this->frameInit = true;
         }
         assets.map.setTexture(assets.mapTexture);
@@ -395,6 +434,36 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         assets.map.setTexture(assets.mapTexture);
         assets.map.setPosition(440.0f, -200.0f); // absolute position
         break;
+    case 12:
+        assets.bonfireAssets = false;
+        assets.locationText.setString("Forest Depths");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestdepths13.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 13:
+        assets.bonfireAssets = false;
+        assets.locationText.setString("Forest Depths");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestdepths14.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 14:
+        assets.bonfireAssets = false;
+        assets.locationText.setString("Forest Depths");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestdepths15.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
     }
 }
 
@@ -467,6 +536,208 @@ void Travel::forestAbyssal(Assets& assets, Event& notevent, Combat& combat, Play
         assets.map.setTexture(assets.mapTexture);
         assets.map.setPosition(440.0f, -200.0f); // absolute position
         break;
+    case 7:
+        assets.locationText.setString("Abyssal Forest");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssalwoods8.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 8:
+        assets.locationText.setString("Abyssal Forest");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssalwoods9.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 9:
+        assets.locationText.setString("Abyssal Forest");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssalwoods10.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 10:
+        assets.locationText.setString("Abyssal Forest");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssalwoods11.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 11:
+        assets.locationText.setString("Abyssal Forest");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssalwoods12.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 12:
+        assets.locationText.setString("Abyssal Forest");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssalwoods13.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 13:
+        assets.locationText.setString("Abyssal Forest");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssalwoods14.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 14:
+        assets.locationText.setString("Abyssal Forest");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssalwoods15.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    }
+}
+
+void Travel::forestAbyssalDepths(Assets& assets, Event& notevent, Combat& combat, Player& player)
+{
+    notevent.reInitialize(assets);
+    switch (this->frame) {
+    case 0:
+        this->forestBonfireInit = false; //Unint bonfire
+        assets.bonfireAssets = false;
+        assets.locationText.setString("Abyssal Forest Depths");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssaldepths1.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 1:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssaldepths2.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 2:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssaldepths3.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 3:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssaldepths4.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 4:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssaldepths5.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 5:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssaldepths6.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 6:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssaldepths7.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 7:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssaldepths8.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 8:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssaldepths9.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 9:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssaldepths10.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 10:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssaldepths11.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 11:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssaldepths12.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 12:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssaldepths13.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 13:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssaldepths14.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 14:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssaldepths15.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
     }
 }
 
@@ -482,6 +753,12 @@ void Travel::castleMap(sf::RenderWindow& window, Assets& assets, Event& notevent
         break;
     case 2:
         this->castleDepths(assets, notevent, combat, player);
+        break;
+    case 3:
+        this->castleChambers(assets, notevent, combat, player);
+        break;
+    case 4:
+        this->castleLabyrinth(assets, notevent, combat, player);
         break;
     }
 }
@@ -588,14 +865,51 @@ void Travel::castleHalls(Assets& assets, Event& notevent, Combat& combat, Player
         }
         assets.map.setTexture(assets.mapTexture);
         break;
+    case 10:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castle11.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 11:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castle12.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 12:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castle13.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 13:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castle14.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 14:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castle15.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
     }
 }
 
 void Travel::castleDepths(Assets& assets, Event& notevent, Combat& combat, Player& player)
 {
-    this->frame = 0;
+    //Uninitialize && Reinitialize castleDepth Event
     switch (this->frame) {
     case 0:
+        this->forestBonfireInit = false; //Uninit bonfire if switching via selector buttons
+        assets.bonfireAssets = false;
         assets.locationText.setString("Castle Depths");
         if (this->frameInit == false) {
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleDepths1.jpeg");
@@ -603,6 +917,330 @@ void Travel::castleDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         }
         //Initialize Spade and Sprite
         notevent.spadeEncounter(assets);
+        break;
+    case 1:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleDepths2.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 2:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleDepths3.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 3:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleDepths4.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 4:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleDepths5.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 5:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleDepths6.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 6:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleDepths7.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 7:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleDepths8.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 8:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleDepths9.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 9:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleDepths10.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 10:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleDepths11.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 11:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleDepths12.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 12:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleDepths13.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 13:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleDepths14.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 14:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleDepths15.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    }
+}
+
+void Travel::castleChambers(Assets& assets, Event& notevent, Combat& combat, Player& player)
+{
+    switch (this->frame) {
+    case 0:
+        this->forestBonfireInit = false; //Uninit bonfire if switching via selector buttons
+        assets.bonfireAssets = false;
+        assets.locationText.setString("Castle Chambers");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlechambers1.jpeg");
+            this->frameInit = true;
+        }
+        break;
+    case 1:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlechambers2.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 2:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlechambers3.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 3:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlechambers4.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 4:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlechambers5.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 5:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlechambers6.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 6:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlechambers7.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 7:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlechambers8.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 8:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlechambers9.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 9:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlechambers10.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 10:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlechambers11.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 11:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlechambers12.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 12:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlechambers13.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 13:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlechambers14.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 14:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlechambers15.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    }
+}
+
+void Travel::castleLabyrinth(Assets& assets, Event& notevent, Combat& combat, Player& player)
+{
+    switch (this->frame) {
+    case 0:
+        this->forestBonfireInit = false; //Uninit bonfire if switching via selector buttons
+        assets.bonfireAssets = false;
+        assets.locationText.setString("Castle Labyrinth");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlelabyrinth1.jpeg");
+            this->frameInit = true;
+        }
+        break;
+    case 1:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlelabyrinth2.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 2:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlelabyrinth3.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 3:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlelabyrinth4.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 4:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlelabyrinth5.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 5:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlelabyrinth6.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 6:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlelabyrinth7.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 7:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlelabyrinth8.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 8:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlelabyrinth9.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 9:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlelabyrinth10.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 10:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlelabyrinth11.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 11:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlelabyrinth12.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 12:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlelabyrinth13.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 13:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlelabyrinth14.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 14:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castlelabyrinth15.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
         break;
     }
 }
@@ -616,6 +1254,15 @@ void Travel::decayMap(sf::RenderWindow& window, Assets& assets, Event& notevent,
         break;
     case 1:
         this->decayChasms(assets, notevent, combat, player);
+        break;
+    case 2:
+        this->decayOcean(assets, notevent, combat, player);
+        break;
+    case 3:
+        this->decayForest(assets, notevent, combat, player);
+        break;
+    case 4:
+        this->decayGiants(assets, notevent, combat, player);
         break;
     }
 }
@@ -717,6 +1364,395 @@ void Travel::decayChasms(Assets& assets, Event& notevent, Combat& combat, Player
     case 9:
         if (this->frameInit == false) {
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimson10.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 10:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimson11.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 11:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimson12.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 12:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimson13.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 13:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimson14.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 14:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimson15.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    }
+}
+
+void Travel::decayOcean(Assets& assets, Event& notevent, Combat& combat, Player& player)
+{
+    //Uninitialize && Reinitialize castleDepth Event
+    notevent.reInitialize(assets);
+    switch (this->frame) {
+    case 0:
+        //Draw Map Sprite
+        this->forestBonfireInit = false; //Uninit bonfire if switching via selector buttons
+        assets.bonfireAssets = false;
+        assets.locationText.setString("Decay Ocean");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayocean1.jpeg");
+            assets.map.setTexture(assets.mapTexture);
+            assets.map.setPosition(440.0f, -200.0f); // absolute position
+            this->frameInit = true;
+        }
+        break;
+    case 1:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayocean2.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 2:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayocean3.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 3:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayocean4.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 4:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayocean5.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 5:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayocean6.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 6:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayocean7.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 7:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayocean8.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 8:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayocean9.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 9:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayocean10.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 10:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayocean11.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 11:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayocean12.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 12:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayocean13.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 13:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayocean14.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 14:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayocean15.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    }
+}
+
+void Travel::decayForest(Assets& assets, Event& notevent, Combat& combat, Player& player)
+{
+    //Uninitialize && Reinitialize castleDepth Event
+    notevent.reInitialize(assets);
+    switch (this->frame) {
+    case 0:
+        //Draw Map Sprite
+        this->forestBonfireInit = false; //Uninit bonfire if switching via selector buttons
+        assets.bonfireAssets = false;
+        assets.locationText.setString("Decay Ocean");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonforest1.jpeg");
+            assets.map.setTexture(assets.mapTexture);
+            assets.map.setPosition(440.0f, -200.0f); // absolute position
+            this->frameInit = true;
+        }
+        break;
+    case 1:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonforest2.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 2:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonforest3.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 3:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonforest4.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 4:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonforest5.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 5:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonforest6.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 6:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonforest7.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 7:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonforest8.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 8:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonforest9.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 9:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonforest10.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 10:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonforest11.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 11:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonforest12.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 12:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonforest13.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 13:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonforest14.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 14:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonforest15.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    }
+}
+
+void Travel::decayGiants(Assets& assets, Event& notevent, Combat& combat, Player& player)
+{
+    //Uninitialize && Reinitialize castleDepth Event
+    notevent.reInitialize(assets);
+    switch (this->frame) {
+    case 0:
+        //Draw Map Sprite
+        this->forestBonfireInit = false; //Uninit bonfire if switching via selector buttons
+        assets.bonfireAssets = false;
+        assets.locationText.setString("Decay Ocean");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonGiants1.jpeg");
+            assets.map.setTexture(assets.mapTexture);
+            assets.map.setPosition(440.0f, -200.0f); // absolute position
+            this->frameInit = true;
+        }
+        break;
+    case 1:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonGiants2.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 2:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonGiants3.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 3:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonGiants4.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 4:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonGiants5.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 5:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonGiants6.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 6:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonGiants7.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 7:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonGiants8.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 8:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonGiants9.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 9:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonGiants10.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 10:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonGiants11.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 11:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonGiants12.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 12:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonGiants13.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 13:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonGiants14.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        break;
+    case 14:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/crimsonGiants15.jpeg");
             this->frameInit = true;
         }
         assets.map.setTexture(assets.mapTexture);

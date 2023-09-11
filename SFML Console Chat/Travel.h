@@ -59,17 +59,23 @@ public:
 	void forestEntrance(Assets& assets, Event& notevent, Combat& combat, Player& player);
 	void forestDepths(Assets& assets, Event& notevent, Combat& combat, Player& player);
 	void forestAbyssal(Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void forestAbyssalDepths(Assets& assets, Event& notevent, Combat& combat, Player& player);
 
 	//Draw Castle
 	void castleMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
 	void castleBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
 	void castleHalls(Assets& assets, Event& notevent, Combat& combat, Player& player);
 	void castleDepths(Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void castleChambers(Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void castleLabyrinth(Assets& assets, Event& notevent, Combat& combat, Player& player);
 
 	//Draw Decay
 	void decayMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
 	void decayBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
 	void decayChasms(Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void decayOcean(Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void decayForest(Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void decayGiants(Assets& assets, Event& notevent, Combat& combat, Player& player);
 };
 
 

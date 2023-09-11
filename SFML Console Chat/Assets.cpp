@@ -20,11 +20,12 @@ Assets::Assets()
 
     //Map Button Control Flow
     this->areaUnlocked = 2;
-    this->forestAreaUnlocked = 3;
-    this->castleAreaUnlocked = 2;
-    this->decayAreaUnlocked = 1;
+    this->forestAreaUnlocked = 4;
+    this->castleAreaUnlocked = 4;
+    this->decayAreaUnlocked = 4;
 
     //Sprite Control Flow
+    this->playerLoadOnce = true;
     this->spadeInit = false;
     this->spadeLoadOnce = true;
 
@@ -32,9 +33,11 @@ Assets::Assets()
     this->zinLoadOnce = true;
 
     //Sprite Border Control Flow
-    this->spriteInit = true;
+    this->spriteInit = false;
+    this->playerInit = false;
 
     //Sprite Integer Selection
+    this->playerCounter = -1;
     this->spadeCounter = -1;
     this->zinCounter = -1;
     this->mapCounter = -1;
@@ -53,13 +56,16 @@ Assets::Assets()
     this->rectInventoryBoxX = 1700;
     this->rectInventoryBoxY = 10;
 
-
     //Initialize Combat Assets
     this->introAssets = true;
     this->combatAssets = false;
     this->bonfireAssets = false;
     this->playerTurnAssets = false;
     this->zinTurnAssets = false;
+
+    //Combat Move Unlocks
+    this->combatPlayerMoves = 1;
+    this->combatZinMoves = 1;
 
     //Strings
     this->playerName = "player";
@@ -84,9 +90,10 @@ void Assets::drawObjects()
     this->drawInventory();
     this->drawZinStats();
     //Sprite Assets
+    this->playerSprite();
     this->spadeSprite();
     this->zinSprite();
-    this->drawSpriteBox();
+    this->drawSpadeSpriteBox();
     //Combat Asset Functions
     this->initCombatAssets();
     //Detection
@@ -576,73 +583,57 @@ void Assets::drawForestMapButtons()
         forestMapView.setPosition(rectMapX, rectMapY);
         forestMapView.setScale(0.39f, 0.39f);
 
+        //Load Buttons
+        for (int i = 0; i < mapForestElements.size(); i++) {
+            mapForestElements[i].setTexture(buttonTexture);
+            mapForestElements[i].setScale(0.5f, 0.5f);
+            mapForestElementsText[i].setFont(font);
+            mapForestElementsText[i].setFillColor(sf::Color::White);
+            mapForestElementsText[i].setCharacterSize(12);
+        }
+
         //Forest areas unlocked
         switch (this->forestAreaUnlocked) {
         case 0:
-            mapForestElements[0].setTexture(buttonTexture);
             mapForestElements[0].setPosition(rectMapX + 145, rectMapY + 25);
-            mapForestElements[0].setScale(0.5f, 0.5f);
-            mapForestElementsText[0].setFont(font);
-            mapForestElementsText[0].setFillColor(sf::Color::White);
             mapForestElementsText[0].setPosition(rectMapX + 145, rectMapY + 10);
-            mapForestElementsText[0].setCharacterSize(12);
-            mapForestElementsText[0].setString("Forest Bonfire");
+            mapForestElementsText[0].setString("Bonfire");
+            //Hidden
+            mapForestElements[1].setPosition(rectMapX + 10000, rectMapY + 10000);
+            mapForestElements[2].setPosition(rectMapX + 10000, rectMapY + 10000);
+            mapForestElements[3].setPosition(rectMapX + 10000, rectMapY + 10000);
+            mapForestElements[4].setPosition(rectMapX + 10000, rectMapY + 10000);
             break;
         case 1:
-            mapForestElements[0].setTexture(buttonTexture);
             mapForestElements[0].setPosition(rectMapX + 145, rectMapY + 25);
-            mapForestElements[0].setScale(0.5f, 0.5f);
-            mapForestElementsText[0].setFont(font);
-            mapForestElementsText[0].setFillColor(sf::Color::White);
             mapForestElementsText[0].setPosition(rectMapX + 145, rectMapY + 10);
-            mapForestElementsText[0].setCharacterSize(12);
-            mapForestElementsText[0].setString("Forest Bonfire");
-            mapForestElements[1].setTexture(buttonTexture);
+            mapForestElementsText[0].setString("Bonfire");
             mapForestElements[1].setPosition(rectMapX + 34, rectMapY + 20);
-            mapForestElements[1].setScale(0.5f, 0.5f);
-            mapForestElementsText[1].setFont(font);
-            mapForestElementsText[1].setFillColor(sf::Color::White);
             mapForestElementsText[1].setPosition(rectMapX + 34, rectMapY + 5);
-            mapForestElementsText[1].setCharacterSize(12);
             mapForestElementsText[1].setString("Forest Entrance");
+            //Hidden
+            mapForestElements[2].setPosition(rectMapX + 10000, rectMapY + 10000);
+            mapForestElements[3].setPosition(rectMapX + 10000, rectMapY + 10000);
+            mapForestElements[4].setPosition(rectMapX + 10000, rectMapY + 10000);
             break;
         case 2:
-            mapForestElements[0].setTexture(buttonTexture);
             mapForestElements[0].setPosition(rectMapX + 145, rectMapY + 25);
-            mapForestElements[0].setScale(0.5f, 0.5f);
-            mapForestElementsText[0].setFont(font);
-            mapForestElementsText[0].setFillColor(sf::Color::White);
             mapForestElementsText[0].setPosition(rectMapX + 145, rectMapY + 10);
-            mapForestElementsText[0].setCharacterSize(12);
-            mapForestElementsText[0].setString("Forest Bonfire");
-            mapForestElements[1].setTexture(buttonTexture);
+            mapForestElementsText[0].setString("Bonfire");
             mapForestElements[1].setPosition(rectMapX + 34, rectMapY + 20);
-            mapForestElements[1].setScale(0.5f, 0.5f);
-            mapForestElementsText[1].setFont(font);
-            mapForestElementsText[1].setFillColor(sf::Color::White);
             mapForestElementsText[1].setPosition(rectMapX + 34, rectMapY + 5);
-            mapForestElementsText[1].setCharacterSize(12);
             mapForestElementsText[1].setString("Forest Entrance");
-            mapForestElements[2].setTexture(buttonTexture);
             mapForestElements[2].setPosition(rectMapX + 75, rectMapY + 240);
-            mapForestElements[2].setScale(0.5f, 0.5f);
-            mapForestElementsText[2].setFont(font);
-            mapForestElementsText[2].setFillColor(sf::Color::White);
             mapForestElementsText[2].setPosition(rectMapX + 75, rectMapY + 225);
-            mapForestElementsText[2].setCharacterSize(12);
             mapForestElementsText[2].setString("Forest Depths");
+            //Hidden
+            mapForestElements[3].setPosition(rectMapX + 10000, rectMapY + 10000);
+            mapForestElements[4].setPosition(rectMapX + 10000, rectMapY + 10000);
             break;
         case 3:
-            for (int i = 0; i < mapForestElements.size(); i++) {
-                mapForestElements[i].setTexture(buttonTexture);
-                mapForestElements[i].setScale(0.5f, 0.5f);
-                mapForestElementsText[i].setFont(font);
-                mapForestElementsText[i].setFillColor(sf::Color::White);
-                mapForestElementsText[i].setCharacterSize(12);
-            }
             mapForestElements[0].setPosition(rectMapX + 145, rectMapY + 25);
             mapForestElementsText[0].setPosition(rectMapX + 145, rectMapY + 10);
-            mapForestElementsText[0].setString("Forest Bonfire");
+            mapForestElementsText[0].setString("Bonfire");
             mapForestElements[1].setPosition(rectMapX + 34, rectMapY + 20);
             mapForestElementsText[1].setPosition(rectMapX + 34, rectMapY + 5);
             mapForestElementsText[1].setString("Forest Entrance");
@@ -652,6 +643,25 @@ void Assets::drawForestMapButtons()
             mapForestElements[3].setPosition(rectMapX + 175, rectMapY + 200);
             mapForestElementsText[3].setPosition(rectMapX + 175, rectMapY + 185);
             mapForestElementsText[3].setString("Abyssal Forest");
+            //Hidden
+            mapForestElements[4].setPosition(rectMapX + 10000, rectMapY + 10000);
+            break;
+        case 4:
+            mapForestElements[0].setPosition(rectMapX + 145, rectMapY + 25);
+            mapForestElementsText[0].setPosition(rectMapX + 145, rectMapY + 10);
+            mapForestElementsText[0].setString("Bonfire");
+            mapForestElements[1].setPosition(rectMapX + 34, rectMapY + 20);
+            mapForestElementsText[1].setPosition(rectMapX + 34, rectMapY + 5);
+            mapForestElementsText[1].setString("Forest Entrance");
+            mapForestElements[2].setPosition(rectMapX + 75, rectMapY + 240);
+            mapForestElementsText[2].setPosition(rectMapX + 75, rectMapY + 225);
+            mapForestElementsText[2].setString("Forest Depths");
+            mapForestElements[3].setPosition(rectMapX + 175, rectMapY + 200);
+            mapForestElementsText[3].setPosition(rectMapX + 175, rectMapY + 185);
+            mapForestElementsText[3].setString("Abyssal Forest");
+            mapForestElements[4].setPosition(rectMapX + 240, rectMapY + 320);
+            mapForestElementsText[4].setPosition(rectMapX + 240, rectMapY + 305);
+            mapForestElementsText[4].setString("Abyssal Depths");
             break;
         }
         this->initForestMapTexture = true;
@@ -684,60 +694,70 @@ void Assets::drawCastleMapButtons()
         spriteMapView.setPosition(rectMapX, rectMapY);
         spriteMapView.setScale(0.38f, 0.38f);
 
+        //Load Castle Buttons
+        for (int i = 0; i < mapCastleElements.size(); i++) {
+            mapCastleElements[i].setTexture(buttonTexture);
+            mapCastleElements[i].setScale(0.5f, 0.5f);
+            mapCastleElementsText[i].setFont(font);
+            mapCastleElementsText[i].setCharacterSize(12);
+            mapCastleElementsText[i].setFillColor(sf::Color::White);
+        }
+
         switch (this->castleAreaUnlocked) {
         case 0:
-            mapCastleElements[0].setTexture(buttonTexture);
             mapCastleElements[0].setPosition(rectMapX + 27, rectMapY + 322);
-            mapCastleElements[0].setScale(0.5f, 0.5f);
-            mapCastleElementsText[0].setFont(font);
-            mapCastleElementsText[0].setCharacterSize(12);
             mapCastleElementsText[0].setPosition(rectMapX + 27, rectMapY + 307);
-            mapCastleElementsText[0].setFillColor(sf::Color::White);
-            mapCastleElementsText[0].setString("Castle Bonfire");
+            mapCastleElementsText[0].setString("Bonfire");
             break;
         case 1:
-            mapCastleElements[0].setTexture(buttonTexture);
             mapCastleElements[0].setPosition(rectMapX + 27, rectMapY + 322);
-            mapCastleElements[0].setScale(0.5f, 0.5f);
-            mapCastleElementsText[0].setFont(font);
-            mapCastleElementsText[0].setCharacterSize(12);
             mapCastleElementsText[0].setPosition(rectMapX + 27, rectMapY + 307);
-            mapCastleElementsText[0].setFillColor(sf::Color::White);
-            mapCastleElementsText[0].setString("Castle Bonfire");
-            mapCastleElements[1].setTexture(buttonTexture);
+            mapCastleElementsText[0].setString("Bonfire");
             mapCastleElements[1].setPosition(rectMapX + 75, rectMapY + 240);
-            mapCastleElements[1].setScale(0.5f, 0.5f);
-            mapCastleElementsText[1].setFont(font);
-            mapCastleElementsText[1].setCharacterSize(12);
             mapCastleElementsText[1].setPosition(rectMapX + 75, rectMapY + 225);
-            mapCastleElementsText[1].setFillColor(sf::Color::White);
-            mapCastleElementsText[1].setString("Castle Halls");
+            mapCastleElementsText[1].setString("Halls");
             break;
         case 2:
-            mapCastleElements[0].setTexture(buttonTexture);
             mapCastleElements[0].setPosition(rectMapX + 27, rectMapY + 322);
-            mapCastleElements[0].setScale(0.5f, 0.5f);
-            mapCastleElementsText[0].setFont(font);
-            mapCastleElementsText[0].setCharacterSize(12);
             mapCastleElementsText[0].setPosition(rectMapX + 27, rectMapY + 307);
-            mapCastleElementsText[0].setFillColor(sf::Color::White);
-            mapCastleElementsText[0].setString("Castle Bonfire");
-            mapCastleElements[1].setTexture(buttonTexture);
+            mapCastleElementsText[0].setString("Bonfire");
             mapCastleElements[1].setPosition(rectMapX + 75, rectMapY + 240);
-            mapCastleElements[1].setScale(0.5f, 0.5f);
-            mapCastleElementsText[1].setFont(font);
-            mapCastleElementsText[1].setCharacterSize(12);
             mapCastleElementsText[1].setPosition(rectMapX + 75, rectMapY + 225);
-            mapCastleElementsText[1].setFillColor(sf::Color::White);
-            mapCastleElementsText[1].setString("Castle Halls");
-            mapCastleElements[2].setTexture(buttonTexture);
+            mapCastleElementsText[1].setString("Halls");
             mapCastleElements[2].setPosition(rectMapX + 34, rectMapY + 20);
-            mapCastleElements[2].setScale(0.5f, 0.5f);
-            mapCastleElementsText[2].setFont(font);
-            mapCastleElementsText[2].setCharacterSize(12);
             mapCastleElementsText[2].setPosition(rectMapX + 34, rectMapY + 5);
-            mapCastleElementsText[2].setFillColor(sf::Color::White);
-            mapCastleElementsText[2].setString("Castle Depths");
+            mapCastleElementsText[2].setString("Depths");
+            break;
+        case 3:
+            mapCastleElements[0].setPosition(rectMapX + 27, rectMapY + 322);
+            mapCastleElementsText[0].setPosition(rectMapX + 27, rectMapY + 307);
+            mapCastleElementsText[0].setString("Bonfire");
+            mapCastleElements[1].setPosition(rectMapX + 75, rectMapY + 240);
+            mapCastleElementsText[1].setPosition(rectMapX + 75, rectMapY + 225);
+            mapCastleElementsText[1].setString("Halls");
+            mapCastleElements[2].setPosition(rectMapX + 34, rectMapY + 20);
+            mapCastleElementsText[2].setPosition(rectMapX + 34, rectMapY + 5);
+            mapCastleElementsText[2].setString("Depths");
+            mapCastleElements[3].setPosition(rectMapX + 200, rectMapY + 20);
+            mapCastleElementsText[3].setPosition(rectMapX + 200, rectMapY + 5);
+            mapCastleElementsText[3].setString("Chambers");
+            break;
+        case 4:
+            mapCastleElements[0].setPosition(rectMapX + 27, rectMapY + 322);
+            mapCastleElementsText[0].setPosition(rectMapX + 27, rectMapY + 307);
+            mapCastleElementsText[0].setString("Bonfire");
+            mapCastleElements[1].setPosition(rectMapX + 75, rectMapY + 240);
+            mapCastleElementsText[1].setPosition(rectMapX + 75, rectMapY + 225);
+            mapCastleElementsText[1].setString("Halls");
+            mapCastleElements[2].setPosition(rectMapX + 34, rectMapY + 20);
+            mapCastleElementsText[2].setPosition(rectMapX + 34, rectMapY + 5);
+            mapCastleElementsText[2].setString("Depths");
+            mapCastleElements[3].setPosition(rectMapX + 200, rectMapY + 20);
+            mapCastleElementsText[3].setPosition(rectMapX + 200, rectMapY + 5);
+            mapCastleElementsText[3].setString("Chambers");
+            mapCastleElements[4].setPosition(rectMapX + 305, rectMapY + 210);
+            mapCastleElementsText[4].setPosition(rectMapX + 305, rectMapY + 195);
+            mapCastleElementsText[4].setString("Labyrinth");
             break;
         }
         this->initMapTexture = true;
@@ -768,37 +788,72 @@ void Assets::drawDecayMapButtons()
         decayTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayMap.jpeg");
         decayMapView.setTexture(decayTexture);
         decayMapView.setPosition(rectMapX, rectMapY);
-        decayMapView.setScale(0.38f, 0.38f);
+        decayMapView.setScale(0.39f, 0.39f);
 
-        //Load Decay Buttons
+        //Load Decay buttons
+        for (int i = 0; i < mapDecayElements.size(); i++) {
+            mapDecayElements[i].setTexture(buttonTexture);
+            mapDecayElements[i].setScale(0.5f, 0.5f);
+            mapDecayElementsText[i].setFont(font);
+            mapDecayElementsText[i].setCharacterSize(12);
+            mapDecayElementsText[i].setFillColor(sf::Color::White);
+        }
+
         switch (this->decayAreaUnlocked) {
         case 0:
-            mapDecayElements[0].setTexture(buttonTexture);
             mapDecayElements[0].setPosition(rectMapX + 220, rectMapY + 215);
-            mapDecayElements[0].setScale(0.5f, 0.5f);
-            mapDecayElementsText[0].setFont(font);
-            mapDecayElementsText[0].setCharacterSize(12);
             mapDecayElementsText[0].setPosition(rectMapX + 220, rectMapY + 200);
-            mapDecayElementsText[0].setFillColor(sf::Color::White);
-            mapDecayElementsText[0].setString("Decay Bonfire");
+            mapDecayElementsText[0].setString("Bonfire");
             break;
         case 1:
-            mapDecayElements[0].setTexture(buttonTexture);
             mapDecayElements[0].setPosition(rectMapX + 220, rectMapY + 215);
-            mapDecayElements[0].setScale(0.5f, 0.5f);
-            mapDecayElementsText[0].setFont(font);
-            mapDecayElementsText[0].setCharacterSize(12);
             mapDecayElementsText[0].setPosition(rectMapX + 220, rectMapY + 200);
-            mapDecayElementsText[0].setFillColor(sf::Color::White);
-            mapDecayElementsText[0].setString("Decay Bonfire");
-            mapDecayElements[1].setTexture(buttonTexture);
+            mapDecayElementsText[0].setString("Bonfire");
             mapDecayElements[1].setPosition(rectMapX + 245, rectMapY + 110);
-            mapDecayElements[1].setScale(0.5f, 0.5f);
-            mapDecayElementsText[1].setFont(font);
-            mapDecayElementsText[1].setCharacterSize(12);
             mapDecayElementsText[1].setPosition(rectMapX + 245, rectMapY + 95);
-            mapDecayElementsText[1].setFillColor(sf::Color::White);
-            mapDecayElementsText[1].setString("Decay Chasms");
+            mapDecayElementsText[1].setString("Crimson Chasms");
+            break;
+        case 2:
+            mapDecayElements[0].setPosition(rectMapX + 220, rectMapY + 215);
+            mapDecayElementsText[0].setPosition(rectMapX + 220, rectMapY + 200);
+            mapDecayElementsText[0].setString("Bonfire");
+            mapDecayElements[1].setPosition(rectMapX + 245, rectMapY + 110);
+            mapDecayElementsText[1].setPosition(rectMapX + 245, rectMapY + 95);
+            mapDecayElementsText[1].setString("Crimson Chasms");
+            mapDecayElements[2].setPosition(rectMapX + 200, rectMapY + 60);
+            mapDecayElementsText[2].setPosition(rectMapX + 200, rectMapY + 45);
+            mapDecayElementsText[2].setString("Decay Ocean");
+            break;
+        case 3:
+            mapDecayElements[0].setPosition(rectMapX + 220, rectMapY + 215);
+            mapDecayElementsText[0].setPosition(rectMapX + 220, rectMapY + 200);
+            mapDecayElementsText[0].setString("Bonfire");
+            mapDecayElements[1].setPosition(rectMapX + 245, rectMapY + 110);
+            mapDecayElementsText[1].setPosition(rectMapX + 245, rectMapY + 95);
+            mapDecayElementsText[1].setString("Crimson Chasms");
+            mapDecayElements[2].setPosition(rectMapX + 200, rectMapY + 60);
+            mapDecayElementsText[2].setPosition(rectMapX + 200, rectMapY + 45);
+            mapDecayElementsText[2].setString("Decay Ocean");
+            mapDecayElements[3].setPosition(rectMapX + 150, rectMapY + 40);
+            mapDecayElementsText[3].setPosition(rectMapX + 150, rectMapY + 25);
+            mapDecayElementsText[3].setString("Decay Forest");
+            break;
+        case 4:
+            mapDecayElements[0].setPosition(rectMapX + 220, rectMapY + 215);
+            mapDecayElementsText[0].setPosition(rectMapX + 220, rectMapY + 200);
+            mapDecayElementsText[0].setString("Bonfire");
+            mapDecayElements[1].setPosition(rectMapX + 245, rectMapY + 110);
+            mapDecayElementsText[1].setPosition(rectMapX + 245, rectMapY + 95);
+            mapDecayElementsText[1].setString("Crimson Chasms");
+            mapDecayElements[2].setPosition(rectMapX + 200, rectMapY + 60);
+            mapDecayElementsText[2].setPosition(rectMapX + 200, rectMapY + 45);
+            mapDecayElementsText[2].setString("Decay Ocean");
+            mapDecayElements[3].setPosition(rectMapX + 150, rectMapY + 40);
+            mapDecayElementsText[3].setPosition(rectMapX + 150, rectMapY + 25);
+            mapDecayElementsText[3].setString("Decay Forest");
+            mapDecayElements[4].setPosition(rectMapX + 25, rectMapY + 50);
+            mapDecayElementsText[4].setPosition(rectMapX + 25, rectMapY + 35);
+            mapDecayElementsText[4].setString("Giants Plateau");
             break;
         } 
         this->initDecayMapTexture = true;
@@ -878,9 +933,10 @@ void Assets::bonfireSmithDetection()
     }
 }
 
-//Sprite Functions
-void Assets::drawSpriteBox()
+//Draw Sprite Boxes
+void Assets::drawSpadeSpriteBox()
 {
+    //Spades Sprite Box
     if (this->spriteInit == true) {
         //Draw Sprite Box
         rectElements[5].setFillColor(sf::Color::Black);
@@ -900,11 +956,71 @@ void Assets::drawSpriteBox()
     }
 }
 
+void Assets::drawPlayerSpriteBox()
+{
+    //Draw Player Sprite Box
+    rectElements[6].setFillColor(sf::Color::Black);
+    rectElements[6].setPosition(50.0f, 145.0f);
+    rectElements[6].setSize(sf::Vector2f(153.0f, 153.0f));
+    rectElements[6].setOutlineColor(sf::Color::White);
+    rectElements[6].setOutlineThickness(2.0f);
+    //Sprite Player Name Text
+    textElements[6].setFont(font);
+    textElements[6].setCharacterSize(18);
+    textElements[6].setPosition(50.0f, 300.0f);
+    textElements[6].setFillColor(sf::Color::White);
+}
+
+void Assets::drawZinSpriteBox()
+{
+    //Draw Zin Sprite Box
+    rectElements[7].setFillColor(sf::Color::Black);
+    rectElements[7].setPosition(50.0f, 345.0f);
+    rectElements[7].setSize(sf::Vector2f(153.0f, 153.0f));
+    rectElements[7].setOutlineColor(sf::Color::White);
+    rectElements[7].setOutlineThickness(2.0f);
+    //Sprite Zin Name Text
+    textElements[7].setFont(font);
+    textElements[7].setCharacterSize(18);
+    textElements[7].setPosition(50.0f, 500.0f);
+    textElements[7].setFillColor(sf::Color::White);
+}
+
+//Sprite Functions
+void Assets::playerSprite()
+{
+    //Initialize Player Sprite
+    if (this->playerLoadOnce == true) {
+        playerTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/player.png");
+        spriteElements[4].setPosition(sf::Vector2f(10000.0f, 145.0f)); // absolute position
+        this->playerLoadOnce = false;
+    }
+    //Pick Player Sprite Emotion
+    switch (this->playerCounter) {
+    case -1:
+        spriteElements[4].setPosition(sf::Vector2f(10000.0f, 145.0f)); // absolute position
+        break;
+    case 0:
+        if (this->playerInit == false) {
+            playerTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/player.png");
+            spriteElements[4].setPosition(sf::Vector2f(50.0f, 145.0f)); // absolute position
+            this->playerInit = true;
+        }
+        break;
+    }
+
+    //Sprite Options, ect
+    playerTexture.setSmooth(true);
+    playerTexture.setRepeated(false);
+    spriteElements[4].setTexture(playerTexture);
+    spriteElements[4].setScale(0.244f, 0.244f);
+}
+
 void Assets::spadeSprite()
 {
     //Initialize Spade Sprite
     if (this->spadeLoadOnce == true) {
-        texture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixel.png");
+        spadeTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixel.png");
         spriteElements[2].setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
         this->spadeLoadOnce = false;
     }
@@ -915,16 +1031,17 @@ void Assets::spadeSprite()
         break;
     case 0:
         if (this->spadeInit == false) {
-            texture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixel.png");
+            spadeTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixel.png");
             spriteElements[2].setPosition(sf::Vector2f(50.0f, 560.0f)); // absolute position
-            spriteText.setString("Spade");
+            spadeText.setString("Spade");
+            std::cout << "ping!";
             this->spadeInit = true;
         }
         break;
     case 1:
         if (this->spadeInit == false) {
-            spriteText.setString("Spade");
-            texture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixelAngry.png");
+            spadeText.setString("Spade");
+            spadeTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixelAngry.png");
             this->spadeInit = true;
         }
         break;
@@ -932,21 +1049,21 @@ void Assets::spadeSprite()
    
 
     //Sprite Options, ect
-    texture.setSmooth(true);
-    texture.setRepeated(false);
-    spriteElements[2].setTexture(texture);
+    spadeTexture.setSmooth(true);
+    spadeTexture.setRepeated(false);
+    spriteElements[2].setTexture(spadeTexture);
     spriteElements[2].setScale(0.050f, 0.050f);
 }
 
 void Assets::zinSprite()
 {
-    //Initialize Spade Sprite
+    //Initialize Zin Sprite
     if (this->zinLoadOnce == true) {
         zinTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite.png");
         spriteElements[3].setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
         this->zinLoadOnce = false;
     }
-    //Pick Spade Sprite Emotion
+    //Pick Zin Sprite Emotion
     switch (this->zinCounter) {
     case -1:
         spriteElements[3].setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
@@ -970,35 +1087,16 @@ void Assets::zinSprite()
     //zinTexture.setSmooth(true);
     zinTexture.setRepeated(false);
     spriteElements[3].setTexture(zinTexture);
-    spriteElements[3].setScale(0.05f, 0.05f);
+    spriteElements[3].setScale(0.0504f, 0.0504f);
 }
 
 //Combat Asset Functions
 void Assets::initCombatAssets()
 {
     if (combatAssets == true) {
-        //Draw Player Sprite Box
-        rectElements[6].setFillColor(sf::Color::Black);
-        rectElements[6].setPosition(50.0f, 145.0f);
-        rectElements[6].setSize(sf::Vector2f(153.0f, 153.0f));
-        rectElements[6].setOutlineColor(sf::Color::White);
-        rectElements[6].setOutlineThickness(2.0f);
-        //Sprite Player Name Text
-        textElements[6].setFont(font);
-        textElements[6].setCharacterSize(18);
-        textElements[6].setPosition(50.0f, 300.0f);
-        textElements[6].setFillColor(sf::Color::White);
-        //Draw Zin Sprite Box
-        rectElements[7].setFillColor(sf::Color::Black);
-        rectElements[7].setPosition(50.0f, 345.0f);
-        rectElements[7].setSize(sf::Vector2f(153.0f, 153.0f));
-        rectElements[7].setOutlineColor(sf::Color::White);
-        rectElements[7].setOutlineThickness(2.0f);
-        //Sprite Zin Name Text
-        textElements[7].setFont(font);
-        textElements[7].setCharacterSize(18);
-        textElements[7].setPosition(50.0f, 500.0f);
-        textElements[7].setFillColor(sf::Color::White);
+        //Draw Zin and Player Sprite Boxes
+        this->drawPlayerSpriteBox();
+        this->drawZinSpriteBox();
         //Draw Hostile Sprite Box
         rectElements[8].setFillColor(sf::Color::Black);
         rectElements[8].setPosition(1650.0f, 300.0f);
@@ -1010,6 +1108,35 @@ void Assets::initCombatAssets()
         textElements[8].setCharacterSize(18);
         textElements[8].setPosition(1650.0f, 455.0f);
         textElements[8].setFillColor(sf::Color::White);
+        this->playerCombatAssets();
+        this->zinCombatAssets();
+    }
+    else if (combatAssets == false && bonfireAssets == false) {
+        //Hide all combat assets
+        playerSpriteBorder.setPosition(50.0f, 10000.0f);
+        textElements[3].setPosition(335.0f, 10000.0f);
+        rectElements[3].setPosition(335.0f, 10000.0f);
+        textElements[4].setPosition(335.0f, 10000.0f);
+        rectElements[4].setPosition(335.0f, 10000.0f);
+        rectElements[6].setPosition(50.0f, 10000.0f);
+        textElements[6].setPosition(50.0f, 10000.0f);
+        rectElements[7].setPosition(50.0f, 10000.0f);
+        textElements[7].setPosition(50.0f, 10000.0f);
+        textElements[8].setPosition(1650.0f, 10000.0f);
+        rectElements[8].setPosition(1650.0f, 10000.0f);
+        textElements[9].setPosition(335.0f, 10000.0f);
+        rectElements[9].setPosition(335.0f, 10000.0f);
+        textElements[10].setPosition(335.0f, 10000.0f);
+        rectElements[10].setPosition(335.0f, 10000.0f);
+        playerCounter = -1;
+        zinCounter = -1;
+    }
+}
+
+void Assets::playerCombatAssets()
+{
+    switch (this->combatPlayerMoves) {
+    case 0:
         if (this->playerTurnAssets == true) {
             //Draw Player Slash Text
             textElements[3].setFont(font);
@@ -1026,6 +1153,44 @@ void Assets::initCombatAssets()
             textElements[3].setPosition(335.0f, 10000.0f);
             rectElements[3].setPosition(335.0f, 10000.0f);
         }
+        break;
+    case 1:
+        if (this->playerTurnAssets == true) {
+            //Draw Player Slash Text
+            textElements[3].setFont(font);
+            textElements[3].setCharacterSize(18);
+            textElements[3].setPosition(335.0f, 795.0f);
+            textElements[3].setString("Slash");
+            //Draw Player Slash Button
+            rectElements[3].setPosition(335.0f, 795.0f);
+            rectElements[3].setSize(sf::Vector2f(100.0f, 25.0f));
+            rectElements[3].setOutlineColor(sf::Color::White);
+            rectElements[3].setOutlineThickness(1.0f);
+            //Draw Player Guard Text
+            textElements[9].setFont(font);
+            textElements[9].setCharacterSize(18);
+            textElements[9].setPosition(335.0f, 765.0f);
+            textElements[9].setString("Guard");
+            //Draw Player Guard Button
+            rectElements[9].setPosition(335.0f, 765.0f);
+            rectElements[9].setSize(sf::Vector2f(100.0f, 25.0f));
+            rectElements[9].setOutlineColor(sf::Color::White);
+            rectElements[9].setOutlineThickness(1.0f);
+        }
+        else if (this->playerTurnAssets == false) {
+            textElements[3].setPosition(335.0f, 10000.0f);
+            rectElements[3].setPosition(335.0f, 10000.0f);
+            textElements[9].setPosition(335.0f, 10000.0f);
+            rectElements[9].setPosition(335.0f, 10000.0f);
+        }
+        break;
+    }
+}
+
+void Assets::zinCombatAssets()
+{
+    switch (this->combatZinMoves) {
+    case 0:
         if (this->zinTurnAssets == true) {
             //Draw Zin Smite Text
             textElements[4].setFont(font);
@@ -1042,27 +1207,61 @@ void Assets::initCombatAssets()
             textElements[4].setPosition(335.0f, 10000.0f);
             rectElements[4].setPosition(335.0f, 10000.0f);
         }
-    }
-    else if (combatAssets == false && bonfireAssets == false) {
-        //Hide all combat assets
-        playerSpriteBorder.setPosition(50.0f, 10000.0f);
-        textElements[3].setPosition(335.0f, 10000.0f);
-        rectElements[3].setPosition(335.0f, 10000.0f);
-        textElements[4].setPosition(335.0f, 10000.0f);
-        rectElements[4].setPosition(335.0f, 10000.0f);
-        rectElements[6].setPosition(50.0f, 10000.0f);
-        textElements[6].setPosition(50.0f, 10000.0f);
-        rectElements[7].setPosition(50.0f, 10000.0f);
-        textElements[7].setPosition(50.0f, 10000.0f);
-        textElements[8].setPosition(1650.0f, 10000.0f);
-        rectElements[8].setPosition(1650.0f, 10000.0f);
-        zinCounter = -1;
+        break;
+    case 1:
+        if (this->zinTurnAssets == true) {
+            //Draw Zin Smite Text
+            textElements[4].setFont(font);
+            textElements[4].setCharacterSize(18);
+            textElements[4].setPosition(335.0f, 795.0f);
+            textElements[4].setString("Smite");
+            //Draw Zin Smite Button
+            rectElements[4].setPosition(335.0f, 795.0f);
+            rectElements[4].setSize(sf::Vector2f(100.0f, 25.0f));
+            rectElements[4].setOutlineColor(sf::Color::White);
+            rectElements[4].setOutlineThickness(1.0f);
+            textElements[10].setFont(font);
+            textElements[10].setCharacterSize(18);
+            textElements[10].setPosition(335.0f, 765.0f);
+            textElements[10].setString("Mend");
+            //Draw Zin Smite Button
+            rectElements[10].setPosition(335.0f, 765.0f);
+            rectElements[10].setSize(sf::Vector2f(100.0f, 25.0f));
+            rectElements[10].setOutlineColor(sf::Color::White);
+            rectElements[10].setOutlineThickness(1.0f);
+        }
+        else if (this->zinTurnAssets == false) {
+            textElements[4].setPosition(335.0f, 10000.0f);
+            rectElements[4].setPosition(335.0f, 10000.0f);
+            textElements[10].setPosition(335.0f, 10000.0f);
+            rectElements[10].setPosition(335.0f, 10000.0f);
+        }
+        break;
     }
 }
 
 //Sound Functions
 void Assets::loadSFX()
 {
+    //Load Smite Sound
+    bufferSlash.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/slash.wav");
+    soundSlash.setBuffer(bufferSlash);
+    //Load Smite Sound
+    bufferSmite.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/smite.wav");
+    soundSmite.setBuffer(bufferSmite);
+    //Load Mend Sound
+    bufferMend.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/mend.wav");
+    soundMend.setBuffer(bufferMend);
+    //Load Guarded Sound
+    bufferGuarded.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/guarded.wav");
+    soundGuarded.setBuffer(bufferGuarded);
+    //Load Guard Sound
+    bufferGuard.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/guard.wav");
+    soundGuard.setBuffer(bufferGuard);
+    //Load Hover Sound
+    bufferSoundHover.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/hoversound.wav");
+    soundHover.setBuffer(bufferSoundHover);
+    //Load Walk Sound
     bufferWalk.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/moveRoom.wav");
     soundWalk.setBuffer(bufferWalk);
     //Load Combat Sound Effects

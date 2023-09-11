@@ -15,14 +15,14 @@ Event::~Event()
 //Core Functions
 void Event::reInitialize(Assets& assets)
 {
-    assets.spadeCounter = -1;//Reset Spade sprite switch case counter
-    assets.spriteInit = false; //Uninitialize sprite border
-    assets.dialogueCounter = 0; //Reset dialogue counter
-    assets.zinInit = false; //Allow zins sprite to be loaded again...
+   // assets.spadeCounter = -1;//Reset Spade sprite switch case counter
+   // assets.spriteInit = false; //Uninitialize sprite border
+    //assets.dialogueCounter = 0; //Reset dialogue counter
+    //assets.spadeInit = false; //Allow zins sprite to be loaded again...
     //assets.text.setString(""); //Reset dialogue box
 
-    this->encounterInit = true; //Reset Local Control Flow Bools
-    this->encounterInitTwo = true;
+    //this->encounterInit = true; //Reset Local Control Flow Bools
+    //this->encounterInitTwo = true;
 }
 
 //Bonfire Events
@@ -106,7 +106,6 @@ void Event::spadeEncounter(Assets& assets)
     case 0:
         if (this->encounterInit == true) {
             assets.spriteInit = true; //Initialize Sprite Border
-            assets.spadeInit = false; //Allow Spades Sprite from Assets to be usable again
             assets.spadeCounter = 0; //Pick which Spade Sprite to use via switch statement
             assets.text.setString("Hey, what are you doing here...?"); //Set text for what's happening
             this->encounterInit = false; //Ensure this only runs once...

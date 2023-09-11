@@ -78,8 +78,10 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                         return;
                     }
                     //Bonfire Functionality
-                    notevent.healCharacters(window, assets, combat);
-                    notevent.smithingSharpenBlade(window, assets, player);
+                    if (assets.bonfireAssets == true) {
+                        notevent.healCharacters(window, assets, combat);
+                        notevent.smithingSharpenBlade(window, assets, player);
+                    }
                 }
                 break;
             case sf::Event::MouseButtonReleased:
@@ -144,7 +146,7 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Initial Draw In
     if (assets.initialDrawIn == false) {
-        assets.windowIcon.loadFromFile("F:/Pfp's n Icons/Profile Pictures/pfp.jpg");
+        assets.windowIcon.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/shieldicon.jpeg");
         window.setIcon(assets.windowIcon.getSize().x, assets.windowIcon.getSize().y, assets.windowIcon.getPixelsPtr()); //set window icon
         assets.initialDrawIn = true;
     }
@@ -254,7 +256,6 @@ void World::greyOnHover(sf::RenderWindow& window, Assets& assets)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-
     //Turn Rects Grey On Hover
     for (int i = 0; i < assets.rectElements.size(); i++) {
         if (assets.rectElements[i].getGlobalBounds().contains(mousePosF)) {
@@ -300,12 +301,12 @@ void World::greyOnHover(sf::RenderWindow& window, Assets& assets)
     //Player Stats Grey On Hover
     for (int i = 0; i < assets.playerStatElements.size(); i++) {
         if (assets.playerStatElements[i].getGlobalBounds().contains(mousePosF)) {
-            assets.playerStatElements[i].setFillColor(sf::Color::Transparent);
+            assets.playerStatElements[i].setFillColor(sf::Color::Black);
             assets.playerTextElements[i].setFillColor(sf::Color::White);
         }
         else {
-            assets.playerStatElements[i].setFillColor(sf::Color::White);
-            assets.playerTextElements[i].setFillColor(sf::Color::Black);
+            assets.playerStatElements[i].setFillColor(sf::Color::Black);
+            assets.playerTextElements[i].setFillColor(sf::Color(5, 5, 5));
         }
     }
 
@@ -481,6 +482,13 @@ void World::mapButtons(sf::RenderWindow& window, Assets& assets)
         travel.frame = 0;
         this->buttonClick = true;
     }
+    else if (assets.mapForestElements[4].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.forestCounter = 4;
+        travel.frameInit = false;
+        travel.frame = 0;
+        this->buttonClick = true;
+    }
     
     //Castle Button Functionality
     if (assets.mapCastleElements[0].getGlobalBounds().contains(mousePosF)) {
@@ -504,6 +512,20 @@ void World::mapButtons(sf::RenderWindow& window, Assets& assets)
         travel.frame = 0;
         this->buttonClick = true;
     }
+    else if (assets.mapCastleElements[3].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.castleCounter = 3;
+        travel.frameInit = false;
+        travel.frame = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.mapCastleElements[4].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.castleCounter = 4;
+        travel.frameInit = false;
+        travel.frame = 0;
+        this->buttonClick = true;
+    }
 
     //Decay Button Functionality
     if (assets.mapDecayElements[0].getGlobalBounds().contains(mousePosF)) {
@@ -516,6 +538,27 @@ void World::mapButtons(sf::RenderWindow& window, Assets& assets)
     else if (assets.mapDecayElements[1].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
         travel.decayCounter = 1;
+        travel.frameInit = false;
+        travel.frame = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.mapDecayElements[2].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.decayCounter = 2;
+        travel.frameInit = false;
+        travel.frame = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.mapDecayElements[3].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.decayCounter = 3;
+        travel.frameInit = false;
+        travel.frame = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.mapDecayElements[4].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.decayCounter = 4;
         travel.frameInit = false;
         travel.frame = 0;
         this->buttonClick = true;
@@ -598,7 +641,7 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
                 player.exp -= player.expNext;
                 assets.playerTextElements[4].setString("LEVEL " + std::to_string(player.level));
                 assets.text.setString("Level up achieved. Level " + std::to_string(player.level) + " reached. One SP point acquired...");
-                combat.updateStats(player);
+                combat.updateStats(assets, player);
             }
             else if (player.exp <= player.expNext) {
                 assets.text.setString("Required Exp not met...");
@@ -618,7 +661,7 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
                 player.sp--;
                 assets.playerTextElements[5].setString("STRENGTH " + std::to_string(player.strength));
                 assets.text.setString("Strength improved. Level " + std::to_string(player.strength) + " in strength reached. One SP point spent...");
-                combat.updateStats(player);
+                combat.updateStats(assets, player);
             }
             else if (player.sp <= 0) {
                 assets.text.setString("Required SP not met...");
@@ -637,7 +680,7 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
                 player.sp--;
                 assets.playerTextElements[6].setString("FORTITUDE " + std::to_string(player.fortitude));
                 assets.text.setString("Fortitude improved. Level " + std::to_string(player.fortitude) + " in fortitude reached. One SP point spent...");
-                combat.updateStats(player);
+                combat.updateStats(assets, player);
             }
             else if (player.sp <= 0) {
                 assets.text.setString("Required SP not met...");
@@ -658,7 +701,7 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
                 combat.playerHpMax = combat.playerHp;
                 assets.playerTextElements[7].setString("VITALITY " + std::to_string(player.vitality));
                 assets.text.setString("Vitality improved. Level " + std::to_string(player.vitality) + " in vitality reached. One SP point spent...");
-                combat.updateStats(player);
+                combat.updateStats(assets, player);
             }
             else if (player.sp <= 0) {
                 assets.text.setString("Required SP not met...");
@@ -749,14 +792,30 @@ void World::dialogueBox(sf::RenderWindow& window, Combat& combat, Assets& assets
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+    //Player Combat Buttons Functionality
     if (assets.rectElements[3].getGlobalBounds().contains(mousePosF)) { //If attack button is clicked...
         if (combat.turnPlayer == true) {
             combat.attackCounter++;
+            combat.playerPickMove = 0;
         }
     }
+    if (assets.rectElements[9].getGlobalBounds().contains(mousePosF)) {
+        if (combat.turnPlayer == true) {
+            combat.attackCounter++;
+            combat.playerPickMove = 1;
+        }
+    }
+    //Zin Combat Buttons Functionality
     if (assets.rectElements[4].getGlobalBounds().contains(mousePosF)) {
         if (combat.turnZin == true) {
             combat.zinAttackCounter++;
+            combat.zinPickMove = 0;
+        }
+    }
+    if (assets.rectElements[10].getGlobalBounds().contains(mousePosF)) {
+        if (combat.turnZin == true) {
+            combat.zinAttackCounter++;
+            combat.zinPickMove = 1;
         }
     }
     else if (assets.rect.getGlobalBounds().contains(mousePosF)) { //If dialogue box is clicked...
@@ -792,30 +851,109 @@ void World::movableBox(sf::RenderWindow& window, Assets& assets)
 //Map Functions
 void World::resetMapPosition(sf::RenderWindow& window, Assets& assets)
 {
-    //Castle
-    assets.spriteMapView.setPosition(assets.rectMapX, assets.rectMapY);
-    assets.mapCastleElements[0].setPosition(assets.rectMapX + 27, assets.rectMapY + 322);
-    assets.mapCastleElements[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
-    assets.mapCastleElements[2].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
-    assets.mapCastleElementsText[0].setPosition(assets.rectMapX + 27, assets.rectMapY + 307);
-    assets.mapCastleElementsText[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 225);
-    assets.mapCastleElementsText[2].setPosition(assets.rectMapX + 34, assets.rectMapY + 5);
     //Forest
     assets.forestMapView.setPosition(assets.rectMapX, assets.rectMapY);
-    assets.mapForestElements[0].setPosition(assets.rectMapX + 145, assets.rectMapY + 25);
-    assets.mapForestElements[1].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
-    assets.mapForestElements[2].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
-    assets.mapForestElements[3].setPosition(assets.rectMapX + 175, assets.rectMapY + 200);
+    switch (assets.forestAreaUnlocked) {
+    case 0:
+        assets.mapForestElements[0].setPosition(assets.rectMapX + 145, assets.rectMapY + 25);
+        break;
+    case 1:
+        assets.mapForestElements[0].setPosition(assets.rectMapX + 145, assets.rectMapY + 25);
+        assets.mapForestElements[1].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
+        break;
+    case 2:
+        assets.mapForestElements[0].setPosition(assets.rectMapX + 145, assets.rectMapY + 25);
+        assets.mapForestElements[1].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
+        assets.mapForestElements[2].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
+        break;
+    case 3:
+        assets.mapForestElements[0].setPosition(assets.rectMapX + 145, assets.rectMapY + 25);
+        assets.mapForestElements[1].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
+        assets.mapForestElements[2].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
+        assets.mapForestElements[3].setPosition(assets.rectMapX + 175, assets.rectMapY + 200);
+        break;
+    case 4:
+        assets.mapForestElements[0].setPosition(assets.rectMapX + 145, assets.rectMapY + 25);
+        assets.mapForestElements[1].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
+        assets.mapForestElements[2].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
+        assets.mapForestElements[3].setPosition(assets.rectMapX + 175, assets.rectMapY + 200);
+        assets.mapForestElements[4].setPosition(assets.rectMapX + 240, assets.rectMapY + 320);
+        break;
+    }
     assets.mapForestElementsText[0].setPosition(assets.rectMapX + 145, assets.rectMapY + 10);
     assets.mapForestElementsText[1].setPosition(assets.rectMapX + 34, assets.rectMapY + 5);
     assets.mapForestElementsText[2].setPosition(assets.rectMapX + 75, assets.rectMapY + 225);
     assets.mapForestElementsText[3].setPosition(assets.rectMapX + 175, assets.rectMapY + 185);
+    assets.mapForestElementsText[4].setPosition(assets.rectMapX + 240, assets.rectMapY + 305);
+    //Castle
+    assets.spriteMapView.setPosition(assets.rectMapX, assets.rectMapY);
+    switch (assets.castleAreaUnlocked) {
+    case 0:
+        assets.mapCastleElements[0].setPosition(assets.rectMapX + 27, assets.rectMapY + 322);
+        break;
+    case 1:
+        assets.mapCastleElements[0].setPosition(assets.rectMapX + 27, assets.rectMapY + 322);
+        assets.mapCastleElements[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
+        break;
+    case 2:
+        assets.mapCastleElements[0].setPosition(assets.rectMapX + 27, assets.rectMapY + 322);
+        assets.mapCastleElements[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
+        assets.mapCastleElements[2].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
+        break;
+    case 3:
+        assets.mapCastleElements[0].setPosition(assets.rectMapX + 27, assets.rectMapY + 322);
+        assets.mapCastleElements[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
+        assets.mapCastleElements[2].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
+        assets.mapCastleElements[3].setPosition(assets.rectMapX + 200, assets.rectMapY + 20);
+        break;
+    case 4:
+        assets.mapCastleElements[0].setPosition(assets.rectMapX + 27, assets.rectMapY + 322);
+        assets.mapCastleElements[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
+        assets.mapCastleElements[2].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
+        assets.mapCastleElements[3].setPosition(assets.rectMapX + 200, assets.rectMapY + 20);
+        assets.mapCastleElements[4].setPosition(assets.rectMapX + 305, assets.rectMapY + 210);
+        break;
+    }
+    assets.mapCastleElementsText[0].setPosition(assets.rectMapX + 27, assets.rectMapY + 307);
+    assets.mapCastleElementsText[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 225);
+    assets.mapCastleElementsText[2].setPosition(assets.rectMapX + 34, assets.rectMapY + 5);
+    assets.mapCastleElementsText[3].setPosition(assets.rectMapX + 200, assets.rectMapY + 5);
+    assets.mapCastleElementsText[4].setPosition(assets.rectMapX + 305, assets.rectMapY + 195);
     //Decay
     assets.decayMapView.setPosition(assets.rectMapX, assets.rectMapY);
-    assets.mapDecayElements[0].setPosition(assets.rectMapX + 220, assets.rectMapY + 215);
-    assets.mapDecayElements[1].setPosition(assets.rectMapX + 245, assets.rectMapY + 110);
+    switch (assets.decayAreaUnlocked) {
+    case 0:
+        assets.mapDecayElements[0].setPosition(assets.rectMapX + 220, assets.rectMapY + 215);
+        break;
+    case 1:
+        assets.mapDecayElements[0].setPosition(assets.rectMapX + 220, assets.rectMapY + 215);
+        assets.mapDecayElements[1].setPosition(assets.rectMapX + 245, assets.rectMapY + 110);
+        break;
+    case 2:
+        assets.mapDecayElements[0].setPosition(assets.rectMapX + 220, assets.rectMapY + 215);
+        assets.mapDecayElements[1].setPosition(assets.rectMapX + 245, assets.rectMapY + 110);
+        assets.mapDecayElements[2].setPosition(assets.rectMapX + 200, assets.rectMapY + 60);
+        break;
+    case 3:
+        assets.mapDecayElements[0].setPosition(assets.rectMapX + 220, assets.rectMapY + 215);
+        assets.mapDecayElements[1].setPosition(assets.rectMapX + 245, assets.rectMapY + 110);
+        assets.mapDecayElements[2].setPosition(assets.rectMapX + 200, assets.rectMapY + 60);
+        assets.mapDecayElements[3].setPosition(assets.rectMapX + 150, assets.rectMapY + 40);
+        break;
+    case 4:
+        assets.mapDecayElements[0].setPosition(assets.rectMapX + 220, assets.rectMapY + 215);
+        assets.mapDecayElements[1].setPosition(assets.rectMapX + 245, assets.rectMapY + 110);
+        assets.mapDecayElements[2].setPosition(assets.rectMapX + 200, assets.rectMapY + 60);
+        assets.mapDecayElements[3].setPosition(assets.rectMapX + 150, assets.rectMapY + 40);
+        assets.mapDecayElements[4].setPosition(assets.rectMapX + 25, assets.rectMapY + 50);
+        break;
+        
+    }
     assets.mapDecayElementsText[0].setPosition(assets.rectMapX + 220, assets.rectMapY + 200);
     assets.mapDecayElementsText[1].setPosition(assets.rectMapX + 245, assets.rectMapY + 95);
+    assets.mapDecayElementsText[2].setPosition(assets.rectMapX + 200, assets.rectMapY + 45);
+    assets.mapDecayElementsText[3].setPosition(assets.rectMapX + 150, assets.rectMapY + 25);
+    assets.mapDecayElementsText[4].setPosition(assets.rectMapX + 25, assets.rectMapY + 35);
 }
 
 void World::selectMapView(sf::RenderWindow& window, Assets& assets)
@@ -853,7 +991,7 @@ void World::selectMapView(sf::RenderWindow& window, Assets& assets)
 
         travel.frame = 0;
         assets.soundWalk.play();
-        //travel.decayCounter = 0;
+        travel.decayCounter = 0;
         travel.frameInit = false;
         this->buttonClick = true;
     }
