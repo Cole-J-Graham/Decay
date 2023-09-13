@@ -29,7 +29,7 @@ Player::Player()
 	this->zinPatience = 0;
 	this->zinResilience = 0;
 
-	//Item Sttrength
+	//Item Strength
 	this->swordPower = 0;
 
 	//Items

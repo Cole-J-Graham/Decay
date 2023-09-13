@@ -78,7 +78,7 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                         return;
                     }
                     //Bonfire Functionality
-                    if (assets.bonfireAssets == true) {
+                    if (assets.getBonfireAssets() == true) {
                         notevent.healCharacters(window, assets, combat);
                         notevent.smithingSharpenBlade(window, assets, player);
                     }
@@ -86,8 +86,8 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                 break;
             case sf::Event::MouseButtonReleased:
                 {
-                    assets.movable = false;
-                    assets.movableStatsBox = false;
+                    assets.setMovableFalse();
+                    assets.setMovableStatsBoxFalse();
                 }
             }
             //Run Main Function Loop...
@@ -145,10 +145,10 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Initial Draw In
-    if (assets.initialDrawIn == false) {
+    if (assets.getInitialDrawIn() == false) {
         assets.windowIcon.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/shieldicon.jpeg");
         window.setIcon(assets.windowIcon.getSize().x, assets.windowIcon.getSize().y, assets.windowIcon.getPixelsPtr()); //set window icon
-        assets.initialDrawIn = true;
+        assets.setInitialDrawInTrue();
     }
     // clear the window with black color
     window.clear(sf::Color::Black);
@@ -166,7 +166,7 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
         window.draw(assets.combatText);
 
         //Draw Bonfire Detection Rect
-        if (travel.forestBonfireInit == true) {
+        if (travel.getForestBonfireInit() == true) {
             assets.bonfireHealDetectionText.setPosition(mousePos.x - 5, mousePos.y + 15);
             assets.bonfireSmithDetectionText.setPosition(mousePos.x - 5, mousePos.y + 15);
             //Healing
@@ -190,11 +190,11 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
             window.draw(assets.spriteElements[i]);
         }
 
-        if (assets.initMap == true) {
+        if (assets.getInitMap() == true) {
             //Draw main map rect
             window.draw(assets.rectMap);
             //Choose which map is selected
-            switch (assets.mapCounter) {
+            switch (assets.getMapCounter()) {
             case 0:
                 this->drawForestMap(window, assets);
                 break;
@@ -208,19 +208,19 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
             //Make Box Movable if clicked...
             this->movableBox(window, assets);
         }
-        if (assets.initStats == true) {
+        if (assets.getInitStats() == true) {
             window.draw(assets.rectStatsBox);
-            if (assets.playerStatsInit == true) {
+            if (assets.getPlayerStatsInit() == true) {
                 this->printPlayerStats(window, assets, notevent, combat, player);
             }
-            else if (assets.zinStatsInit = true) {
+            else if (assets.getZinStatsInit() == true) {
                 this->printZinStats(window, assets, notevent, combat, player);
             }
             window.draw(assets.rectStatsSideMenu);
             window.draw(assets.playerStatsBoxButtonText);
             window.draw(assets.zinStatsBoxButtonText);
         }
-        if (assets.initInventory == true) {
+        if (assets.getInitInventory() == true) {
             this->printInventory(window, assets, notevent, combat, player);
             window.draw(assets.rectInventoryBox);
             window.draw(assets.inventoryText);
@@ -364,10 +364,10 @@ void World::greyOnHover(sf::RenderWindow& window, Assets& assets)
 
 void World::printPlayerStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
 {
-    assets.playerTextElements[10].setString("HP: " + std::to_string(combat.playerHp) + "/" + 
-        std::to_string(combat.playerHpMax) + "\nDECAY: " + std::to_string(player.decay) + "/" +
-        std::to_string(player.decayMax) + "\n\nSP: " + std::to_string(player.sp) +
-        "\nEXP: " + std::to_string(player.exp) + "/" + std::to_string(player.expNext));
+    assets.playerTextElements[10].setString("HP: " + std::to_string(combat.getPlayerHp()) + "/" + 
+        std::to_string(combat.getPlayerHpMax()) + "\nDECAY: " + std::to_string(player.getDecay()) + "/" +
+        std::to_string(player.getDecayMax()) + "\n\nSP: " + std::to_string(player.getSp()) +
+        "\nEXP: " + std::to_string(player.getExp()) + "/" + std::to_string(player.getExpNext()));
 
     for (int i = 0; i < assets.playerStatElements.size(); i++) {
         window.draw(assets.playerStatElements[i]);
@@ -380,8 +380,8 @@ void World::printPlayerStats(sf::RenderWindow& window, Assets& assets, Event& no
 
 void World::printZinStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
 {
-    assets.zinTextElements[10].setString("HP: " + std::to_string(combat.zinHp) + "/" + std::to_string(combat.zinHpMax) + "\n\n\nSP: " + std::to_string(player.zinSp) +
-        "\nEXP: " + std::to_string(player.zinExp) + "/" + std::to_string(player.zinExpNext));
+    assets.zinTextElements[10].setString("HP: " + std::to_string(combat.getZinHp()) + "/" + std::to_string(combat.getZinHpMax()) + "\n\n\nSP: " + std::to_string(player.getZinSp()) +
+        "\nEXP: " + std::to_string(player.getZinExp()) + "/" + std::to_string(player.getZinExpNext()));
 
     for (int i = 0; i < assets.zinStatElements.size(); i++) {
         window.draw(assets.playerStatElements[i]);
@@ -394,8 +394,8 @@ void World::printZinStats(sf::RenderWindow& window, Assets& assets, Event& notev
 
 void World::printInventory(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
 {
-    assets.inventoryText.setString("[GENERAL ITEMS]\nGold: x" + std::to_string(player.gold) + "\nSmithing Stones: x"
-        + std::to_string(player.smithingStones) + "\n\n[EQUIPPED ITEMS]\n" + player.basicSword);
+    assets.inventoryText.setString("[GENERAL ITEMS]\nGold: x" + std::to_string(player.getGold()) + "\nSmithing Stones: x"
+        + std::to_string(player.getSmithingStones()) + "\n\n[EQUIPPED ITEMS]\n" + player.getBasicSword());
 }
 
 //Display Element Functionality
@@ -405,7 +405,7 @@ void World::mainMenuButtons(sf::RenderWindow& window, Assets& assets)
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     if (assets.menuScreenElements[0].getGlobalBounds().contains(mousePosF)) {
         //Continue to other buttons asking to skip intro or not (New Game Button)
-        assets.bootClicked = true;
+        assets.setBootClickedTrue();
     }
     else if (assets.menuScreenElements[1].getGlobalBounds().contains(mousePosF)) {
         //Loading Game Button Funcionality (Not implemented yet...)
@@ -419,12 +419,12 @@ void World::mainMenuButtons(sf::RenderWindow& window, Assets& assets)
     else if (assets.menuScreenElements[3].getGlobalBounds().contains(mousePosF)) {
         //Intro Button Functionality
         this->mainMenu = false;
-        travel.introCounterDialogue = 0; //Allow the counter to load the main image specifically just for the intro to take place
+        travel.getIntroCounterDialogue() = 0; //Allow the counter to load the main image specifically just for the intro to take place
     }
     else if (assets.menuScreenElements[4].getGlobalBounds().contains(mousePosF)) {
         //Skip Intro Button Functionality
         this->mainMenu = false;
-        assets.mapCounter = 0; //Skip intro and go straight to the forest
+        assets.setMapCounterZero(); //Skip intro and go straight to the forest
     }
 }
 
@@ -435,14 +435,14 @@ void World::travelButtons(sf::RenderWindow& window, Assets& assets)
     //Main View Buttons Control
     if (assets.spriteElements[0].getGlobalBounds().contains(mousePosF))
     {
-        travel.frame++;
-        travel.frameInit = false;
+        travel.setFrameInc();
+        travel.setFrameInitFalse();
         assets.blipsound.play();
     }
     else if (assets.spriteElements[1].getGlobalBounds().contains(mousePosF))
     {
-        travel.frame--;
-        travel.frameInit = false;
+        travel.setFrameDec();
+        travel.setFrameInitFalse();
         assets.blipsound.play();
     }
 }
@@ -456,111 +456,111 @@ void World::mapButtons(sf::RenderWindow& window, Assets& assets)
     //Forest Button Functionality
     if (assets.mapForestElements[0].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
-        travel.forestCounter = 0;
-        travel.frameInit = false;
-        travel.frame = 0; //Ensures whenever you move from area to area on map, player stays on 1st frame
+        travel.getForestCounter() = 0;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0; //Ensures whenever you move from area to area on map, player stays on 1st frame
         this->buttonClick = true;
     }
     else if (assets.mapForestElements[1].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
-        travel.forestCounter = 1;
-        travel.frameInit = false;
-        travel.frame = 0;
+        travel.getForestCounter() = 1;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
         this->buttonClick = true;
     }
     else if (assets.mapForestElements[2].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
-        travel.forestCounter = 2;
-        travel.frameInit = false;
-        travel.frame = 0;
+        travel.getForestCounter() = 2;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
         this->buttonClick = true;
     }
     else if (assets.mapForestElements[3].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
-        travel.forestCounter = 3;
-        travel.frameInit = false;
-        travel.frame = 0;
+        travel.getForestCounter() = 3;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
         this->buttonClick = true;
     }
     else if (assets.mapForestElements[4].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
-        travel.forestCounter = 4;
-        travel.frameInit = false;
-        travel.frame = 0;
+        travel.getForestCounter() = 4;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
         this->buttonClick = true;
     }
     
     //Castle Button Functionality
     if (assets.mapCastleElements[0].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
-        travel.castleCounter = 0;
-        travel.frameInit = false;
-        travel.frame = 0;
+        travel.getCastleCounter() = 0;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
         this->buttonClick = true;
     }
     else if (assets.mapCastleElements[1].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
-        travel.castleCounter = 1;
-        travel.frameInit = false;
-        travel.frame = 0;
+        travel.getCastleCounter() = 1;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
         this->buttonClick = true;
     }
     else if (assets.mapCastleElements[2].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
-        travel.castleCounter = 2;
-        travel.frameInit = false;
-        travel.frame = 0;
+        travel.getCastleCounter() = 2;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
         this->buttonClick = true;
     }
     else if (assets.mapCastleElements[3].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
-        travel.castleCounter = 3;
-        travel.frameInit = false;
-        travel.frame = 0;
+        travel.getCastleCounter() = 3;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
         this->buttonClick = true;
     }
     else if (assets.mapCastleElements[4].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
-        travel.castleCounter = 4;
-        travel.frameInit = false;
-        travel.frame = 0;
+        travel.getCastleCounter() = 4;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
         this->buttonClick = true;
     }
 
     //Decay Button Functionality
     if (assets.mapDecayElements[0].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
-        travel.decayCounter = 0;
-        travel.frameInit = false;
-        travel.frame = 0;
+        travel.getDecayCounter() = 0;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
         this->buttonClick = true;
     }
     else if (assets.mapDecayElements[1].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
-        travel.decayCounter = 1;
-        travel.frameInit = false;
-        travel.frame = 0;
+        travel.getDecayCounter() = 1;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
         this->buttonClick = true;
     }
     else if (assets.mapDecayElements[2].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
-        travel.decayCounter = 2;
-        travel.frameInit = false;
-        travel.frame = 0;
+        travel.getDecayCounter() = 2;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
         this->buttonClick = true;
     }
     else if (assets.mapDecayElements[3].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
-        travel.decayCounter = 3;
-        travel.frameInit = false;
-        travel.frame = 0;
+        travel.getDecayCounter() = 3;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
         this->buttonClick = true;
     }
     else if (assets.mapDecayElements[4].getGlobalBounds().contains(mousePosF)) {
         assets.soundWalk.play();
-        travel.decayCounter = 4;
-        travel.frameInit = false;
-        travel.frame = 0;
+        travel.getDecayCounter() = 4;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
         this->buttonClick = true;
     }
 }
@@ -572,42 +572,42 @@ void World::menuBar(sf::RenderWindow& window, Assets& assets)
     //Map Menu Bar Functionaliy
     if (assets.multiArrow.getGlobalBounds().contains(mousePosF) && buttonClick == false) {
         //Click Multi Arrow to make map movable
-        assets.movable = true;
+        assets.setMovableTrue();
     }
     else if (assets.multiArrow.getGlobalBounds().contains(mousePosF) && buttonClick == false) {
-        assets.movableStatsBox = true;
+        assets.setMovableStatsBoxTrue();
     }
-    if (assets.rectElements[2].getGlobalBounds().contains(mousePosF) && assets.initMap == false) {
+    if (assets.rectElements[2].getGlobalBounds().contains(mousePosF) && assets.getInitMap() == false) {
         //Click to open map
-        assets.initMap = true;
+        assets.setInitMapTrue();
         assets.blipmenu.play();
     }
-    else if (assets.rectElements[2].getGlobalBounds().contains(mousePosF) && assets.initMap == true) {
+    else if (assets.rectElements[2].getGlobalBounds().contains(mousePosF) && assets.getInitMap() == true) {
         //Click to close map
-        assets.initMap = false;
-        assets.rectMapX = 25;
-        assets.rectMapY = 50;
+        assets.setInitMapFalse();
+        assets.setRectMapXVal();
+        assets.setRectMapYVal();
         this->resetMapPosition(window, assets);
         assets.blipmenu.play();
     }
     this->buttonClick = false;
     //Stats Menu Bar Functionality
-    if (assets.rectElements[0].getGlobalBounds().contains(mousePosF) && assets.initStats == false) {
-        assets.initStats = true;
-        assets.playerStatsInit = true;
+    if (assets.rectElements[0].getGlobalBounds().contains(mousePosF) && assets.getInitStats() == false) {
+        assets.setInitStatsTrue();
+        assets.setPlayerStatsInitTrue();
         assets.blipmenu.play();
     }
-    else if (assets.rectElements[0].getGlobalBounds().contains(mousePosF) && assets.initStats == true) {
-        assets.initStats = false;
+    else if (assets.rectElements[0].getGlobalBounds().contains(mousePosF) && assets.getInitStats() == true) {
+        assets.setInitStatsFalse();
         assets.blipmenu.play();
     }
     //Inventory Menu Bar Functionality
-    if (assets.rectElements[1].getGlobalBounds().contains(mousePosF) && assets.initInventory == false) {
-        assets.initInventory = true;
+    if (assets.rectElements[1].getGlobalBounds().contains(mousePosF) && assets.getInitInventory() == false) {
+        assets.setInitInventoryTrue();
         assets.blipmenu.play();
     }
-    else if (assets.rectElements[1].getGlobalBounds().contains(mousePosF) && assets.initInventory == true) {
-        assets.initInventory = false;
+    else if (assets.rectElements[1].getGlobalBounds().contains(mousePosF) && assets.getInitInventory() == true) {
+        assets.setInitInventoryFalse();
         assets.blipmenu.play();
     }
 }
@@ -618,32 +618,32 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Menu Bar Stats Functionality (Switching between who's stats are visible)
     if (assets.playerStatElements[4].getGlobalBounds().contains(mousePosF) || assets.zinStatElements[4].getGlobalBounds().contains(mousePosF)) {
-        if (assets.playerStatsInit == false) {
-            assets.playerStatsInit = true;
-            assets.zinStatsInit = false;
+        if (assets.getPlayerStatsInit() == false) {
+            assets.setPlayerStatsInitTrue();
+            assets.setZinStatsInitFalse();
         }
     }
     if (assets.playerStatElements[5].getGlobalBounds().contains(mousePosF) || assets.zinStatElements[4].getGlobalBounds().contains(mousePosF)) {
-        if (assets.zinStatsInit == false) {
-            assets.zinStatsInit = true;
-            assets.playerStatsInit = false;
+        if (assets.getZinStatsInit() == false) {
+            assets.setZinStatsInitTrue();
+            assets.setPlayerStatsInitFalse();
         }
     }
     //Level Up Functionality
-    if (assets.initStats == false && assets.playerStatsInit == true) {
-        assets.playerTextElements[4].setString("LEVEL " + std::to_string(player.level));
+    if (assets.getInitStats() == false && assets.getPlayerStatsInit() == true) {
+        assets.playerTextElements[4].setString("LEVEL " + std::to_string(player.getLevel()));
     }
-    if (assets.initStats == true && assets.playerStatsInit == true) {
+    if (assets.getInitStats() == true && assets.getPlayerStatsInit() == true) {
         if (assets.playerStatElements[0].getGlobalBounds().contains(mousePosF)) {
-            if (player.exp >= player.expNext) {
-                player.level++;
-                player.sp++;
-                player.exp -= player.expNext;
-                assets.playerTextElements[4].setString("LEVEL " + std::to_string(player.level));
-                assets.text.setString("Level up achieved. Level " + std::to_string(player.level) + " reached. One SP point acquired...");
+            if (player.getExp() >= player.getExpNext()) {
+                player.setLevelInc();
+                player.setSpInc();
+                player.getExp() -= player.getExpNext();
+                assets.playerTextElements[4].setString("LEVEL " + std::to_string(player.getLevel()));
+                assets.text.setString("Level up achieved. Level " + std::to_string(player.getLevel()) + " reached. One SP point acquired...");
                 combat.updateStats(assets, player);
             }
-            else if (player.exp <= player.expNext) {
+            else if (player.getExp() <= player.getExpNext()) {
                 assets.text.setString("Required Exp not met...");
             }
             this->buttonClick = true;
@@ -651,136 +651,136 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
     }
 
     //Strength up functionality
-    if (assets.initStats == false && assets.playerStatsInit == true) {
-        assets.playerTextElements[5].setString("STRENGTH " + std::to_string(player.strength));
+    if (assets.getInitStats() == false && assets.getPlayerStatsInit() == true) {
+        assets.playerTextElements[5].setString("STRENGTH " + std::to_string(player.getStrength()));
     }
-    if (assets.initStats == true && assets.playerStatsInit == true) {
+    if (assets.getInitStats() == true && assets.getPlayerStatsInit() == true) {
         if (assets.playerStatElements[1].getGlobalBounds().contains(mousePosF)) {
-            if (player.sp >= 1) {
-                player.strength++;
-                player.sp--;
-                assets.playerTextElements[5].setString("STRENGTH " + std::to_string(player.strength));
-                assets.text.setString("Strength improved. Level " + std::to_string(player.strength) + " in strength reached. One SP point spent...");
+            if (player.getSp() >= 1) {
+                player.setStrengthInc();
+                player.setSpDec();
+                assets.playerTextElements[5].setString("STRENGTH " + std::to_string(player.getStrength()));
+                assets.text.setString("Strength improved. Level " + std::to_string(player.getStrength()) + " in strength reached. One SP point spent...");
                 combat.updateStats(assets, player);
             }
-            else if (player.sp <= 0) {
+            else if (player.getSp() <= 0) {
                 assets.text.setString("Required SP not met...");
             }
             this->buttonClick = true;
         }
     }
     //Fortitude up functionality
-    if (assets.initStats == false && assets.playerStatsInit == true) {
-        assets.playerTextElements[6].setString("FORTITUDE " + std::to_string(player.fortitude));
+    if (assets.getInitStats() == false && assets.getPlayerStatsInit() == true) {
+        assets.playerTextElements[6].setString("FORTITUDE " + std::to_string(player.getFortitude()));
     }
-    if (assets.initStats == true && assets.playerStatsInit == true) {
+    if (assets.getInitStats() == true && assets.getPlayerStatsInit() == true) {
         if (assets.playerStatElements[2].getGlobalBounds().contains(mousePosF)) {
-            if (player.sp >= 1) {
-                player.fortitude++;
-                player.sp--;
-                assets.playerTextElements[6].setString("FORTITUDE " + std::to_string(player.fortitude));
-                assets.text.setString("Fortitude improved. Level " + std::to_string(player.fortitude) + " in fortitude reached. One SP point spent...");
+            if (player.getSp() >= 1) {
+                player.setFortitudeInc();
+                player.setSpDec();
+                assets.playerTextElements[6].setString("FORTITUDE " + std::to_string(player.getFortitude()));
+                assets.text.setString("Fortitude improved. Level " + std::to_string(player.getFortitude()) + " in fortitude reached. One SP point spent...");
                 combat.updateStats(assets, player);
             }
-            else if (player.sp <= 0) {
+            else if (player.getSp() <= 0) {
                 assets.text.setString("Required SP not met...");
             }
             this->buttonClick = true;
         }
     }
     //Vitality up functionality
-    if (assets.initStats == false && assets.playerStatsInit == true) {
-        assets.playerTextElements[7].setString("VITALITY " + std::to_string(player.vitality));
+    if (assets.getInitStats() == false && assets.getPlayerStatsInit() == true) {
+        assets.playerTextElements[7].setString("VITALITY " + std::to_string(player.getVitality()));
     }
-    if (assets.initStats == true && assets.playerStatsInit == true) {
+    if (assets.getInitStats() == true && assets.getPlayerStatsInit() == true) {
         if (assets.playerStatElements[3].getGlobalBounds().contains(mousePosF)) {
-            if (player.sp >= 1) {
-                player.vitality++;
-                player.sp--;
-                combat.playerHp += player.vitality; 
-                combat.playerHpMax = combat.playerHp;
-                assets.playerTextElements[7].setString("VITALITY " + std::to_string(player.vitality));
-                assets.text.setString("Vitality improved. Level " + std::to_string(player.vitality) + " in vitality reached. One SP point spent...");
+            if (player.getSp() >= 1) {
+                player.setVitalityInc();
+                player.setSpDec();
+                combat.getPlayerHp() += player.getVitality();
+                combat.getPlayerHpMax() = combat.getPlayerHp();
+                assets.playerTextElements[7].setString("VITALITY " + std::to_string(player.getVitality()));
+                assets.text.setString("Vitality improved. Level " + std::to_string(player.getVitality()) + " in vitality reached. One SP point spent...");
                 combat.updateStats(assets, player);
             }
-            else if (player.sp <= 0) {
+            else if (player.getSp() <= 0) {
                 assets.text.setString("Required SP not met...");
             }
             this->buttonClick = true;
         }
     }
     //Zin Stats Level up Functionality
-    if (assets.initStats == true && assets.zinStatsInit == true) {
-        assets.zinTextElements[4].setString("LEVEL " + std::to_string(player.zinLevel));
+    if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
+        assets.zinTextElements[4].setString("LEVEL " + std::to_string(player.getZinLevel()));
     }
-    if (assets.initStats == true && assets.zinStatsInit == true) {
+    if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
         if (assets.zinStatElements[0].getGlobalBounds().contains(mousePosF)) {
-            if (player.zinExp >= player.zinExpNext) {
-                player.zinLevel++;
-                player.zinSp++;
-                player.zinExp -= player.zinExpNext;
-                assets.zinTextElements[4].setString("LEVEL " + std::to_string(player.zinLevel));
-                assets.text.setString("Level up achieved. Level " + std::to_string(player.zinLevel) + " reached for Zin. One SP point acquired...");
+            if (player.getZinExp() >= player.getZinExpNext()) {
+                player.setZinLevelInc();
+                player.setZinSpInc();
+                player.getZinExp() -= player.getZinExpNext();
+                assets.zinTextElements[4].setString("LEVEL " + std::to_string(player.getZinLevel()));
+                assets.text.setString("Level up achieved. Level " + std::to_string(player.getZinLevel()) + " reached for Zin. One SP point acquired...");
                 combat.updateStatsZin(player);
             }
-            else if (player.zinExp <= player.zinExpNext) {
+            else if (player.getZinExp() <= player.getZinExpNext()) {
                 assets.text.setString("Zin's required Exp not met...");
             }
             this->buttonClick = true;
         }
     }
     //Zin Resolve up Functionality
-    if (assets.initStats == true && assets.zinStatsInit == true) {
-        assets.zinTextElements[5].setString("RESOLVE " + std::to_string(player.zinResolve));
+    if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
+        assets.zinTextElements[5].setString("RESOLVE " + std::to_string(player.getZinResolve()));
     }
-    if (assets.initStats == true && assets.zinStatsInit == true) {
+    if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
         if (assets.zinStatElements[1].getGlobalBounds().contains(mousePosF)) {
-            if (player.zinSp >= 1) {
-                player.zinResolve++;
-                player.zinSp--;
-                assets.zinTextElements[5].setString("RESOLVE " + std::to_string(player.zinResolve));
-                assets.text.setString("Zin's resolve increased. Level " + std::to_string(player.zinResolve) + " reached in resolve for Zin. One SP point spent...");
+            if (player.getZinSp() >= 1) {
+                player.setZinResolveInc();
+                player.setZinSpDec();
+                assets.zinTextElements[5].setString("RESOLVE " + std::to_string(player.getZinResolve()));
+                assets.text.setString("Zin's resolve increased. Level " + std::to_string(player.getZinResolve()) + " reached in resolve for Zin. One SP point spent...");
                 combat.updateStatsZin(player);
             }
-            else if (player.zinExp <= 0) {
+            else if (player.getZinExp() <= 0) {
                 assets.text.setString("Zin's required Sp not met...");
             }
             this->buttonClick = true;
         }
     }
     //Zin Patience up Functionality
-    if (assets.initStats == true && assets.zinStatsInit == true) {
-        assets.zinTextElements[6].setString("PATIENCE " + std::to_string(player.zinPatience));
+    if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
+        assets.zinTextElements[6].setString("PATIENCE " + std::to_string(player.getZinPatience()));
     }
-    if (assets.initStats == true && assets.zinStatsInit == true) {
+    if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
         if (assets.zinStatElements[2].getGlobalBounds().contains(mousePosF)) {
-            if (player.zinSp >= 1) {
-                player.zinPatience++;
-                player.zinSp--;
-                assets.zinTextElements[6].setString("PATIENCE " + std::to_string(player.zinPatience));
-                assets.text.setString("Zin's patience increased. Level " + std::to_string(player.zinPatience) + " reached in patience for Zin. One SP point spent...");
+            if (player.getZinSp() >= 1) {
+                player.setZinPatienceInc();
+                player.setZinSpDec();
+                assets.zinTextElements[6].setString("PATIENCE " + std::to_string(player.getZinPatience()));
+                assets.text.setString("Zin's patience increased. Level " + std::to_string(player.getZinPatience()) + " reached in patience for Zin. One SP point spent...");
                 combat.updateStatsZin(player);
             }
-            else if (player.zinExp <= 0) {
+            else if (player.getZinExp() <= 0) {
                 assets.text.setString("Zin's required Sp not met...");
             }
             this->buttonClick = true;
         }
     }
     //Zin Resilience up Functionality
-    if (assets.initStats == true && assets.zinStatsInit == true) {
-        assets.zinTextElements[7].setString("RESILIENCE " + std::to_string(player.zinResilience));
+    if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
+        assets.zinTextElements[7].setString("RESILIENCE " + std::to_string(player.getZinResilience()));
     }
-    if (assets.initStats == true && assets.zinStatsInit == true) {
+    if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
         if (assets.zinStatElements[3].getGlobalBounds().contains(mousePosF)) {
-            if (player.zinSp >= 1) {
-                player.zinResilience++;
-                player.zinSp--;
-                assets.zinTextElements[7].setString("RESILIENCE " + std::to_string(player.zinResilience));
-                assets.text.setString("Zin's resilience increased. Level " + std::to_string(player.zinResilience) + " reached in resilience for Zin. One SP point spent...");
+            if (player.getZinSp() >= 1) {
+                player.setZinResilienceInc();
+                player.setZinSpDec();
+                assets.zinTextElements[7].setString("RESILIENCE " + std::to_string(player.getZinResilience()));
+                assets.text.setString("Zin's resilience increased. Level " + std::to_string(player.getZinResilience()) + " reached in resilience for Zin. One SP point spent...");
                 combat.updateStatsZin(player);
             }
-            else if (player.zinExp <= 0) {
+            else if (player.getZinExp() <= 0) {
                 assets.text.setString("Zin's required Sp not met...");
             }
             this->buttonClick = true;
@@ -794,44 +794,50 @@ void World::dialogueBox(sf::RenderWindow& window, Combat& combat, Assets& assets
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Player Combat Buttons Functionality
     if (assets.rectElements[3].getGlobalBounds().contains(mousePosF)) { //If attack button is clicked...
-        if (combat.turnPlayer == true) {
-            combat.attackCounter++;
-            combat.playerPickMove = 0;
+        if (combat.getTurnPlayer() == true) {
+            combat.setAttackCounterInc();
+            combat.getPlayerPickMove() = 0;
         }
     }
     if (assets.rectElements[9].getGlobalBounds().contains(mousePosF)) {
-        if (combat.turnPlayer == true) {
-            combat.attackCounter++;
-            combat.playerPickMove = 1;
+        if (combat.getTurnPlayer() == true) {
+            combat.setAttackCounterInc();
+            combat.getPlayerPickMove() = 1;
         }
     }
     //Zin Combat Buttons Functionality
     if (assets.rectElements[4].getGlobalBounds().contains(mousePosF)) {
-        if (combat.turnZin == true) {
-            combat.zinAttackCounter++;
-            combat.zinPickMove = 0;
+        if (combat.getTurnZin() == true) {
+            combat.setZinAttackCounterInc();
+            combat.getZinPickMove() = 0;
         }
     }
     if (assets.rectElements[10].getGlobalBounds().contains(mousePosF)) {
-        if (combat.turnZin == true) {
-            combat.zinAttackCounter++;
-            combat.zinPickMove = 1;
+        if (combat.getTurnZin() == true) {
+            combat.setZinAttackCounterInc();
+            combat.getZinPickMove() = 1;
+        }
+    }
+    if (assets.rectElements[11].getGlobalBounds().contains(mousePosF)) {
+        if (combat.getTurnZin() == true) {
+            combat.setZinAttackCounterInc();
+            combat.getZinPickMove() = 2;
         }
     }
     else if (assets.rect.getGlobalBounds().contains(mousePosF)) { //If dialogue box is clicked...
-        assets.dialogueCounter++;
-        travel.frameInit = false; //Allow images to be loaded again
-        travel.introCounterDialogue++;
-        if (combat.attackCounter == 1) {
-            combat.attackCounter = 2;
+        assets.setDialogueCounterInc();
+        travel.setFrameInitFalse(); //Allow images to be loaded again
+        travel.setIntroCounterDialogueInc();
+        if (combat.getAttackCounter() == 1) {
+            combat.getAttackCounter() = 2;
         }
-        if (combat.zinAttackCounter == 1) {
-            combat.zinAttackCounter = 2;
+        if (combat.getZinAttackCounter() == 1) {
+            combat.getZinAttackCounter() = 2;
         }
-        if (combat.turnHostile == true) {
-            assets.combatCounter++;
+        if (combat.getTurnHostile() == true) {
+            assets.setCombatCounterInc();
         }
-        assets.spadeInit = false;
+        assets.setSpadeInitFalse();
     }
 }
 
@@ -840,9 +846,9 @@ void World::movableBox(sf::RenderWindow& window, Assets& assets)
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
-    if (assets.movable == true) {
-        assets.rectMapX = mousePos.x - 365;
-        assets.rectMapY = mousePos.y - 23;
+    if (assets.getMovable() == true) {
+        assets.getRectMapX() = mousePos.x - 365;
+        assets.getRectMapY() = mousePos.y - 23;
         this->resetMapPosition(window, assets);
     }
 }
@@ -852,108 +858,108 @@ void World::movableBox(sf::RenderWindow& window, Assets& assets)
 void World::resetMapPosition(sf::RenderWindow& window, Assets& assets)
 {
     //Forest
-    assets.forestMapView.setPosition(assets.rectMapX, assets.rectMapY);
-    switch (assets.forestAreaUnlocked) {
+    assets.forestMapView.setPosition(assets.getRectMapX(), assets.getRectMapY());
+    switch (assets.getForestAreaUnlocked()) {
     case 0:
-        assets.mapForestElements[0].setPosition(assets.rectMapX + 145, assets.rectMapY + 25);
+        assets.mapForestElements[0].setPosition(assets.getRectMapX() + 145, assets.getRectMapY() + 25);
         break;
     case 1:
-        assets.mapForestElements[0].setPosition(assets.rectMapX + 145, assets.rectMapY + 25);
-        assets.mapForestElements[1].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
+        assets.mapForestElements[0].setPosition(assets.getRectMapX() + 145, assets.getRectMapY() + 25);
+        assets.mapForestElements[1].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + 20);
         break;
     case 2:
-        assets.mapForestElements[0].setPosition(assets.rectMapX + 145, assets.rectMapY + 25);
-        assets.mapForestElements[1].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
-        assets.mapForestElements[2].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
+        assets.mapForestElements[0].setPosition(assets.getRectMapX() + 145, assets.getRectMapY() + 25);
+        assets.mapForestElements[1].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + 20);
+        assets.mapForestElements[2].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 240);
         break;
     case 3:
-        assets.mapForestElements[0].setPosition(assets.rectMapX + 145, assets.rectMapY + 25);
-        assets.mapForestElements[1].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
-        assets.mapForestElements[2].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
-        assets.mapForestElements[3].setPosition(assets.rectMapX + 175, assets.rectMapY + 200);
+        assets.mapForestElements[0].setPosition(assets.getRectMapX() + 145, assets.getRectMapY() + 25);
+        assets.mapForestElements[1].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + 20);
+        assets.mapForestElements[2].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 240);
+        assets.mapForestElements[3].setPosition(assets.getRectMapX() + 175, assets.getRectMapY() + 200);
         break;
     case 4:
-        assets.mapForestElements[0].setPosition(assets.rectMapX + 145, assets.rectMapY + 25);
-        assets.mapForestElements[1].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
-        assets.mapForestElements[2].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
-        assets.mapForestElements[3].setPosition(assets.rectMapX + 175, assets.rectMapY + 200);
-        assets.mapForestElements[4].setPosition(assets.rectMapX + 240, assets.rectMapY + 320);
+        assets.mapForestElements[0].setPosition(assets.getRectMapX() + 145, assets.getRectMapY() + 25);
+        assets.mapForestElements[1].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + 20);
+        assets.mapForestElements[2].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 240);
+        assets.mapForestElements[3].setPosition(assets.getRectMapX() + 175, assets.getRectMapY() + 200);
+        assets.mapForestElements[4].setPosition(assets.getRectMapX() + 240, assets.getRectMapY() + 320);
         break;
     }
-    assets.mapForestElementsText[0].setPosition(assets.rectMapX + 145, assets.rectMapY + 10);
-    assets.mapForestElementsText[1].setPosition(assets.rectMapX + 34, assets.rectMapY + 5);
-    assets.mapForestElementsText[2].setPosition(assets.rectMapX + 75, assets.rectMapY + 225);
-    assets.mapForestElementsText[3].setPosition(assets.rectMapX + 175, assets.rectMapY + 185);
-    assets.mapForestElementsText[4].setPosition(assets.rectMapX + 240, assets.rectMapY + 305);
+    assets.mapForestElementsText[0].setPosition(assets.getRectMapX() + 145, assets.getRectMapY() + 10);
+    assets.mapForestElementsText[1].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + 5);
+    assets.mapForestElementsText[2].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 225);
+    assets.mapForestElementsText[3].setPosition(assets.getRectMapX() + 175, assets.getRectMapY() + 185);
+    assets.mapForestElementsText[4].setPosition(assets.getRectMapX() + 240, assets.getRectMapY() + 305);
     //Castle
-    assets.spriteMapView.setPosition(assets.rectMapX, assets.rectMapY);
-    switch (assets.castleAreaUnlocked) {
+    assets.spriteMapView.setPosition(assets.getRectMapX(), assets.getRectMapY());
+    switch (assets.getCastleAreaUnlocked()) {
     case 0:
-        assets.mapCastleElements[0].setPosition(assets.rectMapX + 27, assets.rectMapY + 322);
+        assets.mapCastleElements[0].setPosition(assets.getRectMapX() + 27, assets.getRectMapY() + 322);
         break;
     case 1:
-        assets.mapCastleElements[0].setPosition(assets.rectMapX + 27, assets.rectMapY + 322);
-        assets.mapCastleElements[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
+        assets.mapCastleElements[0].setPosition(assets.getRectMapX() + 27, assets.getRectMapY() + 322);
+        assets.mapCastleElements[1].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 240);
         break;
     case 2:
-        assets.mapCastleElements[0].setPosition(assets.rectMapX + 27, assets.rectMapY + 322);
-        assets.mapCastleElements[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
-        assets.mapCastleElements[2].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
+        assets.mapCastleElements[0].setPosition(assets.getRectMapX() + 27, assets.getRectMapY() + 322);
+        assets.mapCastleElements[1].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 240);
+        assets.mapCastleElements[2].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + 5);
         break;
     case 3:
-        assets.mapCastleElements[0].setPosition(assets.rectMapX + 27, assets.rectMapY + 322);
-        assets.mapCastleElements[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
-        assets.mapCastleElements[2].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
-        assets.mapCastleElements[3].setPosition(assets.rectMapX + 200, assets.rectMapY + 20);
+        assets.mapCastleElements[0].setPosition(assets.getRectMapX() + 27, assets.getRectMapY() + 322);
+        assets.mapCastleElements[1].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 240);
+        assets.mapCastleElements[2].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + 5);
+        assets.mapCastleElements[3].setPosition(assets.getRectMapX() + 200, assets.getRectMapY() + 20);
         break;
     case 4:
-        assets.mapCastleElements[0].setPosition(assets.rectMapX + 27, assets.rectMapY + 322);
-        assets.mapCastleElements[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 240);
-        assets.mapCastleElements[2].setPosition(assets.rectMapX + 34, assets.rectMapY + 20);
-        assets.mapCastleElements[3].setPosition(assets.rectMapX + 200, assets.rectMapY + 20);
-        assets.mapCastleElements[4].setPosition(assets.rectMapX + 305, assets.rectMapY + 210);
+        assets.mapCastleElements[0].setPosition(assets.getRectMapX() + 27, assets.getRectMapY() + 322);
+        assets.mapCastleElements[1].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 240);
+        assets.mapCastleElements[2].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + 5);
+        assets.mapCastleElements[3].setPosition(assets.getRectMapX() + 200, assets.getRectMapY() + 20);
+        assets.mapCastleElements[4].setPosition(assets.getRectMapX() + 305, assets.getRectMapY() + 210);
         break;
     }
-    assets.mapCastleElementsText[0].setPosition(assets.rectMapX + 27, assets.rectMapY + 307);
-    assets.mapCastleElementsText[1].setPosition(assets.rectMapX + 75, assets.rectMapY + 225);
-    assets.mapCastleElementsText[2].setPosition(assets.rectMapX + 34, assets.rectMapY + 5);
-    assets.mapCastleElementsText[3].setPosition(assets.rectMapX + 200, assets.rectMapY + 5);
-    assets.mapCastleElementsText[4].setPosition(assets.rectMapX + 305, assets.rectMapY + 195);
+    assets.mapCastleElementsText[0].setPosition(assets.getRectMapX() + 27, assets.getRectMapY() + 307);
+    assets.mapCastleElementsText[1].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 225);
+    assets.mapCastleElementsText[2].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + -10);
+    assets.mapCastleElementsText[3].setPosition(assets.getRectMapX() + 200, assets.getRectMapY() + 5);
+    assets.mapCastleElementsText[4].setPosition(assets.getRectMapX() + 305, assets.getRectMapY() + 195);
     //Decay
-    assets.decayMapView.setPosition(assets.rectMapX, assets.rectMapY);
-    switch (assets.decayAreaUnlocked) {
+    assets.decayMapView.setPosition(assets.getRectMapX(), assets.getRectMapY());
+    switch (assets.getDecayAreaUnlocked()) {
     case 0:
-        assets.mapDecayElements[0].setPosition(assets.rectMapX + 220, assets.rectMapY + 215);
+        assets.mapDecayElements[0].setPosition(assets.getRectMapX() + 220, assets.getRectMapY() + 215);
         break;
     case 1:
-        assets.mapDecayElements[0].setPosition(assets.rectMapX + 220, assets.rectMapY + 215);
-        assets.mapDecayElements[1].setPosition(assets.rectMapX + 245, assets.rectMapY + 110);
+        assets.mapDecayElements[0].setPosition(assets.getRectMapX() + 220, assets.getRectMapY() + 215);
+        assets.mapDecayElements[1].setPosition(assets.getRectMapX() + 245, assets.getRectMapY() + 110);
         break;
     case 2:
-        assets.mapDecayElements[0].setPosition(assets.rectMapX + 220, assets.rectMapY + 215);
-        assets.mapDecayElements[1].setPosition(assets.rectMapX + 245, assets.rectMapY + 110);
-        assets.mapDecayElements[2].setPosition(assets.rectMapX + 200, assets.rectMapY + 60);
+        assets.mapDecayElements[0].setPosition(assets.getRectMapX() + 220, assets.getRectMapY() + 215);
+        assets.mapDecayElements[1].setPosition(assets.getRectMapX() + 245, assets.getRectMapY() + 110);
+        assets.mapDecayElements[2].setPosition(assets.getRectMapX() + 200, assets.getRectMapY() + 60);
         break;
     case 3:
-        assets.mapDecayElements[0].setPosition(assets.rectMapX + 220, assets.rectMapY + 215);
-        assets.mapDecayElements[1].setPosition(assets.rectMapX + 245, assets.rectMapY + 110);
-        assets.mapDecayElements[2].setPosition(assets.rectMapX + 200, assets.rectMapY + 60);
-        assets.mapDecayElements[3].setPosition(assets.rectMapX + 150, assets.rectMapY + 40);
+        assets.mapDecayElements[0].setPosition(assets.getRectMapX() + 220, assets.getRectMapY() + 215);
+        assets.mapDecayElements[1].setPosition(assets.getRectMapX() + 245, assets.getRectMapY() + 110);
+        assets.mapDecayElements[2].setPosition(assets.getRectMapX() + 200, assets.getRectMapY() + 60);
+        assets.mapDecayElements[3].setPosition(assets.getRectMapX() + 150, assets.getRectMapY() + 40);
         break;
     case 4:
-        assets.mapDecayElements[0].setPosition(assets.rectMapX + 220, assets.rectMapY + 215);
-        assets.mapDecayElements[1].setPosition(assets.rectMapX + 245, assets.rectMapY + 110);
-        assets.mapDecayElements[2].setPosition(assets.rectMapX + 200, assets.rectMapY + 60);
-        assets.mapDecayElements[3].setPosition(assets.rectMapX + 150, assets.rectMapY + 40);
-        assets.mapDecayElements[4].setPosition(assets.rectMapX + 25, assets.rectMapY + 50);
+        assets.mapDecayElements[0].setPosition(assets.getRectMapX() + 220, assets.getRectMapY() + 215);
+        assets.mapDecayElements[1].setPosition(assets.getRectMapX() + 245, assets.getRectMapY() + 110);
+        assets.mapDecayElements[2].setPosition(assets.getRectMapX() + 200, assets.getRectMapY() + 60);
+        assets.mapDecayElements[3].setPosition(assets.getRectMapX() + 150, assets.getRectMapY() + 40);
+        assets.mapDecayElements[4].setPosition(assets.getRectMapX() + 25, assets.getRectMapY() + 50);
         break;
         
     }
-    assets.mapDecayElementsText[0].setPosition(assets.rectMapX + 220, assets.rectMapY + 200);
-    assets.mapDecayElementsText[1].setPosition(assets.rectMapX + 245, assets.rectMapY + 95);
-    assets.mapDecayElementsText[2].setPosition(assets.rectMapX + 200, assets.rectMapY + 45);
-    assets.mapDecayElementsText[3].setPosition(assets.rectMapX + 150, assets.rectMapY + 25);
-    assets.mapDecayElementsText[4].setPosition(assets.rectMapX + 25, assets.rectMapY + 35);
+    assets.mapDecayElementsText[0].setPosition(assets.getRectMapX() + 220, assets.getRectMapY() + 200);
+    assets.mapDecayElementsText[1].setPosition(assets.getRectMapX() + 245, assets.getRectMapY() + 95);
+    assets.mapDecayElementsText[2].setPosition(assets.getRectMapX() + 200, assets.getRectMapY() + 45);
+    assets.mapDecayElementsText[3].setPosition(assets.getRectMapX() + 150, assets.getRectMapY() + 25);
+    assets.mapDecayElementsText[4].setPosition(assets.getRectMapX() + 25, assets.getRectMapY() + 35);
 }
 
 void World::selectMapView(sf::RenderWindow& window, Assets& assets)
@@ -963,36 +969,36 @@ void World::selectMapView(sf::RenderWindow& window, Assets& assets)
 
     if (assets.buttonViewMap[0].getGlobalBounds().contains(mousePosF)) {
         //Click to view forest from map selector buttons
-        assets.mapCounter = 0;
+        assets.setMapCounterZero();
         this->resetMapPosition(window, assets);
 
-        travel.frame = 0;
+        travel.getFrame() = 0;
         assets.soundWalk.play();
-        travel.forestCounter = 0;
-        travel.frameInit = false;
-        travel.frame = 0;
+        travel.getForestCounter() = 0;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
         this->buttonClick = true;
     }
     else if (assets.buttonViewMap[1].getGlobalBounds().contains(mousePosF)) {
         //Click to view castle from map selector buttons
-        assets.mapCounter = 1;
+        assets.setMapCounterOne();
         this->resetMapPosition(window, assets);
 
-        travel.frame = 0;
+        travel.getFrame() = 0;
         assets.soundWalk.play();
-        travel.castleCounter = 0;
-        travel.frameInit = false;
+        travel.getCastleCounter() = 0;
+        travel.setFrameInitFalse();
         this->buttonClick = true;
     }
     else if (assets.buttonViewMap[2].getGlobalBounds().contains(mousePosF)) {
         //Click to view decay from map selector buttons
-        assets.mapCounter = 2;
+        assets.setMapCounterTwo();
         this->resetMapPosition(window, assets);
 
-        travel.frame = 0;
+        travel.getFrame() = 0;
         assets.soundWalk.play();
-        travel.decayCounter = 0;
-        travel.frameInit = false;
+        travel.getDecayCounter() = 0;
+        travel.setFrameInitFalse();
         this->buttonClick = true;
     }
 }

@@ -10,7 +10,73 @@
 class Assets
 {
 private:
+	//Sprite Bool
+	bool initialDrawIn;
+	bool initMapTexture;
+	bool initForestMapTexture;
+	bool initDecayMapTexture;
+	bool initMap;
+	bool initStats;
+	bool initInventory;
+	bool plusboxes;
 
+	//Menu Control Flow
+	bool playerStatsInit;
+	bool zinStatsInit;
+	bool bootClicked;
+
+	//Map Button Control Flow
+	int areaUnlocked;
+	int forestAreaUnlocked;
+	int castleAreaUnlocked;
+	int decayAreaUnlocked;
+
+	//Sprite Control Flow
+	bool playerLoadOnce;
+	bool zinLoadOnce;
+	bool spadeLoadOnce;
+
+	bool zinInit;
+	bool spadeInit;
+
+	//Sprite Border Control Flow
+	bool spriteInit;
+	bool playerInit;
+
+	//Sprite Integer Selection
+	int playerCounter;
+	int zinCounter;
+	int spadeCounter;
+	int mapCounter;
+	int dialogueCounter;
+	int combatCounter;
+
+	//Movable
+	bool movable;
+	bool movableStatsBox;
+
+	//Rect Coordinates
+	float rectMapX;
+	float rectMapY;
+	float rectStatsBoxX;
+	float rectStatsBoxY;
+	float rectInventoryBoxX;
+	float rectInventoryBoxY;
+
+	//Initialize Combat Assets
+	bool introAssets;
+	bool combatAssets;
+	bool bonfireAssets;
+	bool playerTurnAssets;
+	bool zinTurnAssets;
+
+	//Combat Move Unlocks
+	int combatPlayerMoves;
+	int combatZinMoves;
+
+	//Strings
+	std::string playerName;
+	
 public:
 	//Window Icon
 	sf::Image windowIcon;
@@ -90,6 +156,7 @@ public:
 	sf::RectangleShape rectAttack;
 	sf::RectangleShape rectGuard;
 	sf::RectangleShape rectMend;
+	sf::RectangleShape rectVengeance;
 	sf::Text attackText;
 
 	//Text
@@ -116,6 +183,7 @@ public:
 	sf::Text smiteText;
 	sf::Text textGuard;
 	sf::Text textMend;
+	sf::Text textVengeance;
 
 	//Zin Stats Assets Text
 	sf::Text zinStatsBoxButtonText;
@@ -141,11 +209,11 @@ public:
 	//Main Vectors
 	std::vector<sf::RectangleShape> rectElements {rectStats, rectInventory, buttonMap, 
 		rectAttack, rectAttackSmite, rectSpadeSpriteBox, playerSpriteBorder, zinSpriteBorder,
-		hostileSpriteBorder, rectGuard, rectMend};
+		hostileSpriteBorder, rectGuard, rectMend, rectVengeance };
 
 	std::vector<sf::Text> textElements {rectStatsText, rectInventoryText, menuText, 
 		attackText, smiteText, spadeText, playerNameText, zinText,
-		hostileNameText, textGuard, textMend};
+		hostileNameText, textGuard, textMend, textVengeance };
 
 	std::vector<sf::Sprite> spriteElements {button, buttonBack, spade, 
 		zin, player};
@@ -262,6 +330,7 @@ public:
 	sf::Sound soundMend;
 	sf::Sound soundSmite;
 	sf::Sound soundSlash;
+	sf::Sound soundVengeance;
 
 	sf::SoundBuffer buffer;
 	sf::SoundBuffer blipbuffer;
@@ -276,76 +345,10 @@ public:
 	sf::SoundBuffer bufferMend;
 	sf::SoundBuffer bufferSmite;
 	sf::SoundBuffer bufferSlash;
+	sf::SoundBuffer bufferVengeance;
 
 	//Music
 	sf::Music music;
-
-	//Strings
-	std::string playerName;
-
-	//Sprite Bool
-	bool initialDrawIn;
-	bool initMapTexture;
-	bool initForestMapTexture;
-	bool initDecayMapTexture;
-	bool initMap;
-	bool initStats;
-	bool initInventory;
-	bool plusboxes;
-
-	//Menu Control Flow
-	bool playerStatsInit;
-	bool zinStatsInit;
-	bool bootClicked;
-
-	//Map Button Control Flow
-	int areaUnlocked;
-	int forestAreaUnlocked;
-	int castleAreaUnlocked;
-	int decayAreaUnlocked;
-
-	//Sprite Control Flow
-	bool playerLoadOnce;
-	bool spadeInit;
-	bool spadeLoadOnce;
-
-	bool zinInit;
-	bool zinLoadOnce;
-
-	//Sprite Border Control Flow
-	bool spriteInit;
-	bool playerInit;
-
-	//Sprite Integer Selection
-	int playerCounter;
-	int spadeCounter;
-	int zinCounter;
-	int mapCounter;
-	int dialogueCounter;
-	int combatCounter;
-
-	//Movable
-	bool movable;
-	bool movableStatsBox;
-
-	//Rect Coordinates
-	float rectMapX;
-	float rectMapY;
-	float rectStatsBoxX;
-	float rectStatsBoxY;
-	float rectInventoryBoxX;
-	float rectInventoryBoxY;
-
-	//Initialize Combat Assets
-	bool introAssets;
-	bool combatAssets;
-	bool bonfireAssets;
-	bool playerTurnAssets;
-	bool zinTurnAssets;
-
-	//Combat Move Unlocks
-	int combatPlayerMoves;
-	int combatZinMoves;
 
 	//Constructors & Destructors
 	Assets();
@@ -388,8 +391,163 @@ public:
 	void playerCombatAssets();
 	void zinCombatAssets();
 
-	//Getters and Setters
+	//Sprite Bool Getters
+	bool& getInitialDrawIn() { return this->initialDrawIn; };
+	bool& getInitMapTexture() { return this->initMapTexture; };
+	bool& getInitForestMapTexture() { return this->initForestMapTexture; };
+	bool& getInitDecayMapTexture() { return this->initDecayMapTexture; };
+	bool& getInitMap() { return this->initMap; };
+	bool& getInitStats() { return this->initStats; };
+	bool& getInitInventory() { return this->initInventory; };
+	bool& getPlusboxes() { return this->plusboxes; };
 
+	//Sprite Bool Setters
+	void setInitialDrawInTrue()  { this->initialDrawIn = true; };
+	void setInitMapTextureTrue() { this->initMapTexture = true; };
+	void setInitForestMapTextureTrue() { this->initForestMapTexture = true; };
+	void setInitDecayMapTextureTrue() { this->initDecayMapTexture = true; };
+	void setInitMapTrue() { this->initMap = true; };
+	void setInitMapFalse() { this->initMap = false; };
+	void setInitStatsTrue() { this->initStats = true; };
+	void setInitStatsFalse() { this->initStats = false; };
+	void setInitInventoryTrue() { this->initInventory = true; };
+	void setInitInventoryFalse() { this->initInventory = false; };
+	void setPlusboxesTrue() { this->plusboxes = true; };
+
+	//Menu Control Flow Getters
+	bool& getPlayerStatsInit() { return this->playerStatsInit; };
+	bool& getZinStatsInit() { return this->zinStatsInit; };
+	bool& getBootClicked() { return this->bootClicked; };
+
+	//Menu Control Flow Setters
+	void setPlayerStatsInitTrue() { this->playerStatsInit = true; };
+	void setZinStatsInitTrue() { this->zinStatsInit = true; };
+	void setBootClickedTrue() { this->bootClicked = true; };
+
+	void setPlayerStatsInitFalse() { this->playerStatsInit = false; };
+	void setZinStatsInitFalse() { this->zinStatsInit = false; };
+	void setBootClickedFalse() { this->bootClicked = false; };
+
+	//Map Button Control Flow Getters
+	int& getAreaUnlocked() { return this->areaUnlocked; };
+	int& getForestAreaUnlocked() { return this->forestAreaUnlocked; };
+	int& getCastleAreaUnlocked() { return this->castleAreaUnlocked; };
+	int& getDecayAreaUnlocked() { return this->decayAreaUnlocked; };
+
+	//Sprite Control Flow Getters
+	bool& getPlayerLoadOnce() { return this->playerLoadOnce; };
+	bool& getZinLoadOnce() { return this->zinLoadOnce; };
+	bool& getSpadeLoadOnce() { return this->spadeLoadOnce; };
+
+	bool& getZinInit() { return this->zinInit; };
+	bool& getSpadeInit() { return this->spadeInit; };
+
+	//Sprite Control Flow Setters
+	void setPlayerLoadOnceFalse() { this->playerLoadOnce = false; };
+	void setZinLoadOnceFalse() { this->zinLoadOnce = false; };
+	void setSpadeLoadOnceFalse() { this->spadeLoadOnce = false; };
+
+	void setZinInitTrue() { this->zinInit = true; };
+	void setSpadeInitTrue() { this->zinInit = true; };
+	void setZinInitFalse() { this->zinInit = false; };
+	void setSpadeInitFalse() { this->zinInit = false; };
+
+	//Sprite Border Control Flow Getters
+	bool& getSpriteInit() { return this->spriteInit; };
+	bool& getPlayerInit() { return this->playerInit; };
+
+	//Sprite Border Control Flow Setters
+	void setSpriteInitTrue() { this->spriteInit = true; };
+	void setPlayerInitTrue() { this->playerInit = true; };
+	void setSpriteInitFalse() { this->spriteInit = false; };
+	void setPlayerInitFalse() { this->playerInit = false; };
+
+	//Sprite Integer Selection Getters
+	int& getPlayerCounter() { return this->playerCounter; };
+	int& getZinCounter() { return this->zinCounter; };
+	int& getSpadeCounter() { return this->spadeCounter; };
+	int& getMapCounter() { return this->mapCounter; };
+	int& getDialogueCounter() { return this->dialogueCounter; };
+	int& getCombatCounter() { return this->combatCounter; };
+
+	//Sprite Integer Selection Setters
+	void setPlayerCounterInc() { this->playerCounter++; };
+	void setZinCounterInc() { this->zinCounter++; };
+	void setSpadeCounterInc() { this->spadeCounter++; };
+	void setMapCounterInc() { this->mapCounter++; };
+	void setDialogueCounterInc() { this->dialogueCounter++; };
+	void setCombatCounterInc() { this->combatCounter++; };
+
+	void setPlayerCounterDec() { this->playerCounter--; };
+	void setZinCounterDec() { this->zinCounter--; };
+	void setSpadeCounterDec() { this->spadeCounter--; };
+	void setMapCounterDec() { this->mapCounter--; };
+	void setDialogueCounterDec() { this->dialogueCounter--; };
+	void setCombatCounterDec() { this->combatCounter--; };
+
+	void setZinCounterZero() { this->zinCounter = 0; };
+	void setSpadeCounterZero() { this->spadeCounter = 0; };
+	void setSpadeCounterOne() { this->spadeCounter = 1; };
+	void setCombatCounterZero() { this->combatCounter = 0; };
+	void setMapCounterZero() { this->mapCounter = 0; };
+	void setMapCounterOne() { this->mapCounter = 1; };
+	void setMapCounterTwo() { this->mapCounter = 2; };
+
+	//Movable Getters
+	bool& getMovable() { return this->movable; };
+	bool& getMovableStatsBox() { return this->movableStatsBox; };
+
+	//Movable Setters
+	void setMovableTrue() { this->movable = true; };
+	void setMovableStatsBoxTrue() { this->movableStatsBox = true; };
+	void setMovableFalse() { this->movable = false; };
+	void setMovableStatsBoxFalse() { this->movableStatsBox = false; };
+
+	//Rect Coordinate Getters
+	float& getRectMapX() { return this->rectMapX; };
+	float& getRectMapY() { return this->rectMapY; };
+	float& getRectStatsBoxX() { return this->rectStatsBoxX; };
+	float& getRectStatsBoxY() { return this->rectStatsBoxY; };
+	float& getRectInventoryBoxX() { return this->rectInventoryBoxX; };
+	float& getRectInventoryBoxY() { return this->rectInventoryBoxY; };
+
+	//Rect Coordinate Setters
+	void setRectMapXVal() { this->rectMapX = 25; };
+	void setRectMapYVal() { this->rectMapY = 50; };
+
+	//Initialize Combat Assets Getters
+	bool& getIntroAssets() { return this->introAssets; };
+	bool& getCombatAssets() { return this->combatAssets; };
+	bool& getBonfireAssets() { return this->bonfireAssets; };
+	bool& getPlayerTurnAssets() { return this->playerTurnAssets; };
+	bool& getZinTurnAssets() { return this->zinTurnAssets; };
+
+	//Initialize Combat Assets Setters
+	void setIntroAssetsTrue() { this->introAssets = true; };
+	void setCombatAssetsTrue() { this->combatAssets = true; };
+	void setBonfireAssetsTrue() { this->bonfireAssets = true; };
+	void setPlayerTurnAssetsTrue() { this->playerTurnAssets = true; };
+	void setZinTurnAssetsTrue() { this->zinTurnAssets = true; };
+
+	void setIntroAssetsFalse() { this->introAssets = false; };
+	void setCombatAssetsFalse() { this->combatAssets = false; };
+	void setBonfireAssetsFalse() { this->bonfireAssets = false; };
+	void setPlayerTurnAssetsFalse() { this->playerTurnAssets = false; };
+	void setZinTurnAssetsFalse() { this->zinTurnAssets = false; };
+
+	//Combat Move Unlock Getters
+	int& getCombatPlayerMoves() { return this->combatPlayerMoves; };
+	int& getCombatZinMoves() { return this->combatZinMoves; };
+
+	//Combat Move Unlock Setters
+	void setCombatPlayerMovesInc() { this->combatPlayerMoves++; };
+	void setCombatZinMovesInc() { this->combatZinMoves++; };
+
+	//String Getters
+	std::string& getPlayerName() { return this->playerName; };
+
+	//String Setters
+	void setPlayerName() { this->playerName; };
 };
 
 #endif

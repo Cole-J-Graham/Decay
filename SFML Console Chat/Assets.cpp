@@ -26,11 +26,11 @@ Assets::Assets()
 
     //Sprite Control Flow
     this->playerLoadOnce = true;
-    this->spadeInit = false;
+    this->zinLoadOnce = true;
     this->spadeLoadOnce = true;
 
     this->zinInit = false;
-    this->zinLoadOnce = true;
+    this->spadeInit = false;
 
     //Sprite Border Control Flow
     this->spriteInit = false;
@@ -38,8 +38,8 @@ Assets::Assets()
 
     //Sprite Integer Selection
     this->playerCounter = -1;
-    this->spadeCounter = -1;
     this->zinCounter = -1;
+    this->spadeCounter = -1;
     this->mapCounter = -1;
     this->dialogueCounter = 0;
     this->combatCounter = 0;
@@ -65,7 +65,7 @@ Assets::Assets()
 
     //Combat Move Unlocks
     this->combatPlayerMoves = 1;
-    this->combatZinMoves = 1;
+    this->combatZinMoves = 2;
 
     //Strings
     this->playerName = "player";
@@ -1128,6 +1128,8 @@ void Assets::initCombatAssets()
         rectElements[9].setPosition(335.0f, 10000.0f);
         textElements[10].setPosition(335.0f, 10000.0f);
         rectElements[10].setPosition(335.0f, 10000.0f);
+        textElements[11].setPosition(335.0f, 10000.0f);
+        rectElements[11].setPosition(335.0f, 10000.0f);
         playerCounter = -1;
         zinCounter = -1;
     }
@@ -1192,49 +1194,89 @@ void Assets::zinCombatAssets()
     switch (this->combatZinMoves) {
     case 0:
         if (this->zinTurnAssets == true) {
-            //Draw Zin Smite Text
-            textElements[4].setFont(font);
-            textElements[4].setCharacterSize(18);
-            textElements[4].setPosition(335.0f, 795.0f);
-            textElements[4].setString("Smite");
             //Draw Zin Smite Button
             rectElements[4].setPosition(335.0f, 795.0f);
             rectElements[4].setSize(sf::Vector2f(100.0f, 25.0f));
             rectElements[4].setOutlineColor(sf::Color::White);
             rectElements[4].setOutlineThickness(1.0f);
+            textElements[4].setFont(font);
+            textElements[4].setCharacterSize(18);
+            textElements[4].setPosition(335.0f, 795.0f);
+            textElements[4].setString("Smite");
         }
         else if (this->zinTurnAssets == false) {
+            //Hide Elements
             textElements[4].setPosition(335.0f, 10000.0f);
             rectElements[4].setPosition(335.0f, 10000.0f);
         }
         break;
     case 1:
         if (this->zinTurnAssets == true) {
-            //Draw Zin Smite Text
-            textElements[4].setFont(font);
-            textElements[4].setCharacterSize(18);
-            textElements[4].setPosition(335.0f, 795.0f);
-            textElements[4].setString("Smite");
             //Draw Zin Smite Button
             rectElements[4].setPosition(335.0f, 795.0f);
             rectElements[4].setSize(sf::Vector2f(100.0f, 25.0f));
             rectElements[4].setOutlineColor(sf::Color::White);
             rectElements[4].setOutlineThickness(1.0f);
-            textElements[10].setFont(font);
-            textElements[10].setCharacterSize(18);
-            textElements[10].setPosition(335.0f, 765.0f);
-            textElements[10].setString("Mend");
-            //Draw Zin Smite Button
+            textElements[4].setFont(font);
+            textElements[4].setCharacterSize(18);
+            textElements[4].setPosition(335.0f, 795.0f);
+            textElements[4].setString("Smite");
+            //Draw Zin Mend Button
             rectElements[10].setPosition(335.0f, 765.0f);
             rectElements[10].setSize(sf::Vector2f(100.0f, 25.0f));
             rectElements[10].setOutlineColor(sf::Color::White);
             rectElements[10].setOutlineThickness(1.0f);
+            textElements[10].setFont(font);
+            textElements[10].setCharacterSize(18);
+            textElements[10].setPosition(335.0f, 765.0f);
+            textElements[10].setString("Mend");
         }
         else if (this->zinTurnAssets == false) {
+            //Hide Elements
             textElements[4].setPosition(335.0f, 10000.0f);
             rectElements[4].setPosition(335.0f, 10000.0f);
             textElements[10].setPosition(335.0f, 10000.0f);
             rectElements[10].setPosition(335.0f, 10000.0f);
+        }
+        break;
+    case 2:
+        if (this->zinTurnAssets == true) {
+            //Draw Zin Smite Button
+            rectElements[4].setPosition(335.0f, 795.0f);
+            rectElements[4].setSize(sf::Vector2f(100.0f, 25.0f));
+            rectElements[4].setOutlineColor(sf::Color::White);
+            rectElements[4].setOutlineThickness(1.0f);
+            textElements[4].setFont(font);
+            textElements[4].setCharacterSize(18);
+            textElements[4].setPosition(335.0f, 795.0f);
+            textElements[4].setString("Smite");
+            //Draw Zin Mend Button
+            rectElements[10].setPosition(335.0f, 765.0f);
+            rectElements[10].setSize(sf::Vector2f(100.0f, 25.0f));
+            rectElements[10].setOutlineColor(sf::Color::White);
+            rectElements[10].setOutlineThickness(1.0f);
+            textElements[10].setFont(font);
+            textElements[10].setCharacterSize(18);
+            textElements[10].setPosition(335.0f, 765.0f);
+            textElements[10].setString("Mend");
+            //Draw Zin Vengeance Button
+            rectElements[11].setPosition(335.0f, 735.0f);
+            rectElements[11].setSize(sf::Vector2f(100.0f, 25.0f));
+            rectElements[11].setOutlineColor(sf::Color::White);
+            rectElements[11].setOutlineThickness(1.0f);
+            textElements[11].setFont(font);
+            textElements[11].setCharacterSize(18);
+            textElements[11].setPosition(335.0f, 735.0f);
+            textElements[11].setString("Vengeance");
+        }
+        else if (this->zinTurnAssets == false) {
+            //Hide Elements
+            textElements[4].setPosition(335.0f, 10000.0f);
+            rectElements[4].setPosition(335.0f, 10000.0f);
+            textElements[10].setPosition(335.0f, 10000.0f);
+            rectElements[10].setPosition(335.0f, 10000.0f);
+            textElements[11].setPosition(335.0f, 10000.0f);
+            rectElements[11].setPosition(335.0f, 10000.0f);
         }
         break;
     }
@@ -1243,6 +1285,9 @@ void Assets::zinCombatAssets()
 //Sound Functions
 void Assets::loadSFX()
 {
+    //Load Vengeance Sound
+    bufferVengeance.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/vengeance.wav");
+    soundVengeance.setBuffer(bufferVengeance);
     //Load Smite Sound
     bufferSlash.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/slash.wav");
     soundSlash.setBuffer(bufferSlash);

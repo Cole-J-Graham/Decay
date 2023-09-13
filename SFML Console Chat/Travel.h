@@ -16,11 +16,13 @@
 class Travel
 {
 private:
-
-public:
-	//Int
+	//Core
 	int frame;
+	int travel;
+
+	//Counters
 	int introCounterDialogue;
+
 	int introCounter;
 	int forestCounter;
 	int castleCounter;
@@ -29,7 +31,7 @@ public:
 	//Core Bools
 	bool frameInit;
 
-	//Bonfire
+	//Bonfire Bools
 	bool forestBonfireInit;
 
 	//Init Bools
@@ -39,9 +41,10 @@ public:
 	bool castleHallsInit;
 	bool castleDepthsInit;
 
+public:
+
 	Assets assets;
 
-	int travel;
 	//Constructors & Destructors
 	Travel();
 	~Travel();
@@ -76,6 +79,36 @@ public:
 	void decayOcean(Assets& assets, Event& notevent, Combat& combat, Player& player);
 	void decayForest(Assets& assets, Event& notevent, Combat& combat, Player& player);
 	void decayGiants(Assets& assets, Event& notevent, Combat& combat, Player& player);
+
+	//Core Getters
+	int& getFrame() { return this->frame; };
+	int& getTravel() { return this->travel; };
+
+	//Core Setters
+	void setFrameInc() { this->frame++; };
+	void setFrameDec() { this->frame--; };
+
+	//Counter Getters
+	int& getIntroCounterDialogue() { return this->introCounterDialogue; };
+
+	int& getIntroCounter() { return this->introCounter; };
+	int& getForestCounter() { return this->forestCounter; };
+	int& getCastleCounter() { return this->castleCounter; };
+	int& getDecayCounter() { return this->decayCounter; };
+
+	//Counter Setters
+	void setIntroCounterDialogueInc() { this->introCounterDialogue++; };
+
+	//Core Bools Getters
+	bool& getFrameInit() { return this->frameInit; };
+
+	//Core Bools Setters
+	void setFrameInitFalse() { this->frameInit = false; };
+
+	//Bonfire Bools
+	bool& getForestBonfireInit() { return this->forestBonfireInit; };
+
+
 };
 
 

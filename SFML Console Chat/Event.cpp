@@ -47,8 +47,8 @@ void Event::healCharacters(sf::RenderWindow& window, Assets& assets, Combat& com
 
     //Show Hover Text
     if (assets.bonfireHealDetectionRect.getGlobalBounds().contains(mousePosF)) {
-        combat.playerHp = combat.playerHpMax;
-        combat.zinHp = combat.zinHpMax;
+        combat.getPlayerHp() = combat.getPlayerHpMax();
+        combat.getZinHp() = combat.getZinHpMax();
         assets.text.setString("All party members Hp restored...");
     }
 }
@@ -73,26 +73,26 @@ void Event::smithingSharpenBlade(sf::RenderWindow& window, Assets& assets, Playe
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
     if (assets.bonfireSmithDetectionRect.getGlobalBounds().contains(mousePosF)) {
-        if (player.smithingStones >= 1) {
-            player.smithingStones--;
+        if (player.getSmithingStones() >= 1) {
+            player.setSmithingStonesDec();
             assets.text.setString("You use the smithing stone to improve your sword further...");
-            player.swordPower++;
-            switch (player.swordPower) {
+            player.setSwordPowerInc();
+            switch (player.getSwordPower()) {
             case 0:
-                player.basicSword = "Basic Longsword";
+                player.getBasicSword() = "Basic Longsword";
                 break;
             case 1:
-                player.basicSword = "Keen Longsword";
+                player.getBasicSword() = "Keen Longsword";
                 break;
             case 2:
-                player.basicSword = "Honed Longsword";
+                player.getBasicSword() = "Honed Longsword";
                 break;
             case 3:
-                player.basicSword = "Godsplitting Longsword";
+                player.getBasicSword() = "Godsplitting Longsword";
                 break;
             }
         }
-        else if (player.smithingStones <= 0) {
+        else if (player.getSmithingStones() <= 0) {
             assets.text.setString("You lack the required smithing stones to improve your sword...");
         }
     }
@@ -102,18 +102,18 @@ void Event::smithingSharpenBlade(sf::RenderWindow& window, Assets& assets, Playe
 void Event::spadeEncounter(Assets& assets)
 {
     //Initiate Dialogue
-    switch (assets.dialogueCounter) {
+    switch (assets.getDialogueCounter()) {
     case 0:
         if (this->encounterInit == true) {
-            assets.spriteInit = true; //Initialize Sprite Border
-            assets.spadeCounter = 0; //Pick which Spade Sprite to use via switch statement
+            assets.setSpriteInitTrue(); //Initialize Sprite Border
+            assets.setSpadeCounterZero(); //Pick which Spade Sprite to use via switch statement
             assets.text.setString("Hey, what are you doing here...?"); //Set text for what's happening
             this->encounterInit = false; //Ensure this only runs once...
         }
         break;
     case 1:
         if (this->encounterInitTwo == true) {
-            assets.spadeCounter = 1;
+            assets.setSpadeCounterOne();
             assets.text.setString("Get OUT!");
             assets.soundAngry.play();
             this->encounterInitTwo = false;

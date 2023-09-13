@@ -7,12 +7,12 @@
 class Event
 {
 private:
-
-public:
 	bool encounterInit;
 	bool encounterInitTwo;
 
 	int dialogue;
+
+public:
 
 	//Constructors & Destructors
 	Event();
@@ -29,6 +29,12 @@ public:
 
 	//Castle Events
 	void spadeEncounter(Assets& assets);
+
+	//Getters
+	bool& getEncounterInit() { return this->encounterInit; };
+	bool& getEncounterInitTow() { return this->encounterInitTwo; };
+
+	int& getDialogue() { return this->dialogue; };
 };
 
 #endif
