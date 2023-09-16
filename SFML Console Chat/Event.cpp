@@ -50,6 +50,8 @@ void Event::healCharacters(sf::RenderWindow& window, Assets& assets, Combat& com
         combat.getPlayerHp() = combat.getPlayerHpMax();
         combat.getZinHp() = combat.getZinHpMax();
         assets.text.setString("All party members Hp restored...");
+        assets.textElements[7].setString("Zin            " + std::to_string(combat.getZinHp()) + "/" + std::to_string(combat.getZinHpMax()));
+        assets.textElements[6].setString(assets.getPlayerName() + "     " + std::to_string(combat.getPlayerHp()) + "/" + std::to_string(combat.getPlayerHpMax()));
     }
 }
 

@@ -192,6 +192,8 @@ void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Pla
         }
         assets.map.setTexture(assets.mapTexture);
         assets.map.setPosition(440.0f, -200.0f); // absolute position
+        combat.initDecayWalker(assets);
+        combat.combatLoop(assets, player);
         break;
     case 2:
         assets.locationText.setString("Forest Entrance");

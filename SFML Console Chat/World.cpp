@@ -66,7 +66,9 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                 { //Get Mouse Click Input
                     this->travelButtons(window, assets);
                     //If button in map is clicked, do something
-                    this->mapButtons(window, assets);
+                    if (!assets.getPlayerDeath()) {
+                        this->mapButtons(window, assets);
+                    }
                     //Map Menu Bar Functionality
                     this->menuBarStats(window, combat, player, assets); //Must be loaded before menuBar(window); to withhold functionality
                     this->menuBar(window, assets);
@@ -154,7 +156,7 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
     window.clear(sf::Color::Black);
 
     // draw everything here...
-    if (this->mainMenu == false) {
+    if (this->mainMenu == false && !assets.getPlayerDeath()) {
         assets.drawObjects();
         travel.travelCore(window, assets, notevent, combat, player);
 
@@ -208,6 +210,7 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
             //Make Box Movable if clicked...
             this->movableBox(window, assets);
         }
+
         if (assets.getInitStats() == true) {
             window.draw(assets.rectStatsBox);
             if (assets.getPlayerStatsInit() == true) {
@@ -234,6 +237,14 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
         for (int i = 0; i < assets.menuScreenElementsText.size(); i++) {
             window.draw(assets.menuScreenElementsText[i]);
         }
+    }
+    else if (assets.getPlayerDeath()) {
+        assets.drawDeathAssets();
+        window.draw(assets.deathText);
+        window.draw(assets.menuScreenElements[1]);
+        window.draw(assets.menuScreenElements[2]);
+        window.draw(assets.menuScreenElementsText[1]);
+        window.draw(assets.menuScreenElementsText[2]);
     }
 
     // end the current frame

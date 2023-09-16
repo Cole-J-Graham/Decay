@@ -26,7 +26,7 @@ private:
 	int zinVengeance;
 
 	//Hostile Moves
-	int hostileSlash;
+	int hostileStrike;
 
 	//Attack Counters
 	int attackCounter;
@@ -39,6 +39,10 @@ private:
 	bool initCombatOnce;
 	bool reInitCombatOnce;
 
+	//Hostile Bool
+	bool initHostileWolf;
+	bool initHostileWalker;
+
 	//Combat Control Flow Bool
 	bool turnPlayer;
 	bool turnZin;
@@ -50,9 +54,30 @@ private:
 	bool hostileAttack;
 	bool hostileAttackZin;
 
+	bool playerDead;
+	bool zinDead;
+
 	//Move Selectors
 	int playerPickMove;
 	int zinPickMove;
+
+	//Init Strings
+	std::string playerTurnText;
+	std::string zinTurnText;
+
+	std::string hostileNameNoSpc;
+	std::string hostileName;
+	std::string hostileEncounterText;
+	std::string hostileAtkPlayerText;
+	std::string hostileAtkZinText;
+	std::string hostileAtkZinBlkText;
+
+	std::string playerSlashAtkText;
+	std::string playerGuardAtkText;
+
+	std::string zinSmiteAtkText;
+	std::string zinMendAtkText;
+	std::string zinVengeanceAtkText;
 
 public:
 
@@ -69,6 +94,7 @@ public:
 	void combatLoop(Assets& assets, Player& player);
 	void initCombat(Assets& assets, Player& player);
 	void reInitCombat(Assets& assets);
+	void playerDeath(Assets& assets);
 
 	//Combat Functions
 	void playerTurn(Assets& assets);
@@ -78,6 +104,10 @@ public:
 	//Combat Pick Attacks
 	void playerSelectMove(Assets& assets);
 	void zinSelectMove(Assets& assets);
+
+	//Combat Init Hostile
+	void initWolf(Assets& assets);
+	void initDecayWalker(Assets& assets);
 
 	//Hp Getters
 	int& getPlayerHp() { return this->playerHp; };
@@ -99,7 +129,7 @@ public:
 	int& getZinVengeance() { return this->zinVengeance; };
 
 	//Hostile Move Getters
-	int& getHostileSlash() { return this->hostileSlash; };
+	int& getHostileSlash() { return this->hostileStrike; };
 
 	//Attack Counter Getters
 	int& getAttackCounter() { return this->attackCounter; };

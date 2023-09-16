@@ -28,9 +28,11 @@ Assets::Assets()
     this->playerLoadOnce = true;
     this->zinLoadOnce = true;
     this->spadeLoadOnce = true;
+    this->hostileLoadOnce = true;
 
     this->zinInit = false;
     this->spadeInit = false;
+    this->hostileInit = false;
 
     //Sprite Border Control Flow
     this->spriteInit = false;
@@ -40,6 +42,7 @@ Assets::Assets()
     this->playerCounter = -1;
     this->zinCounter = -1;
     this->spadeCounter = -1;
+    this->hostileCounter = -1;
     this->mapCounter = -1;
     this->dialogueCounter = 0;
     this->combatCounter = 0;
@@ -93,6 +96,7 @@ void Assets::drawObjects()
     this->playerSprite();
     this->spadeSprite();
     this->zinSprite();
+    this->hostileSprite();
     this->drawSpadeSpriteBox();
     //Combat Asset Functions
     this->initCombatAssets();
@@ -479,6 +483,36 @@ void Assets::drawMainMenu()
         menuScreenElementsText[3].setPosition(10.0f, 100.0f);
         menuScreenElementsText[4].setPosition(10.0f, 125.0f);
     }
+}
+
+void Assets::drawDeathAssets()
+{
+    font.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
+
+    //Draw Load and Quit Buttons
+    menuScreenElements[1].setPosition(10.0f, 125.0f);
+    menuScreenElements[2].setPosition(10.0f, 150.0f);
+
+    menuScreenElements[1].setSize(sf::Vector2f(100.0f, 25.0f));
+    menuScreenElements[1].setOutlineColor(sf::Color::White);
+    menuScreenElements[1].setOutlineThickness(1.0f);
+    menuScreenElements[2].setSize(sf::Vector2f(100.0f, 25.0f));
+    menuScreenElements[2].setOutlineColor(sf::Color::White);
+    menuScreenElements[2].setOutlineThickness(1.0f);
+    //Draw Load and Quit Text
+    deathText.setFont(font);
+    deathText.setCharacterSize(48);
+    deathText.setString("Perished...");
+    deathText.setPosition(25.0f, 25.0f);
+
+    menuScreenElementsText[1].setFont(font);
+    menuScreenElementsText[1].setCharacterSize(18);
+    menuScreenElementsText[1].setString("Load");
+    menuScreenElementsText[2].setFont(font);
+    menuScreenElementsText[2].setCharacterSize(18);
+    menuScreenElementsText[2].setString("Quit");
+    menuScreenElementsText[1].setPosition(10.0f, 125.0f);
+    menuScreenElementsText[2].setPosition(10.0f, 150.0f);
 }
 
 //Drawing Map Segments
@@ -1047,7 +1081,6 @@ void Assets::spadeSprite()
         break;
     }
    
-
     //Sprite Options, ect
     spadeTexture.setSmooth(true);
     spadeTexture.setRepeated(false);
@@ -1082,12 +1115,53 @@ void Assets::zinSprite()
         break;
     }
 
-
     //Sprite Options, ect
-    //zinTexture.setSmooth(true);
     zinTexture.setRepeated(false);
     spriteElements[3].setTexture(zinTexture);
     spriteElements[3].setScale(0.0504f, 0.0504f);
+}
+
+void Assets::hostileSprite()
+{
+    //Initialize Hostile Sprite
+    if (this->hostileLoadOnce == true) {
+        hostileTextureWalker.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decaywalkersprite.jpeg");
+        hostileTextureWolf.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/wolfsprite.png");
+        spriteElements[5].setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
+        this->hostileLoadOnce = false;
+    }
+    //Pick Hostile Sprite
+    switch (this->hostileCounter) {
+    case -1:
+        spriteElements[5].setPosition(sf::Vector2f(10000.0f, 560.0f));
+        break;
+    case 0:
+        if (this->hostileInit == false) {
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            this->hostileInit = true;
+        }
+        break;
+    case 1:
+        //Wolf Sprite
+        if (this->hostileInit == false) {
+            hostileTextureWolf.setRepeated(false);
+            spriteElements[5].setTexture(hostileTextureWolf);
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteElements[5].setScale(0.15f, 0.15f);
+            this->hostileInit = true;
+        }
+        break;
+    case 2:
+        //Decay Walker Sprite
+        if (this->hostileInit == false) {
+            hostileTextureWalker.setRepeated(false);
+            spriteElements[5].setTexture(hostileTextureWalker);
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteElements[5].setScale(0.235f, 0.235f);
+            this->hostileInit = true;
+        }
+        break;
+    }
 }
 
 //Combat Asset Functions
@@ -1132,6 +1206,7 @@ void Assets::initCombatAssets()
         rectElements[11].setPosition(335.0f, 10000.0f);
         playerCounter = -1;
         zinCounter = -1;
+        hostileCounter = -1;
     }
 }
 

@@ -35,9 +35,11 @@ private:
 	bool playerLoadOnce;
 	bool zinLoadOnce;
 	bool spadeLoadOnce;
+	bool hostileLoadOnce;
 
 	bool zinInit;
 	bool spadeInit;
+	bool hostileInit;
 
 	//Sprite Border Control Flow
 	bool spriteInit;
@@ -47,6 +49,7 @@ private:
 	int playerCounter;
 	int zinCounter;
 	int spadeCounter;
+	int hostileCounter;
 	int mapCounter;
 	int dialogueCounter;
 	int combatCounter;
@@ -69,6 +72,7 @@ private:
 	bool bonfireAssets;
 	bool playerTurnAssets;
 	bool zinTurnAssets;
+	bool playerDeath;
 
 	//Combat Move Unlocks
 	int combatPlayerMoves;
@@ -94,6 +98,10 @@ public:
 	sf::Texture buttonBackTexture;
 	sf::Texture textureTravel;
 	sf::Texture multiArrowTexture;
+
+	//Hostile Textures
+	sf::Texture hostileTextureWolf;
+	sf::Texture hostileTextureWalker;
 
 	//Map Textures
 	sf::Texture textureMapView;
@@ -145,6 +153,9 @@ public:
 	std::vector<sf::Text> menuScreenElementsText {menuStartButtonText, menuLoadButtonText,
 		menuQuitButtonText, menuLoadButtonText, menuQuitButtonText};
 
+	//Death Screen Assets
+	sf::Text deathText;
+
 	//Zin Stats Assets
 	sf::RectangleShape zinStatsBoxButton;
 	sf::RectangleShape rectStatsPointsBoxZin;
@@ -158,6 +169,7 @@ public:
 	sf::RectangleShape rectMend;
 	sf::RectangleShape rectVengeance;
 	sf::Text attackText;
+	sf::Sprite hostile;
 
 	//Text
 	sf::Font font;
@@ -216,7 +228,7 @@ public:
 		hostileNameText, textGuard, textMend, textVengeance };
 
 	std::vector<sf::Sprite> spriteElements {button, buttonBack, spade, 
-		zin, player};
+		zin, player, hostile };
 
 	//Stats Menu Vectors
 	std::vector<sf::RectangleShape> playerStatElements {rectStatsPointsBox, rectStrengthPointsBox,
@@ -362,6 +374,7 @@ public:
 	void drawZinStats();
 	void drawText();
 	void drawMainMenu();
+	void drawDeathAssets();
 
 	//Draw Map Segments
 	void drawMap();
@@ -382,6 +395,7 @@ public:
 	void playerSprite();
 	void spadeSprite();
 	void zinSprite();
+	void hostileSprite();
 
 	//Sound Functions
 	void loadSFX();
@@ -449,8 +463,10 @@ public:
 
 	void setZinInitTrue() { this->zinInit = true; };
 	void setSpadeInitTrue() { this->zinInit = true; };
+	void setHostileInitTrue() { this->hostileInit = true; };
 	void setZinInitFalse() { this->zinInit = false; };
 	void setSpadeInitFalse() { this->zinInit = false; };
+	void setHostileInitFalse() { this->hostileInit = false; };
 
 	//Sprite Border Control Flow Getters
 	bool& getSpriteInit() { return this->spriteInit; };
@@ -466,6 +482,7 @@ public:
 	int& getPlayerCounter() { return this->playerCounter; };
 	int& getZinCounter() { return this->zinCounter; };
 	int& getSpadeCounter() { return this->spadeCounter; };
+	int& getHostileCounter() { return this->hostileCounter; };
 	int& getMapCounter() { return this->mapCounter; };
 	int& getDialogueCounter() { return this->dialogueCounter; };
 	int& getCombatCounter() { return this->combatCounter; };
@@ -521,6 +538,7 @@ public:
 	bool& getBonfireAssets() { return this->bonfireAssets; };
 	bool& getPlayerTurnAssets() { return this->playerTurnAssets; };
 	bool& getZinTurnAssets() { return this->zinTurnAssets; };
+	bool& getPlayerDeath() { return this->playerDeath; };
 
 	//Initialize Combat Assets Setters
 	void setIntroAssetsTrue() { this->introAssets = true; };
@@ -528,12 +546,14 @@ public:
 	void setBonfireAssetsTrue() { this->bonfireAssets = true; };
 	void setPlayerTurnAssetsTrue() { this->playerTurnAssets = true; };
 	void setZinTurnAssetsTrue() { this->zinTurnAssets = true; };
+	void setPlayerDeathTrue() { this->playerDeath = true; };
 
 	void setIntroAssetsFalse() { this->introAssets = false; };
 	void setCombatAssetsFalse() { this->combatAssets = false; };
 	void setBonfireAssetsFalse() { this->bonfireAssets = false; };
 	void setPlayerTurnAssetsFalse() { this->playerTurnAssets = false; };
 	void setZinTurnAssetsFalse() { this->zinTurnAssets = false; };
+	void setPlayerDeathFalse() { this->playerDeath = false; };
 
 	//Combat Move Unlock Getters
 	int& getCombatPlayerMoves() { return this->combatPlayerMoves; };
