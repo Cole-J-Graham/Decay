@@ -349,9 +349,15 @@ void Combat::zinSelectMove(Assets& assets)
 		assets.soundMend.play();
 		if (this->playerHp < this->playerHpMax) {
 			this->playerHp += this->zinMend;
+			if (this->playerHp > this->playerHpMax) {
+				this->playerHp = this->playerHpMax;
+			}
 		}
 		if (this->zinHp < this->zinHpMax) {
 			this->zinHp += this->zinMend;
+			if (this->zinHp > this->zinHpMax) {
+				this->zinHp = this->zinHpMax;
+			}
 		}
 		assets.textElements[6].setString(assets.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
 		assets.textElements[7].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));

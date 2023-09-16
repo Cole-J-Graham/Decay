@@ -458,124 +458,6 @@ void World::travelButtons(sf::RenderWindow& window, Assets& assets)
     }
 }
 
-void World::mapButtons(sf::RenderWindow& window, Assets& assets)
-{
-    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-    this->selectMapView(window, assets);
-    //Map Button Functionality (Switching between whch button on the map is selected to change areas...)
-    //Forest Button Functionality
-    if (assets.mapForestElements[0].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
-        travel.getForestCounter() = 0;
-        travel.setFrameInitFalse();
-        travel.getFrame() = 0; //Ensures whenever you move from area to area on map, player stays on 1st frame
-        this->buttonClick = true;
-    }
-    else if (assets.mapForestElements[1].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
-        travel.getForestCounter() = 1;
-        travel.setFrameInitFalse();
-        travel.getFrame() = 0;
-        this->buttonClick = true;
-    }
-    else if (assets.mapForestElements[2].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
-        travel.getForestCounter() = 2;
-        travel.setFrameInitFalse();
-        travel.getFrame() = 0;
-        this->buttonClick = true;
-    }
-    else if (assets.mapForestElements[3].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
-        travel.getForestCounter() = 3;
-        travel.setFrameInitFalse();
-        travel.getFrame() = 0;
-        this->buttonClick = true;
-    }
-    else if (assets.mapForestElements[4].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
-        travel.getForestCounter() = 4;
-        travel.setFrameInitFalse();
-        travel.getFrame() = 0;
-        this->buttonClick = true;
-    }
-    
-    //Castle Button Functionality
-    if (assets.mapCastleElements[0].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
-        travel.getCastleCounter() = 0;
-        travel.setFrameInitFalse();
-        travel.getFrame() = 0;
-        this->buttonClick = true;
-    }
-    else if (assets.mapCastleElements[1].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
-        travel.getCastleCounter() = 1;
-        travel.setFrameInitFalse();
-        travel.getFrame() = 0;
-        this->buttonClick = true;
-    }
-    else if (assets.mapCastleElements[2].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
-        travel.getCastleCounter() = 2;
-        travel.setFrameInitFalse();
-        travel.getFrame() = 0;
-        this->buttonClick = true;
-    }
-    else if (assets.mapCastleElements[3].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
-        travel.getCastleCounter() = 3;
-        travel.setFrameInitFalse();
-        travel.getFrame() = 0;
-        this->buttonClick = true;
-    }
-    else if (assets.mapCastleElements[4].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
-        travel.getCastleCounter() = 4;
-        travel.setFrameInitFalse();
-        travel.getFrame() = 0;
-        this->buttonClick = true;
-    }
-
-    //Decay Button Functionality
-    if (assets.mapDecayElements[0].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
-        travel.getDecayCounter() = 0;
-        travel.setFrameInitFalse();
-        travel.getFrame() = 0;
-        this->buttonClick = true;
-    }
-    else if (assets.mapDecayElements[1].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
-        travel.getDecayCounter() = 1;
-        travel.setFrameInitFalse();
-        travel.getFrame() = 0;
-        this->buttonClick = true;
-    }
-    else if (assets.mapDecayElements[2].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
-        travel.getDecayCounter() = 2;
-        travel.setFrameInitFalse();
-        travel.getFrame() = 0;
-        this->buttonClick = true;
-    }
-    else if (assets.mapDecayElements[3].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
-        travel.getDecayCounter() = 3;
-        travel.setFrameInitFalse();
-        travel.getFrame() = 0;
-        this->buttonClick = true;
-    }
-    else if (assets.mapDecayElements[4].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
-        travel.getDecayCounter() = 4;
-        travel.setFrameInitFalse();
-        travel.getFrame() = 0;
-        this->buttonClick = true;
-    }
-}
-
 void World::menuBar(sf::RenderWindow& window, Assets& assets)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
@@ -862,6 +744,150 @@ void World::movableBox(sf::RenderWindow& window, Assets& assets)
         assets.getRectMapY() = mousePos.y - 23;
         this->resetMapPosition(window, assets);
     }
+}
+
+//Map Button Functionality
+void World::mapButtons(sf::RenderWindow& window, Assets& assets)
+{
+    this->selectMapView(window, assets);
+    //Map Button Functionality (Switching between whch button on the map is selected to change areas...)
+    switch (assets.getMapCounter()) {
+    case 0:
+        this->mapButtonsForest(window, assets);
+        break;
+    case 1:
+        this->mapButtonsCastle(window, assets);
+        break;
+    case 2:
+        this->mapButtonsDecay(window, assets);
+        break;
+    }
+}
+
+void World::mapButtonsForest(sf::RenderWindow& window, Assets& assets)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+    //Forest Button Functionality
+    if (assets.mapForestElements[0].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.getForestCounter() = 0;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0; //Ensures whenever you move from area to area on map, player stays on 1st frame
+        this->buttonClick = true;
+    }
+    else if (assets.mapForestElements[1].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.getForestCounter() = 1;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.mapForestElements[2].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.getForestCounter() = 2;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.mapForestElements[3].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.getForestCounter() = 3;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.mapForestElements[4].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.getForestCounter() = 4;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
+        this->buttonClick = true;
+    }
+}
+
+void World::mapButtonsCastle(sf::RenderWindow& window, Assets& assets)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+    //Castle Button Functionality
+    if (assets.mapCastleElements[0].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.getCastleCounter() = 0;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.mapCastleElements[1].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.getCastleCounter() = 1;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.mapCastleElements[2].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.getCastleCounter() = 2;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.mapCastleElements[3].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.getCastleCounter() = 3;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
+        this->buttonClick = true;
+    }
+    else if (assets.mapCastleElements[4].getGlobalBounds().contains(mousePosF)) {
+        assets.soundWalk.play();
+        travel.getCastleCounter() = 4;
+        travel.setFrameInitFalse();
+        travel.getFrame() = 0;
+        this->buttonClick = true;
+    }
+}
+
+void World::mapButtonsDecay(sf::RenderWindow& window, Assets& assets)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+        //Decay Button Functionality
+        if (assets.mapDecayElements[0].getGlobalBounds().contains(mousePosF)) {
+            assets.soundWalk.play();
+            travel.getDecayCounter() = 0;
+            travel.setFrameInitFalse();
+            travel.getFrame() = 0;
+            this->buttonClick = true;
+        }
+        else if (assets.mapDecayElements[1].getGlobalBounds().contains(mousePosF)) {
+            assets.soundWalk.play();
+            travel.getDecayCounter() = 1;
+            travel.setFrameInitFalse();
+            travel.getFrame() = 0;
+            this->buttonClick = true;
+        }
+        else if (assets.mapDecayElements[2].getGlobalBounds().contains(mousePosF)) {
+            assets.soundWalk.play();
+            travel.getDecayCounter() = 2;
+            travel.setFrameInitFalse();
+            travel.getFrame() = 0;
+            this->buttonClick = true;
+        }
+        else if (assets.mapDecayElements[3].getGlobalBounds().contains(mousePosF)) {
+            assets.soundWalk.play();
+            travel.getDecayCounter() = 3;
+            travel.setFrameInitFalse();
+            travel.getFrame() = 0;
+            this->buttonClick = true;
+        }
+        else if (assets.mapDecayElements[4].getGlobalBounds().contains(mousePosF)) {
+            assets.soundWalk.play();
+            travel.getDecayCounter() = 4;
+            travel.setFrameInitFalse();
+            travel.getFrame() = 0;
+            this->buttonClick = true;
+        }
 }
 
 

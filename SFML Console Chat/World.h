@@ -79,11 +79,16 @@ public:
 	//Display Element Functionality
 	void mainMenuButtons(sf::RenderWindow& window, Assets& assets);
 	void travelButtons(sf::RenderWindow& window, Assets& assets);
-	void mapButtons(sf::RenderWindow& window, Assets& assets);
 	void menuBar(sf::RenderWindow& window, Assets& assets);
 	void menuBarStats(sf::RenderWindow& window, Combat& combat, Player& player, Assets& assets);
 	void dialogueBox(sf::RenderWindow& window, Combat& combat, Assets& assets);
 	void movableBox(sf::RenderWindow& window, Assets& assets);
+
+	//Map Button Functionality
+	void mapButtons(sf::RenderWindow& window, Assets& assets);
+	void mapButtonsForest(sf::RenderWindow& window, Assets& assets);
+	void mapButtonsCastle(sf::RenderWindow& window, Assets& assets);
+	void mapButtonsDecay(sf::RenderWindow& window, Assets& assets);
 
 	//Map Functions
 	void resetMapPosition(sf::RenderWindow& window, Assets& assets);
