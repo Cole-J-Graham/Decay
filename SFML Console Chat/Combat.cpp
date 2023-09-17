@@ -16,6 +16,7 @@ Combat::Combat()
 	//Player Moves
 	this->playerStrike = 5;
 	this->playerGuard = 1;
+	this->decayedBlade = 10;
 
 	//Zin Moves
 	this->zinSmite = 5;
@@ -68,6 +69,7 @@ Combat::Combat()
 
 	this->playerSlashAtkText = "You strike the combatant! Click to continue...";
 	this->playerGuardAtkText = "You plant yourself in between Zin and the enemy! Click to continue...";
+	this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the enemy!";
 
 	this->zinSmiteAtkText = "Zin smites the combatant! Click to continue...";
 	this->zinMendAtkText = "Zin heals the party! Click to continue...";
@@ -316,7 +318,7 @@ void Combat::playerSelectMove(Assets& assets)
 {
 	switch (this->playerPickMove) {
 	case 0:
-		//Strike the hostile
+		//Strike
 		assets.soundSlash.play();
 		this->hostileHp -= this->playerStrike;
 		assets.textElements[8].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
@@ -329,6 +331,14 @@ void Combat::playerSelectMove(Assets& assets)
 		assets.setPlayerTurnAssetsFalse();
 		this->zinGuarded = true;
 		assets.text.setString(this->playerGuardAtkText);
+		break;
+	case 2:
+		//Decayed blade
+		assets.soundSlash.play();
+		this->hostileHp -= this->decayedBlade;
+		assets.textElements[8].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
+		assets.setPlayerTurnAssetsFalse();
+		assets.text.setString(this->playerDecayAtkText);
 		break;
 	}
 }
@@ -400,6 +410,7 @@ void Combat::initWolf(Assets& assets)
 
 		this->playerSlashAtkText = "You slash at the wolf, hitting it!";
 		this->playerGuardAtkText = "You watch the wolfs movements and prepare yourself to defend Zin...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the wolf!";
 
 		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, striking the wolf!";
 		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health...";
@@ -430,6 +441,7 @@ void Combat::initDecayWalker(Assets& assets)
 
 		this->playerSlashAtkText = "You slash at the vile creature, black ooze";
 		this->playerGuardAtkText = "You watch the walkers movements and prepare yourself to defend Zin...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the walker!";
 
 		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the unholy creature!";
 		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health...";

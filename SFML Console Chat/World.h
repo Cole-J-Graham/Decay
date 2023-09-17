@@ -81,7 +81,7 @@ public:
 	void travelButtons(sf::RenderWindow& window, Assets& assets);
 	void menuBar(sf::RenderWindow& window, Assets& assets);
 	void menuBarStats(sf::RenderWindow& window, Combat& combat, Player& player, Assets& assets);
-	void dialogueBox(sf::RenderWindow& window, Combat& combat, Assets& assets);
+	void dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& assets);
 	void movableBox(sf::RenderWindow& window, Assets& assets);
 
 	//Map Button Functionality

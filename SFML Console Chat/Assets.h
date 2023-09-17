@@ -133,6 +133,7 @@ public:
 	sf::RectangleShape playerStatsBoxButton;
 	sf::RectangleShape rectInventoryBox;
 	sf::RectangleShape rectAttackSmite;
+	sf::RectangleShape rectAttackDecay;
 	sf::RectangleShape buttonMap;
 
 	//Main Menu
@@ -196,6 +197,7 @@ public:
 	sf::Text textGuard;
 	sf::Text textMend;
 	sf::Text textVengeance;
+	sf::Text textDecay;
 
 	//Zin Stats Assets Text
 	sf::Text zinStatsBoxButtonText;
@@ -221,11 +223,11 @@ public:
 	//Main Vectors
 	std::vector<sf::RectangleShape> rectElements {rectStats, rectInventory, buttonMap, 
 		rectAttack, rectAttackSmite, rectSpadeSpriteBox, playerSpriteBorder, zinSpriteBorder,
-		hostileSpriteBorder, rectGuard, rectMend, rectVengeance };
+		hostileSpriteBorder, rectGuard, rectMend, rectVengeance, rectAttackDecay };
 
 	std::vector<sf::Text> textElements {rectStatsText, rectInventoryText, menuText, 
 		attackText, smiteText, spadeText, playerNameText, zinText,
-		hostileNameText, textGuard, textMend, textVengeance };
+		hostileNameText, textGuard, textMend, textVengeance, textDecay };
 
 	std::vector<sf::Sprite> spriteElements {button, buttonBack, spade, 
 		zin, player, hostile };

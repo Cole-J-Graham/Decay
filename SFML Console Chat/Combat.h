@@ -19,6 +19,7 @@ private:
 	//Player Moves
 	int playerStrike;
 	int playerGuard;
+	int decayedBlade;
 
 	//Zin Moves
 	int zinSmite;
@@ -74,6 +75,7 @@ private:
 
 	std::string playerSlashAtkText;
 	std::string playerGuardAtkText;
+	std::string playerDecayAtkText;
 
 	std::string zinSmiteAtkText;
 	std::string zinMendAtkText;

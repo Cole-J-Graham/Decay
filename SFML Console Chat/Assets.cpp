@@ -1204,6 +1204,8 @@ void Assets::initCombatAssets()
         rectElements[10].setPosition(335.0f, 10000.0f);
         textElements[11].setPosition(335.0f, 10000.0f);
         rectElements[11].setPosition(335.0f, 10000.0f);
+        textElements[12].setPosition(335.0f, 10000.0f);
+        rectElements[12].setPosition(335.0f, 10000.0f);
         playerCounter = -1;
         zinCounter = -1;
         hostileCounter = -1;
@@ -1253,12 +1255,24 @@ void Assets::playerCombatAssets()
             rectElements[9].setSize(sf::Vector2f(100.0f, 25.0f));
             rectElements[9].setOutlineColor(sf::Color::White);
             rectElements[9].setOutlineThickness(1.0f);
+            //Draw Player Decay Text
+            textElements[12].setFont(font);
+            textElements[12].setCharacterSize(18);
+            textElements[12].setPosition(335.0f, 735.0f);
+            textElements[12].setString("Decay");
+            //Draw Player Decay Button
+            rectElements[12].setPosition(335.0f, 735.0f);
+            rectElements[12].setSize(sf::Vector2f(100.0f, 25.0f));
+            rectElements[12].setOutlineColor(sf::Color::White);
+            rectElements[12].setOutlineThickness(1.0f);
         }
         else if (this->playerTurnAssets == false) {
             textElements[3].setPosition(335.0f, 10000.0f);
             rectElements[3].setPosition(335.0f, 10000.0f);
             textElements[9].setPosition(335.0f, 10000.0f);
             rectElements[9].setPosition(335.0f, 10000.0f);
+            textElements[12].setPosition(335.0f, 10000.0f);
+            rectElements[12].setPosition(335.0f, 10000.0f);
         }
         break;
     }

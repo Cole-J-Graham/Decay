@@ -46,7 +46,7 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
 
     // run the program as long as the window is open
     while (window.isOpen()) {
-        std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
+        //std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
         clock.restart();
         clickTime.restart();
         // check all the window's events that were triggered since the last iteration of the loop
@@ -73,7 +73,7 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                     this->menuBarStats(window, combat, player, assets); //Must be loaded before menuBar(window); to withhold functionality
                     this->menuBar(window, assets);
                     //Dialogue Box Functionality...
-                    this->dialogueBox(window, combat, assets);
+                    this->dialogueCombatBox(window, combat, assets);
                     //Main Menu Functionality
                     this->mainMenuButtons(window, assets);
                     if (stop) { //Make quit button return to main function to stop program from running
@@ -482,6 +482,7 @@ void World::menuBar(sf::RenderWindow& window, Assets& assets)
         assets.setRectMapYVal();
         this->resetMapPosition(window, assets);
         assets.blipmenu.play();
+        assets.blipmenu.play();
     }
     this->buttonClick = false;
     //Stats Menu Bar Functionality
@@ -681,7 +682,7 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
     }
 }
 
-void World::dialogueBox(sf::RenderWindow& window, Combat& combat, Assets& assets)
+void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& assets)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -696,6 +697,12 @@ void World::dialogueBox(sf::RenderWindow& window, Combat& combat, Assets& assets
         if (combat.getTurnPlayer() == true) {
             combat.setAttackCounterInc();
             combat.getPlayerPickMove() = 1;
+        }
+    }
+    if (assets.rectElements[12].getGlobalBounds().contains(mousePosF)) {
+        if (combat.getTurnPlayer() == true) {
+            combat.setAttackCounterInc();
+            combat.getPlayerPickMove() = 2;
         }
     }
     //Zin Combat Buttons Functionality
