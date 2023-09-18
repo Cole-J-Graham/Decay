@@ -53,6 +53,8 @@ private:
 	int mapCounter;
 	int dialogueCounter;
 	int combatCounter;
+	int showAnsBoxesCounter;
+	int choiceCounter;
 
 	//Movable
 	bool movable;
@@ -102,6 +104,7 @@ public:
 	//Hostile Textures
 	sf::Texture hostileTextureWolf;
 	sf::Texture hostileTextureWalker;
+	sf::Texture hostileTextureKnight;
 
 	//Map Textures
 	sf::Texture textureMapView;
@@ -223,7 +226,7 @@ public:
 	//Main Vectors
 	std::vector<sf::RectangleShape> rectElements {rectStats, rectInventory, buttonMap, 
 		rectAttack, rectAttackSmite, rectSpadeSpriteBox, playerSpriteBorder, zinSpriteBorder,
-		hostileSpriteBorder, rectGuard, rectMend, rectVengeance, rectAttackDecay };
+		hostileSpriteBorder, rectGuard, rectMend, rectVengeance, rectAttackDecay,};
 
 	std::vector<sf::Text> textElements {rectStatsText, rectInventoryText, menuText, 
 		attackText, smiteText, spadeText, playerNameText, zinText,
@@ -330,6 +333,16 @@ public:
 	sf::RectangleShape bonfireSmithDetectionRect;
 	sf::Text bonfireSmithDetectionText;
 
+	//User Input (Answer Boxes Rects)
+	sf::RectangleShape ansOne;
+	sf::RectangleShape ansTwo;
+	sf::Text ansOneText;
+	sf::Text ansTwoText;
+
+	//User Input Vector
+	std::vector<sf::RectangleShape> answerBox {ansOne, ansTwo};
+	std::vector<sf::Text> answerBoxText{ ansOneText, ansTwoText };
+
 	//Sounds
 	sf::Sound sound;
 	sf::Sound blipsound;
@@ -345,6 +358,7 @@ public:
 	sf::Sound soundSmite;
 	sf::Sound soundSlash;
 	sf::Sound soundVengeance;
+	sf::Sound soundDecay;
 
 	sf::SoundBuffer buffer;
 	sf::SoundBuffer blipbuffer;
@@ -360,6 +374,7 @@ public:
 	sf::SoundBuffer bufferSmite;
 	sf::SoundBuffer bufferSlash;
 	sf::SoundBuffer bufferVengeance;
+	sf::SoundBuffer bufferDecay;
 
 	//Music
 	sf::Music music;
@@ -377,6 +392,7 @@ public:
 	void drawText();
 	void drawMainMenu();
 	void drawDeathAssets();
+	void drawAnswerBoxes();
 
 	//Draw Map Segments
 	void drawMap();
@@ -488,6 +504,8 @@ public:
 	int& getMapCounter() { return this->mapCounter; };
 	int& getDialogueCounter() { return this->dialogueCounter; };
 	int& getCombatCounter() { return this->combatCounter; };
+	int& getShowAnsBoxesCounter() { return this->showAnsBoxesCounter; };
+	int& getChoiceCounter() { return this->choiceCounter; };
 
 	//Sprite Integer Selection Setters
 	void setPlayerCounterInc() { this->playerCounter++; };

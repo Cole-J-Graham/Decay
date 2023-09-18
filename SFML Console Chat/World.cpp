@@ -36,7 +36,7 @@ World::~World()
 }
 
 //Core Functions
-void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& player)
+void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel)
 {
     //Load SFX
     assets.loadSFX();
@@ -64,18 +64,18 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                 break;
             case sf::Event::MouseButtonPressed:
                 { //Get Mouse Click Input
-                    this->travelButtons(window, assets);
+                    this->travelButtons(window, assets, travel);
                     //If button in map is clicked, do something
                     if (!assets.getPlayerDeath()) {
-                        this->mapButtons(window, assets);
+                        this->mapButtons(window, assets, travel);
                     }
                     //Map Menu Bar Functionality
                     this->menuBarStats(window, combat, player, assets); //Must be loaded before menuBar(window); to withhold functionality
                     this->menuBar(window, assets);
-                    //Dialogue Box Functionality...
-                    this->dialogueCombatBox(window, combat, assets);
+                    //Dialogue Box Functionality
+                    this->dialogueCombatBox(window, combat, assets, travel);
                     //Main Menu Functionality
-                    this->mainMenuButtons(window, assets);
+                    this->mainMenuButtons(window, assets, travel);
                     if (stop) { //Make quit button return to main function to stop program from running
                         return;
                     }
@@ -93,14 +93,14 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                 }
             }
             //Run Main Function Loop...
-            this->mainLoop(assets, notevent, combat, player);
+            this->mainLoop(assets, notevent, combat, player, travel);
         }
         //Draw Everything...
-        this->Draw(window, assets, notevent, combat, player);
+        this->Draw(window, assets, notevent, combat, player, travel);
     }
 }
 
-void World::mainLoop(Assets& assets, Event& notevent, Combat& combat, Player& player)
+void World::mainLoop(Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel)
 {
     //Run Main Functions
     this->userInput(assets);
@@ -142,7 +142,7 @@ void World::clearInput()
 }
 
 //Display Functions
-void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
+void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -247,6 +247,12 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
         window.draw(assets.menuScreenElementsText[2]);
     }
 
+    //Draw User Input Rects
+    for (int i = 0; i < assets.answerBox.size(); i++) {
+        window.draw(assets.answerBox[i]);
+        window.draw(assets.answerBoxText[i]);
+    }
+
     // end the current frame
     window.display();
 }
@@ -280,11 +286,20 @@ void World::greyOnHover(sf::RenderWindow& window, Assets& assets)
     }
 
     //Turn dialogue box grey on hover
-    if (assets.rect.getGlobalBounds().contains(mousePosF)) {
+    if (assets.rect.getGlobalBounds().contains(mousePosF) && assets.getShowAnsBoxesCounter() == -1) {
         assets.rect.setFillColor(sf::Color(10, 10, 10));
     }
     else {
         assets.rect.setFillColor(sf::Color::Black);
+    }
+
+    for (int i = 0; i < assets.answerBox.size(); i++) {
+        if (assets.answerBox[i].getGlobalBounds().contains(mousePosF)) {
+            assets.answerBox[i].setFillColor(sf::Color(25, 25, 25));
+        }
+        else {
+            assets.answerBox[i].setFillColor(sf::Color::Black);
+        }
     }
 
     //Main Menu Buttons Grey On Hover
@@ -410,7 +425,7 @@ void World::printInventory(sf::RenderWindow& window, Assets& assets, Event& note
 }
 
 //Display Element Functionality
-void World::mainMenuButtons(sf::RenderWindow& window, Assets& assets)
+void World::mainMenuButtons(sf::RenderWindow& window, Assets& assets, Travel& travel)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -439,7 +454,7 @@ void World::mainMenuButtons(sf::RenderWindow& window, Assets& assets)
     }
 }
 
-void World::travelButtons(sf::RenderWindow& window, Assets& assets)
+void World::travelButtons(sf::RenderWindow& window, Assets& assets, Travel& travel)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -682,7 +697,7 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
     }
 }
 
-void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& assets)
+void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& assets, Travel& travel)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -724,7 +739,7 @@ void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& 
             combat.getZinPickMove() = 2;
         }
     }
-    else if (assets.rect.getGlobalBounds().contains(mousePosF)) { //If dialogue box is clicked...
+    else if (assets.rect.getGlobalBounds().contains(mousePosF) && assets.getShowAnsBoxesCounter() == -1) { //If dialogue box is clicked...
         assets.setDialogueCounterInc();
         travel.setFrameInitFalse(); //Allow images to be loaded again
         travel.setIntroCounterDialogueInc();
@@ -739,6 +754,17 @@ void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& 
         }
         assets.setSpadeInitFalse();
     }
+    else if (assets.getShowAnsBoxesCounter() == 0) {
+        if (assets.answerBox[0].getGlobalBounds().contains(mousePosF)) {
+            assets.getChoiceCounter() = 0;
+            travel.setIntroCounterDialogueInc();
+        }
+        else if (assets.answerBox[1].getGlobalBounds().contains(mousePosF)) {
+            assets.getChoiceCounter() = 1;
+            travel.setIntroCounterDialogueInc();
+        }
+    }
+
 }
 
 void World::movableBox(sf::RenderWindow& window, Assets& assets)
@@ -754,24 +780,24 @@ void World::movableBox(sf::RenderWindow& window, Assets& assets)
 }
 
 //Map Button Functionality
-void World::mapButtons(sf::RenderWindow& window, Assets& assets)
+void World::mapButtons(sf::RenderWindow& window, Assets& assets, Travel& travel)
 {
-    this->selectMapView(window, assets);
+    this->selectMapView(window, assets, travel);
     //Map Button Functionality (Switching between whch button on the map is selected to change areas...)
     switch (assets.getMapCounter()) {
     case 0:
-        this->mapButtonsForest(window, assets);
+        this->mapButtonsForest(window, assets, travel);
         break;
     case 1:
-        this->mapButtonsCastle(window, assets);
+        this->mapButtonsCastle(window, assets, travel);
         break;
     case 2:
-        this->mapButtonsDecay(window, assets);
+        this->mapButtonsDecay(window, assets, travel);
         break;
     }
 }
 
-void World::mapButtonsForest(sf::RenderWindow& window, Assets& assets)
+void World::mapButtonsForest(sf::RenderWindow& window, Assets& assets, Travel& travel)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -813,7 +839,7 @@ void World::mapButtonsForest(sf::RenderWindow& window, Assets& assets)
     }
 }
 
-void World::mapButtonsCastle(sf::RenderWindow& window, Assets& assets)
+void World::mapButtonsCastle(sf::RenderWindow& window, Assets& assets, Travel& travel)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -855,7 +881,7 @@ void World::mapButtonsCastle(sf::RenderWindow& window, Assets& assets)
     }
 }
 
-void World::mapButtonsDecay(sf::RenderWindow& window, Assets& assets)
+void World::mapButtonsDecay(sf::RenderWindow& window, Assets& assets, Travel& travel)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -1006,7 +1032,7 @@ void World::resetMapPosition(sf::RenderWindow& window, Assets& assets)
     assets.mapDecayElementsText[4].setPosition(assets.getRectMapX() + 25, assets.getRectMapY() + 35);
 }
 
-void World::selectMapView(sf::RenderWindow& window, Assets& assets)
+void World::selectMapView(sf::RenderWindow& window, Assets& assets, Travel& travel)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));

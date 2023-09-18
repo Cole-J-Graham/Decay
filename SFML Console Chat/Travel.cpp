@@ -96,7 +96,7 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
         }
         assets.map.setTexture(assets.mapTexture);
         assets.map.setPosition(440.0f, -200.0f); // absolute position
-        assets.text.setString("Some priests seemed to unexplainably have the power to resist the decay. \nMany believed they were granted the power by God himself as they possessed the power to burn the blight from the core of a human and restore them.\nThe king of the kingdom upon discovering this quickly rushed to find a priest to stop the disease from ravaging what is left of your body.");
+        assets.text.setString("Some elven priests seemed to unexplainably have the power to resist the decay. \nMany believed they were granted the power by God himself as they possessed the power to burn the blight from the core of a human and restore them.\nThe king of the kingdom upon discovering this quickly rushed to find a priest to stop the disease from ravaging what is left of your body.");
         break;
     case 4:
         if (this->frameInit == false) {
@@ -105,7 +105,7 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
         }
         assets.map.setTexture(assets.mapTexture);
         assets.map.setPosition(440.0f, -200.0f); // absolute position
-        assets.text.setString("A priestess came to your aid, saving most of your body from the decay and your life. However, much of your face had been melted off from the decay, only one of your eyes now usable.\nYou stayed as a knight of the kingdom after you were rescued, though it was by now on the brink of collapse.\n\nMuch of the world outside of the kingdom had shifted and changed. Many anomalies had taken place and much of the world and its creatures were no longer what you knew.\n Chaos scratching at the kingdoms walls, you had a last stand with what was left of your royal guard leading them into battle.");
+        assets.text.setString("A priestess came to your aid, saving most of your body from the decay and your life. However, much of your face had been melted off from the decay, only one of your eyes now usable.\nYou stayed as a knight of the kingdom after you were rescued, though it was by now on the brink of collapse.\n\nMuch of the world outside of the kingdom had shifted and changed. Many anomalies had taken place and much of the world and its creatures were no longer what you knew.\nChaos scratching at the kingdoms walls, you had a last stand with what was left of your royal guard leading them into battle.");
         break;
     case 5:
         if (this->frameInit == false) {
@@ -117,6 +117,47 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
         assets.text.setString("Despite your best efforts and hundreds of abominations slain under your sword, you had eventually fallen along with the kingdom. You had not lost your life, though nothing is left for you in these ruins.\nYou pick yourself up from the mud and begin to force yourself forwards into the lands unknown...");
         break;
     case 6:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Intro/intro7.jpeg");
+            assets.soundWalk.play();
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        assets.text.setString("You begin walking for what feels like days, time passage beginning to slip into a distant memory. You know something's wrong when you begin asking question like 'Who am I?', 'Where am I?'\n\nYou eventually pass out...");
+        break;
+    case 7:
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Intro/intro8.jpeg");
+            assets.soundWalk.play();
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        assets.text.setString("When you awaken, you realize you're still in the woods, however you notice a small figure just beneath the foot of a tree. You look down at yourself and notice a lack of former injuries.\nShe must have healed you.");
+        break;
+    case 8:
+        assets.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
+        assets.setZinCounterZero(); //Set correct frame for zins sprite to appear
+        assets.drawZinSpriteBox();
+        assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+        assets.answerBoxText[0].setString("'1. Are you a priest, kid?'");
+        assets.answerBoxText[1].setString("'2. Bro wtf, lmfao why you so short?'");
+        break;
+    case 9:
+        assets.setZinCounterZero(); //Set correct frame for zins sprite to appear
+        assets.drawZinSpriteBox();
+        assets.getShowAnsBoxesCounter() = -1;
+        switch (assets.getChoiceCounter()) {
+        case 0:
+            assets.text.setString("Uh... Yeah, I am.");
+            break;
+        case 1:
+            assets.text.setString("W-What...?");
+            break;
+        }
+        break;
+    case 10:
         assets.setMapCounterZero();
         assets.text.setString("");
         break;

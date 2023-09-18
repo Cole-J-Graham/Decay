@@ -43,6 +43,7 @@ private:
 	//Hostile Bool
 	bool initHostileWolf;
 	bool initHostileWalker;
+	bool initHostileKnight;
 
 	//Combat Control Flow Bool
 	bool turnPlayer;
@@ -110,6 +111,7 @@ public:
 	//Combat Init Hostile
 	void initWolf(Assets& assets);
 	void initDecayWalker(Assets& assets);
+	void initDecayKnight(Assets& assets);
 
 	//Hp Getters
 	int& getPlayerHp() { return this->playerHp; };

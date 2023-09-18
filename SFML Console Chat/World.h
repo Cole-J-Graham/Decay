@@ -27,8 +27,6 @@ private:
 
 	std::string stringtest;
 
-	Travel travel;
-
 	//Core
 	std::string input;
 	std::string targetHpView;
@@ -61,15 +59,15 @@ public:
 	~World();
 
 	//Core Functions
-	void bootUp(Assets& assets, Event& notevent, Combat& combat, Player& player);
-	void mainLoop(Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void bootUp(Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel);
+	void mainLoop(Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel);
 
 	//User Input
 	void userInput(Assets& assets);
 	void clearInput();
 
 	//Display Functions
-	void Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel);
 	void DrawMapSelectorButtons(sf::RenderWindow& window, Assets& assets);
 	void greyOnHover(sf::RenderWindow& window, Assets& assets);
 	void printPlayerStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
@@ -77,22 +75,22 @@ public:
 	void printInventory(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
 
 	//Display Element Functionality
-	void mainMenuButtons(sf::RenderWindow& window, Assets& assets);
-	void travelButtons(sf::RenderWindow& window, Assets& assets);
+	void mainMenuButtons(sf::RenderWindow& window, Assets& assets, Travel& travel);
+	void travelButtons(sf::RenderWindow& window, Assets& assets, Travel& travel);
 	void menuBar(sf::RenderWindow& window, Assets& assets);
 	void menuBarStats(sf::RenderWindow& window, Combat& combat, Player& player, Assets& assets);
-	void dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& assets);
+	void dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& assets, Travel& travel);
 	void movableBox(sf::RenderWindow& window, Assets& assets);
 
 	//Map Button Functionality
-	void mapButtons(sf::RenderWindow& window, Assets& assets);
-	void mapButtonsForest(sf::RenderWindow& window, Assets& assets);
-	void mapButtonsCastle(sf::RenderWindow& window, Assets& assets);
-	void mapButtonsDecay(sf::RenderWindow& window, Assets& assets);
+	void mapButtons(sf::RenderWindow& window, Assets& assets, Travel& travel);
+	void mapButtonsForest(sf::RenderWindow& window, Assets& assets, Travel& travel);
+	void mapButtonsCastle(sf::RenderWindow& window, Assets& assets, Travel& travel);
+	void mapButtonsDecay(sf::RenderWindow& window, Assets& assets, Travel& travel);
 
 	//Map Functions
 	void resetMapPosition(sf::RenderWindow& window, Assets& assets);
-	void selectMapView(sf::RenderWindow& window, Assets& assets);
+	void selectMapView(sf::RenderWindow& window, Assets& assets, Travel& travel);
 	void drawForestMap(sf::RenderWindow& window, Assets& assets);
 	void drawCastleMap(sf::RenderWindow& window, Assets& assets);
 	void drawDecayMap(sf::RenderWindow& window, Assets& assets);

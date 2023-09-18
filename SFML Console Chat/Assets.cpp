@@ -46,6 +46,8 @@ Assets::Assets()
     this->mapCounter = -1;
     this->dialogueCounter = 0;
     this->combatCounter = 0;
+    this->showAnsBoxesCounter = -1;
+    this->choiceCounter = -1;
 
     //Movable
     this->movable = false;
@@ -103,6 +105,8 @@ void Assets::drawObjects()
     //Detection
     this->bonfireHealDetection();
     this->bonfireSmithDetection();
+    //User Input
+    this->drawAnswerBoxes();
 }
 
 void Assets::drawMainWindow()
@@ -513,6 +517,34 @@ void Assets::drawDeathAssets()
     menuScreenElementsText[2].setString("Quit");
     menuScreenElementsText[1].setPosition(10.0f, 125.0f);
     menuScreenElementsText[2].setPosition(10.0f, 150.0f);
+}
+
+void Assets::drawAnswerBoxes()
+{
+    switch (this->showAnsBoxesCounter) {
+    case -1:
+        for (int i = 0; i < answerBox.size(); i++) {
+            answerBox[i].setPosition(10000, 10000);
+            answerBoxText[i].setPosition(10000, 10000);
+        }
+        break;
+    case 0:
+        for (int i = 0; i < answerBox.size(); i++) {
+            answerBox[i].setSize(sf::Vector2f(1920.0f,100.0f));
+            answerBox[i].setOutlineColor(sf::Color::White);
+            answerBox[i].setOutlineThickness(1.0f);
+            answerBoxText[i].setFont(font);
+            answerBoxText[i].setCharacterSize(16);
+        }
+        answerBox[0].setPosition(0.0f, 825.0f);
+        answerBox[1].setPosition(0.0f, 925.5f);
+
+        answerBoxText[0].setString("1.");
+        answerBoxText[0].setPosition(0.0f, 825.0f);
+        answerBoxText[1].setString("2.");
+        answerBoxText[1].setPosition(0.0f, 925.5f);
+        break;
+    }
 }
 
 //Drawing Map Segments
@@ -1068,7 +1100,6 @@ void Assets::spadeSprite()
             spadeTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixel.png");
             spriteElements[2].setPosition(sf::Vector2f(50.0f, 560.0f)); // absolute position
             spadeText.setString("Spade");
-            std::cout << "ping!";
             this->spadeInit = true;
         }
         break;
@@ -1127,6 +1158,7 @@ void Assets::hostileSprite()
     if (this->hostileLoadOnce == true) {
         hostileTextureWalker.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decaywalkersprite.jpeg");
         hostileTextureWolf.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/wolfsprite.png");
+        hostileTextureKnight.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decayknight.png");
         spriteElements[5].setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
         this->hostileLoadOnce = false;
     }
@@ -1156,6 +1188,16 @@ void Assets::hostileSprite()
         if (this->hostileInit == false) {
             hostileTextureWalker.setRepeated(false);
             spriteElements[5].setTexture(hostileTextureWalker);
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteElements[5].setScale(0.235f, 0.235f);
+            this->hostileInit = true;
+        }
+        break;
+    case 3:
+        //Decay knight Sprite
+        if (this->hostileInit == false) {
+            hostileTextureKnight.setRepeated(false);
+            spriteElements[5].setTexture(hostileTextureKnight);
             spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteElements[5].setScale(0.235f, 0.235f);
             this->hostileInit = true;
@@ -1374,6 +1416,9 @@ void Assets::zinCombatAssets()
 //Sound Functions
 void Assets::loadSFX()
 {
+    //Load Decay Blade Sound
+    bufferDecay.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/decayblade.wav");
+    soundDecay.setBuffer(bufferDecay);
     //Load Vengeance Sound
     bufferVengeance.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/vengeance.wav");
     soundVengeance.setBuffer(bufferVengeance);

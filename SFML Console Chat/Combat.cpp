@@ -36,7 +36,11 @@ Combat::Combat()
 	//Core Bool
 	this->initCombatOnce = false;
 	this->reInitCombatOnce = false;
+
+	//Hostile Bool
 	this->initHostileWolf = false;
+	this->initHostileWalker = false;
+	this->initHostileKnight = false;
 
 	//Combat Control Flow Bool
 	this->turnPlayer = true;
@@ -334,7 +338,7 @@ void Combat::playerSelectMove(Assets& assets)
 		break;
 	case 2:
 		//Decayed blade
-		assets.soundSlash.play();
+		assets.soundDecay.play();
 		this->hostileHp -= this->decayedBlade;
 		assets.textElements[8].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 		assets.setPlayerTurnAssetsFalse();
@@ -446,6 +450,37 @@ void Combat::initDecayWalker(Assets& assets)
 		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the unholy creature!";
 		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health...";
 		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the walker!";
+		this->initHostileWalker = true;
+	}
+}
+
+void Combat::initDecayKnight(Assets& assets)
+{
+	if (!this->initHostileKnight) {
+		//Set wolf sprite
+		assets.getHostileCounter() = 3;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		this->hostileHp = 100;
+		this->hostileHpMax = 100;
+		this->hostileStrike = 15;
+
+		this->hostileNameNoSpc = "Decay Knight";
+		this->hostileName = "Decay Knight ";
+		this->hostileEncounterText = "You're ambushed by a horrifying knight rotting from decay!";
+		this->hostileAtkPlayerText = "The knight lunges forwards with precision, striking you!";
+		this->hostileAtkZinText = "The knight swings his sword at Zin, striking her!";
+		this->hostileAtkZinBlkText = "The knight lunges his sword towards Zin, however you deflect it just on time!";
+
+		this->playerSlashAtkText = "You slash at the knight, attempting to pierce his armor!";
+		this->playerGuardAtkText = "You watch the knights movements and prepare yourself to defend Zin...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the knight!";
+
+		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the knight!";
+		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health...";
+		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the knight!";
 		this->initHostileWalker = true;
 	}
 }
