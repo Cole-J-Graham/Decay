@@ -36,7 +36,7 @@ World::~World()
 }
 
 //Core Functions
-void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel)
+void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate)
 {
     //Load SFX
     assets.loadSFX();
@@ -93,18 +93,18 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                 }
             }
             //Run Main Function Loop...
-            this->mainLoop(assets, notevent, combat, player, travel);
+            this->mainLoop(assets, notevent, combat, player, travel, animate);
         }
         //Draw Everything...
-        this->Draw(window, assets, notevent, combat, player, travel);
+        this->Draw(window, assets, notevent, combat, player, travel, animate);
     }
 }
 
-void World::mainLoop(Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel)
+void World::mainLoop(Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate)
 {
     //Run Main Functions
     this->userInput(assets);
-    travel.travelCore(window, assets, notevent, combat, player);
+    travel.travelCore(window, assets, notevent, combat, player, animate);
 }
 
 //User Input
@@ -142,7 +142,7 @@ void World::clearInput()
 }
 
 //Display Functions
-void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel)
+void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -158,7 +158,7 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
     // draw everything here...
     if (this->mainMenu == false && !assets.getPlayerDeath()) {
         assets.drawObjects();
-        travel.travelCore(window, assets, notevent, combat, player);
+        travel.travelCore(window, assets, notevent, combat, player, animate);
 
         window.draw(assets.rect);
         window.draw(assets.map);
@@ -252,6 +252,9 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
         window.draw(assets.answerBox[i]);
         window.draw(assets.answerBoxText[i]);
     }
+
+    //Draw Animations
+    window.draw(animate.zinSprite);
 
     // end the current frame
     window.display();

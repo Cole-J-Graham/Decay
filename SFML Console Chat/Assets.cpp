@@ -537,12 +537,12 @@ void Assets::drawAnswerBoxes()
             answerBoxText[i].setCharacterSize(16);
         }
         answerBox[0].setPosition(0.0f, 825.0f);
-        answerBox[1].setPosition(0.0f, 925.5f);
+        answerBox[1].setPosition(0.0f, 925.0f);
 
         answerBoxText[0].setString("1.");
         answerBoxText[0].setPosition(0.0f, 825.0f);
         answerBoxText[1].setString("2.");
-        answerBoxText[1].setPosition(0.0f, 925.5f);
+        answerBoxText[1].setPosition(0.0f, 925.0f);
         break;
     }
 }

@@ -28,20 +28,20 @@ Travel::~Travel()
 }
 
 //Core
-void Travel::travelCore(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::travelCore(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     switch (assets.getMapCounter()) {
     case -1:
         this->intro(window, assets, notevent, combat, player);
         break;
     case 0:
-        this->forestMap(window, assets, notevent, combat, player);
+        this->forestMap(window, assets, notevent, combat, player, animate);
         break;
     case 1:
-        this->castleMap(window, assets, notevent, combat, player);
+        this->castleMap(window, assets, notevent, combat, player, animate);
         break;
     case 2:
-        this->decayMap(window, assets, notevent, combat, player);
+        this->decayMap(window, assets, notevent, combat, player, animate);
         break;
     }
 }
@@ -78,7 +78,7 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
         }
         assets.map.setTexture(assets.mapTexture);
         assets.map.setPosition(440.0f, -200.0f); // absolute position
-        assets.text.setString("A horrible blight began to grow deep from within the world. This sparked a dreadful plague those would later call 'Decay' which had sprung up from the Earth without warning.\n Anyone afflicted with the illness would watch as their skin would rot off of their very body. It caused the kingdom to be brought to its limits.");
+        assets.text.setString("A horrible blight began to grow deep from within the world. This sparked a dreadful plague those would later call 'Decay' which had sprung up from the Earth without warning.\nAnyone afflicted with the illness would watch as their skin would rot off of their very body. It caused the kingdom to be brought to its limits.");
         break;
     case 2:
         if (this->frameInit == false) {
@@ -87,7 +87,7 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
         }
         assets.map.setTexture(assets.mapTexture);
         assets.map.setPosition(440.0f, -200.0f); // absolute position
-        assets.text.setString("You were a great knight of the kingdom. Raised with a blade and eventually working your way to the top of the ranks, you were the captain of the royal guard.\n Though, despite your prestiege, you were not safe from this terrible disease either.\nYou became afflicted with the decay throughout your help with the injured and it began to rot your flesh down to the bone.");
+        assets.text.setString("You were a great knight of the kingdom. Raised with a blade and eventually working your way to the top of the ranks, you were the captain of the royal guard.\nThough, despite your prestiege, you were not safe from this terrible disease either.\nYou became afflicted with the decay throughout your help with the injured and it began to rot your flesh down to the bone.");
         break;
     case 3:
         if (this->frameInit == false) {
@@ -141,8 +141,8 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
         assets.setZinCounterZero(); //Set correct frame for zins sprite to appear
         assets.drawZinSpriteBox();
         assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
-        assets.answerBoxText[0].setString("'1. Are you a priest, kid?'");
-        assets.answerBoxText[1].setString("'2. Bro wtf, lmfao why you so short?'");
+        assets.answerBoxText[0].setString("1. 'Are you a priest, kid?'");
+        assets.answerBoxText[1].setString("2. 'Did you save me?'");
         break;
     case 9:
         assets.setZinCounterZero(); //Set correct frame for zins sprite to appear
@@ -153,11 +153,71 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
             assets.text.setString("Uh... Yeah, I am.");
             break;
         case 1:
-            assets.text.setString("W-What...?");
+            assets.text.setString("I did.");
             break;
         }
         break;
     case 10:
+        assets.setZinCounterZero();
+        assets.drawZinSpriteBox();
+        assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+        assets.answerBoxText[0].setString("1. 'Well, I appreciate you saving my life.'");
+        assets.answerBoxText[1].setString("2. 'Did you come from the castle?'");
+        break;
+    case 11:
+        assets.setZinCounterZero();
+        assets.drawZinSpriteBox();
+        assets.getShowAnsBoxesCounter() = -1;
+        switch (assets.getChoiceCounter()) {
+        case 0:
+            assets.text.setString("She refrains from speaking further, only looks away briefly from you.");
+            break;
+        case 1:
+            assets.text.setString("I did. They burnt everything...");
+            break;
+        }
+        break;
+    case 12:
+        assets.setZinCounterZero();
+        assets.drawZinSpriteBox();
+        assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+        assets.answerBoxText[0].setString("1. *Take your leave*");
+        assets.answerBoxText[1].setString("2. 'Do you know how to survive out here? In the woods I mean.'");
+        break;
+    case 13:
+        assets.setZinCounterZero();
+        assets.drawZinSpriteBox();
+        assets.getShowAnsBoxesCounter() = -1;
+        switch (assets.getChoiceCounter()) {
+        case 0:
+            assets.text.setString("*You stand up and begin to leave when the girl follows you.*\n\nWait! I need you to help me... If you leave me by myself... Could we just start a fire and talk instead? It's cold.\n\n*You look down at your lack of fire starter...*");
+            break;
+        case 1:
+            assets.text.setString("No, not really. We need to make a fire, don't we?\n\n*You look down at your lack of fire starter...*");
+            break;
+        }
+        break;
+    case 14:
+        assets.setZinCounterZero();
+        assets.drawZinSpriteBox();
+        assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+        assets.answerBoxText[0].setString("1. 'Well, kid, you're the mage here. Can you cast fire?'");
+        assets.answerBoxText[1].setString("2. 'I'm out of firestarter, so it might take me a minute...'");
+        break;
+    case 15:
+        assets.setZinCounterZero();
+        assets.drawZinSpriteBox();
+        assets.getShowAnsBoxesCounter() = -1;
+        switch (assets.getChoiceCounter()) {
+        case 0:
+            assets.text.setString("I have can cast some lower level fires, I would rather not use smite though... It might attract creatures...\n\n*She begins lighting a fire as you help stoke it, bringing the flame to life...");
+            break;
+        case 1:
+            assets.text.setString("*The girl perks up in excitment briefly*\n\nI have firestarter! Or uh, well I can cast something that can get us going at least...\n\n*She begins lighting a fire as you help stoke it, bringing the flame to life...");
+            break;
+        }
+        break;
+    case 16:
         assets.setMapCounterZero();
         assets.text.setString("");
         break;
@@ -165,29 +225,29 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
 }
 
 //Draw Forest
-void Travel::forestMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::forestMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Pick which location is currently selected within the forest...
     switch (this->forestCounter) {
     case 0:
-        this->forestBonfire(window, assets, notevent, combat, player);
+        this->forestBonfire(window, assets, notevent, combat, player, animate);
         break;
     case 1:
-        this->forestEntrance(assets, notevent, combat, player);
+        this->forestEntrance(assets, notevent, combat, player, animate);
         break;
     case 2:
-        this->forestDepths(assets, notevent, combat, player);
+        this->forestDepths(assets, notevent, combat, player, animate);
         break;
     case 3:
-        this->forestAbyssal(assets, notevent, combat, player);
+        this->forestAbyssal(assets, notevent, combat, player, animate);
         break;
     case 4:
-        this->forestAbyssalDepths(assets, notevent, combat, player);
+        this->forestAbyssalDepths(assets, notevent, combat, player, animate);
         break;
     }
 }
 
-void Travel::forestBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::forestBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     switch (this->frame) {
     case 0:
@@ -209,7 +269,7 @@ void Travel::forestBonfire(sf::RenderWindow& window, Assets& assets, Event& note
     }
 }
 
-void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     notevent.reInitialize(assets);
@@ -234,7 +294,7 @@ void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Pla
         assets.map.setTexture(assets.mapTexture);
         assets.map.setPosition(440.0f, -200.0f); // absolute position
         combat.initDecayWalker(assets);
-        combat.combatLoop(assets, player);
+        combat.combatLoop(assets, player, animate);
         break;
     case 2:
         assets.locationText.setString("Forest Entrance");
@@ -356,7 +416,7 @@ void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Pla
     }
 }
 
-void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     notevent.reInitialize(assets);
@@ -501,7 +561,7 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
     }
 }
 
-void Travel::forestAbyssal(Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::forestAbyssal(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     notevent.reInitialize(assets);
     switch (this->frame) {
@@ -645,7 +705,7 @@ void Travel::forestAbyssal(Assets& assets, Event& notevent, Combat& combat, Play
     }
 }
 
-void Travel::forestAbyssalDepths(Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::forestAbyssalDepths(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     notevent.reInitialize(assets);
     switch (this->frame) {
@@ -776,28 +836,28 @@ void Travel::forestAbyssalDepths(Assets& assets, Event& notevent, Combat& combat
 }
 
 //Draw Castle
-void Travel::castleMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::castleMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     switch (this->castleCounter) {
     case 0:
-        this->castleBonfire(window, assets, notevent, combat, player);
+        this->castleBonfire(window, assets, notevent, combat, player, animate);
         break;
     case 1:
-        this->castleHalls(assets, notevent, combat, player);
+        this->castleHalls(assets, notevent, combat, player, animate);
         break;
     case 2:
-        this->castleDepths(assets, notevent, combat, player);
+        this->castleDepths(assets, notevent, combat, player, animate);
         break;
     case 3:
-        this->castleChambers(assets, notevent, combat, player);
+        this->castleChambers(assets, notevent, combat, player, animate);
         break;
     case 4:
-        this->castleLabyrinth(assets, notevent, combat, player);
+        this->castleLabyrinth(assets, notevent, combat, player, animate);
         break;
     }
 }
 
-void Travel::castleBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::castleBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     switch (this->frame) {
     case 0:
@@ -819,7 +879,7 @@ void Travel::castleBonfire(sf::RenderWindow& window, Assets& assets, Event& note
     }
 }
 
-void Travel::castleHalls(Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::castleHalls(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     notevent.reInitialize(assets);
@@ -842,7 +902,7 @@ void Travel::castleHalls(Assets& assets, Event& notevent, Combat& combat, Player
             this->frameInit = true;
         }
         assets.map.setTexture(assets.mapTexture);
-        combat.combatLoop(assets, player);
+        combat.combatLoop(assets, player, animate);
         break;
     case 2:
         if (this->frameInit == false) {
@@ -938,7 +998,7 @@ void Travel::castleHalls(Assets& assets, Event& notevent, Combat& combat, Player
     }
 }
 
-void Travel::castleDepths(Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::castleDepths(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     switch (this->frame) {
@@ -1054,7 +1114,7 @@ void Travel::castleDepths(Assets& assets, Event& notevent, Combat& combat, Playe
     }
 }
 
-void Travel::castleChambers(Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::castleChambers(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     switch (this->frame) {
     case 0:
@@ -1167,7 +1227,7 @@ void Travel::castleChambers(Assets& assets, Event& notevent, Combat& combat, Pla
     }
 }
 
-void Travel::castleLabyrinth(Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::castleLabyrinth(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     switch (this->frame) {
     case 0:
@@ -1281,28 +1341,28 @@ void Travel::castleLabyrinth(Assets& assets, Event& notevent, Combat& combat, Pl
 }
 
 //Draw Decay
-void Travel::decayMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::decayMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     switch (this->decayCounter) {
     case 0:
-        this->decayBonfire(window, assets, notevent, combat, player);
+        this->decayBonfire(window, assets, notevent, combat, player, animate);
         break;
     case 1:
-        this->decayChasms(assets, notevent, combat, player);
+        this->decayChasms(assets, notevent, combat, player, animate);
         break;
     case 2:
-        this->decayOcean(assets, notevent, combat, player);
+        this->decayOcean(assets, notevent, combat, player, animate);
         break;
     case 3:
-        this->decayForest(assets, notevent, combat, player);
+        this->decayForest(assets, notevent, combat, player, animate);
         break;
     case 4:
-        this->decayGiants(assets, notevent, combat, player);
+        this->decayGiants(assets, notevent, combat, player, animate);
         break;
     }
 }
 
-void Travel::decayBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::decayBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     switch (this->frame) {
     case 0:
@@ -1324,7 +1384,7 @@ void Travel::decayBonfire(sf::RenderWindow& window, Assets& assets, Event& notev
     }
 }
 
-void Travel::decayChasms(Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::decayChasms(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     notevent.reInitialize(assets);
@@ -1442,7 +1502,7 @@ void Travel::decayChasms(Assets& assets, Event& notevent, Combat& combat, Player
     }
 }
 
-void Travel::decayOcean(Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::decayOcean(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     notevent.reInitialize(assets);
@@ -1560,7 +1620,7 @@ void Travel::decayOcean(Assets& assets, Event& notevent, Combat& combat, Player&
     }
 }
 
-void Travel::decayForest(Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::decayForest(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     notevent.reInitialize(assets);
@@ -1678,7 +1738,7 @@ void Travel::decayForest(Assets& assets, Event& notevent, Combat& combat, Player
     }
 }
 
-void Travel::decayGiants(Assets& assets, Event& notevent, Combat& combat, Player& player)
+void Travel::decayGiants(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     notevent.reInitialize(assets);

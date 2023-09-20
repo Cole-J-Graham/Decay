@@ -113,8 +113,9 @@ void Combat::updateMoves(Assets& assets, Player& player)
 }
 
 //Core Combat Functions
-void Combat::combatLoop(Assets& assets, Player& player)
+void Combat::combatLoop(Assets& assets, Player& player, Animation& animate)
 {
+	animate.animateZin();
 	//Begin combat loop initialization
 	if (initCombatOnce == false) {
 		this->initCombat(assets, player);

@@ -12,6 +12,7 @@
 #include"Assets.h"
 #include"Event.h"
 #include"Combat.h"
+#include"Animation.h"
 
 class World
 {
@@ -59,15 +60,15 @@ public:
 	~World();
 
 	//Core Functions
-	void bootUp(Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel);
-	void mainLoop(Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel);
+	void bootUp(Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate);
+	void mainLoop(Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate);
 
 	//User Input
 	void userInput(Assets& assets);
 	void clearInput();
 
 	//Display Functions
-	void Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel);
+	void Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate);
 	void DrawMapSelectorButtons(sf::RenderWindow& window, Assets& assets);
 	void greyOnHover(sf::RenderWindow& window, Assets& assets);
 	void printPlayerStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);

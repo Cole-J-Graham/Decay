@@ -2,6 +2,7 @@
 #define COMBAT_H
 #include"Assets.h"
 #include"Player.h"
+#include"Animation.h"
 
 class Combat
 {
@@ -94,7 +95,7 @@ public:
 	void updateMoves(Assets& assets, Player& player);
 
 	//Core Combat Functions
-	void combatLoop(Assets& assets, Player& player);
+	void combatLoop(Assets& assets, Player& player, Animation& animate);
 	void initCombat(Assets& assets, Player& player);
 	void reInitCombat(Assets& assets);
 	void playerDeath(Assets& assets);
