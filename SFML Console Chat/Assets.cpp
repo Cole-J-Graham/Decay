@@ -387,16 +387,16 @@ void Assets::drawText()
     font.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
     //Draw Font and Output Text
     text.setFont(font);
-    text.setCharacterSize(18);
+    text.setCharacterSize(16);
     text.setFillColor(sf::Color(sf::Color::White));
-    text.setPosition(0.0f, 835.0f);
+    text.setPosition(0.0f, 825.0f);
     //Draw Input Text
     playerText.setFont(font);
     playerText.setFillColor(sf::Color(sf::Color::White));
     playerText.setPosition(0.0f, 970.0f);
     //Draw Right Hand Side Text
     combatText.setFont(font);
-    combatText.setCharacterSize(18);
+    combatText.setCharacterSize(16);
     combatText.setFillColor(sf::Color(sf::Color::White));
     combatText.setPosition(500.0f, 835.0f);
     //Draw Location Text
@@ -406,15 +406,15 @@ void Assets::drawText()
     locationText.setPosition(275.0f, 10.0f);
     //Menu Bar Text
     textElements[2].setFont(font);
-    textElements[2].setCharacterSize(18);
+    textElements[2].setCharacterSize(16);
     textElements[2].setPosition(1.0f, 797.0f);
     textElements[2].setString("Map");
     textElements[0].setFont(font);
-    textElements[0].setCharacterSize(18);
+    textElements[0].setCharacterSize(16);
     textElements[0].setPosition(105.0f, 797.0f);
     textElements[0].setString("Stats");
     textElements[1].setFont(font);
-    textElements[1].setCharacterSize(18);
+    textElements[1].setCharacterSize(16);
     textElements[1].setPosition(210.0f, 797.0f);
     textElements[1].setString("Inventory");
 }
@@ -539,9 +539,7 @@ void Assets::drawAnswerBoxes()
         answerBox[0].setPosition(0.0f, 825.0f);
         answerBox[1].setPosition(0.0f, 925.0f);
 
-        answerBoxText[0].setString("1.");
         answerBoxText[0].setPosition(0.0f, 825.0f);
-        answerBoxText[1].setString("2.");
         answerBoxText[1].setPosition(0.0f, 925.0f);
         break;
     }
@@ -590,8 +588,8 @@ void Assets::drawMap()
         }
         //Set button map selector positions
         buttonViewMap[0].setPosition(rectMapX, rectMapY - 25);
-        buttonViewMap[1].setPosition(rectMapX + 133.3, rectMapY - 25);
-        buttonViewMap[2].setPosition(rectMapX + 266.6, rectMapY - 25);
+        buttonViewMap[1].setPosition(rectMapX + 133.0, rectMapY - 25);
+        buttonViewMap[2].setPosition(rectMapX + 266.0, rectMapY - 25);
         for (int i = 0; i < buttonViewMapText.size(); i++) {
             buttonViewMapText[i].setFont(font);
             buttonViewMapText[i].setCharacterSize(14);
@@ -600,10 +598,10 @@ void Assets::drawMap()
         buttonViewMapText[0].setPosition(rectMapX, rectMapY - 25);
         buttonViewMapText[0].setString("Forest Plane");
 
-        buttonViewMapText[1].setPosition(rectMapX + 133.3, rectMapY - 25);
+        buttonViewMapText[1].setPosition(rectMapX + 133.0, rectMapY - 25);
         buttonViewMapText[1].setString("Castle Plane");
 
-        buttonViewMapText[2].setPosition(rectMapX + 266.6, rectMapY - 25);
+        buttonViewMapText[2].setPosition(rectMapX + 266.0, rectMapY - 25);
         buttonViewMapText[2].setString("Decay Plane");
         break;
     }

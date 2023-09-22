@@ -10,19 +10,39 @@ class Animation
 {
 private:
 	int animationFrame;
+
+	bool zinTalkNot;
+
 public:
 	Animation();
 	~Animation();
 
 	sf::Texture zin1;
 	sf::Texture zin2;
+
+	sf::Texture not1;
+	sf::Texture not2;
+	sf::Texture not3;
+	sf::Texture not4;
+
 	sf::Sprite zinSprite;
+	sf::Sprite notSprite;
 
 	sf::Clock timer;
 	sf::Time elapsed;
 
-	void animateZin();
+	//Core Animation Functions
 	void animateTimer();
+
+	//Animation Functions
+	void animateZin();
+	void animateNotification();
+
+	//Draw Animation Functions
+	void drawAnimations();
+
+	//Getters
+	bool& getZinTalkNot() { return this->zinTalkNot; };
 };
 
 

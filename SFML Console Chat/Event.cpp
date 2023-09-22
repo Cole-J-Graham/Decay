@@ -3,8 +3,17 @@
 //Constructors & Destructors
 Event::Event()
 {
+    //Control Flow Bools
+    this->reInitialize = true;
+
     this->encounterInit = true;
     this->encounterInitTwo = true;
+
+    //Counters
+    this->zinTalkCounter = -1;
+
+    //Dialogue Counter
+    this->dialogue = 0;
 }
 
 Event::~Event()
@@ -13,16 +22,12 @@ Event::~Event()
 }
 
 //Core Functions
-void Event::reInitialize(Assets& assets)
+void Event::reInit(Assets& assets)
 {
-   // assets.spadeCounter = -1;//Reset Spade sprite switch case counter
-   // assets.spriteInit = false; //Uninitialize sprite border
-    //assets.dialogueCounter = 0; //Reset dialogue counter
-    //assets.spadeInit = false; //Allow zins sprite to be loaded again...
-    //assets.text.setString(""); //Reset dialogue box
-
-    //this->encounterInit = true; //Reset Local Control Flow Bools
-    //this->encounterInitTwo = true;
+    if (this->reInitialize) {
+        this->dialogue = 0;
+        this->reInitialize = false;
+    }
 }
 
 //Bonfire Events
@@ -100,6 +105,55 @@ void Event::smithingSharpenBlade(sf::RenderWindow& window, Assets& assets, Playe
     }
 }
 
+//Bonfire Text Events
+void Event::zinEvents(sf::RenderWindow& window, Assets& assets, Animation& animate)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+    //Zin Conversations at Bonfire
+    if (assets.spriteElements[3].getGlobalBounds().contains(mousePosF)) {
+        this->zinTalkCounter = 0;
+    }
+
+    switch (this->zinTalkCounter) {
+    case 0:
+        this->zinInitialTalk(assets, animate);
+        break;
+    case 1:
+        break;
+    }
+}
+
+//Zin Events
+void Event::zinInitialTalk(Assets& assets, Animation& animate)
+{
+    std::cout << this->dialogue;
+    //this->reInit(assets);
+    switch (this->dialogue) {
+    case 0:
+        assets.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
+        assets.setZinCounterZero(); //Set correct frame for zins sprite to appear
+        assets.drawZinSpriteBox();
+        assets.answerBoxText[0].setString("1. 'So, what was it you wanted to talk about?'");
+        assets.answerBoxText[1].setString("2. 'What's your name, kid?'");
+        assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+        animate.getZinTalkNot() = false;
+        break;
+    case 1:
+        assets.setZinCounterZero(); //Set correct frame for zins sprite to appear
+        assets.drawZinSpriteBox();
+        assets.getShowAnsBoxesCounter() = -1;
+        switch (assets.getChoiceCounter()) {
+        case 0:
+            assets.text.setString("'Well... Uhhh... Are you a monster like those others?'");
+            break;
+        case 1:
+            assets.text.setString("'I'm Zin...'");
+            break;
+        }
+        break;
+    }
+}
 //Castle Events
 void Event::spadeEncounter(Assets& assets)
 {

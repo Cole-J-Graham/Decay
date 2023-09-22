@@ -73,7 +73,7 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                     this->menuBarStats(window, combat, player, assets); //Must be loaded before menuBar(window); to withhold functionality
                     this->menuBar(window, assets);
                     //Dialogue Box Functionality
-                    this->dialogueCombatBox(window, combat, assets, travel);
+                    this->dialogueCombatBox(window, combat, assets, travel, notevent);
                     //Main Menu Functionality
                     this->mainMenuButtons(window, assets, travel);
                     if (stop) { //Make quit button return to main function to stop program from running
@@ -83,6 +83,7 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                     if (assets.getBonfireAssets() == true) {
                         notevent.healCharacters(window, assets, combat);
                         notevent.smithingSharpenBlade(window, assets, player);
+                        notevent.zinEvents(window, assets, animate);
                     }
                 }
                 break;
@@ -192,6 +193,11 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
             window.draw(assets.spriteElements[i]);
         }
 
+        //Draw Animations
+        animate.drawAnimations();
+        window.draw(animate.zinSprite);
+        window.draw(animate.notSprite);
+
         if (assets.getInitMap() == true) {
             //Draw main map rect
             window.draw(assets.rectMap);
@@ -252,9 +258,6 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
         window.draw(assets.answerBox[i]);
         window.draw(assets.answerBoxText[i]);
     }
-
-    //Draw Animations
-    window.draw(animate.zinSprite);
 
     // end the current frame
     window.display();
@@ -700,7 +703,7 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
     }
 }
 
-void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& assets, Travel& travel)
+void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& assets, Travel& travel, Event& notevent)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -761,10 +764,12 @@ void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& 
         if (assets.answerBox[0].getGlobalBounds().contains(mousePosF)) {
             assets.getChoiceCounter() = 0;
             travel.setIntroCounterDialogueInc();
+            notevent.setDialogueInc();
         }
         else if (assets.answerBox[1].getGlobalBounds().contains(mousePosF)) {
             assets.getChoiceCounter() = 1;
             travel.setIntroCounterDialogueInc();
+            notevent.setDialogueInc();
         }
     }
 

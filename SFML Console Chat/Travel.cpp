@@ -58,7 +58,6 @@ void Travel::intro(sf::RenderWindow& window, Assets& assets, Event& notevent, Co
 
 void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
 { //Frame init true or false fucking how
-    notevent.reInitialize(assets);
     switch (this->introCounterDialogue) {
     case 0:
         assets.locationText.setString("");
@@ -150,10 +149,10 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
         assets.getShowAnsBoxesCounter() = -1;
         switch (assets.getChoiceCounter()) {
         case 0:
-            assets.text.setString("Uh... Yeah, I am.");
+            assets.text.setString("'Uh... Yeah, I am. It doesn't mean I could help that though...\n\n*She points to your arm covered in decay, slowly rotting.\n\n*You roll your sleeve back up, hiding the wound, wondering how much time you have left...*'");
             break;
         case 1:
-            assets.text.setString("I did.");
+            assets.text.setString("'I did the best I could, but your decay...'\n\n*She points to your arm covered in it, slowly rotting.\n\n*You roll your sleeve back up, hiding the wound, wondering how much time you have left...*");
             break;
         }
         break;
@@ -161,7 +160,7 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
         assets.setZinCounterZero();
         assets.drawZinSpriteBox();
         assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
-        assets.answerBoxText[0].setString("1. 'Well, I appreciate you saving my life.'");
+        assets.answerBoxText[0].setString("1. 'Well, I appreciate you saving my life. I would be dead without your help.'");
         assets.answerBoxText[1].setString("2. 'Did you come from the castle?'");
         break;
     case 11:
@@ -170,10 +169,10 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
         assets.getShowAnsBoxesCounter() = -1;
         switch (assets.getChoiceCounter()) {
         case 0:
-            assets.text.setString("She refrains from speaking further, only looks away briefly from you.");
+            assets.text.setString("*She refrains from speaking further, only looks away briefly from you.*");
             break;
         case 1:
-            assets.text.setString("I did. They burnt everything...");
+            assets.text.setString("'I did but... They burnt everything... It's all gone.'");
             break;
         }
         break;
@@ -181,7 +180,7 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
         assets.setZinCounterZero();
         assets.drawZinSpriteBox();
         assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
-        assets.answerBoxText[0].setString("1. *Take your leave*");
+        assets.answerBoxText[0].setString("1. 'I should be off.' *Take your leave*");
         assets.answerBoxText[1].setString("2. 'Do you know how to survive out here? In the woods I mean.'");
         break;
     case 13:
@@ -190,10 +189,10 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
         assets.getShowAnsBoxesCounter() = -1;
         switch (assets.getChoiceCounter()) {
         case 0:
-            assets.text.setString("*You stand up and begin to leave when the girl follows you.*\n\nWait! I need you to help me... If you leave me by myself... Could we just start a fire and talk instead? It's cold.\n\n*You look down at your lack of fire starter...*");
+            assets.text.setString("*You stand up and begin to leave when the girl follows you and shouts.*\n\n'Wait! I need you to help me... If you leave me by myself... Could we just start a fire and talk instead? It's cold.'\n\n*You look down at your lack of fire starter...*");
             break;
         case 1:
-            assets.text.setString("No, not really. We need to make a fire, don't we?\n\n*You look down at your lack of fire starter...*");
+            assets.text.setString("'No, not really. We need to make a fire, don't we?'\n\n*You look down at your lack of fire starter...*");
             break;
         }
         break;
@@ -210,7 +209,7 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
         assets.getShowAnsBoxesCounter() = -1;
         switch (assets.getChoiceCounter()) {
         case 0:
-            assets.text.setString("I have can cast some lower level fires, I would rather not use smite though... It might attract creatures...\n\n*She begins lighting a fire as you help stoke it, bringing the flame to life...");
+            assets.text.setString("I can cast some lower level fire spells, but I would rather not use smite... It might attract creatures...\n\n*You feel a bit confused by her words. Smite? That's a very high level lightning spell...*\n\n*She begins lighting a fire as you help stoke it, bringing the flame to life...");
             break;
         case 1:
             assets.text.setString("*The girl perks up in excitment briefly*\n\nI have firestarter! Or uh, well I can cast something that can get us going at least...\n\n*She begins lighting a fire as you help stoke it, bringing the flame to life...");
@@ -256,6 +255,10 @@ void Travel::forestBonfire(sf::RenderWindow& window, Assets& assets, Event& note
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestbonfire.jpeg");
             this->frameInit = true;
         }
+        //Play notification animation if zin is willing to talk
+        if (animate.getZinTalkNot()) {
+            animate.animateNotification();
+        }
         notevent.healCharactersText(window, assets);
         notevent.smithingText(window, assets);
         assets.setBonfireAssetsTrue();
@@ -272,7 +275,6 @@ void Travel::forestBonfire(sf::RenderWindow& window, Assets& assets, Event& note
 void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
-    notevent.reInitialize(assets);
     switch (this->frame) {
     case 0:
         this->forestBonfireInit = false; //Uninit bonfire
@@ -419,7 +421,6 @@ void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Pla
 void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
-    notevent.reInitialize(assets);
     switch (this->frame) {
     case 0:
         this->forestBonfireInit = false; //Unint bonfire
@@ -563,7 +564,6 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
 
 void Travel::forestAbyssal(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
-    notevent.reInitialize(assets);
     switch (this->frame) {
     case 0:
         this->forestBonfireInit = false; //Unint bonfire
@@ -707,7 +707,6 @@ void Travel::forestAbyssal(Assets& assets, Event& notevent, Combat& combat, Play
 
 void Travel::forestAbyssalDepths(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
-    notevent.reInitialize(assets);
     switch (this->frame) {
     case 0:
         this->forestBonfireInit = false; //Unint bonfire
@@ -882,7 +881,6 @@ void Travel::castleBonfire(sf::RenderWindow& window, Assets& assets, Event& note
 void Travel::castleHalls(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
-    notevent.reInitialize(assets);
     switch (this->frame) {
     case 0:
         //Draw Map Sprite
@@ -1387,7 +1385,6 @@ void Travel::decayBonfire(sf::RenderWindow& window, Assets& assets, Event& notev
 void Travel::decayChasms(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
-    notevent.reInitialize(assets);
     switch (this->frame) {
     case 0:
         //Draw Map Sprite
@@ -1505,7 +1502,6 @@ void Travel::decayChasms(Assets& assets, Event& notevent, Combat& combat, Player
 void Travel::decayOcean(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
-    notevent.reInitialize(assets);
     switch (this->frame) {
     case 0:
         //Draw Map Sprite
@@ -1623,7 +1619,6 @@ void Travel::decayOcean(Assets& assets, Event& notevent, Combat& combat, Player&
 void Travel::decayForest(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
-    notevent.reInitialize(assets);
     switch (this->frame) {
     case 0:
         //Draw Map Sprite
@@ -1741,7 +1736,6 @@ void Travel::decayForest(Assets& assets, Event& notevent, Combat& combat, Player
 void Travel::decayGiants(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
-    notevent.reInitialize(assets);
     switch (this->frame) {
     case 0:
         //Draw Map Sprite

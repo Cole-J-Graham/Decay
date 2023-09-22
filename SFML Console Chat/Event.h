@@ -7,8 +7,14 @@
 class Event
 {
 private:
+	//Control Flow Bools
+	bool reInitialize;
+
 	bool encounterInit;
 	bool encounterInitTwo;
+
+	//Counters
+	int zinTalkCounter;
 
 	int dialogue;
 
@@ -19,7 +25,7 @@ public:
 	~Event();
 
 	//Core Functions
-	void reInitialize(Assets& assets);
+	void reInit(Assets& assets);
 
 	//Bonfire Events
 	void healCharactersText(sf::RenderWindow& window, Assets& assets);
@@ -27,14 +33,26 @@ public:
 	void smithingText(sf::RenderWindow& window, Assets& assets);
 	void smithingSharpenBlade(sf::RenderWindow& window, Assets& assets, Player& player);
 
+	//Bonfire Text Events
+	void zinEvents(sf::RenderWindow& window, Assets& assets, Animation& animate);
+
+	//Zin Events
+	void zinInitialTalk(Assets& assets, Animation& animate);
+
 	//Castle Events
 	void spadeEncounter(Assets& assets);
 
-	//Getters
+	//Control Flow Getters
 	bool& getEncounterInit() { return this->encounterInit; };
 	bool& getEncounterInitTow() { return this->encounterInitTwo; };
 
+	//Counter Getters
+	int& getZinTalkCounter() { return this->zinTalkCounter; };
+
 	int& getDialogue() { return this->dialogue; };
+
+	//Setters
+	void setDialogueInc() { this->dialogue++; };
 };
 
 #endif
