@@ -115,7 +115,6 @@ void Combat::updateMoves(Assets& assets, Player& player)
 //Core Combat Functions
 void Combat::combatLoop(Assets& assets, Player& player, Animation& animate)
 {
-	animate.animateZin();
 	//Begin combat loop initialization
 	if (initCombatOnce == false) {
 		this->initCombat(assets, player);
@@ -162,9 +161,9 @@ void Combat::initCombat(Assets& assets, Player& player)
 	assets.soundCombatStart.play(); //Play combat Sfx
 	this->updateStats(assets, player);
 	assets.text.setString(this->hostileEncounterText);
-	assets.textElements[6].setString(assets.getPlayerName() + "     " + std::to_string(this->playerHp) + "/" + std::to_string(this->playerHpMax));
-	assets.textElements[7].setString("Zin            " + std::to_string(this->zinHp) + "/" + std::to_string(this->zinHpMax));
-	assets.textElements[8].setString(this->hostileName + std::to_string(this->hostileHp) + "/" + std::to_string(this->hostileHpMax));
+	assets.spriteText[0].setString(assets.getPlayerName() + "     " + std::to_string(this->playerHp) + "/" + std::to_string(this->playerHpMax));
+	assets.spriteText[1].setString("Zin            " + std::to_string(this->zinHp) + "/" + std::to_string(this->zinHpMax));
+	assets.spriteText[2].setString(this->hostileName + std::to_string(this->hostileHp) + "/" + std::to_string(this->hostileHpMax));
 
 	assets.setPlayerCounterInc(); //Load Player sprite with counter
 	assets.setZinCounterInc(); //Load Zins sprite with counter
@@ -288,7 +287,7 @@ void Combat::hostileTurn(Assets& assets)
 			if (this->hostileAttack == false) {
 				this->playerHp -= this->hostileStrike;
 				assets.soundCom.play();
-				assets.textElements[6].setString(assets.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
+				assets.spriteText[0].setString(assets.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
 				assets.text.setString(this->hostileAtkPlayerText);
 				this->hostileAttack = true;
 			}
@@ -297,7 +296,7 @@ void Combat::hostileTurn(Assets& assets)
 			if (this->zinGuarded == false && this->hostileAttackZin == false && !this->zinDead) {
 				this->zinHp -= this->hostileStrike;
 				assets.soundCom.play();
-				assets.textElements[7].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));
+				assets.spriteText[1].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));
 				assets.text.setString(this->hostileAtkZinText);
 				this->hostileAttackZin = true;
 			}
@@ -326,7 +325,7 @@ void Combat::playerSelectMove(Assets& assets)
 		//Strike
 		assets.soundSlash.play();
 		this->hostileHp -= this->playerStrike;
-		assets.textElements[8].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
+		assets.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 		assets.setPlayerTurnAssetsFalse();
 		assets.text.setString(this->playerSlashAtkText);
 		break;
@@ -341,7 +340,7 @@ void Combat::playerSelectMove(Assets& assets)
 		//Decayed blade
 		assets.soundDecay.play();
 		this->hostileHp -= this->decayedBlade;
-		assets.textElements[8].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
+		assets.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 		assets.setPlayerTurnAssetsFalse();
 		assets.text.setString(this->playerDecayAtkText);
 		break;
@@ -355,7 +354,7 @@ void Combat::zinSelectMove(Assets& assets)
 		//Smite the hostile
 		assets.soundSmite.play();
 		this->hostileHp -= this->zinSmite;
-		assets.textElements[8].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
+		assets.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 		assets.setZinTurnAssetsFalse();
 		assets.text.setString(this->zinSmiteAtkText);
 		break;
@@ -374,8 +373,8 @@ void Combat::zinSelectMove(Assets& assets)
 				this->zinHp = this->zinHpMax;
 			}
 		}
-		assets.textElements[6].setString(assets.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
-		assets.textElements[7].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));
+		assets.spriteText[0].setString(assets.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
+		assets.spriteText[1].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));
 		assets.setZinTurnAssetsFalse();
 		assets.text.setString(this->zinMendAtkText);
 		break;
@@ -384,7 +383,7 @@ void Combat::zinSelectMove(Assets& assets)
 		assets.soundVengeance.play();
 		this->zinVengeance = this->playerHpMax - this->playerHp;
 		this->hostileHp -= this->zinVengeance;
-		assets.textElements[8].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
+		assets.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 		assets.setZinTurnAssetsFalse();
 		assets.text.setString(this->zinVengeanceAtkText);
 		break;

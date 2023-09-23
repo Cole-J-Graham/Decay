@@ -138,14 +138,12 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
     case 8:
         assets.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
         assets.setZinCounterZero(); //Set correct frame for zins sprite to appear
-        assets.drawZinSpriteBox();
         assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
         assets.answerBoxText[0].setString("1. 'Are you a priest, kid?'");
         assets.answerBoxText[1].setString("2. 'Did you save me?'");
         break;
     case 9:
         assets.setZinCounterZero(); //Set correct frame for zins sprite to appear
-        assets.drawZinSpriteBox();
         assets.getShowAnsBoxesCounter() = -1;
         switch (assets.getChoiceCounter()) {
         case 0:
@@ -158,14 +156,12 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
         break;
     case 10:
         assets.setZinCounterZero();
-        assets.drawZinSpriteBox();
         assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
         assets.answerBoxText[0].setString("1. 'Well, I appreciate you saving my life. I would be dead without your help.'");
         assets.answerBoxText[1].setString("2. 'Did you come from the castle?'");
         break;
     case 11:
         assets.setZinCounterZero();
-        assets.drawZinSpriteBox();
         assets.getShowAnsBoxesCounter() = -1;
         switch (assets.getChoiceCounter()) {
         case 0:
@@ -178,14 +174,12 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
         break;
     case 12:
         assets.setZinCounterZero();
-        assets.drawZinSpriteBox();
         assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
         assets.answerBoxText[0].setString("1. 'I should be off.' *Take your leave*");
         assets.answerBoxText[1].setString("2. 'Do you know how to survive out here? In the woods I mean.'");
         break;
     case 13:
         assets.setZinCounterZero();
-        assets.drawZinSpriteBox();
         assets.getShowAnsBoxesCounter() = -1;
         switch (assets.getChoiceCounter()) {
         case 0:
@@ -198,25 +192,24 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
         break;
     case 14:
         assets.setZinCounterZero();
-        assets.drawZinSpriteBox();
         assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
         assets.answerBoxText[0].setString("1. 'Well, kid, you're the mage here. Can you cast fire?'");
         assets.answerBoxText[1].setString("2. 'I'm out of firestarter, so it might take me a minute...'");
         break;
     case 15:
         assets.setZinCounterZero();
-        assets.drawZinSpriteBox();
         assets.getShowAnsBoxesCounter() = -1;
         switch (assets.getChoiceCounter()) {
         case 0:
-            assets.text.setString("I can cast some lower level fire spells, but I would rather not use smite... It might attract creatures...\n\n*You feel a bit confused by her words. Smite? That's a very high level lightning spell...*\n\n*She begins lighting a fire as you help stoke it, bringing the flame to life...");
+            assets.text.setString("'I can cast some lower level fire spells, but I would rather not use smite... It might attract creatures...'\n\n*You feel a bit confused by her words. Smite? That's a very high level lightning spell...*\n\n*She begins lighting a fire as you help stoke it, bringing the flame to life...*");
             break;
         case 1:
-            assets.text.setString("*The girl perks up in excitment briefly*\n\nI have firestarter! Or uh, well I can cast something that can get us going at least...\n\n*She begins lighting a fire as you help stoke it, bringing the flame to life...");
+            assets.text.setString("*The girl perks up in excitment briefly*\n\nI have firestarter! Or uh, well I can cast something that can get us going at least...\n\n*She begins lighting a fire as you help stoke it, bringing the flame to life...*");
             break;
         }
         break;
     case 16:
+        notevent.getDialogue() = 0;//Reset dialogue counter to allow other events to take place
         assets.setMapCounterZero();
         assets.text.setString("");
         break;
@@ -248,28 +241,24 @@ void Travel::forestMap(sf::RenderWindow& window, Assets& assets, Event& notevent
 
 void Travel::forestBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
-    switch (this->frame) {
-    case 0:
-        assets.locationText.setString("Forest Bonfire");
-        if (this->frameInit == false) {
-            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestbonfire.jpeg");
-            this->frameInit = true;
-        }
-        //Play notification animation if zin is willing to talk
-        if (animate.getZinTalkNot()) {
-            animate.animateNotification();
-        }
-        notevent.healCharactersText(window, assets);
-        notevent.smithingText(window, assets);
-        assets.setBonfireAssetsTrue();
-        assets.setIntroAssetsFalse(); //Disable intro hiding assets for further in the game
-        assets.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
-        assets.setZinCounterZero(); //Set correct frame for zins sprite to appear
-        this->forestBonfireInit = true; //Draw detection rects for healing and smithing
-        assets.map.setTexture(assets.mapTexture);
-        assets.map.setPosition(440.0f, -200.0f); // absolute position
-        break;
+    assets.locationText.setString("Forest Bonfire");
+    if (this->frameInit == false) {
+        assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestbonfire.jpeg");
+        this->frameInit = true;
     }
+    //Play notification animation if zin is willing to talk
+    if (forestBonfireInit) {
+        animate.animateNotification();
+    }
+    notevent.healCharactersText(window, assets);
+    notevent.smithingText(window, assets);
+    assets.setBonfireAssetsTrue();
+    assets.setIntroAssetsFalse(); //Disable intro hiding assets for further in the game
+    assets.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
+    assets.setZinCounterZero(); //Set correct frame for zins sprite to appear
+    this->forestBonfireInit = true; //Draw detection rects for healing and smithing
+    assets.map.setTexture(assets.mapTexture);
+    assets.map.setPosition(440.0f, -200.0f); // absolute position
 }
 
 void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
@@ -278,6 +267,7 @@ void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Pla
     switch (this->frame) {
     case 0:
         this->forestBonfireInit = false; //Uninit bonfire
+        animate.getZinTalkNot() = false; //Unint bonfire zin notification
         assets.setBonfireAssetsFalse();
         assets.locationText.setString("Forest Entrance");
         if (this->frameInit == false) {
@@ -295,8 +285,8 @@ void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Pla
         }
         assets.map.setTexture(assets.mapTexture);
         assets.map.setPosition(440.0f, -200.0f); // absolute position
-        combat.initDecayWalker(assets);
-        combat.combatLoop(assets, player, animate);
+        //combat.initDecayWalker(assets);
+        //combat.combatLoop(assets, player, animate);
         break;
     case 2:
         assets.locationText.setString("Forest Entrance");
@@ -378,6 +368,7 @@ void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Pla
         }
         assets.map.setTexture(assets.mapTexture);
         assets.map.setPosition(440.0f, -200.0f); // absolute position
+        notevent.siwardEncounter(assets);
         break;
     case 11:
         assets.locationText.setString("Forest Entrance");
@@ -410,6 +401,15 @@ void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Pla
         assets.locationText.setString("Forest Entrance");
         if (this->frameInit == false) {
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forest15.jpeg");
+            this->frameInit = true;
+        }
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f); // absolute position
+        break;
+    case 15:
+        assets.locationText.setString("Forest Entrance");
+        if (this->frameInit == false) {
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forest16.jpeg");
             this->frameInit = true;
         }
         assets.map.setTexture(assets.mapTexture);

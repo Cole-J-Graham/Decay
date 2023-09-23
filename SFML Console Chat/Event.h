@@ -39,6 +39,9 @@ public:
 	//Zin Events
 	void zinInitialTalk(Assets& assets, Animation& animate);
 
+	//Forest Events
+	void siwardEncounter(Assets& assets);
+
 	//Castle Events
 	void spadeEncounter(Assets& assets);
 

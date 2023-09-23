@@ -25,6 +25,7 @@ Assets::Assets()
     this->decayAreaUnlocked = 4;
 
     //Sprite Control Flow
+    this->siwardLoadOnce = true;
     this->playerLoadOnce = true;
     this->zinLoadOnce = true;
     this->spadeLoadOnce = true;
@@ -39,6 +40,7 @@ Assets::Assets()
     this->playerInit = false;
 
     //Sprite Integer Selection
+    this->siwardCounter = -1;
     this->playerCounter = -1;
     this->zinCounter = -1;
     this->spadeCounter = -1;
@@ -64,12 +66,13 @@ Assets::Assets()
     //Initialize Combat Assets
     this->introAssets = true;
     this->combatAssets = false;
+    this->eventAssets = false;
     this->bonfireAssets = false;
     this->playerTurnAssets = false;
     this->zinTurnAssets = false;
 
     //Combat Move Unlocks
-    this->combatPlayerMoves = 1;
+    this->combatPlayerMoves = 2;
     this->combatZinMoves = 2;
 
     //Strings
@@ -95,11 +98,12 @@ void Assets::drawObjects()
     this->drawInventory();
     this->drawZinStats();
     //Sprite Assets
+    this->siwardSprite();
     this->playerSprite();
     this->spadeSprite();
     this->zinSprite();
     this->hostileSprite();
-    this->drawSpadeSpriteBox();
+    this->drawSpriteBoxes();
     //Combat Asset Functions
     this->initCombatAssets();
     //Detection
@@ -166,20 +170,17 @@ void Assets::drawMainWindow()
         //Hide Back and Forward Buttons
         spriteElements[0].setPosition(1400.0f, 10000.0f);
         spriteElements[1].setPosition(445.0f, 10000.0f);
-        //Draw Zin Sprite Box
-        rectElements[7].setFillColor(sf::Color::Black);
-        rectElements[7].setPosition(50.0f, 345.0f);
-        rectElements[7].setSize(sf::Vector2f(153.0f, 153.0f));
-        rectElements[7].setOutlineColor(sf::Color::White);
-        rectElements[7].setOutlineThickness(2.0f);
-        //Sprite Zin Name Text
-        textElements[7].setFont(font);
-        textElements[7].setCharacterSize(18);
-        textElements[7].setPosition(50.0f, 500.0f);
-        textElements[7].setFillColor(sf::Color::White);
     }
     else if (introAssets == true) {
         //Make assets hidden during intro
+        rectElements[2].setPosition(1.0f, 10000.0f);
+        rectElements[1].setPosition(209.0f, 10000.0f);
+        rectElements[0].setPosition(105.0f, 10000.0f);
+        spriteElements[0].setPosition(1400.0f, 10000.0f);
+        spriteElements[1].setPosition(445.0f, 10000.0f);
+    }
+    else if (eventAssets == true) {
+        //Make assets hidden during events
         rectElements[2].setPosition(1.0f, 10000.0f);
         rectElements[1].setPosition(209.0f, 10000.0f);
         rectElements[0].setPosition(105.0f, 10000.0f);
@@ -395,10 +396,10 @@ void Assets::drawText()
     playerText.setFillColor(sf::Color(sf::Color::White));
     playerText.setPosition(0.0f, 970.0f);
     //Draw Right Hand Side Text
-    combatText.setFont(font);
-    combatText.setCharacterSize(16);
-    combatText.setFillColor(sf::Color(sf::Color::White));
-    combatText.setPosition(500.0f, 835.0f);
+    //combatText.setFont(font);
+    //combatText.setCharacterSize(16);
+    //combatText.setFillColor(sf::Color(sf::Color::White));
+    //combatText.setPosition(500.0f, 835.0f);
     //Draw Location Text
     locationText.setFont(font);
     locationText.setCharacterSize(18);
@@ -998,56 +999,23 @@ void Assets::bonfireSmithDetection()
 }
 
 //Draw Sprite Boxes
-void Assets::drawSpadeSpriteBox()
+void Assets::drawSpriteBoxes()
 {
-    //Spades Sprite Box
-    if (this->spriteInit == true) {
-        //Draw Sprite Box
-        rectElements[5].setFillColor(sf::Color::Black);
-        rectElements[5].setPosition(50.0f, 560.0f);
-        rectElements[5].setSize(sf::Vector2f(153.0f, 153.0f));
-        rectElements[5].setOutlineColor(sf::Color::White);
-        rectElements[5].setOutlineThickness(2.0f);
-        //Sprite Name Text
-        textElements[5].setFont(font);
-        textElements[5].setCharacterSize(18);
-        textElements[5].setPosition(50.0f, 715.0f);
-        textElements[5].setFillColor(sf::Color::White);
+    for (int i = 0; i < spriteRect.size(); i++) {
+        spriteRect[i].setFillColor(sf::Color::Black);
+        spriteRect[i].setSize(sf::Vector2f(153.0f, 153.0f));
+        spriteRect[i].setOutlineColor(sf::Color::White);
+        spriteRect[i].setOutlineThickness(2.0f);
+        spriteText[i].setFont(font);
+        spriteText[i].setCharacterSize(18);
+        spriteText[i].setFillColor(sf::Color::White);
     }
-    else if (this->spriteInit == false) {
-        rectElements[5].setPosition(10000.0f, 560.0f);
-        textElements[5].setPosition(10000.0f, 715.0f);
-    }
-}
 
-void Assets::drawPlayerSpriteBox()
-{
-    //Draw Player Sprite Box
-    rectElements[6].setFillColor(sf::Color::Black);
-    rectElements[6].setPosition(50.0f, 145.0f);
-    rectElements[6].setSize(sf::Vector2f(153.0f, 153.0f));
-    rectElements[6].setOutlineColor(sf::Color::White);
-    rectElements[6].setOutlineThickness(2.0f);
-    //Sprite Player Name Text
-    textElements[6].setFont(font);
-    textElements[6].setCharacterSize(18);
-    textElements[6].setPosition(50.0f, 300.0f);
-    textElements[6].setFillColor(sf::Color::White);
-}
-
-void Assets::drawZinSpriteBox()
-{
-    //Draw Zin Sprite Box
-    rectElements[7].setFillColor(sf::Color::Black);
-    rectElements[7].setPosition(50.0f, 345.0f);
-    rectElements[7].setSize(sf::Vector2f(153.0f, 153.0f));
-    rectElements[7].setOutlineColor(sf::Color::White);
-    rectElements[7].setOutlineThickness(2.0f);
-    //Sprite Zin Name Text
-    textElements[7].setFont(font);
-    textElements[7].setCharacterSize(18);
-    textElements[7].setPosition(50.0f, 500.0f);
-    textElements[7].setFillColor(sf::Color::White);
+    //Set Text Rect Names
+    textPlayer.setString(playerName);
+    textZin.setString("Zin");
+    textSpade.setString("Spade");
+    textSiward.setString("Siward");
 }
 
 //Sprite Functions
@@ -1056,18 +1024,20 @@ void Assets::playerSprite()
     //Initialize Player Sprite
     if (this->playerLoadOnce == true) {
         playerTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/player.png");
-        spriteElements[4].setPosition(sf::Vector2f(10000.0f, 145.0f)); // absolute position
+        spriteElements[4].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         this->playerLoadOnce = false;
     }
     //Pick Player Sprite Emotion
     switch (this->playerCounter) {
     case -1:
-        spriteElements[4].setPosition(sf::Vector2f(10000.0f, 145.0f)); // absolute position
+        spriteElements[4].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        spriteRect[0].setPosition(10000.0f, 10000.0f);
         break;
     case 0:
         if (this->playerInit == false) {
             playerTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/player.png");
-            spriteElements[4].setPosition(sf::Vector2f(50.0f, 145.0f)); // absolute position
+            spriteElements[4].setPosition(sf::Vector2f(50.0f, 145.0f));
+            spriteRect[0].setPosition(50.0f, 145.0f); //Set Rect In Position
             this->playerInit = true;
         }
         break;
@@ -1091,19 +1061,19 @@ void Assets::spadeSprite()
     //Pick Spade Sprite Emotion
     switch (this->spadeCounter) {
     case -1:
-        spriteElements[2].setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
+        spriteElements[2].setPosition(sf::Vector2f(10000.0f, 10000.0f)); // absolute position
+        spriteRect[3].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         break;
     case 0:
         if (this->spadeInit == false) {
             spadeTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixel.png");
             spriteElements[2].setPosition(sf::Vector2f(50.0f, 560.0f)); // absolute position
-            spadeText.setString("Spade");
+            spriteRect[3].setPosition(sf::Vector2f(50.0f, 560.0f));
             this->spadeInit = true;
         }
         break;
     case 1:
         if (this->spadeInit == false) {
-            spadeText.setString("Spade");
             spadeTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixelAngry.png");
             this->spadeInit = true;
         }
@@ -1122,23 +1092,21 @@ void Assets::zinSprite()
     //Initialize Zin Sprite
     if (this->zinLoadOnce == true) {
         zinTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite.png");
-        spriteElements[3].setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
+        spriteElements[3].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         this->zinLoadOnce = false;
     }
     //Pick Zin Sprite Emotion
     switch (this->zinCounter) {
     case -1:
-        spriteElements[3].setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
+        spriteElements[3].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        spriteRect[1].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        spriteText[1].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         break;
     case 0:
         if (this->zinInit == false) {
-            spriteElements[3].setPosition(sf::Vector2f(50.0f, 345.0f)); // absolute position
-            this->zinInit = true;
-        }
-        break;
-    case 1:
-        if (this->zinInit == false) {
-            spriteElements[3].setPosition(sf::Vector2f(50.0f, 345.0f)); // absolute position
+            spriteElements[3].setPosition(sf::Vector2f(50.0f, 345.0f));
+            spriteRect[1].setPosition(sf::Vector2f(50.0f, 345.0f));
+            spriteText[1].setPosition(sf::Vector2f(50.0f, 498.0f));
             this->zinInit = true;
         }
         break;
@@ -1157,7 +1125,8 @@ void Assets::hostileSprite()
         hostileTextureWalker.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decaywalkersprite.jpeg");
         hostileTextureWolf.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/wolfsprite.png");
         hostileTextureKnight.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decayknight.png");
-        spriteElements[5].setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
+        spriteElements[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        spriteRect[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         this->hostileLoadOnce = false;
     }
     //Pick Hostile Sprite
@@ -1177,6 +1146,7 @@ void Assets::hostileSprite()
             hostileTextureWolf.setRepeated(false);
             spriteElements[5].setTexture(hostileTextureWolf);
             spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteElements[5].setScale(0.15f, 0.15f);
             this->hostileInit = true;
         }
@@ -1187,6 +1157,7 @@ void Assets::hostileSprite()
             hostileTextureWalker.setRepeated(false);
             spriteElements[5].setTexture(hostileTextureWalker);
             spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteElements[5].setScale(0.235f, 0.235f);
             this->hostileInit = true;
         }
@@ -1197,6 +1168,7 @@ void Assets::hostileSprite()
             hostileTextureKnight.setRepeated(false);
             spriteElements[5].setTexture(hostileTextureKnight);
             spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteElements[5].setScale(0.235f, 0.235f);
             this->hostileInit = true;
         }
@@ -1204,48 +1176,67 @@ void Assets::hostileSprite()
     }
 }
 
+void Assets::siwardSprite()
+{
+    //Initialize Siward Sprite
+    if (this->siwardLoadOnce == true) {
+        siwardTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/siward.png");
+        spriteElements[6].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        this->siwardLoadOnce = false;
+    }
+    //Pick Siward Sprite Emotion
+    switch (this->siwardCounter) {
+    case -1:
+        spriteElements[6].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        spriteRect[4].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        break;
+    case 0:
+        if (this->siwardLoadOnce == false) {
+            spriteElements[6].setPosition(sf::Vector2f(1650.0f, 345.0f));
+            spriteRect[4].setPosition(sf::Vector2f(1650.0f, 345.0f));
+            this->siwardLoadOnce = true;
+        }
+        break;
+    }
+
+    //Sprite Options, ect
+    siwardTexture.setRepeated(false);
+    spriteElements[6].setTexture(siwardTexture);
+    spriteElements[6].setScale(0.24f, 0.24f);
+}
+
 //Combat Asset Functions
 void Assets::initCombatAssets()
 {
     if (combatAssets == true) {
-        //Draw Zin and Player Sprite Boxes
-        this->drawPlayerSpriteBox();
-        this->drawZinSpriteBox();
-        //Draw Hostile Sprite Box
-        rectElements[8].setFillColor(sf::Color::Black);
-        rectElements[8].setPosition(1650.0f, 300.0f);
-        rectElements[8].setSize(sf::Vector2f(153.0f, 153));
-        rectElements[8].setOutlineColor(sf::Color::White);
-        rectElements[8].setOutlineThickness(2.0f);
-        //Sprite Hostile Name Text
-        textElements[8].setFont(font);
-        textElements[8].setCharacterSize(18);
-        textElements[8].setPosition(1650.0f, 455.0f);
-        textElements[8].setFillColor(sf::Color::White);
+        //Set All Objects
+        for (int i = 0; i < combatRect.size(); i++) {
+            combatRect[i].setSize(sf::Vector2f(100.0f, 25.0f));
+            combatRect[i].setOutlineColor(sf::Color::White);
+            combatRect[i].setOutlineThickness(1.0f);
+            combatRect[i].setPosition(10000, 10000);
+            combatText[i].setFont(font);
+            combatText[i].setCharacterSize(18);
+            combatText[i].setPosition(10000, 10000);
+        }
+        //Set Sprite Rectangle Outline Positions
+        spriteRect[0].setPosition(50.0f, 145.0f);
+        spriteText[0].setPosition(50.0f, 300.0f);
+        spriteRect[1].setPosition(50.0f, 345.0f);
+        spriteText[1].setPosition(50.0f, 500.0f);
+        spriteRect[2].setPosition(1650.0f, 300.0f);
+        spriteText[2].setPosition(1650.0f, 455.0f);
         this->playerCombatAssets();
         this->zinCombatAssets();
     }
-    else if (combatAssets == false && bonfireAssets == false) {
+    else if (combatAssets == false && bonfireAssets == false && eventAssets == false) {
         //Hide all combat assets
-        playerSpriteBorder.setPosition(50.0f, 10000.0f);
-        textElements[3].setPosition(335.0f, 10000.0f);
-        rectElements[3].setPosition(335.0f, 10000.0f);
-        textElements[4].setPosition(335.0f, 10000.0f);
-        rectElements[4].setPosition(335.0f, 10000.0f);
-        rectElements[6].setPosition(50.0f, 10000.0f);
-        textElements[6].setPosition(50.0f, 10000.0f);
-        rectElements[7].setPosition(50.0f, 10000.0f);
-        textElements[7].setPosition(50.0f, 10000.0f);
-        textElements[8].setPosition(1650.0f, 10000.0f);
-        rectElements[8].setPosition(1650.0f, 10000.0f);
-        textElements[9].setPosition(335.0f, 10000.0f);
-        rectElements[9].setPosition(335.0f, 10000.0f);
-        textElements[10].setPosition(335.0f, 10000.0f);
-        rectElements[10].setPosition(335.0f, 10000.0f);
-        textElements[11].setPosition(335.0f, 10000.0f);
-        rectElements[11].setPosition(335.0f, 10000.0f);
-        textElements[12].setPosition(335.0f, 10000.0f);
-        rectElements[12].setPosition(335.0f, 10000.0f);
+        for (int i = 0; i < spriteRect.size(); i++) {
+            spriteRect[i].setPosition(10000, 10000);
+            spriteText[i].setPosition(10000, 10000);
+            combatRect[i].setPosition(10000, 10000);
+            combatText[i].setPosition(10000, 10000);
+        }
         playerCounter = -1;
         zinCounter = -1;
         hostileCounter = -1;
@@ -1254,160 +1245,99 @@ void Assets::initCombatAssets()
 
 void Assets::playerCombatAssets()
 {
-    switch (this->combatPlayerMoves) {
-    case 0:
-        if (this->playerTurnAssets == true) {
-            //Draw Player Slash Text
-            textElements[3].setFont(font);
-            textElements[3].setCharacterSize(18);
-            textElements[3].setPosition(335.0f, 795.0f);
-            textElements[3].setString("Slash");
+    if (this->playerTurnAssets) {
+        switch (this->combatPlayerMoves) {
+        case 0:
             //Draw Player Slash Button
-            rectElements[3].setPosition(335.0f, 795.0f);
-            rectElements[3].setSize(sf::Vector2f(100.0f, 25.0f));
-            rectElements[3].setOutlineColor(sf::Color::White);
-            rectElements[3].setOutlineThickness(1.0f);
-        }
-        else if (this->playerTurnAssets == false) {
-            textElements[3].setPosition(335.0f, 10000.0f);
-            rectElements[3].setPosition(335.0f, 10000.0f);
-        }
-        break;
-    case 1:
-        if (this->playerTurnAssets == true) {
+            combatRect[0].setPosition(335.0f, 795.0f);
             //Draw Player Slash Text
-            textElements[3].setFont(font);
-            textElements[3].setCharacterSize(18);
-            textElements[3].setPosition(335.0f, 795.0f);
-            textElements[3].setString("Slash");
+            combatText[0].setPosition(335.0f, 795.0f);
+            combatText[0].setString("Slash");
+            break;
+        case 1:
             //Draw Player Slash Button
-            rectElements[3].setPosition(335.0f, 795.0f);
-            rectElements[3].setSize(sf::Vector2f(100.0f, 25.0f));
-            rectElements[3].setOutlineColor(sf::Color::White);
-            rectElements[3].setOutlineThickness(1.0f);
-            //Draw Player Guard Text
-            textElements[9].setFont(font);
-            textElements[9].setCharacterSize(18);
-            textElements[9].setPosition(335.0f, 765.0f);
-            textElements[9].setString("Guard");
+            combatRect[0].setPosition(335.0f, 795.0f);
+            //Draw Player Slash Text
+            combatText[0].setPosition(335.0f, 795.0f);
+            combatText[0].setString("Slash");
             //Draw Player Guard Button
-            rectElements[9].setPosition(335.0f, 765.0f);
-            rectElements[9].setSize(sf::Vector2f(100.0f, 25.0f));
-            rectElements[9].setOutlineColor(sf::Color::White);
-            rectElements[9].setOutlineThickness(1.0f);
-            //Draw Player Decay Text
-            textElements[12].setFont(font);
-            textElements[12].setCharacterSize(18);
-            textElements[12].setPosition(335.0f, 735.0f);
-            textElements[12].setString("Decay");
+            combatRect[1].setPosition(335.0f, 765.0f);
+            //Draw Player Guard Text
+            combatText[1].setPosition(335.0f, 765.0f);
+            combatText[1].setString("Guard");
+            break;
+        case 2:
+            //Draw Player Slash Button
+            combatRect[0].setPosition(335.0f, 795.0f);
+            //Draw Player Slash Text
+            combatText[0].setPosition(335.0f, 795.0f);
+            combatText[0].setString("Slash");
+            //Draw Player Guard Button
+            combatRect[1].setPosition(335.0f, 765.0f);
+            //Draw Player Guard Text
+            combatText[1].setPosition(335.0f, 765.0f);
+            combatText[1].setString("Guard");
             //Draw Player Decay Button
-            rectElements[12].setPosition(335.0f, 735.0f);
-            rectElements[12].setSize(sf::Vector2f(100.0f, 25.0f));
-            rectElements[12].setOutlineColor(sf::Color::White);
-            rectElements[12].setOutlineThickness(1.0f);
+            combatRect[2].setPosition(335.0f, 735.0f);
+            //Draw Player Decay Text
+            combatText[2].setPosition(335.0f, 735.0f);
+            combatText[2].setString("Decay");
+            break;
         }
-        else if (this->playerTurnAssets == false) {
-            textElements[3].setPosition(335.0f, 10000.0f);
-            rectElements[3].setPosition(335.0f, 10000.0f);
-            textElements[9].setPosition(335.0f, 10000.0f);
-            rectElements[9].setPosition(335.0f, 10000.0f);
-            textElements[12].setPosition(335.0f, 10000.0f);
-            rectElements[12].setPosition(335.0f, 10000.0f);
-        }
-        break;
+    }
+    else if (!this->playerTurnAssets) {
+        combatRect[0].setPosition(10000.0f, 10000.0f);
+        combatRect[1].setPosition(10000.0f, 10000.0f);
+        combatRect[2].setPosition(10000.0f, 10000.0f);
     }
 }
 
 void Assets::zinCombatAssets()
 {
-    switch (this->combatZinMoves) {
-    case 0:
-        if (this->zinTurnAssets == true) {
-            //Draw Zin Smite Button
-            rectElements[4].setPosition(335.0f, 795.0f);
-            rectElements[4].setSize(sf::Vector2f(100.0f, 25.0f));
-            rectElements[4].setOutlineColor(sf::Color::White);
-            rectElements[4].setOutlineThickness(1.0f);
-            textElements[4].setFont(font);
-            textElements[4].setCharacterSize(18);
-            textElements[4].setPosition(335.0f, 795.0f);
-            textElements[4].setString("Smite");
+    if (this->zinTurnAssets) {
+        switch (this->combatZinMoves) {
+        case 0:
+            //Draw Player Slash Button
+            combatRect[3].setPosition(335.0f, 795.0f);
+            //Draw Player Slash Text
+            combatText[3].setPosition(335.0f, 795.0f);
+            combatText[3].setString("Smite");
+            break;
+        case 1:
+            //Draw Player Slash Button
+            combatRect[3].setPosition(335.0f, 795.0f);
+            //Draw Player Slash Text
+            combatText[3].setPosition(335.0f, 795.0f);
+            combatText[3].setString("Smite");
+            //Draw Player Guard Button
+            combatRect[4].setPosition(335.0f, 765.0f);
+            //Draw Player Guard Text
+            combatText[4].setPosition(335.0f, 765.0f);
+            combatText[4].setString("Mend");
+            break;
+        case 2:
+            //Draw Player Slash Button
+            combatRect[3].setPosition(335.0f, 795.0f);
+            //Draw Player Slash Text
+            combatText[3].setPosition(335.0f, 795.0f);
+            combatText[3].setString("Smite");
+            //Draw Player Guard Button
+            combatRect[4].setPosition(335.0f, 765.0f);
+            //Draw Player Guard Text
+            combatText[4].setPosition(335.0f, 765.0f);
+            combatText[4].setString("Mend");
+            //Draw Player Decay Button
+            combatRect[5].setPosition(335.0f, 735.0f);
+            //Draw Player Decay Text
+            combatText[5].setPosition(335.0f, 735.0f);
+            combatText[5].setString("Vengeance");
+            break;
         }
-        else if (this->zinTurnAssets == false) {
-            //Hide Elements
-            textElements[4].setPosition(335.0f, 10000.0f);
-            rectElements[4].setPosition(335.0f, 10000.0f);
-        }
-        break;
-    case 1:
-        if (this->zinTurnAssets == true) {
-            //Draw Zin Smite Button
-            rectElements[4].setPosition(335.0f, 795.0f);
-            rectElements[4].setSize(sf::Vector2f(100.0f, 25.0f));
-            rectElements[4].setOutlineColor(sf::Color::White);
-            rectElements[4].setOutlineThickness(1.0f);
-            textElements[4].setFont(font);
-            textElements[4].setCharacterSize(18);
-            textElements[4].setPosition(335.0f, 795.0f);
-            textElements[4].setString("Smite");
-            //Draw Zin Mend Button
-            rectElements[10].setPosition(335.0f, 765.0f);
-            rectElements[10].setSize(sf::Vector2f(100.0f, 25.0f));
-            rectElements[10].setOutlineColor(sf::Color::White);
-            rectElements[10].setOutlineThickness(1.0f);
-            textElements[10].setFont(font);
-            textElements[10].setCharacterSize(18);
-            textElements[10].setPosition(335.0f, 765.0f);
-            textElements[10].setString("Mend");
-        }
-        else if (this->zinTurnAssets == false) {
-            //Hide Elements
-            textElements[4].setPosition(335.0f, 10000.0f);
-            rectElements[4].setPosition(335.0f, 10000.0f);
-            textElements[10].setPosition(335.0f, 10000.0f);
-            rectElements[10].setPosition(335.0f, 10000.0f);
-        }
-        break;
-    case 2:
-        if (this->zinTurnAssets == true) {
-            //Draw Zin Smite Button
-            rectElements[4].setPosition(335.0f, 795.0f);
-            rectElements[4].setSize(sf::Vector2f(100.0f, 25.0f));
-            rectElements[4].setOutlineColor(sf::Color::White);
-            rectElements[4].setOutlineThickness(1.0f);
-            textElements[4].setFont(font);
-            textElements[4].setCharacterSize(18);
-            textElements[4].setPosition(335.0f, 795.0f);
-            textElements[4].setString("Smite");
-            //Draw Zin Mend Button
-            rectElements[10].setPosition(335.0f, 765.0f);
-            rectElements[10].setSize(sf::Vector2f(100.0f, 25.0f));
-            rectElements[10].setOutlineColor(sf::Color::White);
-            rectElements[10].setOutlineThickness(1.0f);
-            textElements[10].setFont(font);
-            textElements[10].setCharacterSize(18);
-            textElements[10].setPosition(335.0f, 765.0f);
-            textElements[10].setString("Mend");
-            //Draw Zin Vengeance Button
-            rectElements[11].setPosition(335.0f, 735.0f);
-            rectElements[11].setSize(sf::Vector2f(100.0f, 25.0f));
-            rectElements[11].setOutlineColor(sf::Color::White);
-            rectElements[11].setOutlineThickness(1.0f);
-            textElements[11].setFont(font);
-            textElements[11].setCharacterSize(18);
-            textElements[11].setPosition(335.0f, 735.0f);
-            textElements[11].setString("Vengeance");
-        }
-        else if (this->zinTurnAssets == false) {
-            //Hide Elements
-            textElements[4].setPosition(335.0f, 10000.0f);
-            rectElements[4].setPosition(335.0f, 10000.0f);
-            textElements[10].setPosition(335.0f, 10000.0f);
-            rectElements[10].setPosition(335.0f, 10000.0f);
-            textElements[11].setPosition(335.0f, 10000.0f);
-            rectElements[11].setPosition(335.0f, 10000.0f);
-        }
-        break;
+    }
+    else if (!this->playerTurnAssets) {
+        combatRect[3].setPosition(10000.0f, 10000.0f);
+        combatRect[4].setPosition(10000.0f, 10000.0f);
+        combatRect[5].setPosition(10000.0f, 10000.0f);
     }
 }
 

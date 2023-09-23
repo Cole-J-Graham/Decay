@@ -46,7 +46,7 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
 
     // run the program as long as the window is open
     while (window.isOpen()) {
-        //std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
+        std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
         clock.restart();
         clickTime.restart();
         // check all the window's events that were triggered since the last iteration of the loop
@@ -166,7 +166,17 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
         window.draw(assets.playerText);
         window.draw(assets.locationText);
         window.draw(assets.text);
-        window.draw(assets.combatText);
+
+        //Draw all sprite border rects and text
+        for (int i = 0; i < assets.spriteRect.size(); i++) {
+            window.draw(assets.spriteRect[i]);
+            window.draw(assets.spriteText[i]);
+        }
+
+        for (int i = 0; i < assets.combatRect.size(); i++) {
+            window.draw(assets.combatRect[i]);
+            window.draw(assets.combatText[i]);
+        }
 
         //Draw Bonfire Detection Rect
         if (travel.getForestBonfireInit() == true) {
@@ -317,6 +327,18 @@ void World::greyOnHover(sf::RenderWindow& window, Assets& assets)
         else {
             assets.menuScreenElements[i].setFillColor(sf::Color::White);
             assets.menuScreenElementsText[i].setFillColor(sf::Color::Black);
+        }
+    }
+
+    //Combat Rects Grey On Hover
+    for (int i = 0; i < assets.combatRect.size(); i++) {
+        if (assets.combatRect[i].getGlobalBounds().contains(mousePosF)) {
+            assets.combatRect[i].setFillColor(sf::Color::Transparent);
+            assets.combatText[i].setFillColor(sf::Color::White);
+        }
+        else {
+            assets.combatRect[i].setFillColor(sf::Color::White);
+            assets.combatText[i].setFillColor(sf::Color::Black);
         }
     }
 
@@ -708,38 +730,38 @@ void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& 
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Player Combat Buttons Functionality
-    if (assets.rectElements[3].getGlobalBounds().contains(mousePosF)) { //If attack button is clicked...
+    if (assets.combatRect[0].getGlobalBounds().contains(mousePosF)) { //If attack button is clicked...
         if (combat.getTurnPlayer() == true) {
             combat.setAttackCounterInc();
             combat.getPlayerPickMove() = 0;
         }
     }
-    if (assets.rectElements[9].getGlobalBounds().contains(mousePosF)) {
+    if (assets.combatRect[1].getGlobalBounds().contains(mousePosF)) {
         if (combat.getTurnPlayer() == true) {
             combat.setAttackCounterInc();
             combat.getPlayerPickMove() = 1;
         }
     }
-    if (assets.rectElements[12].getGlobalBounds().contains(mousePosF)) {
+    if (assets.combatRect[2].getGlobalBounds().contains(mousePosF)) {
         if (combat.getTurnPlayer() == true) {
             combat.setAttackCounterInc();
             combat.getPlayerPickMove() = 2;
         }
     }
     //Zin Combat Buttons Functionality
-    if (assets.rectElements[4].getGlobalBounds().contains(mousePosF)) {
+    if (assets.combatRect[3].getGlobalBounds().contains(mousePosF)) {
         if (combat.getTurnZin() == true) {
             combat.setZinAttackCounterInc();
             combat.getZinPickMove() = 0;
         }
     }
-    if (assets.rectElements[10].getGlobalBounds().contains(mousePosF)) {
+    if (assets.combatRect[4].getGlobalBounds().contains(mousePosF)) {
         if (combat.getTurnZin() == true) {
             combat.setZinAttackCounterInc();
             combat.getZinPickMove() = 1;
         }
     }
-    if (assets.rectElements[11].getGlobalBounds().contains(mousePosF)) {
+    if (assets.combatRect[5].getGlobalBounds().contains(mousePosF)) {
         if (combat.getTurnZin() == true) {
             combat.setZinAttackCounterInc();
             combat.getZinPickMove() = 2;
@@ -749,6 +771,7 @@ void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& 
         assets.setDialogueCounterInc();
         travel.setFrameInitFalse(); //Allow images to be loaded again
         travel.setIntroCounterDialogueInc();
+        notevent.setDialogueInc();
         if (combat.getAttackCounter() == 1) {
             combat.getAttackCounter() = 2;
         }

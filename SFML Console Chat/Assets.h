@@ -32,6 +32,7 @@ private:
 	int decayAreaUnlocked;
 
 	//Sprite Control Flow
+	bool siwardLoadOnce;
 	bool playerLoadOnce;
 	bool zinLoadOnce;
 	bool spadeLoadOnce;
@@ -46,6 +47,7 @@ private:
 	bool playerInit;
 
 	//Sprite Integer Selection
+	int siwardCounter;
 	int playerCounter;
 	int zinCounter;
 	int spadeCounter;
@@ -71,6 +73,7 @@ private:
 	//Initialize Combat Assets
 	bool introAssets;
 	bool combatAssets;
+	bool eventAssets;
 	bool bonfireAssets;
 	bool playerTurnAssets;
 	bool zinTurnAssets;
@@ -88,6 +91,7 @@ public:
 	sf::Image windowIcon;
 
 	//Textures
+	sf::Texture siwardTexture;
 	sf::Texture playerTexture;
 	sf::Texture spadeTexture;
 	sf::Texture zinTexture;
@@ -110,6 +114,7 @@ public:
 	sf::Texture textureMapView;
 
 	//Sprites
+	sf::Sprite siward;
 	sf::Sprite player;
 	sf::Sprite spade;
 	sf::Sprite zin;
@@ -135,8 +140,8 @@ public:
 	sf::RectangleShape rectStatsSideMenu;
 	sf::RectangleShape playerStatsBoxButton;
 	sf::RectangleShape rectInventoryBox;
-	sf::RectangleShape rectAttackSmite;
-	sf::RectangleShape rectAttackDecay;
+	sf::RectangleShape rectSmite;
+	sf::RectangleShape rectDecay;
 	sf::RectangleShape buttonMap;
 
 	//Main Menu
@@ -168,23 +173,21 @@ public:
 	sf::RectangleShape rectResiliencePointsBox;
 
 	//Combat Assets
-	sf::RectangleShape rectAttack;
+	sf::RectangleShape rectSlash;
 	sf::RectangleShape rectGuard;
 	sf::RectangleShape rectMend;
 	sf::RectangleShape rectVengeance;
-	sf::Text attackText;
 	sf::Sprite hostile;
 
 	//Text
 	sf::Font font;
 	sf::Text text;
 	sf::Text playerText;
-	sf::Text combatText;
+	//sf::Text combatText;
 	sf::Text locationText;
 	sf::Text menuText;
 	sf::Text rectStatsText;
 	sf::Text rectInventoryText;
-	sf::Text spadeText;
 	sf::Text statsText;
 	sf::Text statsPointsText;
 	sf::Text statsPointsTextTitle;
@@ -196,11 +199,8 @@ public:
 	sf::Text statsVitalityText;
 	sf::Text playerStatsBoxButtonText;
 	sf::Text inventoryText;
-	sf::Text smiteText;
-	sf::Text textGuard;
-	sf::Text textMend;
-	sf::Text textVengeance;
-	sf::Text textDecay;
+	sf::Text spadeText;
+	
 
 	//Zin Stats Assets Text
 	sf::Text zinStatsBoxButtonText;
@@ -213,27 +213,30 @@ public:
 	sf::Text statsPatienceTextTitle;
 	sf::Text statsResilienceTextTitle;
 
-	//Combat Sprites
-	sf::RectangleShape playerSpriteBorder;
-	sf::RectangleShape zinSpriteBorder;
-	sf::RectangleShape hostileSpriteBorder;
 
-	//Combat Sprites Name Text
-	sf::Text playerNameText;
-	sf::Text zinText;
-	sf::Text hostileNameText;
+	std::vector<sf::RectangleShape> combatRect{ rectSlash, rectGuard, 
+		rectDecay, rectSmite, rectMend, rectVengeance };
+
+	//combatText Vect Objects
+	sf::Text attackText;
+	sf::Text smiteText;
+	sf::Text textGuard;
+	sf::Text textMend;
+	sf::Text textVengeance;
+	sf::Text textDecay;
+
+	std::vector<sf::Text> combatText{ attackText, smiteText, 
+		textGuard, textMend, textVengeance, textDecay };
 
 	//Main Vectors
-	std::vector<sf::RectangleShape> rectElements {rectStats, rectInventory, buttonMap, 
-		rectAttack, rectAttackSmite, rectSpadeSpriteBox, playerSpriteBorder, zinSpriteBorder,
-		hostileSpriteBorder, rectGuard, rectMend, rectVengeance, rectAttackDecay,};
+	std::vector<sf::RectangleShape> rectElements {rectStats, rectInventory, 
+		buttonMap,};
 
-	std::vector<sf::Text> textElements {rectStatsText, rectInventoryText, menuText, 
-		attackText, smiteText, spadeText, playerNameText, zinText,
-		hostileNameText, textGuard, textMend, textVengeance, textDecay };
+	std::vector<sf::Text> textElements {rectStatsText, rectInventoryText, 
+		menuText, };
 
 	std::vector<sf::Sprite> spriteElements {button, buttonBack, spade, 
-		zin, player, hostile };
+		zin, player, hostile, siward };
 
 	//Stats Menu Vectors
 	std::vector<sf::RectangleShape> playerStatElements {rectStatsPointsBox, rectStrengthPointsBox,
@@ -343,6 +346,25 @@ public:
 	std::vector<sf::RectangleShape> answerBox {ansOne, ansTwo};
 	std::vector<sf::Text> answerBoxText{ ansOneText, ansTwoText };
 
+	//Sprite Rectangles and Text
+	sf::RectangleShape boxPlayer;
+	sf::RectangleShape boxZin;
+	sf::RectangleShape boxHostile;
+	sf::RectangleShape boxSpade;
+	sf::RectangleShape boxSiward;
+
+	std::vector<sf::RectangleShape> spriteRect{ boxPlayer, boxZin, boxHostile,
+		 boxSpade, boxSiward };
+
+	sf::Text textPlayer;
+	sf::Text textZin;
+	sf::Text textHostile;
+	sf::Text textSpade;
+	sf::Text textSiward;
+
+	std::vector<sf::Text> spriteText{ textPlayer, textZin, textHostile,
+		textSpade, textSiward };
+
 	//Sounds
 	sf::Sound sound;
 	sf::Sound blipsound;
@@ -405,15 +427,14 @@ public:
 	void bonfireSmithDetection();
 
 	//Draw Sprite Boxes
-	void drawSpadeSpriteBox();
-	void drawPlayerSpriteBox();
-	void drawZinSpriteBox();
+	void drawSpriteBoxes();
 
 	//Sprite Functions
 	void playerSprite();
 	void spadeSprite();
 	void zinSprite();
 	void hostileSprite();
+	void siwardSprite();
 
 	//Sound Functions
 	void loadSFX();
@@ -467,6 +488,7 @@ public:
 	int& getDecayAreaUnlocked() { return this->decayAreaUnlocked; };
 
 	//Sprite Control Flow Getters
+	bool& getSiwardLoadOnce() { return this->siwardLoadOnce; };
 	bool& getPlayerLoadOnce() { return this->playerLoadOnce; };
 	bool& getZinLoadOnce() { return this->zinLoadOnce; };
 	bool& getSpadeLoadOnce() { return this->spadeLoadOnce; };
@@ -497,6 +519,7 @@ public:
 	void setPlayerInitFalse() { this->playerInit = false; };
 
 	//Sprite Integer Selection Getters
+	int& getSiwardCounter() { return this->siwardCounter; };
 	int& getPlayerCounter() { return this->playerCounter; };
 	int& getZinCounter() { return this->zinCounter; };
 	int& getSpadeCounter() { return this->spadeCounter; };
@@ -555,6 +578,7 @@ public:
 	//Initialize Combat Assets Getters
 	bool& getIntroAssets() { return this->introAssets; };
 	bool& getCombatAssets() { return this->combatAssets; };
+	bool& getEventAssets() { return this->eventAssets; };
 	bool& getBonfireAssets() { return this->bonfireAssets; };
 	bool& getPlayerTurnAssets() { return this->playerTurnAssets; };
 	bool& getZinTurnAssets() { return this->zinTurnAssets; };
