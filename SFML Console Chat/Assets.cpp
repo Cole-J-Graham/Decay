@@ -120,7 +120,7 @@ void Assets::drawMainWindow()
     rect.setSize(sf::Vector2f(1920.0f, 825.0f));
     rect.setOutlineColor(sf::Color::White);
     rect.setOutlineThickness(1.0f);
-    if (combatAssets == false && bonfireAssets == false && introAssets == false) {
+    if (combatAssets == false && bonfireAssets == false) {
         //Draw Rect Element Similiarities
         for (int i = 0; i < rectElements.size(); i++) {
             rectElements[i].setSize(sf::Vector2f(100.0f, 25.0f));
@@ -142,6 +142,14 @@ void Assets::drawMainWindow()
         spriteElements[1].setTexture(arrowTextureLeft);
         spriteElements[1].setPosition(445.0f, 765.0f);
         spriteElements[1].setScale(0.04, 0.04);
+        if (eventAssets == true) {
+            //Make assets hidden during Events
+            rectElements[2].setPosition(1.0f, 10000.0f);
+            rectElements[1].setPosition(209.0f, 10000.0f);
+            rectElements[0].setPosition(105.0f, 10000.0f);
+            spriteElements[0].setPosition(1400.0f, 10000.0f);
+            spriteElements[1].setPosition(445.0f, 10000.0f);
+        }
     }
     else if (combatAssets == true) {
         //Make assets hidden during combat
@@ -173,14 +181,6 @@ void Assets::drawMainWindow()
     }
     else if (introAssets == true) {
         //Make assets hidden during intro
-        rectElements[2].setPosition(1.0f, 10000.0f);
-        rectElements[1].setPosition(209.0f, 10000.0f);
-        rectElements[0].setPosition(105.0f, 10000.0f);
-        spriteElements[0].setPosition(1400.0f, 10000.0f);
-        spriteElements[1].setPosition(445.0f, 10000.0f);
-    }
-    else if (eventAssets == true) {
-        //Make assets hidden during events
         rectElements[2].setPosition(1.0f, 10000.0f);
         rectElements[1].setPosition(209.0f, 10000.0f);
         rectElements[0].setPosition(105.0f, 10000.0f);
