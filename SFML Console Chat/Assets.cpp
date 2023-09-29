@@ -30,6 +30,8 @@ Assets::Assets()
     this->zinLoadOnce = true;
     this->spadeLoadOnce = true;
     this->hostileLoadOnce = true;
+    this->startFrame = true;
+    this->endFrame = false;
 
     this->zinInit = false;
     this->spadeInit = false;
@@ -50,6 +52,7 @@ Assets::Assets()
     this->combatCounter = 0;
     this->showAnsBoxesCounter = -1;
     this->choiceCounter = -1;
+    this->tipBoxCounter = -1;
 
     //Movable
     this->movable = false;
@@ -64,7 +67,6 @@ Assets::Assets()
     this->rectInventoryBoxY = 10;
 
     //Initialize Combat Assets
-    this->introAssets = true;
     this->combatAssets = false;
     this->eventAssets = false;
     this->bonfireAssets = false;
@@ -97,6 +99,7 @@ void Assets::drawObjects()
     this->drawStats();
     this->drawInventory();
     this->drawZinStats();
+    this->drawTipBox();
     //Sprite Assets
     this->siwardSprite();
     this->playerSprite();
@@ -134,13 +137,23 @@ void Assets::drawMainWindow()
         //Draw Inventory Button position
         rectElements[1].setPosition(209.0f, 795.0f);
         //Draw Button
+        if (this->endFrame) {
+            spriteElements[0].setPosition(10000.0f, 10000.0f);
+        }
+        else {
+            spriteElements[0].setPosition(1400.0f, 765.0f);
+        }
         spriteElements[0].setTexture(arrowTextureRight);
-        spriteElements[0].setPosition(1400.0f, 765.0f);
         spriteElements[0].setScale(0.04, 0.04);
         //Draw Back Button
+        if (this->startFrame == true) {
+            spriteElements[1].setPosition(10000.0f, 10000.0f);
+        }
+        else {
+            spriteElements[1].setPosition(445.0f, 765.0f);
+        }
         buttonBackTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/buttonsolidfix.png");
         spriteElements[1].setTexture(arrowTextureLeft);
-        spriteElements[1].setPosition(445.0f, 765.0f);
         spriteElements[1].setScale(0.04, 0.04);
         if (eventAssets == true) {
             //Make assets hidden during Events
@@ -176,14 +189,6 @@ void Assets::drawMainWindow()
         rectElements[1].setOutlineColor(sf::Color::White);
         rectElements[1].setOutlineThickness(1.0f);
         //Hide Back and Forward Buttons
-        spriteElements[0].setPosition(1400.0f, 10000.0f);
-        spriteElements[1].setPosition(445.0f, 10000.0f);
-    }
-    else if (introAssets == true) {
-        //Make assets hidden during intro
-        rectElements[2].setPosition(1.0f, 10000.0f);
-        rectElements[1].setPosition(209.0f, 10000.0f);
-        rectElements[0].setPosition(105.0f, 10000.0f);
         spriteElements[0].setPosition(1400.0f, 10000.0f);
         spriteElements[1].setPosition(445.0f, 10000.0f);
     }
@@ -542,6 +547,28 @@ void Assets::drawAnswerBoxes()
 
         answerBoxText[0].setPosition(0.0f, 825.0f);
         answerBoxText[1].setPosition(0.0f, 925.0f);
+        break;
+    }
+}
+
+void Assets::drawTipBox()
+{
+    tipBox.setFillColor(sf::Color::Black);
+    tipBox.setSize(sf::Vector2f(380.0f, 150.0f));
+    tipBox.setOutlineColor(sf::Color::White);
+    tipBox.setOutlineThickness(1.0f);
+
+    tipBoxText.setFont(font);
+    tipBoxText.setCharacterSize(14);
+
+    switch (this->tipBoxCounter) {
+    case -1:
+        tipBox.setPosition(10000, 10000);
+        tipBoxText.setPosition(10000, 10000);
+        break;
+    case 0:
+        tipBox.setPosition(1500, 650);
+        tipBoxText.setPosition(1500, 650);
         break;
     }
 }

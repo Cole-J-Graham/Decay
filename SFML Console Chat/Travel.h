@@ -52,6 +52,7 @@ public:
 	//Core
 	void travelCore(sf::RenderWindow& window, Assets& assets, Event& notevent, 
 		Combat& combat, Player& player, Animation& animate);
+	void newArea(Assets& assets, Animation& animate);
 
 	//Draw Intro
 	void intro(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);

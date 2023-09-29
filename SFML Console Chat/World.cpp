@@ -60,6 +60,7 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                 { //Mouse Hover Actions
                     //Turn buttons grey on hover
                     this->greyOnHover(window, assets);
+                    this->printToolTip(window, assets, notevent, combat, player);
                 }
                 break;
             case sf::Event::MouseButtonPressed:
@@ -202,6 +203,10 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
         for (int i = 0; i < assets.spriteElements.size(); i++) {
             window.draw(assets.spriteElements[i]);
         }
+
+        //Draw Tip Box
+        window.draw(assets.tipBox);
+        window.draw(assets.tipBoxText);
 
         //Draw Animations
         animate.drawAnimations();
@@ -418,7 +423,7 @@ void World::greyOnHover(sf::RenderWindow& window, Assets& assets)
 
 void World::printPlayerStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
 {
-    assets.playerTextElements[10].setString("HP: " + std::to_string(combat.getPlayerHp()) + "/" + 
+    assets.playerTextElements[10].setString("HP: " + std::to_string(combat.getPlayerHp()) + "/" +
         std::to_string(combat.getPlayerHpMax()) + "\nDECAY: " + std::to_string(player.getDecay()) + "/" +
         std::to_string(player.getDecayMax()) + "\n\nSP: " + std::to_string(player.getSp()) +
         "\nEXP: " + std::to_string(player.getExp()) + "/" + std::to_string(player.getExpNext()));
@@ -450,6 +455,80 @@ void World::printInventory(sf::RenderWindow& window, Assets& assets, Event& note
 {
     assets.inventoryText.setString("[GENERAL ITEMS]\nGold: x" + std::to_string(player.getGold()) + "\nSmithing Stones: x"
         + std::to_string(player.getSmithingStones()) + "\n\n[EQUIPPED ITEMS]\n" + player.getBasicSword());
+}
+
+void World::printToolTip(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+    //Player Combat Buttons Functionality
+    if (assets.getPlayerStatsInit()) {
+        if (assets.playerStatElements[1].getGlobalBounds().contains(mousePosF)) {
+            assets.getTipBoxCounter() = 0;
+            assets.tipBoxText.setString("STRENGTH:\nMeasures the players raw power.\n\nIncreases all attack moves damage.");
+        }
+        else if (assets.playerStatElements[2].getGlobalBounds().contains(mousePosF)) {
+            assets.getTipBoxCounter() = 0;
+            assets.tipBoxText.setString("FORTITUDE:\nMeasures the players survivability against decay.\n\nHigher fortitude makes the player more \nresistant to the decay.");
+        }
+        else if (assets.playerStatElements[3].getGlobalBounds().contains(mousePosF)) {
+            assets.getTipBoxCounter() = 0;
+            assets.tipBoxText.setString("VITALITY:\nMeasures the players health.\n\nHigh vitality allows the player to take a beating\nin combat.");
+        }
+        else {
+            assets.getTipBoxCounter() = -1;
+        }
+    }
+    else if (assets.getZinStatsInit()) {
+        if (assets.zinStatElements[1].getGlobalBounds().contains(mousePosF)) {
+            assets.getTipBoxCounter() = 0;
+            assets.tipBoxText.setString("RESOLVE:\nMeasures Zin's spells raw power.\n\nIncreases the damage of her lightning \nspells specifically.");
+        }
+        else if (assets.zinStatElements[2].getGlobalBounds().contains(mousePosF)) {
+            assets.getTipBoxCounter() = 0;
+            assets.tipBoxText.setString("PATIENCE:\nMeasures Zin's healing capabilities.\n\nHigh patience makes her heal \nsignificantly more.");
+        }
+        else if (assets.zinStatElements[3].getGlobalBounds().contains(mousePosF)) {
+            assets.getTipBoxCounter() = 0;
+            assets.tipBoxText.setString("RESILIENCE:\nMeasures Zin's health.\n\nHigh resilience allows Zin to take more \nhits and survive.");
+        }
+        else {
+            assets.getTipBoxCounter() = -1;
+        }
+    }
+    else if (assets.getCombatAssets() == true) {
+        if (assets.combatRect[0].getGlobalBounds().contains(mousePosF)) { //If attack button is clicked...
+            assets.getTipBoxCounter() = 0;
+            assets.tipBoxText.setString("SLASH:\nThe players basic attack for inflicting damage...");
+        }
+        else if (assets.combatRect[1].getGlobalBounds().contains(mousePosF)) {
+            assets.getTipBoxCounter() = 0;
+            assets.tipBoxText.setString("GUARD:\nUses the players turn to protect Zin from \nALL damage...");
+        }
+        else if (assets.combatRect[2].getGlobalBounds().contains(mousePosF)) {
+            assets.getTipBoxCounter() = 0;
+            assets.tipBoxText.setString("DECAYED BLADE:\nThe player slashes his own skin open to use the \ndecay in his blood as a weapon...\n\nInflicts extra damage due to decayed blood...");
+        }
+        //Zin Combat Buttons Functionality
+        else if (assets.combatRect[3].getGlobalBounds().contains(mousePosF)) {
+            assets.getTipBoxCounter() = 0;
+            assets.tipBoxText.setString("SMITE:\nZin's basic attack, inflicts damage on the \nopponent...");
+        }
+        else if (assets.combatRect[4].getGlobalBounds().contains(mousePosF)) {
+            assets.getTipBoxCounter() = 0;
+            assets.tipBoxText.setString("MEND:\nHeals the player and Zin...");
+        }
+        else if (assets.combatRect[5].getGlobalBounds().contains(mousePosF)) {
+            assets.getTipBoxCounter() = 0;
+            assets.tipBoxText.setString("VENGEANCE:\nUse Zin's rage and sorrow to turn the players\nblood into sharpened blades that hurdle\ntowards the enemy...\n\nInflicts damage equal to the players current \nlost health...");
+        }
+        else {
+            assets.getTipBoxCounter() = -1;
+        }
+    }
+    else {
+        assets.getTipBoxCounter() = -1;
+    }
 }
 
 //Display Element Functionality
@@ -536,6 +615,8 @@ void World::menuBar(sf::RenderWindow& window, Assets& assets)
     }
     else if (assets.rectElements[0].getGlobalBounds().contains(mousePosF) && assets.getInitStats() == true) {
         assets.setInitStatsFalse();
+        assets.setPlayerStatsInitFalse();
+        assets.setZinStatsInitFalse();
         assets.blipmenu.play();
     }
     //Inventory Menu Bar Functionality

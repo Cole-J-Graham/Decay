@@ -37,6 +37,8 @@ private:
 	bool zinLoadOnce;
 	bool spadeLoadOnce;
 	bool hostileLoadOnce;
+	bool startFrame;
+	bool endFrame;
 
 	bool zinInit;
 	bool spadeInit;
@@ -57,6 +59,7 @@ private:
 	int combatCounter;
 	int showAnsBoxesCounter;
 	int choiceCounter;
+	int tipBoxCounter;
 
 	//Movable
 	bool movable;
@@ -71,7 +74,6 @@ private:
 	float rectInventoryBoxY;
 
 	//Initialize Combat Assets
-	bool introAssets;
 	bool combatAssets;
 	bool eventAssets;
 	bool bonfireAssets;
@@ -143,6 +145,7 @@ public:
 	sf::RectangleShape rectSmite;
 	sf::RectangleShape rectDecay;
 	sf::RectangleShape buttonMap;
+	sf::RectangleShape tipBox;
 
 	//Main Menu
 	sf::RectangleShape menuScreen;
@@ -183,7 +186,6 @@ public:
 	sf::Font font;
 	sf::Text text;
 	sf::Text playerText;
-	//sf::Text combatText;
 	sf::Text locationText;
 	sf::Text menuText;
 	sf::Text rectStatsText;
@@ -200,6 +202,7 @@ public:
 	sf::Text playerStatsBoxButtonText;
 	sf::Text inventoryText;
 	sf::Text spadeText;
+	sf::Text tipBoxText;
 	
 
 	//Zin Stats Assets Text
@@ -415,6 +418,7 @@ public:
 	void drawMainMenu();
 	void drawDeathAssets();
 	void drawAnswerBoxes();
+	void drawTipBox();
 
 	//Draw Map Segments
 	void drawMap();
@@ -453,6 +457,8 @@ public:
 	bool& getInitStats() { return this->initStats; };
 	bool& getInitInventory() { return this->initInventory; };
 	bool& getPlusboxes() { return this->plusboxes; };
+	bool& getEndFrame() { return this->endFrame; };
+	bool& getStartFrame() { return this->startFrame; };
 
 	//Sprite Bool Setters
 	void setInitialDrawInTrue()  { this->initialDrawIn = true; };
@@ -529,6 +535,7 @@ public:
 	int& getCombatCounter() { return this->combatCounter; };
 	int& getShowAnsBoxesCounter() { return this->showAnsBoxesCounter; };
 	int& getChoiceCounter() { return this->choiceCounter; };
+	int& getTipBoxCounter() { return this->tipBoxCounter; };
 
 	//Sprite Integer Selection Setters
 	void setPlayerCounterInc() { this->playerCounter++; };
@@ -576,7 +583,6 @@ public:
 	void setRectMapYVal() { this->rectMapY = 50; };
 
 	//Initialize Combat Assets Getters
-	bool& getIntroAssets() { return this->introAssets; };
 	bool& getCombatAssets() { return this->combatAssets; };
 	bool& getEventAssets() { return this->eventAssets; };
 	bool& getBonfireAssets() { return this->bonfireAssets; };
@@ -585,14 +591,12 @@ public:
 	bool& getPlayerDeath() { return this->playerDeath; };
 
 	//Initialize Combat Assets Setters
-	void setIntroAssetsTrue() { this->introAssets = true; };
 	void setCombatAssetsTrue() { this->combatAssets = true; };
 	void setBonfireAssetsTrue() { this->bonfireAssets = true; };
 	void setPlayerTurnAssetsTrue() { this->playerTurnAssets = true; };
 	void setZinTurnAssetsTrue() { this->zinTurnAssets = true; };
 	void setPlayerDeathTrue() { this->playerDeath = true; };
 
-	void setIntroAssetsFalse() { this->introAssets = false; };
 	void setCombatAssetsFalse() { this->combatAssets = false; };
 	void setBonfireAssetsFalse() { this->bonfireAssets = false; };
 	void setPlayerTurnAssetsFalse() { this->playerTurnAssets = false; };
