@@ -40,6 +40,7 @@ private:
 	//Core Bool
 	bool initCombatOnce;
 	bool reInitCombatOnce;
+	bool combatEnd;
 
 	//Hostile Bool
 	bool initHostileWolf;

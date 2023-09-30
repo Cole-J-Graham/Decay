@@ -17,9 +17,8 @@ Travel::Travel()
 
     //Core Bools
     this->frameInit = false;
-    
-    //Bonfire Bools Detection initialization (Controls whether or not the detection rect is drawn...)
-    this->forestBonfireInit = false;
+    //Detection initialization (Controls whether or not the detection rect is drawn...)
+    this->bonfireInit = false;
 }
 
 Travel::~Travel()
@@ -48,11 +47,30 @@ void Travel::travelCore(sf::RenderWindow& window, Assets& assets, Event& noteven
 
 void Travel::newArea(Assets& assets, Animation& animate)
 {
+    assets.getSpriteViewerCounter() = 0;
     assets.getEndFrame() = false; //Ensure that the forward arrow is allowed
     assets.getStartFrame() = true; //Ensure that the back arrow is gone
-    this->forestBonfireInit = false; //Uninit bonfire
+    this->bonfireInit = false; //Uninit bonfire
     animate.getZinTalkNot() = false; //Unint bonfire zin notification
     assets.setBonfireAssetsFalse();
+}
+
+void Travel::enterBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent)
+{
+    //Draw healing detection rects
+    notevent.healCharactersText(window, assets);
+    notevent.smithingText(window, assets);
+    //Make the entity viewer dissapear
+    assets.getSpriteViewerCounter() = -1;
+    //Allow Zins sprite to be used again through the boolean
+    assets.setZinInitFalse();
+    //Set correct frame for zins sprite to appear
+    assets.setZinCounterZero();
+    //Draw detection rects for healing and smithing
+    this->bonfireInit = true;
+    assets.setBonfireAssetsTrue();
+    assets.map.setTexture(assets.mapTexture);
+    assets.map.setPosition(440.0f, -200.0f);
 }
 
 //Draw Intro
@@ -258,17 +276,10 @@ void Travel::forestBonfire(sf::RenderWindow& window, Assets& assets, Event& note
         this->frameInit = true;
     }
     //Play notification animation if zin is willing to talk
-    if (forestBonfireInit) {
+    if (this->bonfireInit) {
         animate.animateNotification();
     }
-    notevent.healCharactersText(window, assets);
-    notevent.smithingText(window, assets);
-    assets.setBonfireAssetsTrue();
-    assets.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
-    assets.setZinCounterZero(); //Set correct frame for zins sprite to appear
-    this->forestBonfireInit = true; //Draw detection rects for healing and smithing
-    assets.map.setTexture(assets.mapTexture);
-    assets.map.setPosition(440.0f, -200.0f); // absolute position
+    this->enterBonfire(window, assets, notevent);
 }
 
 void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
@@ -360,28 +371,16 @@ void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Pla
         }
         break;
     case 13:
+        assets.getEndFrame() = false;
         if (!this->frameInit) {
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forest14.jpeg");
             this->frameInit = true;
         }
         break;
     case 14:
-        if (!this->frameInit) {
-            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forest15.jpeg");
-            this->frameInit = true;
-        }
-        break;
-    case 15:
-        assets.getEndFrame() = false;
-        if (!this->frameInit) {
-            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forest16.jpeg");
-            this->frameInit = true;
-        }
-        break;
-    case 16:
         assets.getEndFrame() = true;
         if (!this->frameInit) {
-            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forest17.jpeg");
+            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forest15.jpeg");
             this->frameInit = true;
         }
         break;
@@ -716,23 +715,12 @@ void Travel::castleMap(sf::RenderWindow& window, Assets& assets, Event& notevent
 
 void Travel::castleBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
-    switch (this->frame) {
-    case 0:
-        assets.locationText.setString("Castle Bonfire");
-        if (!this->frameInit) {
-            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleBonfire.jpeg");
-            this->frameInit = true;
-        }
-        notevent.healCharactersText(window, assets);
-        notevent.smithingText(window, assets);
-        assets.setBonfireAssetsTrue();
-        assets.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
-        assets.setZinCounterZero(); //Set correct frame for zins sprite to appear
-        this->forestBonfireInit = true; //Draw detection rects for healing and smithing
-        assets.map.setTexture(assets.mapTexture);
-        assets.map.setPosition(440.0f, -200.0f); // absolute position
-        break;
+    assets.locationText.setString("Castle Bonfire");
+    if (!this->frameInit) {
+        assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/castle/castleBonfire.jpeg");
+        this->frameInit = true;
     }
+    this->enterBonfire(window, assets, notevent);
 }
 
 void Travel::castleHalls(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
@@ -1168,23 +1156,12 @@ void Travel::decayMap(sf::RenderWindow& window, Assets& assets, Event& notevent,
 
 void Travel::decayBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
-    switch (this->frame) {
-    case 0:
-        assets.locationText.setString("Decay Bonfire");
-        if (!this->frameInit) {
-            assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayBonfire.jpeg");
-            this->frameInit = true;
-        }
-        notevent.healCharactersText(window, assets);
-        notevent.smithingText(window, assets);
-        assets.setBonfireAssetsTrue();
-        assets.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
-        assets.setZinCounterZero(); //Set correct frame for zins sprite to appear
-        this->forestBonfireInit = true; //Draw detection rects for healing and smithing
-        assets.map.setTexture(assets.mapTexture);
-        assets.map.setPosition(440.0f, -200.0f); // absolute position
-        break;
+    assets.locationText.setString("Decay Bonfire");
+    if (!this->frameInit) {
+        assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayBonfire.jpeg");
+        this->frameInit = true;
     }
+    this->enterBonfire(window, assets, notevent);
 }
 
 void Travel::decayChasms(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate)

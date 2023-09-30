@@ -60,6 +60,8 @@ private:
 	int showAnsBoxesCounter;
 	int choiceCounter;
 	int tipBoxCounter;
+	int spriteViewerCounter;
+	int entityViewerCounter;
 
 	//Movable
 	bool movable;
@@ -368,6 +370,16 @@ public:
 	std::vector<sf::Text> spriteText{ textPlayer, textZin, textHostile,
 		textSpade, textSiward };
 
+	//Entity Viewer Objects
+	sf::Text entityBoxText;
+	sf::RectangleShape entityBoxHeader;
+	sf::RectangleShape entityBox;
+	sf::Sprite entitySprite;
+
+	sf::Texture blankEntity;
+	sf::Texture siwardEntityTexture;
+	sf::Texture decayEntity;
+
 	//Sounds
 	sf::Sound sound;
 	sf::Sound blipsound;
@@ -419,6 +431,7 @@ public:
 	void drawDeathAssets();
 	void drawAnswerBoxes();
 	void drawTipBox();
+	void drawEntityViewer();
 
 	//Draw Map Segments
 	void drawMap();
@@ -536,6 +549,8 @@ public:
 	int& getShowAnsBoxesCounter() { return this->showAnsBoxesCounter; };
 	int& getChoiceCounter() { return this->choiceCounter; };
 	int& getTipBoxCounter() { return this->tipBoxCounter; };
+	int& getSpriteViewerCounter() { return this->spriteViewerCounter; };
+	int& getEntityViewerCounter() { return this->entityViewerCounter; };
 
 	//Sprite Integer Selection Setters
 	void setPlayerCounterInc() { this->playerCounter++; };

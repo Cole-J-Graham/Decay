@@ -56,3 +56,16 @@ void Player::combatReward()
 		this->increase = false;
 	}
 }
+
+void Player::statsText(Assets& assets)
+{
+	assets.playerTextElements[4].setString("LEVEL " + std::to_string(this->level));
+	assets.playerTextElements[5].setString("STRENGTH " + std::to_string(this->strength));
+	assets.playerTextElements[6].setString("FORTITUDE " + std::to_string(this->fortitude));
+	assets.playerTextElements[7].setString("VITALITY " + std::to_string(this->vitality));
+
+	assets.zinTextElements[4].setString("LEVEL " + std::to_string(this->zinLevel));
+	assets.zinTextElements[5].setString("RESOLVE " + std::to_string(this->zinResolve));
+	assets.zinTextElements[6].setString("PATIENCE " + std::to_string(this->zinPatience));
+	assets.zinTextElements[7].setString("RESILIENCE " + std::to_string(this->zinResilience));
+}

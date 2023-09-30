@@ -14,7 +14,7 @@ Assets::Assets()
     this->plusboxes = false;
 
     //Menu Control Flow
-    this->playerStatsInit = true;
+    this->playerStatsInit = false;
     this->zinStatsInit = false;
     this->bootClicked = false;
 
@@ -53,6 +53,8 @@ Assets::Assets()
     this->showAnsBoxesCounter = -1;
     this->choiceCounter = -1;
     this->tipBoxCounter = -1;
+    this->spriteViewerCounter = -1;
+    this->entityViewerCounter = -1;
 
     //Movable
     this->movable = false;
@@ -83,6 +85,11 @@ Assets::Assets()
     buttonTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/buttonsolidfix.png");
     arrowTextureRight.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/arrowright.png");
     arrowTextureLeft.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/arrowleft.png");
+
+    //Load Entity Viewer Files
+    blankEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/entityBlank.png");
+    siwardEntityTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/siwardEntity.jpeg");
+    decayEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decayEntity.jpeg");
 }
 
 Assets::~Assets()
@@ -100,6 +107,7 @@ void Assets::drawObjects()
     this->drawInventory();
     this->drawZinStats();
     this->drawTipBox();
+    this->drawEntityViewer();
     //Sprite Assets
     this->siwardSprite();
     this->playerSprite();
@@ -571,6 +579,54 @@ void Assets::drawTipBox()
         tipBoxText.setPosition(1500, 650);
         break;
     }
+}
+
+void Assets::drawEntityViewer()
+{
+    entityBoxText.setFont(font);
+    entityBoxText.setCharacterSize(14);
+    entityBoxText.setString("Close Vision Viewer");
+    entityBoxText.setPosition(1500, 75);
+
+    entityBoxHeader.setFillColor(sf::Color::Black);
+    entityBoxHeader.setSize(sf::Vector2f(250.0f, 25.0f));
+    entityBoxHeader.setOutlineColor(sf::Color::White);
+    entityBoxHeader.setOutlineThickness(1.0f);
+    entityBoxHeader.setPosition(1500, 75);
+
+    entityBox.setFillColor(sf::Color::Black);
+    entityBox.setSize(sf::Vector2f(250.0f, 250.0f));
+    entityBox.setOutlineColor(sf::Color::White);
+    entityBox.setOutlineThickness(1.0f);
+    //Select which sprite to use in the entity viewer
+    switch (this->entityViewerCounter) {
+    case -1:
+        entitySprite.setTexture(blankEntity);
+        break;
+    case 0:
+        entitySprite.setTexture(siwardEntityTexture);
+        break;
+    case 1:
+        entitySprite.setTexture(decayEntity);
+        break;
+    }
+    //Select whether or not the sprite is visible
+    switch (this->spriteViewerCounter) {
+    case -1:
+        entityBox.setPosition(10000, 10000);
+        entitySprite.setPosition(10000, 10000);
+        entityBoxText.setPosition(10000, 10000);
+        entityBoxHeader.setPosition(10000, 10000);
+        break;
+    case 0:
+        entityBox.setPosition(1500, 100);
+        entitySprite.setPosition(1500, 100);
+        entityBoxText.setPosition(1500, 75);
+        entityBoxHeader.setPosition(1500, 75);
+        break;
+    }
+
+    entitySprite.setScale(0.244, 0.244f);
 }
 
 //Drawing Map Segments
@@ -1059,12 +1115,14 @@ void Assets::playerSprite()
     case -1:
         spriteElements[4].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteRect[0].setPosition(10000.0f, 10000.0f);
+        spriteText[0].setPosition(10000.0f, 10000.0f);
         break;
     case 0:
         if (this->playerInit == false) {
             playerTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/player.png");
-            spriteElements[4].setPosition(sf::Vector2f(50.0f, 145.0f));
-            spriteRect[0].setPosition(50.0f, 145.0f); //Set Rect In Position
+            spriteElements[4].setPosition(sf::Vector2f(50.0f, 100.0f));
+            spriteRect[0].setPosition(50.0f, 100.0f);
+            spriteText[0].setPosition(50.0f, 253.0f);
             this->playerInit = true;
         }
         break;
@@ -1082,20 +1140,20 @@ void Assets::spadeSprite()
     //Initialize Spade Sprite
     if (this->spadeLoadOnce == true) {
         spadeTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixel.png");
-        spriteElements[2].setPosition(sf::Vector2f(10000.0f, 560.0f)); // absolute position
+        spriteElements[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         this->spadeLoadOnce = false;
     }
     //Pick Spade Sprite Emotion
     switch (this->spadeCounter) {
     case -1:
-        spriteElements[2].setPosition(sf::Vector2f(10000.0f, 10000.0f)); // absolute position
+        spriteElements[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteRect[3].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         break;
     case 0:
         if (this->spadeInit == false) {
             spadeTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixel.png");
-            spriteElements[2].setPosition(sf::Vector2f(50.0f, 560.0f)); // absolute position
-            spriteRect[3].setPosition(sf::Vector2f(50.0f, 560.0f));
+            spriteElements[2].setPosition(sf::Vector2f(50.0f, 300.0f));
+            spriteRect[3].setPosition(sf::Vector2f(50.0f, 300.0f));
             this->spadeInit = true;
         }
         break;
@@ -1131,9 +1189,9 @@ void Assets::zinSprite()
         break;
     case 0:
         if (this->zinInit == false) {
-            spriteElements[3].setPosition(sf::Vector2f(50.0f, 345.0f));
-            spriteRect[1].setPosition(sf::Vector2f(50.0f, 345.0f));
-            spriteText[1].setPosition(sf::Vector2f(50.0f, 498.0f));
+            spriteElements[3].setPosition(sf::Vector2f(50.0f, 300.0f));
+            spriteRect[1].setPosition(sf::Vector2f(50.0f, 300.0f));
+            spriteText[1].setPosition(sf::Vector2f(50.0f, 453.0f));
             this->zinInit = true;
         }
         break;
@@ -1154,12 +1212,13 @@ void Assets::hostileSprite()
         hostileTextureKnight.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decayknight.png");
         spriteElements[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteRect[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        spriteText[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         this->hostileLoadOnce = false;
     }
     //Pick Hostile Sprite
     switch (this->hostileCounter) {
     case -1:
-        spriteElements[5].setPosition(sf::Vector2f(10000.0f, 560.0f));
+        spriteElements[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         break;
     case 0:
         if (this->hostileInit == false) {
@@ -1174,6 +1233,7 @@ void Assets::hostileSprite()
             spriteElements[5].setTexture(hostileTextureWolf);
             spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
             spriteElements[5].setScale(0.15f, 0.15f);
             this->hostileInit = true;
         }
@@ -1185,6 +1245,7 @@ void Assets::hostileSprite()
             spriteElements[5].setTexture(hostileTextureWalker);
             spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
             spriteElements[5].setScale(0.235f, 0.235f);
             this->hostileInit = true;
         }
@@ -1196,6 +1257,7 @@ void Assets::hostileSprite()
             spriteElements[5].setTexture(hostileTextureKnight);
             spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
             spriteElements[5].setScale(0.235f, 0.235f);
             this->hostileInit = true;
         }
@@ -1219,8 +1281,8 @@ void Assets::siwardSprite()
         break;
     case 0:
         if (this->siwardLoadOnce == false) {
-            spriteElements[6].setPosition(sf::Vector2f(1650.0f, 345.0f));
-            spriteRect[4].setPosition(sf::Vector2f(1650.0f, 345.0f));
+            spriteElements[6].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[4].setPosition(sf::Vector2f(1650.0f, 300.0f));
             this->siwardLoadOnce = true;
         }
         break;
@@ -1246,13 +1308,6 @@ void Assets::initCombatAssets()
             combatText[i].setCharacterSize(18);
             combatText[i].setPosition(10000, 10000);
         }
-        //Set Sprite Rectangle Outline Positions
-        spriteRect[0].setPosition(50.0f, 145.0f);
-        spriteText[0].setPosition(50.0f, 300.0f);
-        spriteRect[1].setPosition(50.0f, 345.0f);
-        spriteText[1].setPosition(50.0f, 500.0f);
-        spriteRect[2].setPosition(1650.0f, 300.0f);
-        spriteText[2].setPosition(1650.0f, 455.0f);
         this->playerCombatAssets();
         this->zinCombatAssets();
     }

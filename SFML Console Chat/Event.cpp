@@ -184,6 +184,8 @@ void Event::siwardEncounter(Assets& assets)
     this->reInit(assets);
     switch (this->dialogue) {
     case 0:
+        assets.getSpriteViewerCounter() = 0; //Make entity viewer visible
+        assets.getEntityViewerCounter() = 0; //Make siward entity visible
         assets.setInitMapFalse(); //Hide the map if its open
         assets.setInitStatsFalse(); //Hide stats if open
         assets.setInitInventoryFalse(); //Hide inventory if open
@@ -246,6 +248,8 @@ void Event::siwardEncounter(Assets& assets)
         assets.getZinCounter() = -1;
         assets.text.setString("");
         assets.getEventAssets() = false;
+        //Make entity viewer hidden
+        assets.getSpriteViewerCounter() = -1;
         break;
     }
 }

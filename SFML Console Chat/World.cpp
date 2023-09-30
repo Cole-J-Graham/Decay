@@ -168,6 +168,12 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
         window.draw(assets.locationText);
         window.draw(assets.text);
 
+        //Draw Entity Viewer
+        window.draw(assets.entityBox);
+        window.draw(assets.entitySprite);
+        window.draw(assets.entityBoxHeader);
+        window.draw(assets.entityBoxText);
+
         //Draw all sprite border rects and text
         for (int i = 0; i < assets.spriteRect.size(); i++) {
             window.draw(assets.spriteRect[i]);
@@ -180,7 +186,7 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
         }
 
         //Draw Bonfire Detection Rect
-        if (travel.getForestBonfireInit() == true) {
+        if (travel.getBonfireInit() == true) {
             assets.bonfireHealDetectionText.setPosition(mousePos.x - 5, mousePos.y + 15);
             assets.bonfireSmithDetectionText.setPosition(mousePos.x - 5, mousePos.y + 15);
             //Healing
@@ -496,7 +502,8 @@ void World::printToolTip(sf::RenderWindow& window, Assets& assets, Event& noteve
             assets.getTipBoxCounter() = -1;
         }
     }
-    else if (assets.getCombatAssets() == true) {
+    
+    if (assets.getCombatAssets()) {
         if (assets.combatRect[0].getGlobalBounds().contains(mousePosF)) { //If attack button is clicked...
             assets.getTipBoxCounter() = 0;
             assets.tipBoxText.setString("SLASH:\nThe players basic attack for inflicting damage...");
@@ -525,9 +532,6 @@ void World::printToolTip(sf::RenderWindow& window, Assets& assets, Event& noteve
         else {
             assets.getTipBoxCounter() = -1;
         }
-    }
-    else {
-        assets.getTipBoxCounter() = -1;
     }
 }
 
@@ -632,6 +636,8 @@ void World::menuBar(sf::RenderWindow& window, Assets& assets)
 
 void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& player, Assets& assets)
 {
+    //Add Text
+    player.statsText(assets);
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Menu Bar Stats Functionality (Switching between who's stats are visible)
@@ -648,9 +654,6 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
         }
     }
     //Level Up Functionality
-    if (assets.getInitStats() == false && assets.getPlayerStatsInit() == true) {
-        assets.playerTextElements[4].setString("LEVEL " + std::to_string(player.getLevel()));
-    }
     if (assets.getInitStats() == true && assets.getPlayerStatsInit() == true) {
         if (assets.playerStatElements[0].getGlobalBounds().contains(mousePosF)) {
             if (player.getExp() >= player.getExpNext()) {
@@ -669,9 +672,6 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
     }
 
     //Strength up functionality
-    if (assets.getInitStats() == false && assets.getPlayerStatsInit() == true) {
-        assets.playerTextElements[5].setString("STRENGTH " + std::to_string(player.getStrength()));
-    }
     if (assets.getInitStats() == true && assets.getPlayerStatsInit() == true) {
         if (assets.playerStatElements[1].getGlobalBounds().contains(mousePosF)) {
             if (player.getSp() >= 1) {
@@ -688,9 +688,6 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
         }
     }
     //Fortitude up functionality
-    if (assets.getInitStats() == false && assets.getPlayerStatsInit() == true) {
-        assets.playerTextElements[6].setString("FORTITUDE " + std::to_string(player.getFortitude()));
-    }
     if (assets.getInitStats() == true && assets.getPlayerStatsInit() == true) {
         if (assets.playerStatElements[2].getGlobalBounds().contains(mousePosF)) {
             if (player.getSp() >= 1) {
@@ -707,9 +704,6 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
         }
     }
     //Vitality up functionality
-    if (assets.getInitStats() == false && assets.getPlayerStatsInit() == true) {
-        assets.playerTextElements[7].setString("VITALITY " + std::to_string(player.getVitality()));
-    }
     if (assets.getInitStats() == true && assets.getPlayerStatsInit() == true) {
         if (assets.playerStatElements[3].getGlobalBounds().contains(mousePosF)) {
             if (player.getSp() >= 1) {
@@ -729,9 +723,6 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
     }
     //Zin Stats Level up Functionality
     if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
-        assets.zinTextElements[4].setString("LEVEL " + std::to_string(player.getZinLevel()));
-    }
-    if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
         if (assets.zinStatElements[0].getGlobalBounds().contains(mousePosF)) {
             if (player.getZinExp() >= player.getZinExpNext()) {
                 player.setZinLevelInc();
@@ -749,9 +740,6 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
     }
     //Zin Resolve up Functionality
     if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
-        assets.zinTextElements[5].setString("RESOLVE " + std::to_string(player.getZinResolve()));
-    }
-    if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
         if (assets.zinStatElements[1].getGlobalBounds().contains(mousePosF)) {
             if (player.getZinSp() >= 1) {
                 player.setZinResolveInc();
@@ -768,9 +756,6 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
     }
     //Zin Patience up Functionality
     if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
-        assets.zinTextElements[6].setString("PATIENCE " + std::to_string(player.getZinPatience()));
-    }
-    if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
         if (assets.zinStatElements[2].getGlobalBounds().contains(mousePosF)) {
             if (player.getZinSp() >= 1) {
                 player.setZinPatienceInc();
@@ -786,9 +771,6 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
         }
     }
     //Zin Resilience up Functionality
-    if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
-        assets.zinTextElements[7].setString("RESILIENCE " + std::to_string(player.getZinResilience()));
-    }
     if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
         if (assets.zinStatElements[3].getGlobalBounds().contains(mousePosF)) {
             if (player.getZinSp() >= 1) {

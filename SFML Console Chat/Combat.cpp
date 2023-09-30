@@ -36,6 +36,7 @@ Combat::Combat()
 	//Core Bool
 	this->initCombatOnce = false;
 	this->reInitCombatOnce = false;
+	this->combatEnd = false;
 
 	//Hostile Bool
 	this->initHostileWolf = false;
@@ -115,44 +116,50 @@ void Combat::updateMoves(Assets& assets, Player& player)
 //Core Combat Functions
 void Combat::combatLoop(Assets& assets, Player& player, Animation& animate)
 {
-	//Begin combat loop initialization
-	if (initCombatOnce == false) {
-		this->initCombat(assets, player);
-		initCombatOnce = true;
-	} //Reinitialize the combat loop for each pass
-	else if (reInitCombatOnce == false) {
-		this->reInitCombat(assets);
-		reInitCombatOnce = true;
-	}
-	//Players turn
-	if (!this->playerDead) {
-		this->playerTurn(assets);
-	}
-	//Zin's Turn
-	if (!this->zinDead) {
-		this->zinTurn(assets);
-	}
-	//Check if hostile is dead. If so, end combat
-	if (this->hostileHp <= 0) {
-		assets.setCombatAssetsFalse();
-		player.combatReward();
-		assets.text.setString("You have killed the " + this->hostileNameNoSpc + ". Player Exp increased " + std::to_string(player.getExp()) + " / " + std::to_string(player.getExpNext()));
-	}
-	//Hostiles turn
-	this->hostileTurn(assets);
-	//Check if player or Zin has died
-	if (this->playerHp <= 0 && !this->playerDead) {
-		this->playerDead = true;
-		assets.text.setString("You have been left unconscious...");
-	} 
-	if (this->zinHp <= 0 && !this->zinDead) {
-		this->zinDead = true;
-		assets.text.setString("Zin has been left unconscious...");
-	} 
-	//Check if both the player and Zin have died
-	if (this->playerHp <= 0 && zinHp <= 0) {
-		this->playerDeath(assets);
-		assets.text.setString("Your party has died...");
+	if (!combatEnd) {
+		//Begin combat loop initialization
+		if (initCombatOnce == false) {
+			this->initCombat(assets, player);
+			initCombatOnce = true;
+		} //Reinitialize the combat loop for each pass
+		else if (reInitCombatOnce == false) {
+			this->reInitCombat(assets);
+			reInitCombatOnce = true;
+		}
+		//Players turn
+		if (!this->playerDead) {
+			this->playerTurn(assets);
+		}
+		//Zin's Turn
+		if (!this->zinDead) {
+			this->zinTurn(assets);
+		}
+		//Check if hostile is dead. If so, end combat
+		if (this->hostileHp <= 0) {
+			assets.setCombatAssetsFalse();
+			player.combatReward();
+			assets.text.setString("You have killed the " + this->hostileNameNoSpc + ". Player Exp increased " + std::to_string(player.getExp()) + " / " + std::to_string(player.getExpNext()));
+			assets.getTipBoxCounter() = -1;
+			//Make entity viewer blank again
+			assets.getEntityViewerCounter() = -1;
+			this->combatEnd = true;
+		}
+		//Hostiles turn
+		this->hostileTurn(assets);
+		//Check if player or Zin has died
+		if (this->playerHp <= 0 && !this->playerDead) {
+			this->playerDead = true;
+			assets.text.setString("You have been left unconscious...");
+		}
+		if (this->zinHp <= 0 && !this->zinDead) {
+			this->zinDead = true;
+			assets.text.setString("Zin has been left unconscious...");
+		}
+		//Check if both the player and Zin have died
+		if (this->playerHp <= 0 && zinHp <= 0) {
+			this->playerDeath(assets);
+			assets.text.setString("Your party has died...");
+		}
 	}
 }
 
@@ -165,6 +172,7 @@ void Combat::initCombat(Assets& assets, Player& player)
 	assets.spriteText[1].setString("Zin            " + std::to_string(this->zinHp) + "/" + std::to_string(this->zinHpMax));
 	assets.spriteText[2].setString(this->hostileName + std::to_string(this->hostileHp) + "/" + std::to_string(this->hostileHpMax));
 
+	this->combatEnd = false;
 	assets.setPlayerCounterInc(); //Load Player sprite with counter
 	assets.setZinCounterInc(); //Load Zins sprite with counter
 	assets.setPlayerInitFalse(); //Make usable again
@@ -395,6 +403,8 @@ void Combat::zinSelectMove(Assets& assets)
 void Combat::initWolf(Assets& assets)
 {
 	if (!this->initHostileWolf) {
+		//Allow combat to start
+		this->combatEnd = false;
 		//Set wolf sprite
 		assets.getHostileCounter() = 1;
 		//Allow new combat to start
@@ -426,6 +436,12 @@ void Combat::initWolf(Assets& assets)
 void Combat::initDecayWalker(Assets& assets)
 {
 	if (!this->initHostileWalker) {
+		//Make entity viewer visible
+		assets.getSpriteViewerCounter() = 0;
+		//Make decay walker entity visible
+		assets.getEntityViewerCounter() = 1;
+		//Allow combat to start
+		this->combatEnd = false;
 		//Set wolf sprite
 		assets.getHostileCounter() = 2;
 		//Allow new combat to start
@@ -457,6 +473,8 @@ void Combat::initDecayWalker(Assets& assets)
 void Combat::initDecayKnight(Assets& assets)
 {
 	if (!this->initHostileKnight) {
+		//Allow combat to start
+		this->combatEnd = false;
 		//Set wolf sprite
 		assets.getHostileCounter() = 3;
 		//Allow new combat to start

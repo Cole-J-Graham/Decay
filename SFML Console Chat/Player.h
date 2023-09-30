@@ -2,6 +2,7 @@
 #include<time.h>
 #include<cstdlib>
 #include<string>
+#include"Assets.h"
 
 class Player
 {
@@ -51,6 +52,7 @@ public:
 
 	//Core Functions
 	void combatReward();
+	void statsText(Assets& assets);
 
 	//Core Modifier Getters
 	int& getDecay() { return this->decay; };

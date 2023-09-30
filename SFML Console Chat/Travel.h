@@ -30,9 +30,7 @@ private:
 
 	//Core Bools
 	bool frameInit;
-
-	//Bonfire Bools
-	bool forestBonfireInit;
+	bool bonfireInit;
 
 	//Init Bools
 	bool forestEntranceInit;
@@ -57,6 +55,7 @@ public:
 	//Draw Intro
 	void intro(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
 	void introBeginning(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
+	void enterBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent);
 
 	//Draw Forest
 	void forestMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
@@ -85,6 +84,7 @@ public:
 	//Core Getters
 	int& getFrame() { return this->frame; };
 	int& getTravel() { return this->travel; };
+	bool& getBonfireInit() { return this->bonfireInit; };
 
 	//Core Setters
 	void setFrameInc() { this->frame++; };
@@ -106,11 +106,6 @@ public:
 
 	//Core Bools Setters
 	void setFrameInitFalse() { this->frameInit = false; };
-
-	//Bonfire Bools
-	bool& getForestBonfireInit() { return this->forestBonfireInit; };
-
-
 };
 
 
