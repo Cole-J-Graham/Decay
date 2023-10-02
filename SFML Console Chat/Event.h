@@ -9,6 +9,7 @@ class Event
 private:
 	//Control Flow Bools
 	bool reInitialize;
+	bool sfxUsed;
 
 	bool encounterInit;
 	bool encounterInitTwo;
@@ -40,7 +41,8 @@ public:
 	void zinInitialTalk(Assets& assets, Animation& animate);
 
 	//Forest Events
-	void siwardEncounter(Assets& assets);
+	void forestSiwardEncounter(Assets& assets);
+	void treeEncounter(Assets& assets);
 
 	//Castle Events
 	void spadeEncounter(Assets& assets);
@@ -48,6 +50,7 @@ public:
 	//Control Flow Getters
 	bool& getEncounterInit() { return this->encounterInit; };
 	bool& getEncounterInitTow() { return this->encounterInitTwo; };
+	bool& getReInitialize() { return this->reInitialize; };
 
 	//Counter Getters
 	int& getZinTalkCounter() { return this->zinTalkCounter; };

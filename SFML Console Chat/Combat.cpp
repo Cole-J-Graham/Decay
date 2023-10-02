@@ -138,7 +138,7 @@ void Combat::combatLoop(Assets& assets, Player& player, Animation& animate)
 		if (this->hostileHp <= 0) {
 			assets.setCombatAssetsFalse();
 			player.combatReward();
-			assets.text.setString("You have killed the " + this->hostileNameNoSpc + ". Player Exp increased " + std::to_string(player.getExp()) + " / " + std::to_string(player.getExpNext()));
+			assets.text.setString("You have killed the " + this->hostileNameNoSpc + ". " + std::to_string(player.getExp()) + " Exp gained...");
 			assets.getTipBoxCounter() = -1;
 			//Make entity viewer blank again
 			assets.getEntityViewerCounter() = -1;

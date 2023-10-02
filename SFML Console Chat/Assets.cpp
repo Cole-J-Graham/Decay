@@ -86,10 +86,15 @@ Assets::Assets()
     arrowTextureRight.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/arrowright.png");
     arrowTextureLeft.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/arrowleft.png");
 
+    //Zin Sprites
+    zinTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite.png");
+    zinTextureHappy.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinHappySprite.png");
+
     //Load Entity Viewer Files
     blankEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/entityBlank.png");
     siwardEntityTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/siwardEntity.jpeg");
     decayEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decayEntity.jpeg");
+    treeEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/entityTree.jpeg");
 }
 
 Assets::~Assets()
@@ -408,11 +413,6 @@ void Assets::drawText()
     playerText.setFont(font);
     playerText.setFillColor(sf::Color(sf::Color::White));
     playerText.setPosition(0.0f, 970.0f);
-    //Draw Right Hand Side Text
-    //combatText.setFont(font);
-    //combatText.setCharacterSize(16);
-    //combatText.setFillColor(sf::Color(sf::Color::White));
-    //combatText.setPosition(500.0f, 835.0f);
     //Draw Location Text
     locationText.setFont(font);
     locationText.setCharacterSize(18);
@@ -608,6 +608,9 @@ void Assets::drawEntityViewer()
         break;
     case 1:
         entitySprite.setTexture(decayEntity);
+        break;
+    case 2:
+        entitySprite.setTexture(treeEntity);
         break;
     }
     //Select whether or not the sprite is visible
@@ -1174,12 +1177,6 @@ void Assets::spadeSprite()
 
 void Assets::zinSprite()
 {
-    //Initialize Zin Sprite
-    if (this->zinLoadOnce == true) {
-        zinTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite.png");
-        spriteElements[3].setPosition(sf::Vector2f(10000.0f, 10000.0f));
-        this->zinLoadOnce = false;
-    }
     //Pick Zin Sprite Emotion
     switch (this->zinCounter) {
     case -1:
@@ -1188,18 +1185,21 @@ void Assets::zinSprite()
         spriteText[1].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         break;
     case 0:
-        if (this->zinInit == false) {
-            spriteElements[3].setPosition(sf::Vector2f(50.0f, 300.0f));
-            spriteRect[1].setPosition(sf::Vector2f(50.0f, 300.0f));
-            spriteText[1].setPosition(sf::Vector2f(50.0f, 453.0f));
-            this->zinInit = true;
-        }
+        spriteElements[3].setTexture(zinTexture);
+        spriteElements[3].setPosition(sf::Vector2f(50.0f, 300.0f));
+        spriteRect[1].setPosition(sf::Vector2f(50.0f, 300.0f));
+        spriteText[1].setPosition(sf::Vector2f(50.0f, 453.0f));
+        break;
+    case 1:
+        spriteElements[3].setTexture(zinTextureHappy);
+        spriteElements[3].setPosition(sf::Vector2f(50.0f, 300.0f));
+        spriteRect[1].setPosition(sf::Vector2f(50.0f, 300.0f));
+        spriteText[1].setPosition(sf::Vector2f(50.0f, 453.0f));
         break;
     }
 
     //Sprite Options, ect
     zinTexture.setRepeated(false);
-    spriteElements[3].setTexture(zinTexture);
     spriteElements[3].setScale(0.0504f, 0.0504f);
 }
 

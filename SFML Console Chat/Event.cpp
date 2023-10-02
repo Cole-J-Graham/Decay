@@ -5,6 +5,7 @@ Event::Event()
 {
     //Control Flow Bools
     this->reInitialize = true;
+    this->sfxUsed = false;
 
     this->encounterInit = true;
     this->encounterInitTwo = true;
@@ -179,7 +180,7 @@ void Event::zinInitialTalk(Assets& assets, Animation& animate)
 }
 
 //Forest Events
-void Event::siwardEncounter(Assets& assets)
+void Event::forestSiwardEncounter(Assets& assets)
 {
     this->reInit(assets);
     switch (this->dialogue) {
@@ -248,8 +249,53 @@ void Event::siwardEncounter(Assets& assets)
         assets.getZinCounter() = -1;
         assets.text.setString("");
         assets.getEventAssets() = false;
-        //Make entity viewer hidden
-        assets.getSpriteViewerCounter() = -1;
+        //Make siwards entity invisible
+        assets.getEntityViewerCounter() = -1;
+        break;
+    }
+}
+
+void Event::treeEncounter(Assets& assets)
+{
+    this->reInit(assets);
+    switch (this->dialogue) {
+    case 0:
+        assets.getSpriteViewerCounter() = 0; //Make entity viewer visible
+        assets.getEntityViewerCounter() = 2; //Make siward entity visible
+        assets.setInitMapFalse(); //Hide the map if its open
+        assets.setInitStatsFalse(); //Hide stats if open
+        assets.setInitInventoryFalse(); //Hide inventory if open
+        assets.getEventAssets() = true; //Hide map, inv, stat, forward && back buttons
+        assets.text.setString("You hear a voice nearby, stopping you in your tracks. You were certain no one was nearby but you most definitely hear somebody.\nYou turn to your left, then your right. You lock eyes with it. A tree... Speaking to you...?\n\nIt keeps repeating some odd chanting sound to you but you can't quite make out what it's saying...");
+        break;
+    case 1:
+        assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+        assets.answerBoxText[0].setString("1. 'Uh... Hello?'");
+        assets.answerBoxText[1].setString("2. 'What are you...?'");
+        break;
+    case 2:
+        assets.getShowAnsBoxesCounter() = -1;
+        assets.text.setString("Eyes slowly embed into the tree, staring at you as you stare back horrified. The branches of the tree slowly move towards you as you stand there, staring, unsure of what to do...");
+        break;
+    case 3:
+        assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+        assets.answerBoxText[0].setString("1. *Attempt to escape*");
+        assets.answerBoxText[1].setString("2. *Try to warn Zin*");
+        break;
+    case 4:
+        assets.getShowAnsBoxesCounter() = -1;
+        assets.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
+        assets.getZinCounter() = 0; //Set correct frame for zins sprite to appear
+        if (!this->sfxUsed) {
+            assets.soundSmite.play(); //Play smite sfx
+            this->sfxUsed = true;
+        }
+        assets.text.setString("As you turn, you lock eyes with Zin. Her hands both enclosed together as she slowly turned them, a horrifying crack deafening you.\n\nYou realize that she had just used smite, obliterating the tree and splitting it in half with the bolt of lightning...");
+        break;
+    case 5:
+        this->sfxUsed = false;
+        assets.getZinCounter() = 1;//Switch Zins emotions
+        assets.text.setString("'Got him! Heh!'");
         break;
     }
 }

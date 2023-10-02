@@ -98,7 +98,6 @@ public:
 	sf::Texture siwardTexture;
 	sf::Texture playerTexture;
 	sf::Texture spadeTexture;
-	sf::Texture zinTexture;
 	sf::Texture combatTexture;
 	sf::Texture boxTexture;
 	sf::Texture mapTexture;
@@ -108,6 +107,10 @@ public:
 	sf::Texture buttonBackTexture;
 	sf::Texture textureTravel;
 	sf::Texture multiArrowTexture;
+
+	//Zin Textures
+	sf::Texture zinTexture;
+	sf::Texture zinTextureHappy;
 
 	//Hostile Textures
 	sf::Texture hostileTextureWolf;
@@ -379,6 +382,7 @@ public:
 	sf::Texture blankEntity;
 	sf::Texture siwardEntityTexture;
 	sf::Texture decayEntity;
+	sf::Texture treeEntity;
 
 	//Sounds
 	sf::Sound sound;

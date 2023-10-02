@@ -356,7 +356,7 @@ void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Pla
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forest11.jpeg");
             this->frameInit = true;
         }
-        notevent.siwardEncounter(assets);
+        notevent.forestSiwardEncounter(assets);
         break;
     case 11:
         if (!this->frameInit) {
@@ -407,12 +407,15 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         }
         break;
     case 2:
+        //Prep Encounter Dialogue
+        notevent.getReInitialize() = true;
         if (!this->frameInit) {
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestdepths3.jpeg");
             this->frameInit = true;
         }
         break;
     case 3:
+        notevent.treeEncounter(assets);
         if (!this->frameInit) {
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestdepths4.jpeg");
             this->frameInit = true;
