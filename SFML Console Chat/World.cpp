@@ -41,12 +41,12 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
     //Load SFX
     assets.loadSFX();
     //create the window
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat" /*, sf::Style::Fullscreen*/);
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat"/*,sf::Style::Fullscreen*/);
     window.setFramerateLimit(144);
 
     // run the program as long as the window is open
     while (window.isOpen()) {
-        std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
+        //std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
         clock.restart();
         clickTime.restart();
         // check all the window's events that were triggered since the last iteration of the loop

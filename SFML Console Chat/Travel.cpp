@@ -415,7 +415,7 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         }
         break;
     case 3:
-        notevent.treeEncounter(assets);
+        notevent.treeEncounter(assets, player);
         if (!this->frameInit) {
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestdepths4.jpeg");
             this->frameInit = true;

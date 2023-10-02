@@ -10,9 +10,15 @@ private:
 	//Control Flow Bools
 	bool reInitialize;
 	bool sfxUsed;
+	bool itemGained;
 
 	bool encounterInit;
 	bool encounterInitTwo;
+
+	//Event Availability Bools
+	bool siwardEncounteredForest;
+
+	bool treeEncountered;
 
 	//Counters
 	int zinTalkCounter;
@@ -42,7 +48,7 @@ public:
 
 	//Forest Events
 	void forestSiwardEncounter(Assets& assets);
-	void treeEncounter(Assets& assets);
+	void treeEncounter(Assets& assets, Player& player);
 
 	//Castle Events
 	void spadeEncounter(Assets& assets);
