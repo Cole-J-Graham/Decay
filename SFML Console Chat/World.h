@@ -73,7 +73,6 @@ public:
 	void greyOnHover(sf::RenderWindow& window, Assets& assets);
 	void printPlayerStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
 	void printZinStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
-	void printInventory(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
 
 	//Display Element Functionality
 	void mainMenuButtons(sf::RenderWindow& window, Assets& assets, Travel& travel);

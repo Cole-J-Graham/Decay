@@ -17,6 +17,7 @@ Travel::Travel()
 
     //Core Bools
     this->frameInit = false;
+
     //Detection initialization (Controls whether or not the detection rect is drawn...)
     this->bonfireInit = false;
 }
@@ -93,9 +94,6 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Intro/intro1.jpeg");
             this->frameInit = true;
         }
-        assets.map.setTexture(assets.mapTexture);
-        assets.map.setPosition(440.0f, -200.0f); // absolute position
-        
         assets.text.setString("There once was a kingdom plentiful and prosperous. The citizens had very little to worry of and days were filled with joy. Though, not all good things last forever.");
         break;
     case 1:
@@ -103,8 +101,6 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Intro/intro2.jpeg");
             this->frameInit = true;
         }
-        assets.map.setTexture(assets.mapTexture);
-        assets.map.setPosition(440.0f, -200.0f); // absolute position
         assets.text.setString("A horrible blight began to grow deep from within the world. This sparked a dreadful plague those would later call 'Decay' which had sprung up from the Earth without warning.\nAnyone afflicted with the illness would watch as their skin would rot off of their very body. It caused the kingdom to be brought to its limits.");
         break;
     case 2:
@@ -112,8 +108,6 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Intro/intro3.jpeg");
             this->frameInit = true;
         }
-        assets.map.setTexture(assets.mapTexture);
-        assets.map.setPosition(440.0f, -200.0f); // absolute position
         assets.text.setString("You were a great knight of the kingdom. Raised with a blade and eventually working your way to the top of the ranks, you were the captain of the royal guard.\nThough, despite your prestiege, you were not safe from this terrible disease either.\nYou became afflicted with the decay throughout your help with the injured and it began to rot your flesh down to the bone.");
         break;
     case 3:
@@ -121,8 +115,6 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Intro/intro4.jpeg");
             this->frameInit = true;
         }
-        assets.map.setTexture(assets.mapTexture);
-        assets.map.setPosition(440.0f, -200.0f); // absolute position
         assets.text.setString("Some elven priests seemed to unexplainably have the power to resist the decay. \nMany believed they were granted the power by God himself as they possessed the power to burn the blight from the core of a human and restore them.\nThe king of the kingdom upon discovering this quickly rushed to find a priest to stop the disease from ravaging what is left of your body.");
         break;
     case 4:
@@ -130,8 +122,6 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Intro/intro5.jpeg");
             this->frameInit = true;
         }
-        assets.map.setTexture(assets.mapTexture);
-        assets.map.setPosition(440.0f, -200.0f); // absolute position
         assets.text.setString("A priestess came to your aid, saving most of your body from the decay and your life. However, much of your face had been melted off from the decay, only one of your eyes now usable.\nYou stayed as a knight of the kingdom after you were rescued, though it was by now on the brink of collapse.\n\nMuch of the world outside of the kingdom had shifted and changed. Many anomalies had taken place and much of the world and its creatures were no longer what you knew.\nChaos scratching at the kingdoms walls, you had a last stand with what was left of your royal guard leading them into battle.");
         break;
     case 5:
@@ -139,8 +129,6 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Intro/intro6.jpeg");
             this->frameInit = true;
         }
-        assets.map.setTexture(assets.mapTexture);
-        assets.map.setPosition(440.0f, -200.0f); // absolute position
         assets.text.setString("Despite your best efforts and hundreds of abominations slain under your sword, you had eventually fallen along with the kingdom. You had not lost your life, though nothing is left for you in these ruins.\nYou pick yourself up from the mud and begin to force yourself forwards into the lands unknown...");
         break;
     case 6:
@@ -149,8 +137,6 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
             assets.soundWalk.play();
             this->frameInit = true;
         }
-        assets.map.setTexture(assets.mapTexture);
-        assets.map.setPosition(440.0f, -200.0f); // absolute position
         assets.text.setString("You begin walking for what feels like days, time passage beginning to slip into a distant memory. You know something's wrong when you begin asking question like 'Who am I?', 'Where am I?'\n\nYou eventually pass out...");
         break;
     case 7:
@@ -159,8 +145,6 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
             assets.soundWalk.play();
             this->frameInit = true;
         }
-        assets.map.setTexture(assets.mapTexture);
-        assets.map.setPosition(440.0f, -200.0f); // absolute position
         assets.text.setString("When you awaken, you realize you're still in the woods, however you notice a small figure just beneath the foot of a tree. You look down at yourself and notice a lack of former injuries.\nShe must have healed you.");
         break;
     case 8:
@@ -240,6 +224,7 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
         notevent.getDialogue() = 0;//Reset dialogue counter to allow other events to take place
         assets.setMapCounterZero();
         assets.text.setString("");
+        assets.getIntroFinished() = true;
         assets.getEventAssets() = false;
         break;
     }

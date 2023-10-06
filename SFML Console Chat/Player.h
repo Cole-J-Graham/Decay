@@ -53,6 +53,7 @@ public:
 	//Core Functions
 	void combatReward();
 	void statsText(Assets& assets);
+	void printInventory(Assets& assets);
 
 	//Core Modifier Getters
 	int& getDecay() { return this->decay; };
@@ -110,7 +111,7 @@ public:
 	int& getGold() { return this->gold; };
 	int& getSmithingStones() { return this->smithingStones; };
 
-	std::string getBasicSword() { return this->basicSword; };
+	std::string& getBasicSword() { return this->basicSword; };
 
 	//Item Setters
 	void setSmithingStonesDec() { this->smithingStones--; };

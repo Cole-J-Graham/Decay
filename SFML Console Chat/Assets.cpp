@@ -17,6 +17,8 @@ Assets::Assets()
     this->playerStatsInit = false;
     this->zinStatsInit = false;
     this->bootClicked = false;
+    this->introFinished = false;
+    this->settingsShown = false;
 
     //Map Button Control Flow
     this->areaUnlocked = 2;
@@ -435,71 +437,85 @@ void Assets::drawText()
 
 void Assets::drawMainMenu()
 {
-    font.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
-    //Draw Main Menu
-    //Main Menu Rect Elements
-    menuScreen.setSize(sf::Vector2f(1920.0f, 1080.0f));
-    menuScreen.setFillColor(sf::Color::Black);
-    menuScreenElements[0].setSize(sf::Vector2f(100.0f, 25.0f));
-    menuScreenElements[0].setOutlineColor(sf::Color::White);
-    menuScreenElements[0].setOutlineThickness(1.0f);
-    menuScreenElements[1].setSize(sf::Vector2f(100.0f, 25.0f));
-    menuScreenElements[1].setOutlineColor(sf::Color::White);
-    menuScreenElements[1].setOutlineThickness(1.0f);
-    menuScreenElements[2].setSize(sf::Vector2f(100.0f, 25.0f));
-    menuScreenElements[2].setOutlineColor(sf::Color::White);
-    menuScreenElements[2].setOutlineThickness(1.0f);
-    menuScreenElements[3].setSize(sf::Vector2f(150.0f, 25.0f));
-    menuScreenElements[3].setOutlineColor(sf::Color::White);
-    menuScreenElements[3].setOutlineThickness(1.0f);
-    menuScreenElements[4].setSize(sf::Vector2f(150.0f, 25.0f));
-    menuScreenElements[4].setOutlineColor(sf::Color::White);
-    menuScreenElements[4].setOutlineThickness(1.0f);
+    //Set all screen elements attributes
+    for (int i = 0; i < menuScreenElements.size(); i++) {
+        menuScreenElementsText[i].setFont(font);
+        menuScreenElementsText[i].setCharacterSize(18);
+        menuScreenElements[i].setSize(sf::Vector2f(150.0f, 25.0f));
+        menuScreenElements[i].setOutlineColor(sf::Color::White);
+        menuScreenElements[i].setOutlineThickness(1.0f);
+    }
 
-    //Text Elements
-    menuScreenElementsText[0].setFont(font);
-    menuScreenElementsText[0].setCharacterSize(18);
+    //Set Text Elements Names
     menuScreenElementsText[0].setString("Boot");
-    menuScreenElementsText[1].setFont(font);
-    menuScreenElementsText[1].setCharacterSize(18);
     menuScreenElementsText[1].setString("Load");
-    menuScreenElementsText[2].setFont(font);
-    menuScreenElementsText[2].setCharacterSize(18);
     menuScreenElementsText[2].setString("Quit");
-    menuScreenElementsText[3].setFont(font);
-    menuScreenElementsText[3].setCharacterSize(18);
     menuScreenElementsText[3].setString("Play Intro");
-    menuScreenElementsText[4].setFont(font);
-    menuScreenElementsText[4].setCharacterSize(18);
     menuScreenElementsText[4].setString("Skip Intro");
 
-    //Choose which elements are currently visible on the screen for choosing whether to skip intro or not
-    if (this->bootClicked == false) {
-        menuScreenElements[3].setPosition(10.0f, 10000.0f);
-        menuScreenElements[4].setPosition(10.0f, 12500.0f);
-        menuScreenElementsText[3].setPosition(10.0f, 10000.0f);
-        menuScreenElementsText[4].setPosition(10.0f, 12500.0f);
+    menuScreenElementsText[5].setString("Save Game");
 
-        menuScreenElements[0].setPosition(10.0f, 100.0f);
-        menuScreenElements[1].setPosition(10.0f, 125.0f);
-        menuScreenElements[2].setPosition(10.0f, 150.0f);
-        menuScreenElementsText[0].setPosition(10.0f, 100.0f);
-        menuScreenElementsText[1].setPosition(10.0f, 125.0f);
-        menuScreenElementsText[2].setPosition(10.0f, 150.0f);
+    if (!this->introFinished) {
+        font.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
+        //Draw Main Menu
+        menuScreen.setSize(sf::Vector2f(1920.0f, 1080.0f));
+        menuScreen.setFillColor(sf::Color::Black);
+
+        //Choose which elements are currently visible on the screen for choosing whether to skip intro or not
+        if (this->bootClicked == false) {
+            menuScreenElements[3].setPosition(10000.0f, 10000.0f);
+            menuScreenElements[4].setPosition(10000.0f, 10000.0f);
+            menuScreenElements[5].setPosition(10000.0f, 10000.0f);
+            menuScreenElementsText[3].setPosition(10000.0f, 10000.0f);
+            menuScreenElementsText[4].setPosition(10000.0f, 10000.0f);
+            menuScreenElementsText[5].setPosition(10000.0f, 10000.0f);
+
+            menuScreenElements[0].setPosition(10.0f, 100.0f);
+            menuScreenElements[1].setPosition(10.0f, 125.0f);
+            menuScreenElements[2].setPosition(10.0f, 150.0f);
+            menuScreenElementsText[0].setPosition(10.0f, 100.0f);
+            menuScreenElementsText[1].setPosition(10.0f, 125.0f);
+            menuScreenElementsText[2].setPosition(10.0f, 150.0f);
+        }
+        else if (this->bootClicked == true) {
+            //Hide menu buttons
+            menuScreenElements[0].setPosition(10.0f, 10000.0f);
+            menuScreenElements[1].setPosition(10.0f, 10000.0f);
+            menuScreenElements[2].setPosition(10.0f, 10000.0f);
+            menuScreenElementsText[0].setPosition(10.0f, 10000.0f);
+            menuScreenElementsText[1].setPosition(10.0f, 10000.0f);
+            menuScreenElementsText[2].setPosition(10.0f, 10000.0f);
+            //Show skip or no skip intro
+            menuScreenElements[3].setPosition(10.0f, 100.0f);
+            menuScreenElements[4].setPosition(10.0f, 125.0f);
+            menuScreenElementsText[3].setPosition(10.0f, 100.0f);
+            menuScreenElementsText[4].setPosition(10.0f, 125.0f);
+        }
     }
-    else if (this->bootClicked == true) {
-        //Hide menu buttons
-        menuScreenElements[0].setPosition(10.0f, 10000.0f);
-        menuScreenElements[1].setPosition(10.0f, 10000.0f);
-        menuScreenElements[2].setPosition(10.0f, 10000.0f);
-        menuScreenElementsText[0].setPosition(10.0f, 10000.0f);
-        menuScreenElementsText[1].setPosition(10.0f, 10000.0f);
-        menuScreenElementsText[2].setPosition(10.0f, 10000.0f);
-        //Show skip or no skip intro
-        menuScreenElements[3].setPosition(10.0f, 100.0f);
-        menuScreenElements[4].setPosition(10.0f, 125.0f);
-        menuScreenElementsText[3].setPosition(10.0f, 100.0f);
-        menuScreenElementsText[4].setPosition(10.0f, 125.0f);
+    else if (this->introFinished) {
+        if (this->settingsShown) {
+            //Hide intro options
+            menuScreenElements[3].setPosition(10000.0f, 10000.0f);
+            menuScreenElements[4].setPosition(10000.0f, 10000.0f);
+            menuScreenElementsText[3].setPosition(10000.0f, 10000.0f);
+            menuScreenElementsText[4].setPosition(10000.0f, 10000.0f);
+            //Show setting options
+            menuScreenElements[1].setPosition(10.0f, 125.0f);
+            menuScreenElements[2].setPosition(10.0f, 150.0f);
+            menuScreenElements[5].setPosition(10.0f, 175.0f);
+            menuScreenElementsText[1].setPosition(10.0f, 125.0f);
+            menuScreenElementsText[2].setPosition(10.0f, 150.0f);
+            menuScreenElementsText[5].setPosition(10.0f, 175.0f);
+        }
+        else if (!this->settingsShown) {
+            //Hide all elements
+            menuScreenElements[1].setPosition(10000.0f, 10000.0f);
+            menuScreenElements[2].setPosition(10000.0f, 10000.0f);
+            menuScreenElements[5].setPosition(10000.0f, 10000.0f);
+            menuScreenElementsText[1].setPosition(10000.0f, 10000.0f);
+            menuScreenElementsText[2].setPosition(10000.0f, 10000.0f);
+            menuScreenElementsText[5].setPosition(10000.0f, 10000.0f);
+        }
     }
 }
 

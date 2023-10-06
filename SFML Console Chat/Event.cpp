@@ -93,15 +93,19 @@ void Event::smithingSharpenBlade(sf::RenderWindow& window, Assets& assets, Playe
             switch (player.getSwordPower()) {
             case 0:
                 player.getBasicSword() = "Basic Longsword";
+                player.printInventory(assets);
                 break;
             case 1:
                 player.getBasicSword() = "Keen Longsword";
+                player.printInventory(assets);
                 break;
             case 2:
                 player.getBasicSword() = "Honed Longsword";
+                player.printInventory(assets);
                 break;
             case 3:
                 player.getBasicSword() = "Godsplitting Longsword";
+                player.printInventory(assets);
                 break;
             }
         }
@@ -116,8 +120,11 @@ void Event::zinEvents(sf::RenderWindow& window, Assets& assets, Animation& anima
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-    //Zin Conversations at Bonfire
-    if (assets.spriteElements[3].getGlobalBounds().contains(mousePosF)) {
+    if (assets.rectMap.getGlobalBounds().contains(mousePosF) && assets.getInitMap()) {
+        //Catch the input if you click on the map instead of Zin's sprite
+    }
+    else if (assets.spriteElements[3].getGlobalBounds().contains(mousePosF)) {
+        //Zin Conversations at Bonfire
         this->zinTalkCounter = 0;
     }
 

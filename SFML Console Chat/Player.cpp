@@ -69,3 +69,9 @@ void Player::statsText(Assets& assets)
 	assets.zinTextElements[6].setString("PATIENCE " + std::to_string(this->zinPatience));
 	assets.zinTextElements[7].setString("RESILIENCE " + std::to_string(this->zinResilience));
 }
+
+void Player::printInventory(Assets& assets)
+{
+	assets.inventoryText.setString("[GENERAL ITEMS]\nGold: x" + std::to_string(this->gold) + "\nSmithing Stones: x"
+		+ std::to_string(this->smithingStones) + "\n\n[EQUIPPED ITEMS]\n" + this->basicSword);
+}

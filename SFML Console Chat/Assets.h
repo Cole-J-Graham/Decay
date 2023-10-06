@@ -24,6 +24,8 @@ private:
 	bool playerStatsInit;
 	bool zinStatsInit;
 	bool bootClicked;
+	bool introFinished;
+	bool settingsShown;
 
 	//Map Button Control Flow
 	int areaUnlocked;
@@ -151,8 +153,9 @@ public:
 	sf::RectangleShape rectDecay;
 	sf::RectangleShape buttonMap;
 	sf::RectangleShape tipBox;
+	sf::RectangleShape rectSettings;
 
-	//Main Menu
+	//Main Menu && Settings
 	sf::RectangleShape menuScreen;
 	sf::RectangleShape menuStartButton;
 	sf::RectangleShape menuLoadButton;
@@ -160,15 +163,17 @@ public:
 
 	sf::RectangleShape menuIntroButton;
 	sf::RectangleShape menuSkipIntroButton;
+	sf::RectangleShape saveButton;
 
 	sf::Text menuStartButtonText;
 	sf::Text menuLoadButtonText;
 	sf::Text menuQuitButtonText;
+	sf::Text saveButtonText;
 
 	std::vector<sf::RectangleShape> menuScreenElements {menuStartButton, menuLoadButton,
-		menuQuitButton, menuIntroButton, menuSkipIntroButton};
+		menuQuitButton, menuIntroButton, menuSkipIntroButton, saveButton };
 	std::vector<sf::Text> menuScreenElementsText {menuStartButtonText, menuLoadButtonText,
-		menuQuitButtonText, menuLoadButtonText, menuQuitButtonText};
+		menuQuitButtonText, menuLoadButtonText, menuQuitButtonText, saveButtonText };
 
 	//Death Screen Assets
 	sf::Text deathText;
@@ -437,6 +442,7 @@ public:
 	void drawTipBox();
 	void drawEntityViewer();
 
+
 	//Draw Map Segments
 	void drawMap();
 	void drawForestMapButtons();
@@ -494,6 +500,8 @@ public:
 	bool& getPlayerStatsInit() { return this->playerStatsInit; };
 	bool& getZinStatsInit() { return this->zinStatsInit; };
 	bool& getBootClicked() { return this->bootClicked; };
+	bool& getIntroFinished() { return this->introFinished; };
+	bool& getSettingsShown() { return this->settingsShown; };
 
 	//Menu Control Flow Setters
 	void setPlayerStatsInitTrue() { this->playerStatsInit = true; };

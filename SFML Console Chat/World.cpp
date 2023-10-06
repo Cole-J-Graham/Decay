@@ -41,9 +41,8 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
     //Load SFX
     assets.loadSFX();
     //create the window
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat"/*,sf::Style::Fullscreen*/);
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat", sf::Style::Fullscreen);
     window.setFramerateLimit(144);
-
     // run the program as long as the window is open
     while (window.isOpen()) {
         //std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
@@ -93,6 +92,11 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                     assets.setMovableFalse();
                     assets.setMovableStatsBoxFalse();
                 }
+            case sf::Event::KeyPressed:
+                {
+                this->userInput(assets);
+                }
+                break;
             }
             //Run Main Function Loop...
             this->mainLoop(assets, notevent, combat, player, travel, animate);
@@ -105,42 +109,40 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
 void World::mainLoop(Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate)
 {
     //Run Main Functions
-    this->userInput(assets);
     travel.travelCore(window, assets, notevent, combat, player, animate);
 }
 
 //User Input
 void World::userInput(Assets& assets)
 {
+    //Get user input for keyboard inputs
     assets.font.loadFromFile("C:/Windows/Fonts/arial.ttf");
     assets.playerText.setFont(assets.font);
     assets.playerText.setCharacterSize(18);
     assets.playerText.setFillColor(sf::Color::White);
     assets.playerText.setPosition(0, 950);
+    
+    playerInput += event.text.unicode;
+    input = event.text.unicode;
+    unicode = event.text.unicode;
 
-    //Getting user input
-    if (event.type == sf::Event::TextEntered) {
-        playerInput += event.text.unicode;
-        input = event.text.unicode;
-        unicode = event.text.unicode;
-        unicode = static_cast<char>(event.text.unicode);
-        assets.playerText.setString(playerInput);
-        assets.sound.play();
-        
-        //Clearing string with backspace
-        if (input == "\b") {
-            assets.playerText.setString("");
-            assets.playerText.setCharacterSize(24);
-            playerInput = "";
+    //Getting user input for settings
+    if (unicode == 36) {
+        //Make settings appear (Basically the main menu with some additions....)
+        if (!assets.getSettingsShown()) {
+            assets.getSettingsShown() = true;
+        }
+        else if (assets.getSettingsShown()){
+            assets.getSettingsShown() = false;
         }
     }
 }
 
 void World::clearInput()
 {
-    this->unicode = -1;
-    playerInput = "";
-    return;
+    //this->unicode = -1;
+    //playerInput = "";
+    //return;
 }
 
 //Display Functions
@@ -156,6 +158,17 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
     }
     // clear the window with black color
     window.clear(sf::Color::Black);
+
+    //Draw Settings to screen
+    if (assets.getSettingsShown()) {
+        assets.drawMainMenu();
+        for (int i = 0; i < assets.menuScreenElements.size(); i++) {
+            window.draw(assets.menuScreenElements[i]);
+        }
+        for (int i = 0; i < assets.menuScreenElementsText.size(); i++) {
+            window.draw(assets.menuScreenElementsText[i]);
+        }
+    }
 
     // draw everything here...
     if (this->mainMenu == false && !assets.getPlayerDeath()) {
@@ -251,7 +264,7 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
             window.draw(assets.zinStatsBoxButtonText);
         }
         if (assets.getInitInventory() == true) {
-            this->printInventory(window, assets, notevent, combat, player);
+            player.printInventory(assets);
             window.draw(assets.rectInventoryBox);
             window.draw(assets.inventoryText);
         }
@@ -457,12 +470,6 @@ void World::printZinStats(sf::RenderWindow& window, Assets& assets, Event& notev
     }
 }
 
-void World::printInventory(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
-{
-    assets.inventoryText.setString("[GENERAL ITEMS]\nGold: x" + std::to_string(player.getGold()) + "\nSmithing Stones: x"
-        + std::to_string(player.getSmithingStones()) + "\n\n[EQUIPPED ITEMS]\n" + player.getBasicSword());
-}
-
 void World::printToolTip(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
@@ -540,11 +547,8 @@ void World::mainMenuButtons(sf::RenderWindow& window, Assets& assets, Travel& tr
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-    if (assets.menuScreenElements[0].getGlobalBounds().contains(mousePosF)) {
-        //Continue to other buttons asking to skip intro or not (New Game Button)
-        assets.setBootClickedTrue();
-    }
-    else if (assets.menuScreenElements[1].getGlobalBounds().contains(mousePosF)) {
+    //Shared Functionality between both main menu and settings menu
+    if (assets.menuScreenElements[1].getGlobalBounds().contains(mousePosF)) {
         //Loading Game Button Funcionality (Not implemented yet...)
         std::cout << "Loading a save hypothetically speaking lmao...";
     }
@@ -553,16 +557,31 @@ void World::mainMenuButtons(sf::RenderWindow& window, Assets& assets, Travel& tr
         stop = true;
         return;
     }
-    else if (assets.menuScreenElements[3].getGlobalBounds().contains(mousePosF)) {
-        //Intro Button Functionality
-        this->mainMenu = false;
-        travel.getIntroCounterDialogue() = 0; //Allow the counter to load the main image specifically just for the intro to take place
+    //Main menu specific functionality
+    if (!assets.getIntroFinished()) {
+        if (assets.menuScreenElements[0].getGlobalBounds().contains(mousePosF)) {
+            //Continue to other buttons asking to skip intro or not (New Game Button)
+            assets.setBootClickedTrue();
+        }
+        else if (assets.menuScreenElements[3].getGlobalBounds().contains(mousePosF)) {
+            //Intro Button Functionality
+            this->mainMenu = false;
+            travel.getIntroCounterDialogue() = 0; //Allow the counter to load the main image specifically just for the intro to take place
+        }
+        else if (assets.menuScreenElements[4].getGlobalBounds().contains(mousePosF)) {
+            //Skip Intro Button Functionality
+            this->mainMenu = false;
+            assets.getIntroFinished() = true;
+            assets.setMapCounterZero(); //Skip intro and go straight to the forest
+        }
+    }//Settings specific functionality
+    else if (assets.getIntroFinished()) {
+        if (assets.menuScreenElements[5].getGlobalBounds().contains(mousePosF)) {
+            //Saving Game Button Funcionality (Not implemented yet...)
+            std::cout << "Saving game hypothetically speaking...";
+        }
     }
-    else if (assets.menuScreenElements[4].getGlobalBounds().contains(mousePosF)) {
-        //Skip Intro Button Functionality
-        this->mainMenu = false;
-        assets.setMapCounterZero(); //Skip intro and go straight to the forest
-    }
+   
 }
 
 void World::travelButtons(sf::RenderWindow& window, Assets& assets, Travel& travel)
