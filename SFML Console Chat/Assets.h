@@ -118,6 +118,7 @@ public:
 	sf::Texture hostileTextureWolf;
 	sf::Texture hostileTextureWalker;
 	sf::Texture hostileTextureKnight;
+	sf::Texture hostileTextureTree;
 
 	//Map Textures
 	sf::Texture textureMapView;
@@ -388,6 +389,9 @@ public:
 	sf::Texture siwardEntityTexture;
 	sf::Texture decayEntity;
 	sf::Texture treeEntity;
+	sf::Texture spadeEntityForest;
+	sf::Texture spadeEntityCastle;
+	sf::Texture hostileTreeEntity;
 
 	//Sounds
 	sf::Sound sound;
@@ -405,6 +409,8 @@ public:
 	sf::Sound soundSlash;
 	sf::Sound soundVengeance;
 	sf::Sound soundDecay;
+	sf::Sound soundCampfire;
+	sf::Sound soundClick;
 
 	sf::SoundBuffer buffer;
 	sf::SoundBuffer blipbuffer;
@@ -421,6 +427,8 @@ public:
 	sf::SoundBuffer bufferSlash;
 	sf::SoundBuffer bufferVengeance;
 	sf::SoundBuffer bufferDecay;
+	sf::SoundBuffer bufferCampfire;
+	sf::SoundBuffer bufferClick;
 
 	//Music
 	sf::Music music;

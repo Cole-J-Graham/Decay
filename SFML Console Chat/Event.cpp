@@ -13,6 +13,7 @@ Event::Event()
 
     //Event Availability Bools
     this->siwardEncounteredForest = false;
+    this->spadeEncounteredForest = false;
 
     this->treeEncountered = false;
 
@@ -266,6 +267,96 @@ void Event::forestSiwardEncounter(Assets& assets)
             //Make siwards entity invisible
             assets.getEntityViewerCounter() = -1;
             this->siwardEncounteredForest = true;
+            break;
+        }
+    }
+}
+
+void Event::forestDepthsSpadeEncounter(Assets& assets)
+{
+    if (!this->spadeEncounteredForest) {
+        this->reInit(assets);
+        switch (this->dialogue) {
+        case 0:
+            assets.getSpriteViewerCounter() = 0; //Make entity viewer visible
+            assets.getEntityViewerCounter() = 3; //Make spade entity visible
+            assets.setInitMapFalse(); //Hide the map if its open
+            assets.setInitStatsFalse(); //Hide stats if open
+            assets.setInitInventoryFalse(); //Hide inventory if open
+            assets.getSpadeLoadOnce() = false; //Allow to be used again
+            assets.getSpadeCounter() = 0; //Make Spades Sprite Appear
+            assets.getEventAssets() = true; //Hide map, inv, stat, forward && back buttons
+            assets.text.setString("Suddenly, a strange girl ambushes you. Your keen senses were unable to detect her.");
+            break;
+        case 1:
+            assets.text.setString("Hahaha! You looked almost scared for a minute there! It's just me! You're fine.");
+            break;
+        case 2:
+            assets.getShowAnsBoxesCounter() = 0;
+            assets.answerBoxText[0].setString("1. 'Lady, I have never met you in my entire life.'");
+            assets.answerBoxText[1].setString("2. 'Who the fuck are you?'");
+            break;
+        case 3:
+            assets.getShowAnsBoxesCounter() = -1;
+            assets.text.setString("'Aweeee, lost our memory have we? It's me! Spade! The court jester...! No...? How could you NOT remember ME?! I'm fantastic!'");
+            break;
+        case 4:
+            assets.getShowAnsBoxesCounter() = 0;
+            assets.answerBoxText[0].setString("1. 'Apologies, but I definitely don't remember you.'");
+            assets.answerBoxText[1].setString("2. 'I don't see the appeal.'");
+            break;
+        case 5:
+            assets.getShowAnsBoxesCounter() = -1;
+            switch (assets.getChoiceCounter()) {
+            case 0:
+                assets.text.setString("'Hmmmm, well I'll make you remember REAL quick!'");
+                break;
+            case 1:
+                assets.getSpadeCounter() = 1;
+                assets.text.setString("'Oh yeah? Well maybe I SHOULD SHOW YOU! Urghhhh!' *She is quite visibly upset, holding herself back from yelling too loudly in the woods...*\n\n'I'll tell you what, I'll MAKE you remember me, knight!'");
+                break;
+            }
+            break;
+        case 6:
+            assets.getShowAnsBoxesCounter() = 0;
+            assets.answerBoxText[0].setString("1. 'Make me? What're you gonna do exactly?'");
+            assets.answerBoxText[1].setString("2. 'So you're trying to say that we met in the castle?'");
+            break;
+        case 7:
+            assets.getShowAnsBoxesCounter() = -1;
+            switch (assets.getChoiceCounter()) {
+            case 0:
+                assets.text.setString("'I dunno, knock you over the head? SOMETHING, cause clearly your head aint working if you don't remember meeting me.'");
+                break;
+            case 1:
+                assets.getSpadeCounter() = 1;
+                assets.text.setString("'Yes, we obviously did! How can you not remember me? You were smart back at the castle, but it seems like you've turned dense!'");
+                break;
+            }
+            break;
+        case 8:
+            assets.text.setString("*You try your best to remember her. You think back to every face you can remember from the castle but you just can't quite recognize her no matter how hard you try.*\n\n'I genuinely just don't remember you.'");
+            break;
+        case 9:
+            assets.text.setString("'Oh, I know!' *She yells in excitment* 'I know a witch that can bring peoples memory back!'");
+            break;
+        case 10:
+            assets.getShowAnsBoxesCounter() = 0;
+            assets.answerBoxText[0].setString("1. 'I don't want anything to do with a witch.'");
+            assets.answerBoxText[1].setString("2. 'I don't want anything to do with you.'");
+            break;
+        case 11:
+            assets.getShowAnsBoxesCounter() = -1;
+            assets.getSpadeCounter() = 0;
+            assets.text.setString("'Awwwe, come on! I know you won't regret it! I'll go talk to the witch, see you soon!'\n\n*She runs off deeper into the woods, skipping with excitment. You hope to God you never see her again.*");
+            break;
+        case 12:
+            assets.getSpadeCounter() = -1;
+            assets.text.setString("");
+            assets.getEventAssets() = false;
+            //Make spades entity invisible
+            assets.getEntityViewerCounter() = -1;
+            this->spadeEncounteredForest = true;
             break;
         }
     }

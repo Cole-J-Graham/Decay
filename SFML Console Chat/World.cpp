@@ -41,11 +41,11 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
     //Load SFX
     assets.loadSFX();
     //create the window
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat", sf::Style::Fullscreen);
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat"/*, sf::Style::Fullscreen */ );
     window.setFramerateLimit(144);
     // run the program as long as the window is open
     while (window.isOpen()) {
-        //std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
+        std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
         clock.restart();
         clickTime.restart();
         // check all the window's events that were triggered since the last iteration of the loop
@@ -66,7 +66,7 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                 { //Get Mouse Click Input
                     this->travelButtons(window, assets, travel);
                     //If button in map is clicked, do something
-                    if (!assets.getPlayerDeath()) {
+                    if (!assets.getPlayerDeath() && assets.getInitMap()) {
                         this->mapButtons(window, assets, travel);
                     }
                     //Map Menu Bar Functionality
@@ -75,7 +75,7 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                     //Dialogue Box Functionality
                     this->dialogueCombatBox(window, combat, assets, travel, notevent);
                     //Main Menu Functionality
-                    this->mainMenuButtons(window, assets, travel);
+                    this->mainMenuButtons(window, assets, travel, animate);
                     if (stop) { //Make quit button return to main function to stop program from running
                         return;
                     }
@@ -128,6 +128,7 @@ void World::userInput(Assets& assets)
 
     //Getting user input for settings
     if (unicode == 36) {
+        assets.soundClick.play();
         //Make settings appear (Basically the main menu with some additions....)
         if (!assets.getSettingsShown()) {
             assets.getSettingsShown() = true;
@@ -158,17 +159,6 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
     }
     // clear the window with black color
     window.clear(sf::Color::Black);
-
-    //Draw Settings to screen
-    if (assets.getSettingsShown()) {
-        assets.drawMainMenu();
-        for (int i = 0; i < assets.menuScreenElements.size(); i++) {
-            window.draw(assets.menuScreenElements[i]);
-        }
-        for (int i = 0; i < assets.menuScreenElementsText.size(); i++) {
-            window.draw(assets.menuScreenElementsText[i]);
-        }
-    }
 
     // draw everything here...
     if (this->mainMenu == false && !assets.getPlayerDeath()) {
@@ -291,6 +281,17 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
     for (int i = 0; i < assets.answerBox.size(); i++) {
         window.draw(assets.answerBox[i]);
         window.draw(assets.answerBoxText[i]);
+    }
+
+    //Draw Settings to screen
+    if (assets.getSettingsShown()) {
+        assets.drawMainMenu();
+        for (int i = 0; i < assets.menuScreenElements.size(); i++) {
+            window.draw(assets.menuScreenElements[i]);
+        }
+        for (int i = 0; i < assets.menuScreenElementsText.size(); i++) {
+            window.draw(assets.menuScreenElementsText[i]);
+        }
     }
 
     // end the current frame
@@ -543,7 +544,7 @@ void World::printToolTip(sf::RenderWindow& window, Assets& assets, Event& noteve
 }
 
 //Display Element Functionality
-void World::mainMenuButtons(sf::RenderWindow& window, Assets& assets, Travel& travel)
+void World::mainMenuButtons(sf::RenderWindow& window, Assets& assets, Travel& travel, Animation& animate)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -849,7 +850,9 @@ void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& 
             combat.getZinPickMove() = 2;
         }
     }
-    else if (assets.rect.getGlobalBounds().contains(mousePosF) && assets.getShowAnsBoxesCounter() == -1) { //If dialogue box is clicked...
+    else if (assets.rect.getGlobalBounds().contains(mousePosF) && assets.getShowAnsBoxesCounter() == -1) {
+        //If dialogue box is clicked...
+        assets.soundClick.play();
         assets.setDialogueCounterInc();
         travel.setFrameInitFalse(); //Allow images to be loaded again
         travel.setIntroCounterDialogueInc();
@@ -870,11 +873,13 @@ void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& 
             assets.getChoiceCounter() = 0;
             travel.setIntroCounterDialogueInc();
             notevent.setDialogueInc();
+            assets.soundClick.play();
         }
         else if (assets.answerBox[1].getGlobalBounds().contains(mousePosF)) {
             assets.getChoiceCounter() = 1;
             travel.setIntroCounterDialogueInc();
             notevent.setDialogueInc();
+            assets.soundClick.play();
         }
     }
 

@@ -39,6 +39,9 @@ private:
 	bool castleHallsInit;
 	bool castleDepthsInit;
 
+	//Sound Bools
+	bool soundPlay;
+
 public:
 
 	Assets assets;

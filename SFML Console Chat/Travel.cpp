@@ -20,6 +20,9 @@ Travel::Travel()
 
     //Detection initialization (Controls whether or not the detection rect is drawn...)
     this->bonfireInit = false;
+
+    //Sound Bools
+    this->soundPlay = true;
 }
 
 Travel::~Travel()
@@ -53,6 +56,8 @@ void Travel::newArea(Assets& assets, Animation& animate)
     assets.getStartFrame() = true; //Ensure that the back arrow is gone
     this->bonfireInit = false; //Uninit bonfire
     animate.getZinTalkNot() = false; //Unint bonfire zin notification
+    assets.soundCampfire.stop(); //Stop the ambience from playing
+    this->soundPlay = true; //Reset bonfire sounds
     assets.setBonfireAssetsFalse();
 }
 
@@ -72,6 +77,10 @@ void Travel::enterBonfire(sf::RenderWindow& window, Assets& assets, Event& notev
     assets.setBonfireAssetsTrue();
     assets.map.setTexture(assets.mapTexture);
     assets.map.setPosition(440.0f, -200.0f);
+    if (this->soundPlay) {
+        assets.soundCampfire.play();
+        this->soundPlay = false;
+    }
 }
 
 //Draw Intro
@@ -95,6 +104,8 @@ void Travel::introBeginning(sf::RenderWindow& window, Assets& assets, Event& not
             this->frameInit = true;
         }
         assets.text.setString("There once was a kingdom plentiful and prosperous. The citizens had very little to worry of and days were filled with joy. Though, not all good things last forever.");
+        assets.map.setTexture(assets.mapTexture);
+        assets.map.setPosition(440.0f, -200.0f);
         break;
     case 1:
         if (!this->frameInit) {
@@ -400,7 +411,7 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         }
         break;
     case 3:
-        notevent.treeEncounter(assets, player);
+        //notevent.treeEncounter(assets, player);
         if (!this->frameInit) {
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestdepths4.jpeg");
             this->frameInit = true;
@@ -417,6 +428,8 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestdepths6.jpeg");
             this->frameInit = true;
         }
+        combat.initHostileTree(assets);
+        combat.combatLoop(assets, player, animate);
         break;
     case 6:
         if (!this->frameInit) {
@@ -437,12 +450,14 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         }
         break;
     case 9:
+        notevent.getReInitialize() = true;
         if (!this->frameInit) {
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestdepths10.jpeg");
             this->frameInit = true;
         }
         break;
     case 10:
+        notevent.forestDepthsSpadeEncounter(assets);
         if (!this->frameInit) {
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestdepths11.jpeg");
             this->frameInit = true;

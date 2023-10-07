@@ -42,6 +42,7 @@ Combat::Combat()
 	this->initHostileWolf = false;
 	this->initHostileWalker = false;
 	this->initHostileKnight = false;
+	this->initHostileTreeMimic = false;
 
 	//Combat Control Flow Bool
 	this->turnPlayer = true;
@@ -467,6 +468,43 @@ void Combat::initDecayWalker(Assets& assets)
 		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health...";
 		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the walker!";
 		this->initHostileWalker = true;
+	}
+}
+
+void Combat::initHostileTree(Assets& assets)
+{
+	if (!this->initHostileTreeMimic) {
+		//Make entity viewer visible
+		assets.getSpriteViewerCounter() = 0;
+		//Make tree mimic entity visible
+		assets.getEntityViewerCounter() = 5;
+		//Allow combat to start
+		this->combatEnd = false;
+		//Set tree mimic sprite
+		assets.getHostileCounter() = 4;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		this->hostileHp = 100;
+		this->hostileHpMax = 100;
+		this->hostileStrike = 1;
+
+		this->hostileNameNoSpc = "Tree Mimic";
+		this->hostileName = "Tree Mimic ";
+		this->hostileEncounterText = "A tree shifts into a horrifying creature, revealing itself and lunging at you!";
+		this->hostileAtkPlayerText = "The mimic strikes you with a spiked branch!";
+		this->hostileAtkZinText = "The mimic launches at Zin, striking her with a branch!";
+		this->hostileAtkZinBlkText = "The mimic rushes towards Zin, however you deflect its strike just in time!";
+
+		this->playerSlashAtkText = "You slash at the mimic, slowly chipping away at the wood holding its form.";
+		this->playerGuardAtkText = "You pay close attention to the mimic, preparing to defend Zin.";
+		this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the mimic!";
+
+		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the mimic!";
+		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health...";
+		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the mimic!";
+		this->initHostileTreeMimic = true;
 	}
 }
 

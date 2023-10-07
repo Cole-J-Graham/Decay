@@ -17,6 +17,7 @@ private:
 
 	//Event Availability Bools
 	bool siwardEncounteredForest;
+	bool spadeEncounteredForest;
 
 	bool treeEncountered;
 
@@ -48,6 +49,7 @@ public:
 
 	//Forest Events
 	void forestSiwardEncounter(Assets& assets);
+	void forestDepthsSpadeEncounter(Assets& assets);
 	void treeEncounter(Assets& assets, Player& player);
 
 	//Castle Events

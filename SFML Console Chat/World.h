@@ -75,7 +75,7 @@ public:
 	void printZinStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
 
 	//Display Element Functionality
-	void mainMenuButtons(sf::RenderWindow& window, Assets& assets, Travel& travel);
+	void mainMenuButtons(sf::RenderWindow& window, Assets& assets, Travel& travel, Animation& animate);
 	void travelButtons(sf::RenderWindow& window, Assets& assets, Travel& travel);
 	void menuBar(sf::RenderWindow& window, Assets& assets);
 	void menuBarStats(sf::RenderWindow& window, Combat& combat, Player& player, Assets& assets);
