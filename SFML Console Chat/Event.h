@@ -20,6 +20,7 @@ private:
 	bool spadeEncounteredForest;
 
 	bool treeEncountered;
+	bool obeliskEncountered;
 
 	//Counters
 	int zinTalkCounter;
@@ -47,10 +48,15 @@ public:
 	//Zin Events
 	void zinInitialTalk(Assets& assets, Animation& animate);
 
-	//Forest Events
+	//Forest Entrance Events
 	void forestSiwardEncounter(Assets& assets);
+
+	//Forest Depths Events
 	void forestDepthsSpadeEncounter(Assets& assets);
 	void treeEncounter(Assets& assets, Player& player);
+
+	//Forest Abyssal Events
+	void obeliskEncounter(Assets& assets, Player& player);
 
 	//Castle Events
 	void spadeEncounter(Assets& assets);

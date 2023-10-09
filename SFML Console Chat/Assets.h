@@ -384,13 +384,16 @@ public:
 	sf::RectangleShape entityBoxHeader;
 	sf::RectangleShape entityBox;
 	sf::Sprite entitySprite;
-
+	//Viewer Files Main
 	sf::Texture blankEntity;
 	sf::Texture siwardEntityTexture;
-	sf::Texture decayEntity;
-	sf::Texture treeEntity;
 	sf::Texture spadeEntityForest;
 	sf::Texture spadeEntityCastle;
+	//Viewer Files Random Events
+	sf::Texture treeEntity;
+	sf::Texture obeliskEntity;
+	//Viewer Files Hostile Entities
+	sf::Texture decayEntity;
 	sf::Texture hostileTreeEntity;
 
 	//Sounds

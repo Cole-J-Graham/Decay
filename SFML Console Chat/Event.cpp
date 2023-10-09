@@ -16,6 +16,7 @@ Event::Event()
     this->spadeEncounteredForest = false;
 
     this->treeEncountered = false;
+    this->obeliskEncountered = false;
 
     //Counters
     this->zinTalkCounter = -1;
@@ -193,7 +194,7 @@ void Event::zinInitialTalk(Assets& assets, Animation& animate)
     }
 }
 
-//Forest Events
+//Forest Entrance Events
 void Event::forestSiwardEncounter(Assets& assets)
 {
     if (!this->siwardEncounteredForest) {
@@ -272,6 +273,7 @@ void Event::forestSiwardEncounter(Assets& assets)
     }
 }
 
+//Forest Depths Events
 void Event::forestDepthsSpadeEncounter(Assets& assets)
 {
     if (!this->spadeEncounteredForest) {
@@ -369,7 +371,7 @@ void Event::treeEncounter(Assets& assets, Player& player)
         switch (this->dialogue) {
         case 0:
             assets.getSpriteViewerCounter() = 0; //Make entity viewer visible
-            assets.getEntityViewerCounter() = 2; //Make siward entity visible
+            assets.getEntityViewerCounter() = 2; //Make tree entity visible
             assets.setInitMapFalse(); //Hide the map if its open
             assets.setInitStatsFalse(); //Hide stats if open
             assets.setInitInventoryFalse(); //Hide inventory if open
@@ -435,6 +437,91 @@ void Event::treeEncounter(Assets& assets, Player& player)
             assets.getEventAssets() = false;
             assets.getEntityViewerCounter() = -1;
             this->treeEncountered = true;
+            break;
+        }
+    }
+}
+
+//Forest Abyssal Events
+void Event::obeliskEncounter(Assets& assets, Player& player)
+{
+    if (!this->obeliskEncountered) {
+        this->reInit(assets);
+        switch (this->dialogue) {
+        case 0:
+            assets.getSpriteViewerCounter() = 0; //Make entity viewer visible
+            assets.getEntityViewerCounter() = 6; //Make obelisk entity visible
+            assets.setInitMapFalse(); //Hide the map if its open
+            assets.setInitStatsFalse(); //Hide stats if open
+            assets.setInitInventoryFalse(); //Hide inventory if open
+            assets.getEventAssets() = true; //Hide map, inv, stat, forward && back buttons
+            assets.text.setString("You feel a strange presence in the area... You notice something strange ahead. A glowing obelisk, seemingly calling to you.");
+            break;
+        case 1:
+            assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            assets.answerBoxText[0].setString("1. *Move towards the obelisk*");
+            assets.answerBoxText[1].setString("2. *Back away from the obelisk*");
+            break;
+        case 2:
+            assets.getShowAnsBoxesCounter() = -1;
+            switch (assets.getChoiceCounter()) {
+            case 0:
+                assets.text.setString("*You move towards the obelisk, but as you do you notice that it seems like the distance between you and the object is not changing. Instead, you're somehow staying the same distance from it despite moving towards it. You feel a horrible pain in your gut as you keep walking...*");
+                break;
+            case 1:
+                assets.text.setString("*You move away from the obelisk, but as you do you notice that it seems like the distance between you and the object is not changing. Instead, you're somehow staying the same distance from it despite moving away from it. You feel a horrible pain in your gut as you keep backing up...*");
+                break;
+            }
+            break;
+        case 3:
+            assets.text.setString("*Suddenly, you hear a voice inside of your head begin to speak to you. It sounds inhuman, almost otherwordly.*\n\n'What is it you wish for? Riches, or power?");
+            break;
+        case 4:
+            assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            assets.answerBoxText[0].setString("1. *Play along with it*");
+            assets.answerBoxText[1].setString("2. 'What the hell are you?'");
+            break;
+        case 5:
+            assets.getShowAnsBoxesCounter() = -1;
+            switch (assets.getChoiceCounter()) {
+            case 0:
+                assets.text.setString("*You decide to play along with it, thinking about its question for a moment before answering... Zin stares at the interaction between you and the object with clear fear*");
+                break;
+            case 1:
+                assets.text.setString("*It only repeats its question, ignoring yours. You realize that at this rate there's no escaping it. Best bet is to play along for now...*");
+                break;
+            }
+            break;
+        case 6:
+            assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            assets.answerBoxText[0].setString("1. 'Riches'");
+            assets.answerBoxText[1].setString("2. 'Power'");
+            break;
+        case 7:
+            assets.getShowAnsBoxesCounter() = -1;
+            switch (assets.getChoiceCounter()) {
+            case 0:
+                assets.text.setString("*The obelisk slowly destroys itself and crumbles to the floor, no longer trapping you with its presence. You notice that you have significantly more gold in your pouch suddenly. Looks like it wasn't a trap after all...*\n\n+50 Gold");
+                if (!this->itemGained) {
+                    player.getGold() += 50;
+                    this->itemGained = true;
+                }
+                break;
+            case 1:
+                assets.text.setString("*The obelisk slowly destroys itself and crumbles to the floor, no longer trapping you with its presence. You feel as though for some reason you have a greater knowledge than you did prior. Perhaps it gave you some kind of power after all.*\n\n+500 Exp");
+                if (!this->itemGained) {
+                    player.getExp() += 500;
+                    this->itemGained = true;
+                }
+                break;
+            }
+            break;
+        case 100:
+            assets.text.setString("");
+            assets.getEventAssets() = false;
+            assets.getEntityViewerCounter() = -1;
+            this->itemGained = false;
+            this->obeliskEncountered = true;
             break;
         }
     }

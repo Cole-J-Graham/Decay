@@ -92,14 +92,16 @@ Assets::Assets()
     zinTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite.png");
     zinTextureHappy.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinHappySprite.png");
 
-    //Load Entity Viewer Files
+    //Load Entity Viewer Files Main
     blankEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/entityBlank.png");
     siwardEntityTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/siwardEntity.jpeg");
     spadeEntityForest.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadeEntityForest.png");
     spadeEntityCastle.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadeEntityCastle.jpg");
-
-    decayEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decayEntity.jpeg");
+    //Load Entity Viewer Files Random Events
     treeEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/entityTree.jpeg");
+    obeliskEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/obeliskEntity.jpeg");
+    //Load Entity Viewer Files Hostile Entities
+    decayEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decayEntity.jpeg");
     hostileTreeEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/hostileTreeSpriteEntity.jpeg");
 
     /*bufferClick.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/click.wav");
@@ -658,6 +660,9 @@ void Assets::drawEntityViewer()
         break;
     case 5:
         entitySprite.setTexture(hostileTreeEntity);
+        break;
+    case 6:
+        entitySprite.setTexture(obeliskEntity);
         break;
     }
     //Select whether or not the sprite is visible

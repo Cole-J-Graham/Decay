@@ -527,6 +527,7 @@ void Travel::forestAbyssal(Assets& assets, Event& notevent, Combat& combat, Play
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssalwoods5.jpeg");
             this->frameInit = true;
         }
+        notevent.obeliskEncounter(assets, player);
         break;
     case 5:
         if (!this->frameInit) {
