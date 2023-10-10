@@ -517,6 +517,8 @@ void Travel::forestAbyssal(Assets& assets, Event& notevent, Combat& combat, Play
         }
         break;
     case 3:
+        //Prep Encounter Dialogue
+        //notevent.getReInitialize() = true;
         if (!this->frameInit) {
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssalwoods4.jpeg");
             this->frameInit = true;
@@ -527,7 +529,7 @@ void Travel::forestAbyssal(Assets& assets, Event& notevent, Combat& combat, Play
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssalwoods5.jpeg");
             this->frameInit = true;
         }
-        notevent.obeliskEncounter(assets, player);
+        //notevent.obeliskEncounter(assets, player);
         break;
     case 5:
         if (!this->frameInit) {
@@ -560,12 +562,19 @@ void Travel::forestAbyssal(Assets& assets, Event& notevent, Combat& combat, Play
         }
         break;
     case 10:
+        //Prep Encounter Dialogue
+        notevent.getReInitialize() = true;
         if (!this->frameInit) {
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssalwoods11.jpeg");
             this->frameInit = true;
         }
         break;
     case 11:
+        notevent.lostNunEncounter(assets);
+        if (notevent.getNunEncountered()) {
+            combat.initLostNun(assets);
+            combat.combatLoop(assets, player, animate);
+        }
         if (!this->frameInit) {
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/abyssalwoods12.jpeg");
             this->frameInit = true;

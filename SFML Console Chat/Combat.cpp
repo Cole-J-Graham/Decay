@@ -38,11 +38,12 @@ Combat::Combat()
 	this->reInitCombatOnce = false;
 	this->combatEnd = false;
 
-	//Hostile Bool
+	//Hostile Forest Bools
 	this->initHostileWolf = false;
 	this->initHostileWalker = false;
 	this->initHostileKnight = false;
 	this->initHostileTreeMimic = false;
+	this->initHostileLostNun = false;
 
 	//Combat Control Flow Bool
 	this->turnPlayer = true;
@@ -400,7 +401,7 @@ void Combat::zinSelectMove(Assets& assets)
 	
 }
 
-//Combat Init Hostile
+//Combat Init Forest Hostiles
 void Combat::initWolf(Assets& assets)
 {
 	if (!this->initHostileWolf) {
@@ -538,5 +539,38 @@ void Combat::initDecayKnight(Assets& assets)
 		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health...";
 		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the knight!";
 		this->initHostileWalker = true;
+	}
+}
+
+void Combat::initLostNun(Assets& assets)
+{
+	if (!this->initHostileLostNun) {
+		//Allow combat to start
+		this->combatEnd = false;
+		//Set nun sprite
+		assets.getHostileCounter() = 5;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		this->hostileHp = 200;
+		this->hostileHpMax = 200;
+		this->hostileStrike = 20;
+
+		this->hostileNameNoSpc = "Lost Nun";
+		this->hostileName = "Lost Nun ";
+		this->hostileEncounterText = "The woman steps forwards, revealing the sheer spread of her decay. She readies to attack you.";
+		this->hostileAtkPlayerText = "The nun launches forwards as she spews out rotting decay, brutally striking you!";
+		this->hostileAtkZinText = "The nun targets Zin, hitting her with horrifying amounts of molten decay!";
+		this->hostileAtkZinBlkText = "The nun targets Zin launching more decay at her, however you deflect it just on time!";
+
+		this->playerSlashAtkText = "You slash at the nun, the woman screaming out in pain as you attack.";
+		this->playerGuardAtkText = "You watch the nuns movements preparing yourself to defend Zin at any cost...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the nun!";
+
+		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the nun!";
+		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the nun!";
+		this->initHostileLostNun = true;
 	}
 }

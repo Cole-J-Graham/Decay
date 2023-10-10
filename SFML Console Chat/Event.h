@@ -3,6 +3,7 @@
 #include "Assets.h"
 #include "Combat.h"
 #include "Player.h"
+#include "Animation.h"
 
 class Event
 {
@@ -22,6 +23,8 @@ private:
 	bool treeEncountered;
 	bool obeliskEncountered;
 
+	bool nunEncountered;
+
 	//Counters
 	int zinTalkCounter;
 
@@ -35,6 +38,7 @@ public:
 
 	//Core Functions
 	void reInit(Assets& assets);
+	void hideOpenAssets(Assets& assets);
 
 	//Bonfire Events
 	void healCharactersText(sf::RenderWindow& window, Assets& assets);
@@ -57,6 +61,7 @@ public:
 
 	//Forest Abyssal Events
 	void obeliskEncounter(Assets& assets, Player& player);
+	void lostNunEncounter(Assets& assets);
 
 	//Castle Events
 	void spadeEncounter(Assets& assets);
@@ -65,6 +70,9 @@ public:
 	bool& getEncounterInit() { return this->encounterInit; };
 	bool& getEncounterInitTow() { return this->encounterInitTwo; };
 	bool& getReInitialize() { return this->reInitialize; };
+
+	//Event Availability Bools
+	bool& getNunEncountered() { return this->nunEncountered; };
 
 	//Counter Getters
 	int& getZinTalkCounter() { return this->zinTalkCounter; };

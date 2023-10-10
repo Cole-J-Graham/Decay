@@ -42,11 +42,12 @@ private:
 	bool reInitCombatOnce;
 	bool combatEnd;
 
-	//Hostile Bool
+	//Hostile Forest Bools
 	bool initHostileWolf;
 	bool initHostileWalker;
 	bool initHostileKnight;
 	bool initHostileTreeMimic;
+	bool initHostileLostNun;
 
 	//Combat Control Flow Bool
 	bool turnPlayer;
@@ -111,11 +112,12 @@ public:
 	void playerSelectMove(Assets& assets);
 	void zinSelectMove(Assets& assets);
 
-	//Combat Init Hostile
+	//Combat Init Forest Hostiles
 	void initWolf(Assets& assets);
 	void initDecayWalker(Assets& assets);
 	void initHostileTree(Assets& assets);
 	void initDecayKnight(Assets& assets);
+	void initLostNun(Assets& assets);
 
 	//Hp Getters
 	int& getPlayerHp() { return this->playerHp; };
@@ -152,6 +154,7 @@ public:
 	//Core Bool Getters
 	bool& getInitCombatOnce() { return this->initCombatOnce; };
 	bool& getReInitCombatOnce() { return this->reInitCombatOnce; };
+	bool& getCombatEnd() { return this->combatEnd; };
 
 	//Combat Control Flow Bool Getters
 	bool& getTurnPlayer() { return this->turnPlayer; };

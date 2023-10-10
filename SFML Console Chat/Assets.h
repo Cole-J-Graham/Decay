@@ -113,12 +113,8 @@ public:
 	//Zin Textures
 	sf::Texture zinTexture;
 	sf::Texture zinTextureHappy;
-
-	//Hostile Textures
-	sf::Texture hostileTextureWolf;
-	sf::Texture hostileTextureWalker;
-	sf::Texture hostileTextureKnight;
-	sf::Texture hostileTextureTree;
+	sf::Texture zinTextureConcerned;
+	sf::Texture zinTextureAnnoyed;
 
 	//Map Textures
 	sf::Texture textureMapView;
@@ -379,6 +375,13 @@ public:
 	std::vector<sf::Text> spriteText{ textPlayer, textZin, textHostile,
 		textSpade, textSiward };
 
+	//Hostile Textures
+	sf::Texture hostileTextureWolf;
+	sf::Texture hostileTextureWalker;
+	sf::Texture hostileTextureKnight;
+	sf::Texture hostileTextureTree;
+	sf::Texture hostileTextureNun;
+
 	//Entity Viewer Objects
 	sf::Text entityBoxText;
 	sf::RectangleShape entityBoxHeader;
@@ -395,6 +398,7 @@ public:
 	//Viewer Files Hostile Entities
 	sf::Texture decayEntity;
 	sf::Texture hostileTreeEntity;
+	sf::Texture lostNunEntity;
 
 	//Sounds
 	sf::Sound sound;

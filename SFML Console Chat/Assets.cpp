@@ -91,6 +91,8 @@ Assets::Assets()
     //Zin Sprites
     zinTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite.png");
     zinTextureHappy.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinHappySprite.png");
+    zinTextureConcerned.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinConcerned.png");
+    zinTextureAnnoyed.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinspriteannoyed.png");
 
     //Load Entity Viewer Files Main
     blankEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/entityBlank.png");
@@ -103,6 +105,7 @@ Assets::Assets()
     //Load Entity Viewer Files Hostile Entities
     decayEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decayEntity.jpeg");
     hostileTreeEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/hostileTreeSpriteEntity.jpeg");
+    lostNunEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/lostNunEntity.jpeg");
 
     /*bufferClick.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/click.wav");
     bufferCampfire.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/campfire.wav");
@@ -663,6 +666,9 @@ void Assets::drawEntityViewer()
         break;
     case 6:
         entitySprite.setTexture(obeliskEntity);
+        break;
+    case 7:
+        entitySprite.setTexture(lostNunEntity);
         break;
     }
     //Select whether or not the sprite is visible
@@ -1248,6 +1254,18 @@ void Assets::zinSprite()
         spriteRect[1].setPosition(sf::Vector2f(50.0f, 300.0f));
         spriteText[1].setPosition(sf::Vector2f(50.0f, 453.0f));
         break;
+    case 2:
+        spriteElements[3].setTexture(zinTextureConcerned);
+        spriteElements[3].setPosition(sf::Vector2f(50.0f, 300.0f));
+        spriteRect[1].setPosition(sf::Vector2f(50.0f, 300.0f));
+        spriteText[1].setPosition(sf::Vector2f(50.0f, 453.0f));
+        break;
+    case 3:
+        spriteElements[3].setTexture(zinTextureAnnoyed);
+        spriteElements[3].setPosition(sf::Vector2f(50.0f, 300.0f));
+        spriteRect[1].setPosition(sf::Vector2f(50.0f, 300.0f));
+        spriteText[1].setPosition(sf::Vector2f(50.0f, 453.0f));
+        break;
     }
 
     //Sprite Options, ect
@@ -1263,6 +1281,7 @@ void Assets::hostileSprite()
         hostileTextureWolf.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/wolfsprite.png");
         hostileTextureKnight.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decayknight.png");
         hostileTextureTree.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/hostileTreeSprite.jpeg");
+        hostileTextureNun.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/lostNunSprite.jpeg");
         spriteElements[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteRect[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteText[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
@@ -1324,6 +1343,18 @@ void Assets::hostileSprite()
             spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
             spriteElements[5].setScale(0.318f, 0.318f);
+            this->hostileInit = true;
+        }
+        break;
+    case 5:
+        //Hostile Nun
+        if (this->hostileInit == false) {
+            hostileTextureTree.setRepeated(false);
+            spriteElements[5].setTexture(hostileTextureNun);
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
+            spriteElements[5].setScale(0.15f, 0.15f);
             this->hostileInit = true;
         }
         break;

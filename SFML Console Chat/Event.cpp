@@ -18,6 +18,8 @@ Event::Event()
     this->treeEncountered = false;
     this->obeliskEncountered = false;
 
+    this->nunEncountered = false;
+
     //Counters
     this->zinTalkCounter = -1;
 
@@ -37,6 +39,14 @@ void Event::reInit(Assets& assets)
         this->dialogue = 0;
         this->reInitialize = false;
     }
+}
+
+void Event::hideOpenAssets(Assets& assets)
+{
+    assets.setInitMapFalse(); //Hide the map if its open
+    assets.setInitStatsFalse(); //Hide stats if open
+    assets.setInitInventoryFalse(); //Hide inventory if open
+    assets.getEventAssets() = true; //Hide map, inv, stat, forward && back buttons
 }
 
 //Bonfire Events
@@ -203,12 +213,9 @@ void Event::forestSiwardEncounter(Assets& assets)
         case 0:
             assets.getSpriteViewerCounter() = 0; //Make entity viewer visible
             assets.getEntityViewerCounter() = 0; //Make siward entity visible
-            assets.setInitMapFalse(); //Hide the map if its open
-            assets.setInitStatsFalse(); //Hide stats if open
-            assets.setInitInventoryFalse(); //Hide inventory if open
             assets.getSiwardLoadOnce() = false; //Allow to be used again
             assets.getSiwardCounter() = 0; //Make Siwards Sprite Appear
-            assets.getEventAssets() = true; //Hide map, inv, stat, forward && back buttons
+            this->hideOpenAssets(assets);
             assets.text.setString("A knight suddenly appears from around a tree, practically ambushing your view. Though he seems to get startled from your presence as well...");
             break;
         case 1:
@@ -282,12 +289,9 @@ void Event::forestDepthsSpadeEncounter(Assets& assets)
         case 0:
             assets.getSpriteViewerCounter() = 0; //Make entity viewer visible
             assets.getEntityViewerCounter() = 3; //Make spade entity visible
-            assets.setInitMapFalse(); //Hide the map if its open
-            assets.setInitStatsFalse(); //Hide stats if open
-            assets.setInitInventoryFalse(); //Hide inventory if open
             assets.getSpadeLoadOnce() = false; //Allow to be used again
             assets.getSpadeCounter() = 0; //Make Spades Sprite Appear
-            assets.getEventAssets() = true; //Hide map, inv, stat, forward && back buttons
+            this->hideOpenAssets(assets);
             assets.text.setString("Suddenly, a strange girl ambushes you. Your keen senses were unable to detect her.");
             break;
         case 1:
@@ -372,10 +376,7 @@ void Event::treeEncounter(Assets& assets, Player& player)
         case 0:
             assets.getSpriteViewerCounter() = 0; //Make entity viewer visible
             assets.getEntityViewerCounter() = 2; //Make tree entity visible
-            assets.setInitMapFalse(); //Hide the map if its open
-            assets.setInitStatsFalse(); //Hide stats if open
-            assets.setInitInventoryFalse(); //Hide inventory if open
-            assets.getEventAssets() = true; //Hide map, inv, stat, forward && back buttons
+            this->hideOpenAssets(assets);
             assets.text.setString("You hear a voice nearby, stopping you in your tracks. You were certain no one was nearby but you most definitely hear somebody.\nYou turn to your left, then your right. You lock eyes with it. A tree... Speaking to you...?\n\nIt keeps repeating some odd chanting sound to you but you can't quite make out what it's saying...");
             break;
         case 1:
@@ -451,10 +452,7 @@ void Event::obeliskEncounter(Assets& assets, Player& player)
         case 0:
             assets.getSpriteViewerCounter() = 0; //Make entity viewer visible
             assets.getEntityViewerCounter() = 6; //Make obelisk entity visible
-            assets.setInitMapFalse(); //Hide the map if its open
-            assets.setInitStatsFalse(); //Hide stats if open
-            assets.setInitInventoryFalse(); //Hide inventory if open
-            assets.getEventAssets() = true; //Hide map, inv, stat, forward && back buttons
+            this->hideOpenAssets(assets);
             assets.text.setString("You feel a strange presence in the area... You notice something strange ahead. A glowing obelisk, seemingly calling to you.");
             break;
         case 1:
@@ -516,12 +514,68 @@ void Event::obeliskEncounter(Assets& assets, Player& player)
                 break;
             }
             break;
-        case 100:
+        case 8:
             assets.text.setString("");
             assets.getEventAssets() = false;
             assets.getEntityViewerCounter() = -1;
             this->itemGained = false;
             this->obeliskEncountered = true;
+            break;
+        }
+    }
+}
+
+void Event::lostNunEncounter(Assets& assets)
+{
+    if (!this->nunEncountered) {
+        this->reInit(assets);
+        switch (this->dialogue) {
+        case 0:
+            assets.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
+            assets.getZinCounter() = 0; //Set concerned frame
+            assets.getSpriteViewerCounter() = 0; //Make entity viewer visible
+            assets.getEntityViewerCounter() = 7; //Make nun entity visible
+            this->hideOpenAssets(assets);
+            assets.text.setString("*You notice a woman standing alone in a clearing up ahead in the woods. She seems distraught until she notices you and Zin walking. She runs up to you both and goes to try and hug Zin, however Zin backs away...*\n\n'I have been looking for you everywhere, sweetie! Where did you run off to?' *The woman exclaims*");
+            break;
+        case 1:
+            assets.getZinCounter() = 2;
+            assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            assets.answerBoxText[0].setString("1. 'Who are you?'");
+            assets.answerBoxText[1].setString("2. *Turn to Zin* 'Do you know her?'");
+            break;
+        case 2:
+            assets.getShowAnsBoxesCounter() = -1;
+            switch (assets.getChoiceCounter()) {
+            case 0:
+                assets.text.setString("*The woman glares at you before ignoring your words and continuing to talk to Zin...*\n\n'Let's go home and get away from this horrible place, sound good hun?' *Zin looks at the lady with confusion* 'I have no idea who you are, lady...' *Zin replies to her*");
+                break;
+            case 1:
+                assets.text.setString("*Zin shakes her head, looking at the woman with confusion.* 'I have no idea who you are, lady.' *Zin replies to the woman*\n\n*The woman steps closer, visibly angrier from the reply. You notice what looks to be melting decay rotting off of her arm under her cloak. This woman has been rotting from decay for quite some time...*\n\n*You recall back to your time aiding the citizens in the castle. Some rotting with decay would have adverse effects such as this with the decay.\n\nRather than losing their mind and strength, only their mind would rot as their body would grow stronger.*");
+                break;
+            }
+            break;
+        case 3:
+            assets.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            assets.answerBoxText[0].setString("1. *Try to turn and escape with Zin*");
+            assets.answerBoxText[1].setString("2. 'Get the fuck away from us.'");
+            break;
+        case 4:
+            assets.getShowAnsBoxesCounter() = -1;
+            switch (assets.getChoiceCounter()) {
+            case 0:
+                assets.text.setString("*You grab Zin and begin to run, not looking back. You hear a horrific screaming behind you as the footsteps grow closer at an obsurd pace.*\n\n*Suddenly, she launches directly in front of both of your paths despite your best efforts at running.*\n\n*You plant your feet into the ground and draw your sword as Zin readies her spells. It's do or die.*");
+                break;
+            case 1:
+                assets.text.setString("*The woman slowly turns her head away from Zin, not bothering to move her body to face you. Instead, you hear her neck audibly snapping as she makes eye contact with you.* 'I'm going to string you up like dried meat.' *The woman states as she moves towards you.*\n\n*You plant both of your feet into the ground and draw your sword, noticing Zin also readying her spells behind her. It's do or die.");
+                break;
+            }
+            break;
+        case 5:
+            assets.getZinCounter() = -1;
+            assets.text.setString("");
+            assets.getEventAssets() = false;
+            this->nunEncountered = true;
             break;
         }
     }
