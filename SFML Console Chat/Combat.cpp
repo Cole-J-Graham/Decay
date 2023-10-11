@@ -487,9 +487,9 @@ void Combat::initHostileTree(Assets& assets)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 100;
-		this->hostileHpMax = 100;
-		this->hostileStrike = 1;
+		this->hostileHp = 65;
+		this->hostileHpMax = 65;
+		this->hostileStrike = 2;
 
 		this->hostileNameNoSpc = "Tree Mimic";
 		this->hostileName = "Tree Mimic ";
@@ -572,5 +572,42 @@ void Combat::initLostNun(Assets& assets)
 		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
 		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the nun!";
 		this->initHostileLostNun = true;
+	}
+}
+
+void Combat::initDecapod(Assets& assets)
+{
+	if (!this->initHostileDecapod) {
+		//Make entity viewer visible
+		assets.getSpriteViewerCounter() = 0;
+		//Make decapod entity visible
+		assets.getEntityViewerCounter() = 8;
+		//Allow combat to start
+		this->combatEnd = false;
+		//Set decapod sprite
+		assets.getHostileCounter() = 6;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		this->hostileHp = 75;
+		this->hostileHpMax = 75;
+		this->hostileStrike = 12;
+
+		this->hostileNameNoSpc = "Abyssal Decapod";
+		this->hostileName = "Abyssal Decapod ";
+		this->hostileEncounterText = "The horrifying abomination stands before you as its face wriggles with tentacles...";
+		this->hostileAtkPlayerText = "The horrifying abomination grabs ahold of you and strikes you violently!";
+		this->hostileAtkZinText = "The creature spits acid directly at Zin, hitting her with it!";
+		this->hostileAtkZinBlkText = "The abomination attempst to spit at Zin with acid, however you block it with your sword just in time!";
+
+		this->playerSlashAtkText = "You slash at the decapod, the creature screaming in pain!";
+		this->playerGuardAtkText = "You watch the decapods movements, preparing yourself to defend Zin from its attacks...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the decapod!";
+
+		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the decapod!";
+		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the decapod!";
+		this->initHostileDecapod = true;
 	}
 }

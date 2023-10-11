@@ -106,6 +106,7 @@ Assets::Assets()
     decayEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decayEntity.jpeg");
     hostileTreeEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/hostileTreeSpriteEntity.jpeg");
     lostNunEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/lostNunEntity.jpeg");
+    decapodEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/abyssalDecapodEntity.jpeg");
 
     /*bufferClick.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/click.wav");
     bufferCampfire.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/campfire.wav");
@@ -669,6 +670,9 @@ void Assets::drawEntityViewer()
         break;
     case 7:
         entitySprite.setTexture(lostNunEntity);
+        break;
+    case 8:
+        entitySprite.setTexture(decapodEntity);
         break;
     }
     //Select whether or not the sprite is visible
@@ -1282,6 +1286,7 @@ void Assets::hostileSprite()
         hostileTextureKnight.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decayknight.png");
         hostileTextureTree.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/hostileTreeSprite.jpeg");
         hostileTextureNun.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/lostNunSprite.jpeg");
+        hostileTextureDecapod.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/abyssalDecapodSprite.jpeg");
         spriteElements[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteRect[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteText[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
@@ -1349,8 +1354,20 @@ void Assets::hostileSprite()
     case 5:
         //Hostile Nun
         if (this->hostileInit == false) {
-            hostileTextureTree.setRepeated(false);
+            hostileTextureNun.setRepeated(false);
             spriteElements[5].setTexture(hostileTextureNun);
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
+            spriteElements[5].setScale(0.15f, 0.15f);
+            this->hostileInit = true;
+        }
+        break;
+    case 6:
+        //Hostile Decapod
+        if (this->hostileInit == false) {
+            hostileTextureDecapod.setRepeated(false);
+            spriteElements[5].setTexture(hostileTextureDecapod);
             spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
@@ -1407,11 +1424,13 @@ void Assets::initCombatAssets()
         this->playerCombatAssets();
         this->zinCombatAssets();
     }
-    else if (combatAssets == false && bonfireAssets == false && eventAssets == false) {
+    else if (!combatAssets && !bonfireAssets && !eventAssets) {
         //Hide all combat assets
         for (int i = 0; i < spriteRect.size(); i++) {
             spriteRect[i].setPosition(10000, 10000);
             spriteText[i].setPosition(10000, 10000);
+        }
+        for (int i = 0; i < combatRect.size(); i++) {
             combatRect[i].setPosition(10000, 10000);
             combatText[i].setPosition(10000, 10000);
         }
@@ -1516,6 +1535,9 @@ void Assets::zinCombatAssets()
         combatRect[3].setPosition(10000.0f, 10000.0f);
         combatRect[4].setPosition(10000.0f, 10000.0f);
         combatRect[5].setPosition(10000.0f, 10000.0f);
+        combatText[3].setPosition(10000.0f, 10000.0f);
+        combatText[4].setPosition(10000.0f, 10000.0f);
+        combatText[5].setPosition(10000.0f, 10000.0f);
     }
 }
 

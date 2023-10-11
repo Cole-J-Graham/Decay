@@ -381,6 +381,7 @@ public:
 	sf::Texture hostileTextureKnight;
 	sf::Texture hostileTextureTree;
 	sf::Texture hostileTextureNun;
+	sf::Texture hostileTextureDecapod;
 
 	//Entity Viewer Objects
 	sf::Text entityBoxText;
@@ -399,6 +400,7 @@ public:
 	sf::Texture decayEntity;
 	sf::Texture hostileTreeEntity;
 	sf::Texture lostNunEntity;
+	sf::Texture decapodEntity;
 
 	//Sounds
 	sf::Sound sound;

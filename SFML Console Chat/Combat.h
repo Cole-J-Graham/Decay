@@ -48,6 +48,7 @@ private:
 	bool initHostileKnight;
 	bool initHostileTreeMimic;
 	bool initHostileLostNun;
+	bool initHostileDecapod;
 
 	//Combat Control Flow Bool
 	bool turnPlayer;
@@ -118,6 +119,7 @@ public:
 	void initHostileTree(Assets& assets);
 	void initDecayKnight(Assets& assets);
 	void initLostNun(Assets& assets);
+	void initDecapod(Assets& assets);
 
 	//Hp Getters
 	int& getPlayerHp() { return this->playerHp; };

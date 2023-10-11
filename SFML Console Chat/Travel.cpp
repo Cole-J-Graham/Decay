@@ -404,7 +404,7 @@ void Travel::forestDepths(Assets& assets, Event& notevent, Combat& combat, Playe
         break;
     case 2:
         //Prep Encounter Dialogue
-        notevent.getReInitialize() = true;
+        //notevent.getReInitialize() = true;
         if (!this->frameInit) {
             assets.mapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestdepths3.jpeg");
             this->frameInit = true;
