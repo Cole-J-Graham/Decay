@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Animation.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Combat.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="Travel.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Animation.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Combat.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Travel.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="cpp">
+      <UniqueIdentifier>{993ef4cc-4a00-4a85-86e5-f7582c7ea8a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".h">
+      <UniqueIdentifier>{db4c232d-a73c-4c15-ac29-b23f176e676e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
