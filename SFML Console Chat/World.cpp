@@ -64,7 +64,7 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                 break;
             case sf::Event::MouseButtonPressed:
                 { //Get Mouse Click Input
-                    this->travelButtons(window, assets, travel);
+                    this->travelButtons(window, assets, travel, animate, player);
                     //If button in map is clicked, do something
                     if (!assets.getPlayerDeath() && assets.getInitMap()) {
                         this->mapButtons(window, assets, travel);
@@ -219,8 +219,10 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
 
         //Draw Animations
         animate.drawAnimations();
+        animate.animateDecayWarn();
         window.draw(animate.zinSprite);
         window.draw(animate.notSprite);
+        window.draw(animate.decayWarn);
 
         if (assets.getInitMap() == true) {
             //Draw main map rect
@@ -585,7 +587,7 @@ void World::mainMenuButtons(sf::RenderWindow& window, Assets& assets, Travel& tr
    
 }
 
-void World::travelButtons(sf::RenderWindow& window, Assets& assets, Travel& travel)
+void World::travelButtons(sf::RenderWindow& window, Assets& assets, Travel& travel, Animation& animate, Player& player)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -595,12 +597,20 @@ void World::travelButtons(sf::RenderWindow& window, Assets& assets, Travel& trav
         travel.setFrameInc();
         travel.setFrameInitFalse();
         assets.blipsound.play();
+        //Decay Increases Every Move
+        player.getDecay()++;
+        animate.getDecayWarning() = true;
+        animate.getAnimationFrame() = -1;
     }
     else if (assets.spriteElements[1].getGlobalBounds().contains(mousePosF))
     {
         travel.setFrameDec();
         travel.setFrameInitFalse();
         assets.blipsound.play();
+        //Decay Increases Every Move
+        player.getDecay()++;
+        animate.getDecayWarning() = true;
+        animate.getAnimationFrame() = -1;
     }
 }
 

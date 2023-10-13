@@ -107,6 +107,8 @@ Assets::Assets()
     hostileTreeEntity.loadFromFile("Assets/Entities/hostileTreeSpriteEntity.jpeg");
     lostNunEntity.loadFromFile("Assets/Entities/lostNunEntity.jpeg");
     decapodEntity.loadFromFile("Assets/Entities/abyssalDecapodEntity.jpeg");
+    wolfEntity.loadFromFile("Assets/Entities/wolfEntity.jpeg");
+    knightEntity.loadFromFile("Assets/Entities/knightEntity.jpeg");
 
     /*bufferClick.loadFromFile("Assets/Sounds/click.wav");
     bufferCampfire.loadFromFile("Assets/Sounds/campfire.wav");
@@ -195,7 +197,7 @@ void Assets::drawMainWindow()
         else {
             spriteElements[1].setPosition(445.0f, 765.0f);
         }
-        buttonBackTexture.loadFromFile("Assets/Game_Resources/buttonsolidfix.png");
+        buttonBackTexture.loadFromFile("Assets/Game_Resources/buttonsolid.png");
         spriteElements[1].setTexture(arrowTextureLeft);
         spriteElements[1].setScale(0.04, 0.04);
         if (eventAssets == true) {
@@ -673,6 +675,12 @@ void Assets::drawEntityViewer()
         break;
     case 8:
         entitySprite.setTexture(decapodEntity);
+        break;
+    case 9:
+        entitySprite.setTexture(wolfEntity);
+        break;
+    case 10:
+        entitySprite.setTexture(knightEntity);
         break;
     }
     //Select whether or not the sprite is visible

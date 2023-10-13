@@ -405,6 +405,10 @@ void Combat::zinSelectMove(Assets& assets)
 void Combat::initWolf(Assets& assets)
 {
 	if (!this->initHostileWolf) {
+		//Make entity viewer visible
+		assets.getSpriteViewerCounter() = 0;
+		//Make wolf entity visible
+		assets.getEntityViewerCounter() = 9;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set wolf sprite
@@ -444,7 +448,7 @@ void Combat::initDecayWalker(Assets& assets)
 		assets.getEntityViewerCounter() = 1;
 		//Allow combat to start
 		this->combatEnd = false;
-		//Set wolf sprite
+		//Set walker sprite
 		assets.getHostileCounter() = 2;
 		//Allow new combat to start
 		this->initCombatOnce = false;
@@ -512,6 +516,10 @@ void Combat::initHostileTree(Assets& assets)
 void Combat::initDecayKnight(Assets& assets)
 {
 	if (!this->initHostileKnight) {
+		//Make entity viewer visible
+		assets.getSpriteViewerCounter() = 0;
+		//Make tree mimic entity visible
+		assets.getEntityViewerCounter() = 10;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set wolf sprite

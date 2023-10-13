@@ -76,7 +76,7 @@ public:
 
 	//Display Element Functionality
 	void mainMenuButtons(sf::RenderWindow& window, Assets& assets, Travel& travel, Animation& animate);
-	void travelButtons(sf::RenderWindow& window, Assets& assets, Travel& travel);
+	void travelButtons(sf::RenderWindow& window, Assets& assets, Travel& travel, Animation& animate, Player& player);
 	void menuBar(sf::RenderWindow& window, Assets& assets);
 	void menuBarStats(sf::RenderWindow& window, Combat& combat, Player& player, Assets& assets);
 	void dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& assets, Travel& travel, Event& notevent);

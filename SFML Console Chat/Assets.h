@@ -401,6 +401,8 @@ public:
 	sf::Texture hostileTreeEntity;
 	sf::Texture lostNunEntity;
 	sf::Texture decapodEntity;
+	sf::Texture wolfEntity;
+	sf::Texture knightEntity;
 
 	//Sounds
 	sf::Sound sound;

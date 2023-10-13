@@ -287,6 +287,7 @@ void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Pla
         assets.locationText.setString("Forest Entrance");
         if (!this->frameInit) {
             assets.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest1.jpeg");
+            animate.getDecayWarning() = true;
             this->frameInit = true;
         }
         break;
@@ -326,6 +327,7 @@ void Travel::forestEntrance(Assets& assets, Event& notevent, Combat& combat, Pla
     case 6:
         if (!this->frameInit) {
             assets.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest7.jpeg");
+            animate.getDecayWarning() = true;
             this->frameInit = true;
         }
         break;
