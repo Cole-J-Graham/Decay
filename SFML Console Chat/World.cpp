@@ -153,7 +153,7 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Initial Draw In
     if (assets.getInitialDrawIn() == false) {
-        assets.windowIcon.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/shieldicon.jpeg");
+        assets.windowIcon.loadFromFile("Assets/Game_Resources/shieldicon.jpeg");
         window.setIcon(assets.windowIcon.getSize().x, assets.windowIcon.getSize().y, assets.windowIcon.getPixelsPtr()); //set window icon
         assets.setInitialDrawInTrue();
     }

@@ -84,47 +84,47 @@ Assets::Assets()
     //Strings
     this->playerName = "player";
 
-    buttonTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/buttonsolidfix.png");
-    arrowTextureRight.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/arrowright.png");
-    arrowTextureLeft.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/arrowleft.png");
+    buttonTexture.loadFromFile("Assets/Game_Resources/buttonsolid.png");
+    arrowTextureRight.loadFromFile("Assets/Game_Resources/arrowright.png");
+    arrowTextureLeft.loadFromFile("Assets/Game_Resources/arrowleft.png");
 
     //Zin Sprites
-    zinTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite.png");
-    zinTextureHappy.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinHappySprite.png");
-    zinTextureConcerned.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinConcerned.png");
-    zinTextureAnnoyed.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinspriteannoyed.png");
+    zinTexture.loadFromFile("Assets/Sprites/zinSprite.png");
+    zinTextureHappy.loadFromFile("Assets/Sprites/zinHappy.png");
+    zinTextureConcerned.loadFromFile("Assets/Sprites/zinConcerned.png");
+    zinTextureAnnoyed.loadFromFile("Assets/Sprites/zinSpriteAnnoyed.png");
 
     //Load Entity Viewer Files Main
-    blankEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/entityBlank.png");
-    siwardEntityTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/siwardEntity.jpeg");
-    spadeEntityForest.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadeEntityForest.png");
-    spadeEntityCastle.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadeEntityCastle.jpg");
+    blankEntity.loadFromFile("Assets/Entities/entityBlank.png");
+    siwardEntityTexture.loadFromFile("Assets/Entities/siwardEntity.jpeg");
+    spadeEntityForest.loadFromFile("Assets/Entities/spadeEntityForest.png");
+    spadeEntityCastle.loadFromFile("Assets/Entities/spadeEntityCastle.jpg");
     //Load Entity Viewer Files Random Events
-    treeEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/entityTree.jpeg");
-    obeliskEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/obeliskEntity.jpeg");
+    treeEntity.loadFromFile("Assets/Entities/entityTree.jpeg");
+    obeliskEntity.loadFromFile("Assets/Entities/obeliskEntity.jpeg");
     //Load Entity Viewer Files Hostile Entities
-    decayEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decayEntity.jpeg");
-    hostileTreeEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/hostileTreeSpriteEntity.jpeg");
-    lostNunEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/lostNunEntity.jpeg");
-    decapodEntity.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/abyssalDecapodEntity.jpeg");
+    decayEntity.loadFromFile("Assets/Entities/decayEntity.jpeg");
+    hostileTreeEntity.loadFromFile("Assets/Entities/hostileTreeSpriteEntity.jpeg");
+    lostNunEntity.loadFromFile("Assets/Entities/lostNunEntity.jpeg");
+    decapodEntity.loadFromFile("Assets/Entities/abyssalDecapodEntity.jpeg");
 
-    /*bufferClick.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/click.wav");
-    bufferCampfire.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/campfire.wav");
-    bufferDecay.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/decayblade.wav");
-    bufferVengeance.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/vengeance.wav");
-    bufferSlash.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/slash.wav");
-    bufferSmite.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/smite.wav");
-    bufferMend.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/mend.wav");
-    bufferGuarded.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/guarded.wav");
-    bufferGuard.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/guard.wav");
-    bufferSoundHover.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/hoversound.wav");
-    bufferWalk.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/moveRoom.wav");
-    bufferCom.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/Boss hit 1.wav");
-    buffer.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/Text 1.wav");
-    blipbuffer.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/blipSelect.wav");
-    blipmenubuffer.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/menuclick.wav");
-    bufferAngry.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/angry.wav");
-    bufferCombatStart.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sounds/combatstart.wav");*/
+    /*bufferClick.loadFromFile("Assets/Sounds/click.wav");
+    bufferCampfire.loadFromFile("Assets/Sounds/campfire.wav");
+    bufferDecay.loadFromFile("Assets/Sounds/decayblade.wav");
+    bufferVengeance.loadFromFile("Assets/Sounds/vengeance.wav");
+    bufferSlash.loadFromFile("Assets/Sounds/slash.wav");
+    bufferSmite.loadFromFile("Assets/Sounds/smite.wav");
+    bufferMend.loadFromFile("Assets/Sounds/mend.wav");
+    bufferGuarded.loadFromFile("Assets/Sounds/guarded.wav");
+    bufferGuard.loadFromFile("Assets/Sounds/guard.wav");
+    bufferSoundHover.loadFromFile("Assets/Sounds/hoversound.wav");
+    bufferWalk.loadFromFile("Assets/Sounds/moveRoom.wav");
+    bufferCom.loadFromFile("Assets/Sounds/Boss hit 1.wav");
+    buffer.loadFromFile("Assets/Sounds/Text 1.wav");
+    blipbuffer.loadFromFile("Assets/Sounds/blipSelect.wav");
+    blipmenubuffer.loadFromFile("Assets/Sounds/menuclick.wav");
+    bufferAngry.loadFromFile("Assets/Sounds/angry.wav");
+    bufferCombatStart.loadFromFile("Assets/Sounds/combatstart.wav");*/
 }
 
 Assets::~Assets()
@@ -195,7 +195,7 @@ void Assets::drawMainWindow()
         else {
             spriteElements[1].setPosition(445.0f, 765.0f);
         }
-        buttonBackTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/buttonsolidfix.png");
+        buttonBackTexture.loadFromFile("Assets/Game_Resources/buttonsolidfix.png");
         spriteElements[1].setTexture(arrowTextureLeft);
         spriteElements[1].setScale(0.04, 0.04);
         if (eventAssets == true) {
@@ -433,7 +433,7 @@ void Assets::drawZinStats()
 void Assets::drawText()
 {
     //Draw Font
-    font.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
+    font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
     //Draw Font and Output Text
     text.setFont(font);
     text.setCharacterSize(16);
@@ -484,7 +484,7 @@ void Assets::drawMainMenu()
     menuScreenElementsText[5].setString("Save Game");
 
     if (!this->introFinished) {
-        font.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
+        font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
         //Draw Main Menu
         menuScreen.setSize(sf::Vector2f(1920.0f, 1080.0f));
         menuScreen.setFillColor(sf::Color::Black);
@@ -549,7 +549,7 @@ void Assets::drawMainMenu()
 
 void Assets::drawDeathAssets()
 {
-    font.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
+    font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
 
     //Draw Load and Quit Buttons
     menuScreenElements[1].setPosition(10.0f, 125.0f);
@@ -787,11 +787,11 @@ void Assets::drawForestMapButtons()
         }
 
         //Load Movable Arrow
-        multiArrowTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/multiarrow.png");
+        multiArrowTexture.loadFromFile("Assets/Game_Resources/multiarrow.png");
         multiArrow.setTexture(multiArrowTexture);
 
         //Load Map View
-        forestMapTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/forest/forestmap.jpeg");
+        forestMapTexture.loadFromFile("Assets/Wallpapers/Forest/forestmap.jpeg");
         forestMapView.setTexture(forestMapTexture);
         forestMapView.setPosition(rectMapX, rectMapY);
         forestMapView.setScale(0.39f, 0.39f);
@@ -885,7 +885,7 @@ void Assets::drawCastleMapButtons()
 {
     if (this->initMapTexture == false) {
         //Load Movable Arrow
-        multiArrowTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/multiarrow.png");
+        multiArrowTexture.loadFromFile("Assets/Game_Resources/multiarrow.png");
         multiArrow.setTexture(multiArrowTexture);
 
         //Hide Forest Textures
@@ -902,7 +902,7 @@ void Assets::drawCastleMapButtons()
         }
 
         //Load Map View
-        textureMapView.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/mapTexture.jpeg");
+        textureMapView.loadFromFile("Assets/Wallpapers/Castle/castleMap.jpeg");
         spriteMapView.setTexture(textureMapView);
         spriteMapView.setPosition(rectMapX, rectMapY);
         spriteMapView.setScale(0.38f, 0.38f);
@@ -981,7 +981,7 @@ void Assets::drawDecayMapButtons()
 {
     if (this->initDecayMapTexture == false) {
         //Load Movable Arrow
-        multiArrowTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/multiarrow.png");
+        multiArrowTexture.loadFromFile("Assets/Game_Resources/multiarrow.png");
         multiArrow.setTexture(multiArrowTexture);
 
         //Hide Forest Textures
@@ -998,7 +998,7 @@ void Assets::drawDecayMapButtons()
         }
 
         //Load Map View
-        decayTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/Decay/decayMap.jpeg");
+        decayTexture.loadFromFile("Assets/Wallpapers/Decay/decayMap.jpeg");
         decayMapView.setTexture(decayTexture);
         decayMapView.setPosition(rectMapX, rectMapY);
         decayMapView.setScale(0.39f, 0.39f);
@@ -1171,7 +1171,7 @@ void Assets::playerSprite()
 {
     //Initialize Player Sprite
     if (this->playerLoadOnce == true) {
-        playerTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/player.png");
+        playerTexture.loadFromFile("Assets/Sprites/player.png");
         spriteElements[4].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         this->playerLoadOnce = false;
     }
@@ -1184,7 +1184,7 @@ void Assets::playerSprite()
         break;
     case 0:
         if (this->playerInit == false) {
-            playerTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/player.png");
+            playerTexture.loadFromFile("Assets/Sprites/player.png");
             spriteElements[4].setPosition(sf::Vector2f(50.0f, 100.0f));
             spriteRect[0].setPosition(50.0f, 100.0f);
             spriteText[0].setPosition(50.0f, 253.0f);
@@ -1204,7 +1204,7 @@ void Assets::spadeSprite()
 {
     //Initialize Spade Sprite
     if (this->spadeLoadOnce == true) {
-        spadeTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixel.png");
+        spadeTexture.loadFromFile("Assets/Sprites/spadePixel.png");
         spriteElements[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         this->spadeLoadOnce = false;
     }
@@ -1216,7 +1216,7 @@ void Assets::spadeSprite()
         break;
     case 0:
         if (this->spadeInit == false) {
-            spadeTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixel.png");
+            spadeTexture.loadFromFile("Assets/Sprites/spadePixel.png");
             spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
             this->spadeInit = true;
@@ -1224,7 +1224,7 @@ void Assets::spadeSprite()
         break;
     case 1:
         if (this->spadeInit == false) {
-            spadeTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/spadePixelAngry.png");
+            spadeTexture.loadFromFile("Assets/Sprites/spadePixelAngry.png");
             this->spadeInit = true;
         }
         break;
@@ -1281,15 +1281,16 @@ void Assets::hostileSprite()
 {
     //Initialize Hostile Sprite
     if (this->hostileLoadOnce == true) {
-        hostileTextureWalker.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decaywalkersprite.jpeg");
-        hostileTextureWolf.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/wolfsprite.png");
-        hostileTextureKnight.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/decayknight.png");
-        hostileTextureTree.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/hostileTreeSprite.jpeg");
-        hostileTextureNun.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/lostNunSprite.jpeg");
-        hostileTextureDecapod.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/abyssalDecapodSprite.jpeg");
+        hostileTextureWalker.loadFromFile("Assets/HostileSprites/decaywalkersprite.jpeg");
+        hostileTextureWolf.loadFromFile("Assets/HostileSprites/wolfsprite.png");
+        hostileTextureKnight.loadFromFile("Assets/HostileSprites/decayknight.png");
+        hostileTextureTree.loadFromFile("Assets/HostileSprites/hostileTreeSprite.png");
+        hostileTextureNun.loadFromFile("Assets/HostileSprites/lostNunSprite.jpeg");
+        hostileTextureDecapod.loadFromFile("Assets/HostileSprites/abyssalDecapodSprite.jpeg");
         spriteElements[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteRect[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteText[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        spriteElements[5].setScale(0.15f, 0.15f);
         this->hostileLoadOnce = false;
     }
     //Pick Hostile Sprite
@@ -1311,7 +1312,6 @@ void Assets::hostileSprite()
             spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            spriteElements[5].setScale(0.15f, 0.15f);
             this->hostileInit = true;
         }
         break;
@@ -1347,7 +1347,6 @@ void Assets::hostileSprite()
             spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            spriteElements[5].setScale(0.318f, 0.318f);
             this->hostileInit = true;
         }
         break;
@@ -1359,7 +1358,6 @@ void Assets::hostileSprite()
             spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            spriteElements[5].setScale(0.15f, 0.15f);
             this->hostileInit = true;
         }
         break;
@@ -1371,7 +1369,6 @@ void Assets::hostileSprite()
             spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            spriteElements[5].setScale(0.15f, 0.15f);
             this->hostileInit = true;
         }
         break;
@@ -1382,7 +1379,7 @@ void Assets::siwardSprite()
 {
     //Initialize Siward Sprite
     if (this->siwardLoadOnce == true) {
-        siwardTexture.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/siward.png");
+        siwardTexture.loadFromFile("Assets/Sprites/siward.png");
         spriteElements[6].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         this->siwardLoadOnce = false;
     }

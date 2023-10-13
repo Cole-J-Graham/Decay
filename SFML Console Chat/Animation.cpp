@@ -6,13 +6,13 @@ Animation::Animation()
 
 	this->zinTalkNot = true;
 
-	zin1.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinsprite.png");
-	zin2.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/zinspriteannoyed.png");
+	zin1.loadFromFile("Assets/Sprites/zinsprite.png");
+	zin2.loadFromFile("Assets/Sprites/zinspriteannoyed.png");
 
-	not1.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/alert1.png");
-	not2.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/alert2.png");
-	not3.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/alert3.png");
-	not4.loadFromFile("C:/Users/Cole/source/repos/SFML Console Chat/SFML Console Chat/Assets/Sprites/alert4.png");
+	not1.loadFromFile("Assets/Game_Resources/alert1.png");
+	not2.loadFromFile("Assets/Game_Resources/alert2.png");
+	not3.loadFromFile("Assets/Game_Resources/alert3.png");
+	not4.loadFromFile("Assets/Game_Resources/alert4.png");
 
 	zinSprite.setPosition(50.0f, 345.0f);
 	zinSprite.setScale(0.0504f, 0.0504f);
