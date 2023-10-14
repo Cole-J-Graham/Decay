@@ -31,7 +31,6 @@ Assets::Assets()
     this->playerLoadOnce = true;
     this->zinLoadOnce = true;
     this->spadeLoadOnce = true;
-    this->hostileLoadOnce = true;
     this->startFrame = true;
     this->endFrame = false;
 
@@ -109,6 +108,30 @@ Assets::Assets()
     decapodEntity.loadFromFile("Assets/Entities/abyssalDecapodEntity.jpeg");
     wolfEntity.loadFromFile("Assets/Entities/wolfEntity.jpeg");
     knightEntity.loadFromFile("Assets/Entities/knightEntity.jpeg");
+    hazeEntity.loadFromFile("Assets/Entities/hazeDemonEntity.jpeg");
+    jesterEntity.loadFromFile("Assets/Entities/courtJesterEntity.jpeg");
+    wallMimicEntity.loadFromFile("Assets/Entities/wallMimicEntity.jpeg");
+    lostKnightEntity.loadFromFile("Assets/Entities/lostKnightEntity.jpeg");
+    phantomEntity.loadFromFile("Assets/Entities/phantomEntity.jpeg");
+    eaterEntity.loadFromFile("Assets/Entities/skinEaterEntity.jpeg");
+    //Load Hostile Sprites
+    hostileTextureWalker.loadFromFile("Assets/HostileSprites/decaywalkersprite.jpeg");
+    hostileTextureWolf.loadFromFile("Assets/HostileSprites/wolfsprite.png");
+    hostileTextureKnight.loadFromFile("Assets/HostileSprites/decayknight.png");
+    hostileTextureTree.loadFromFile("Assets/HostileSprites/hostileTreeSprite.png");
+    hostileTextureNun.loadFromFile("Assets/HostileSprites/lostNunSprite.jpeg");
+    hostileTextureDecapod.loadFromFile("Assets/HostileSprites/abyssalDecapodSprite.jpeg");
+    hostileTextureHaze.loadFromFile("Assets/HostileSprites/hazedemonSprite.jpeg");
+    hostileTextureJester.loadFromFile("Assets/HostileSprites/courtJesterSprite.jpeg");
+    hostileTextureWallMimic.loadFromFile("Assets/HostileSprites/wallMimicSprite.jpeg");
+    hostileTextureLostKnight.loadFromFile("Assets/HostileSprites/lostKnightSprite.jpeg");
+    hostileTexturePhantom.loadFromFile("Assets/HostileSprites/phantomSprite.jpeg");
+    hostileTextureEater.loadFromFile("Assets/HostileSprites/skinEaterSprite.jpeg");
+
+    spriteElements[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+    spriteRect[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+    spriteText[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+    spriteElements[5].setScale(0.15f, 0.15f);
 
     /*bufferClick.loadFromFile("Assets/Sounds/click.wav");
     bufferCampfire.loadFromFile("Assets/Sounds/campfire.wav");
@@ -681,6 +704,24 @@ void Assets::drawEntityViewer()
         break;
     case 10:
         entitySprite.setTexture(knightEntity);
+        break;
+    case 11:
+        entitySprite.setTexture(hazeEntity);
+        break;
+    case 12:
+        entitySprite.setTexture(jesterEntity);
+        break;
+    case 13:
+        entitySprite.setTexture(wallMimicEntity);
+        break;
+    case 14:
+        entitySprite.setTexture(lostKnightEntity);
+        break;
+    case 15:
+        entitySprite.setTexture(phantomEntity);
+        break;
+    case 16:
+        entitySprite.setTexture(eaterEntity);
         break;
     }
     //Select whether or not the sprite is visible
@@ -1287,20 +1328,6 @@ void Assets::zinSprite()
 
 void Assets::hostileSprite()
 {
-    //Initialize Hostile Sprite
-    if (this->hostileLoadOnce == true) {
-        hostileTextureWalker.loadFromFile("Assets/HostileSprites/decaywalkersprite.jpeg");
-        hostileTextureWolf.loadFromFile("Assets/HostileSprites/wolfsprite.png");
-        hostileTextureKnight.loadFromFile("Assets/HostileSprites/decayknight.png");
-        hostileTextureTree.loadFromFile("Assets/HostileSprites/hostileTreeSprite.png");
-        hostileTextureNun.loadFromFile("Assets/HostileSprites/lostNunSprite.jpeg");
-        hostileTextureDecapod.loadFromFile("Assets/HostileSprites/abyssalDecapodSprite.jpeg");
-        spriteElements[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
-        spriteRect[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
-        spriteText[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
-        spriteElements[5].setScale(0.15f, 0.15f);
-        this->hostileLoadOnce = false;
-    }
     //Pick Hostile Sprite
     switch (this->hostileCounter) {
     case -1:
@@ -1374,6 +1401,72 @@ void Assets::hostileSprite()
         if (this->hostileInit == false) {
             hostileTextureDecapod.setRepeated(false);
             spriteElements[5].setTexture(hostileTextureDecapod);
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
+            this->hostileInit = true;
+        }
+        break;
+    case 7:
+        //Hostile Haze Demon
+        if (this->hostileInit == false) {
+            hostileTextureHaze.setRepeated(false);
+            spriteElements[5].setTexture(hostileTextureHaze);
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
+            this->hostileInit = true;
+        }
+        break;
+    case 8:
+        //Hostile Jester
+        if (this->hostileInit == false) {
+            hostileTextureJester.setRepeated(false);
+            spriteElements[5].setTexture(hostileTextureJester);
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
+            this->hostileInit = true;
+        }
+        break;
+    case 9:
+        //Hostile Wall Mimic
+        if (this->hostileInit == false) {
+            hostileTextureWallMimic.setRepeated(false);
+            spriteElements[5].setTexture(hostileTextureWallMimic);
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
+            this->hostileInit = true;
+        }
+        break;
+    case 10:
+        //Hostile Lost Knight
+        if (this->hostileInit == false) {
+            hostileTextureLostKnight.setRepeated(false);
+            spriteElements[5].setTexture(hostileTextureLostKnight);
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
+            this->hostileInit = true;
+        }
+        break;
+    case 11:
+        //Hostile Phantom
+        if (this->hostileInit == false) {
+            hostileTexturePhantom.setRepeated(false);
+            spriteElements[5].setTexture(hostileTexturePhantom);
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
+            this->hostileInit = true;
+        }
+        break;
+    case 12:
+        //Hostile Skin Eater
+        if (this->hostileInit == false) {
+            hostileTextureEater.setRepeated(false);
+            spriteElements[5].setTexture(hostileTextureEater);
             spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));

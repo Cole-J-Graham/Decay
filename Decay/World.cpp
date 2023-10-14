@@ -218,11 +218,13 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
         window.draw(assets.tipBoxText);
 
         //Draw Animations
-        animate.drawAnimations();
+        animate.drawAnimations(assets);
         animate.animateDecayWarn();
         window.draw(animate.zinSprite);
         window.draw(animate.notSprite);
         window.draw(animate.decayWarn);
+        window.draw(animate.healSprite);
+        window.draw(animate.anvilSprite);
 
         if (assets.getInitMap() == true) {
             //Draw main map rect
@@ -1050,7 +1052,6 @@ void World::mapButtonsDecay(sf::RenderWindow& window, Assets& assets, Travel& tr
             this->buttonClick = true;
         }
 }
-
 
 //Map Functions
 void World::resetMapPosition(sf::RenderWindow& window, Assets& assets)

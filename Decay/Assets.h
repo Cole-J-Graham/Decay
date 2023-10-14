@@ -38,7 +38,6 @@ private:
 	bool playerLoadOnce;
 	bool zinLoadOnce;
 	bool spadeLoadOnce;
-	bool hostileLoadOnce;
 	bool startFrame;
 	bool endFrame;
 
@@ -375,27 +374,22 @@ public:
 	std::vector<sf::Text> spriteText{ textPlayer, textZin, textHostile,
 		textSpade, textSiward };
 
-	//Hostile Textures
-	sf::Texture hostileTextureWolf;
-	sf::Texture hostileTextureWalker;
-	sf::Texture hostileTextureKnight;
-	sf::Texture hostileTextureTree;
-	sf::Texture hostileTextureNun;
-	sf::Texture hostileTextureDecapod;
-
 	//Entity Viewer Objects
 	sf::Text entityBoxText;
 	sf::RectangleShape entityBoxHeader;
 	sf::RectangleShape entityBox;
 	sf::Sprite entitySprite;
+
 	//Viewer Files Main
 	sf::Texture blankEntity;
 	sf::Texture siwardEntityTexture;
 	sf::Texture spadeEntityForest;
 	sf::Texture spadeEntityCastle;
+
 	//Viewer Files Random Events
 	sf::Texture treeEntity;
 	sf::Texture obeliskEntity;
+
 	//Viewer Files Hostile Entities
 	sf::Texture decayEntity;
 	sf::Texture hostileTreeEntity;
@@ -403,6 +397,26 @@ public:
 	sf::Texture decapodEntity;
 	sf::Texture wolfEntity;
 	sf::Texture knightEntity;
+	sf::Texture hazeEntity;
+	sf::Texture jesterEntity;
+	sf::Texture wallMimicEntity;
+	sf::Texture lostKnightEntity;
+	sf::Texture phantomEntity;
+	sf::Texture eaterEntity;
+
+	//Hostile Sprite Textures
+	sf::Texture hostileTextureWolf;
+	sf::Texture hostileTextureWalker;
+	sf::Texture hostileTextureKnight;
+	sf::Texture hostileTextureTree;
+	sf::Texture hostileTextureNun;
+	sf::Texture hostileTextureDecapod;
+	sf::Texture hostileTextureHaze;
+	sf::Texture hostileTextureJester;
+	sf::Texture hostileTextureWallMimic;
+	sf::Texture hostileTextureLostKnight;
+	sf::Texture hostileTexturePhantom;
+	sf::Texture hostileTextureEater;
 
 	//Sounds
 	sf::Sound sound;

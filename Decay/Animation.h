@@ -5,6 +5,7 @@
 #include<SFML/Graphics.hpp>
 #include<SFML/Graphics/Text.hpp>
 #include<SFML/Audio.hpp>
+#include"Assets.h"
 
 class Animation
 {
@@ -29,8 +30,22 @@ public:
 	sf::Texture not3;
 	sf::Texture not4;
 
+	sf::Texture heal1;
+	sf::Texture heal2;
+	sf::Texture heal3;
+	sf::Texture heal4;
+	sf::Texture heal5;
+
+	sf::Texture anvil1;
+	sf::Texture anvil2;
+	sf::Texture anvil3;
+	sf::Texture anvil4;
+	sf::Texture anvil5;
+
 	sf::Sprite zinSprite;
 	sf::Sprite notSprite;
+	sf::Sprite healSprite;
+	sf::Sprite anvilSprite;
 
 	sf::Clock timer;
 	sf::Time elapsed;
@@ -42,9 +57,11 @@ public:
 	void animateZin();
 	void animateNotification();
 	void animateDecayWarn();
+	void animateAnvil(Assets& assets);
+	void animateHeal(Assets& assets);
 
 	//Draw Animation Functions
-	void drawAnimations();
+	void drawAnimations(Assets& assets);
 
 	//Getters
 	int& getAnimationFrame() { return this->animationFrame; };

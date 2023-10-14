@@ -45,6 +45,13 @@ Combat::Combat()
 	this->initHostileTreeMimic = false;
 	this->initHostileLostNun = false;
 
+	//Hostile Castle Bools
+	this->initHostileJester = false;
+	this->initHostileWallMimic = false;
+	this->initHostileLostKnight = false;
+	this->initHostilePhantom = false;
+	this->initHostileEater = false;
+
 	//Combat Control Flow Bool
 	this->turnPlayer = true;
 	this->turnZin = false;
@@ -607,7 +614,7 @@ void Combat::initDecapod(Assets& assets)
 		this->hostileEncounterText = "The horrifying abomination stands before you as its face wriggles with tentacles...";
 		this->hostileAtkPlayerText = "The horrifying abomination grabs ahold of you and strikes you violently!";
 		this->hostileAtkZinText = "The creature spits acid directly at Zin, hitting her with it!";
-		this->hostileAtkZinBlkText = "The abomination attempst to spit at Zin with acid, however you block it with your sword just in time!";
+		this->hostileAtkZinBlkText = "The abomination attempts to spit at Zin with acid, however you block it with your sword just in time!";
 
 		this->playerSlashAtkText = "You slash at the decapod, the creature screaming in pain!";
 		this->playerGuardAtkText = "You watch the decapods movements, preparing yourself to defend Zin from its attacks...";
@@ -617,5 +624,228 @@ void Combat::initDecapod(Assets& assets)
 		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
 		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the decapod!";
 		this->initHostileDecapod = true;
+	}
+}
+
+void Combat::initHazeDemon(Assets& assets)
+{
+	if (!this->initHostileDecapod) {
+		//Make entity viewer visible
+		assets.getSpriteViewerCounter() = 0;
+		//Make decapod entity visible
+		assets.getEntityViewerCounter() = 11;
+		//Allow combat to start
+		this->combatEnd = false;
+		//Set decapod sprite
+		assets.getHostileCounter() = 7;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		this->hostileHp = 75;
+		this->hostileHpMax = 75;
+		this->hostileStrike = 12;
+
+		this->hostileNameNoSpc = "Haze Demon";
+		this->hostileName = "Haze Demon ";
+		this->hostileEncounterText = "The horrifying abomination stands before you as it creatres a strange auora...";
+		this->hostileAtkPlayerText = "The horrifying abomination grabs ahold of you and strikes you violently!";
+		this->hostileAtkZinText = "The creature splices the air in front Zin, hitting her with the airwaves!";
+		this->hostileAtkZinBlkText = "The abomination attempts to split the air towards Zin, however you block it just in time!";
+
+		this->playerSlashAtkText = "You slash at the demon, the unholy entity screaming in pain!";
+		this->playerGuardAtkText = "You watch the demons movements, preparing yourself to defend Zin from its attacks...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the demon!";
+
+		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the demon!";
+		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the demon!";
+		this->initHostileDecapod = true;
+	}
+}
+
+//Combat Init Castle Hostiles
+void Combat::initCourtJester(Assets& assets)
+{
+	if (!this->initHostileJester) {
+		//Make entity viewer visible
+		assets.getSpriteViewerCounter() = 0;
+		//Make jester entity visible
+		assets.getEntityViewerCounter() = 12;
+		//Allow combat to start
+		this->combatEnd = false;
+		//Set jester sprite
+		assets.getHostileCounter() = 8;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		this->hostileHp = 80;
+		this->hostileHpMax = 80;
+		this->hostileStrike = 20;
+
+		this->hostileNameNoSpc = "Court Jester";
+		this->hostileName = "Court Jester ";
+		this->hostileEncounterText = "The jester stands with a horrifying grin...";
+		this->hostileAtkPlayerText = "The jester stabs you with a small dagger, brutally injuring you!";
+		this->hostileAtkZinText = "The jester sprints towards Zin, stabbing her with his knife!";
+		this->hostileAtkZinBlkText = "The jester runs towards Zin with a disgusting smile and a knife in his hand, however you block the knife just in time!";
+
+		this->playerSlashAtkText = "You slash at the jester, the clown smiling in pain!";
+		this->playerGuardAtkText = "You watch the jesters movements, preparing yourself to defend Zin from its attacks...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the jester, causing him to yell in pain!";
+
+		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the jester!";
+		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the jester!";
+		this->initHostileJester = true;
+	}
+}
+
+void Combat::initWallMimic(Assets& assets)
+{
+	if (!this->initHostileWallMimic) {
+		//Make entity viewer visible
+		assets.getSpriteViewerCounter() = 0;
+		//Make wall mimic entity visible
+		assets.getEntityViewerCounter() = 13;
+		//Allow combat to start
+		this->combatEnd = false;
+		//Set wall mimic sprite
+		assets.getHostileCounter() = 9;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		this->hostileHp = 80;
+		this->hostileHpMax = 80;
+		this->hostileStrike = 20;
+
+		this->hostileNameNoSpc = "Wall Mimic";
+		this->hostileName = "Wall Mimic ";
+		this->hostileEncounterText = "The walls begin to shift as the face appears before you.";
+		this->hostileAtkPlayerText = "The walls shift as the mimic launches towards you, striking you!";
+		this->hostileAtkZinText = "The mimic targets Zin, striking her with extreme force!";
+		this->hostileAtkZinBlkText = "The mimic attempts to bite Zin, however you tackle her out of the way just in time!";
+
+		this->playerSlashAtkText = "You slash at the mimic, the walls echoing back with screams!";
+		this->playerGuardAtkText = "You watch the movements of the walls carefully, preparing yourself to defend Zin from its attacks...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the walls and ceiling striking the mimic!";
+
+		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning that obliterates the ceiling and strikes the mimic!";
+		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the walls!";
+		this->initHostileWallMimic = true;
+	}
+}
+
+void Combat::initLostKnight(Assets& assets)
+{
+	if (!this->initHostileLostKnight) {
+		//Make entity viewer visible
+		assets.getSpriteViewerCounter() = 0;
+		//Make wall mimic entity visible
+		assets.getEntityViewerCounter() = 14;
+		//Allow combat to start
+		this->combatEnd = false;
+		//Set wall mimic sprite
+		assets.getHostileCounter() = 10;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		this->hostileHp = 100;
+		this->hostileHpMax = 100;
+		this->hostileStrike = 25;
+
+		this->hostileNameNoSpc = "Lost Knight";
+		this->hostileName = "Lost Knight ";
+		this->hostileEncounterText = "The knight stands in protest, ready to fight to the death...";
+		this->hostileAtkPlayerText = "The knight stabs you with his sword!";
+		this->hostileAtkZinText = "The knight dashes towards Zin, slightly hesitanting due to her being a child. Despite this, he still strikes her!";
+		this->hostileAtkZinBlkText = "The knight dashes towards Zin slashing at her, however you block the blade just in time!";
+
+		this->playerSlashAtkText = "You slash at the knight, the knight gritting his teeth in pain!";
+		this->playerGuardAtkText = "You watch the knights movements, preparing yourself to defend Zin from his attacks...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood into the knights helmet! He begins coughing and choking in pain!";
+
+		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the knight!";
+		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the knight!";
+		this->initHostileLostKnight = true;
+	}
+}
+
+void Combat::initPhantom(Assets& assets)
+{
+	if (!this->initHostilePhantom) {
+		//Make entity viewer visible
+		assets.getSpriteViewerCounter() = 0;
+		//Make wall mimic entity visible
+		assets.getEntityViewerCounter() = 15;
+		//Allow combat to start
+		this->combatEnd = false;
+		//Set wall mimic sprite
+		assets.getHostileCounter() = 11;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		this->hostileHp = 120;
+		this->hostileHpMax = 120;
+		this->hostileStrike = 10;
+
+		this->hostileNameNoSpc = "Phantom";
+		this->hostileName = "Phantom ";
+		this->hostileEncounterText = "The phantom phases into existence right before you, charging...";
+		this->hostileAtkPlayerText = "The phantom appears right before you, striking you before you can react!";
+		this->hostileAtkZinText = "The phantom vanishes before reappearing next to Zin, using the opprotunity to strike her!";
+		this->hostileAtkZinBlkText = "The phantom runs towards Zin with a disgusting smirk, however you block the attack just in time!";
+
+		this->playerSlashAtkText = "You slash at the phantom, its physical form being caught by your blade!";
+		this->playerGuardAtkText = "You watch the phantoms movements, preparing yourself to defend Zin from its attacks...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the phantom!";
+
+		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the phantom!";
+		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the phantom!";
+		this->initHostilePhantom = true;
+	}
+}
+
+void Combat::initSkinEater(Assets& assets)
+{
+	if (!this->initHostileEater) {
+		//Make entity viewer visible
+		assets.getSpriteViewerCounter() = 0;
+		//Make wall mimic entity visible
+		assets.getEntityViewerCounter() = 16;
+		//Allow combat to start
+		this->combatEnd = false;
+		//Set wall mimic sprite
+		assets.getHostileCounter() = 12;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		this->hostileHp = 65;
+		this->hostileHpMax = 65;
+		this->hostileStrike = 8;
+
+		this->hostileNameNoSpc = "Skin Eater";
+		this->hostileName = "Skin Eater ";
+		this->hostileEncounterText = "The skin eater stands with a horrifying face, locking eyes with you...";
+		this->hostileAtkPlayerText = "The skin eater attempts to bite you but only grazes you!";
+		this->hostileAtkZinText = "The skin eater sprints towards Zin, lunging at her and striking her!";
+		this->hostileAtkZinBlkText = "The skin eater runs towards Zin, however you pull Zin out of the way just in time!";
+
+		this->playerSlashAtkText = "You slash at the skin eater, the abomination screaming in pain!";
+		this->playerGuardAtkText = "You watch the skin eaters movements, preparing yourself to defend Zin from its attacks...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the skin eater, causing it to yell in pain!";
+
+		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the skin eater!";
+		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the skin eater!";
+		this->initHostileEater = true;
 	}
 }

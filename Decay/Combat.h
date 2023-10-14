@@ -50,6 +50,13 @@ private:
 	bool initHostileLostNun;
 	bool initHostileDecapod;
 
+	//Hostile Castle Bools
+	bool initHostileJester;
+	bool initHostileWallMimic;
+	bool initHostileLostKnight;
+	bool initHostilePhantom;
+	bool initHostileEater;
+
 	//Combat Control Flow Bool
 	bool turnPlayer;
 	bool turnZin;
@@ -120,6 +127,14 @@ public:
 	void initDecayKnight(Assets& assets);
 	void initLostNun(Assets& assets);
 	void initDecapod(Assets& assets);
+	void initHazeDemon(Assets& assets);
+
+	//Combat Init Castle Hostiles
+	void initCourtJester(Assets& assets);
+	void initWallMimic(Assets& assets);
+	void initLostKnight(Assets& assets);
+	void initPhantom(Assets& assets);
+	void initSkinEater(Assets& assets);
 
 	//Hp Getters
 	int& getPlayerHp() { return this->playerHp; };
