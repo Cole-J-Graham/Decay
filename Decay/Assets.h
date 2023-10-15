@@ -38,6 +38,7 @@ private:
 	bool playerLoadOnce;
 	bool zinLoadOnce;
 	bool spadeLoadOnce;
+	bool hostileLoadOnce;
 	bool startFrame;
 	bool endFrame;
 
@@ -249,11 +250,13 @@ public:
 
 	//Stats Menu Vectors
 	std::vector<sf::RectangleShape> playerStatElements {rectStatsPointsBox, rectStrengthPointsBox,
-		rectFortitudePointsBox, rectVitalityPointsBox, playerStatsBoxButton, zinStatsBoxButton};
+		rectFortitudePointsBox, rectVitalityPointsBox, playerStatsBoxButton, zinStatsBoxButton };
 
-	std::vector<sf::Text> playerTextElements {statsPointsText, statsStrengthText,
-		statsFortitudeText, statsVitalityText, statsPointsTextTitle, statsStrengthTextTitle,
-		statsFortitudeTextTitle, statsVitalityTextTitle, playerStatsBoxButtonText, zinStatsBoxButtonText, statsText};
+	std::vector <sf::Text> playerTextPlus{ statsPointsText, statsStrengthText,
+	statsFortitudeText, statsVitalityText, playerStatsBoxButtonText, zinStatsBoxButtonText };
+
+	std::vector<sf::Text> playerTextElements { statsPointsTextTitle, statsStrengthTextTitle,
+		statsFortitudeTextTitle, statsVitalityTextTitle, statsText};
 
 	std::vector<sf::RectangleShape> zinStatElements {rectStatsPointsBoxZin, rectResolvePointsBox,
 		rectPatiencePointsBox, rectResiliencePointsBox, playerStatsBoxButton, zinStatsBoxButton};
@@ -389,6 +392,7 @@ public:
 	//Viewer Files Random Events
 	sf::Texture treeEntity;
 	sf::Texture obeliskEntity;
+	sf::Texture strangeCreature;
 
 	//Viewer Files Hostile Entities
 	sf::Texture decayEntity;
@@ -403,6 +407,11 @@ public:
 	sf::Texture lostKnightEntity;
 	sf::Texture phantomEntity;
 	sf::Texture eaterEntity;
+	sf::Texture limbSplitterEntity;
+	sf::Texture burrowerEntity;
+	sf::Texture chatterMouthEntity;
+	sf::Texture reclusEntity;
+	sf::Texture tendrilAlphaEntity;
 
 	//Hostile Sprite Textures
 	sf::Texture hostileTextureWolf;
@@ -417,6 +426,11 @@ public:
 	sf::Texture hostileTextureLostKnight;
 	sf::Texture hostileTexturePhantom;
 	sf::Texture hostileTextureEater;
+	sf::Texture hostileTextureLimbSplitter;
+	sf::Texture hostileTextureBurrower;
+	sf::Texture hostileTextureChatterMouth;
+	sf::Texture hostileTextureReclus;
+	sf::Texture hostileTextureAlphaEntity;
 
 	//Sounds
 	sf::Sound sound;
@@ -462,7 +476,12 @@ public:
 	Assets();
 	~Assets();
 
-	//Drawing Objects
+	//Core Functions
+	void loadSprites();
+	void loadSounds();
+	void loadEntities();
+
+	//Init Objects
 	void drawObjects();
 	void drawMainWindow();
 	void drawStats();
@@ -474,7 +493,6 @@ public:
 	void drawAnswerBoxes();
 	void drawTipBox();
 	void drawEntityViewer();
-
 
 	//Draw Map Segments
 	void drawMap();

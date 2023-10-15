@@ -57,6 +57,13 @@ private:
 	bool initHostilePhantom;
 	bool initHostileEater;
 
+	//Hostile Decay Bools
+	bool initHostileLimbSplitter;
+	bool initHostileBurrower;
+	bool initHostileChatterMouth;
+	bool initHostileReclus;
+	bool initHostileTendrilAlpha;
+
 	//Combat Control Flow Bool
 	bool turnPlayer;
 	bool turnZin;
@@ -135,6 +142,13 @@ public:
 	void initLostKnight(Assets& assets);
 	void initPhantom(Assets& assets);
 	void initSkinEater(Assets& assets);
+
+	//Combat Init Decay Hostiles
+	void initLimbSplitter(Assets& assets);
+	void initBurrower(Assets& assets);
+	void initChatterMouth(Assets& assets);
+	void initReclus(Assets& assets);
+	void initTendrilAlpha(Assets& assets);
 
 	//Hp Getters
 	int& getPlayerHp() { return this->playerHp; };

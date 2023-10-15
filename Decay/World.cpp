@@ -70,7 +70,7 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
                         this->mapButtons(window, assets, travel);
                     }
                     //Map Menu Bar Functionality
-                    this->menuBarStats(window, combat, player, assets); //Must be loaded before menuBar(window); to withhold functionality
+                    this->statsFunctionality(window, combat, player, assets); //Must be loaded before menuBar(window); to withhold functionality
                     this->menuBar(window, assets);
                     //Dialogue Box Functionality
                     this->dialogueCombatBox(window, combat, assets, travel, notevent);
@@ -153,7 +153,6 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Initial Draw In
     if (assets.getInitialDrawIn() == false) {
-        assets.windowIcon.loadFromFile("Assets/Game_Resources/shieldicon.jpeg");
         window.setIcon(assets.windowIcon.getSize().x, assets.windowIcon.getSize().y, assets.windowIcon.getPixelsPtr()); //set window icon
         assets.setInitialDrawInTrue();
     }
@@ -182,7 +181,7 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
             window.draw(assets.spriteRect[i]);
             window.draw(assets.spriteText[i]);
         }
-
+        //Draw combat elements
         for (int i = 0; i < assets.combatRect.size(); i++) {
             window.draw(assets.combatRect[i]);
             window.draw(assets.combatText[i]);
@@ -190,8 +189,8 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
 
         //Draw Bonfire Detection Rect
         if (travel.getBonfireInit() == true) {
-            assets.bonfireHealDetectionText.setPosition(mousePos.x - 5, mousePos.y + 15);
-            assets.bonfireSmithDetectionText.setPosition(mousePos.x - 5, mousePos.y + 15);
+            assets.bonfireHealDetectionText.setPosition(mousePos.x - 5.0f, mousePos.y + 15.0f);
+            assets.bonfireSmithDetectionText.setPosition(mousePos.x - 5.0f, mousePos.y + 15.0f);
             //Healing
             window.draw(assets.bonfireHealDetectionRect);
             window.draw(assets.bonfireHealDetectionText);
@@ -200,15 +199,15 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
             window.draw(assets.bonfireSmithDetectionText);
         }
 
-        //Draw all rectangle elements
+        //Draw rectangle elements
         for (int i = 0; i < assets.rectElements.size(); i++) {
             window.draw(assets.rectElements[i]);
         }
-        //Draw all text elements
+        //Draw text elements
         for (int i = 0; i < assets.textElements.size(); i++) {
             window.draw(assets.textElements[i]);
         }
-        //Draw all sprite elements
+        //Draw sprite elements
         for (int i = 0; i < assets.spriteElements.size(); i++) {
             window.draw(assets.spriteElements[i]);
         }
@@ -384,12 +383,12 @@ void World::greyOnHover(sf::RenderWindow& window, Assets& assets)
     //Player Stats Grey On Hover
     for (int i = 0; i < assets.playerStatElements.size(); i++) {
         if (assets.playerStatElements[i].getGlobalBounds().contains(mousePosF)) {
-            assets.playerStatElements[i].setFillColor(sf::Color::Black);
-            assets.playerTextElements[i].setFillColor(sf::Color::White);
+            assets.playerStatElements[i].setFillColor(sf::Color::Transparent);
+            assets.playerTextPlus[i].setFillColor(sf::Color::White);
         }
         else {
-            assets.playerStatElements[i].setFillColor(sf::Color::Black);
-            assets.playerTextElements[i].setFillColor(sf::Color(5, 5, 5));
+            assets.playerStatElements[i].setFillColor(sf::Color::White);
+            assets.playerTextPlus[i].setFillColor(sf::Color::Black);
         }
     }
 
@@ -447,13 +446,17 @@ void World::greyOnHover(sf::RenderWindow& window, Assets& assets)
 
 void World::printPlayerStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
 {
-    assets.playerTextElements[10].setString("HP: " + std::to_string(combat.getPlayerHp()) + "/" +
+    assets.playerTextElements[4].setString("HP: " + std::to_string(combat.getPlayerHp()) + "/" +
         std::to_string(combat.getPlayerHpMax()) + "\nDECAY: " + std::to_string(player.getDecay()) + "/" +
         std::to_string(player.getDecayMax()) + "\n\nSP: " + std::to_string(player.getSp()) +
         "\nEXP: " + std::to_string(player.getExp()) + "/" + std::to_string(player.getExpNext()));
 
     for (int i = 0; i < assets.playerStatElements.size(); i++) {
         window.draw(assets.playerStatElements[i]);
+    }
+
+    for (int i = 0; i < assets.playerTextPlus.size(); i++) {
+        window.draw(assets.playerTextPlus[i]);
     }
 
     for (int i = 0; i < assets.playerTextElements.size(); i++) {
@@ -666,7 +669,7 @@ void World::menuBar(sf::RenderWindow& window, Assets& assets)
     }
 }
 
-void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& player, Assets& assets)
+void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player& player, Assets& assets)
 {
     //Add Text
     player.statsText(assets);
@@ -692,7 +695,7 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
                 player.setLevelInc();
                 player.setSpInc();
                 player.getExp() -= player.getExpNext();
-                assets.playerTextElements[4].setString("LEVEL " + std::to_string(player.getLevel()));
+                assets.playerTextElements[0].setString("LEVEL " + std::to_string(player.getLevel()));
                 assets.text.setString("Level up achieved. Level " + std::to_string(player.getLevel()) + " reached. One SP point acquired...");
                 combat.updateStats(assets, player);
             }
@@ -709,7 +712,7 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
             if (player.getSp() >= 1) {
                 player.setStrengthInc();
                 player.setSpDec();
-                assets.playerTextElements[5].setString("STRENGTH " + std::to_string(player.getStrength()));
+                assets.playerTextElements[1].setString("STRENGTH " + std::to_string(player.getStrength()));
                 assets.text.setString("Strength improved. Level " + std::to_string(player.getStrength()) + " in strength reached. One SP point spent...");
                 combat.updateStats(assets, player);
             }
@@ -725,7 +728,7 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
             if (player.getSp() >= 1) {
                 player.setFortitudeInc();
                 player.setSpDec();
-                assets.playerTextElements[6].setString("FORTITUDE " + std::to_string(player.getFortitude()));
+                assets.playerTextElements[2].setString("FORTITUDE " + std::to_string(player.getFortitude()));
                 assets.text.setString("Fortitude improved. Level " + std::to_string(player.getFortitude()) + " in fortitude reached. One SP point spent...");
                 combat.updateStats(assets, player);
             }
@@ -743,7 +746,7 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
                 player.setSpDec();
                 combat.getPlayerHp() += player.getVitality();
                 combat.getPlayerHpMax() = combat.getPlayerHp();
-                assets.playerTextElements[7].setString("VITALITY " + std::to_string(player.getVitality()));
+                assets.playerTextElements[3].setString("VITALITY " + std::to_string(player.getVitality()));
                 assets.text.setString("Vitality improved. Level " + std::to_string(player.getVitality()) + " in vitality reached. One SP point spent...");
                 combat.updateStats(assets, player);
             }
@@ -755,7 +758,7 @@ void World::menuBarStats(sf::RenderWindow& window, Combat& combat, Player& playe
     }
     //Zin Stats Level up Functionality
     if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
-        if (assets.zinStatElements[0].getGlobalBounds().contains(mousePosF)) {
+        if (assets.zinStatElements[4].getGlobalBounds().contains(mousePosF)) {
             if (player.getZinExp() >= player.getZinExpNext()) {
                 player.setZinLevelInc();
                 player.setZinSpInc();
@@ -903,8 +906,8 @@ void World::movableBox(sf::RenderWindow& window, Assets& assets)
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
     if (assets.getMovable() == true) {
-        assets.getRectMapX() = mousePos.x - 365;
-        assets.getRectMapY() = mousePos.y - 23;
+        assets.getRectMapX() = mousePos.x - 365.0f;
+        assets.getRectMapY() = mousePos.y - 23.0f;
         this->resetMapPosition(window, assets);
     }
 }

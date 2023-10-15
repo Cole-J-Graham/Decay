@@ -59,10 +59,10 @@ void Player::combatReward()
 
 void Player::statsText(Assets& assets)
 {
-	assets.playerTextElements[4].setString("LEVEL " + std::to_string(this->level));
-	assets.playerTextElements[5].setString("STRENGTH " + std::to_string(this->strength));
-	assets.playerTextElements[6].setString("FORTITUDE " + std::to_string(this->fortitude));
-	assets.playerTextElements[7].setString("VITALITY " + std::to_string(this->vitality));
+	assets.playerTextElements[0].setString("LEVEL " + std::to_string(this->level));
+	assets.playerTextElements[1].setString("STRENGTH " + std::to_string(this->strength));
+	assets.playerTextElements[2].setString("FORTITUDE " + std::to_string(this->fortitude));
+	assets.playerTextElements[3].setString("VITALITY " + std::to_string(this->vitality));
 
 	assets.zinTextElements[4].setString("LEVEL " + std::to_string(this->zinLevel));
 	assets.zinTextElements[5].setString("RESOLVE " + std::to_string(this->zinResolve));

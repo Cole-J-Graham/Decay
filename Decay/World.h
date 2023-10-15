@@ -78,7 +78,7 @@ public:
 	void mainMenuButtons(sf::RenderWindow& window, Assets& assets, Travel& travel, Animation& animate);
 	void travelButtons(sf::RenderWindow& window, Assets& assets, Travel& travel, Animation& animate, Player& player);
 	void menuBar(sf::RenderWindow& window, Assets& assets);
-	void menuBarStats(sf::RenderWindow& window, Combat& combat, Player& player, Assets& assets);
+	void statsFunctionality(sf::RenderWindow& window, Combat& combat, Player& player, Assets& assets);
 	void dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& assets, Travel& travel, Event& notevent);
 	void movableBox(sf::RenderWindow& window, Assets& assets);
 	void printToolTip(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);

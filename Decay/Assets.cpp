@@ -31,6 +31,7 @@ Assets::Assets()
     this->playerLoadOnce = true;
     this->zinLoadOnce = true;
     this->spadeLoadOnce = true;
+    this->hostileLoadOnce = true;
     this->startFrame = true;
     this->endFrame = false;
 
@@ -83,37 +84,30 @@ Assets::Assets()
     //Strings
     this->playerName = "player";
 
+    //Load game assets
+    this->loadSprites();
+    this->loadEntities();
+    this->loadSounds();
+}
+
+Assets::~Assets()
+{
+
+}
+
+//Load Functions
+void Assets::loadSprites()
+{
+    //Game Resource Textures
+    windowIcon.loadFromFile("Assets/Game_Resources/shieldicon.jpeg");
     buttonTexture.loadFromFile("Assets/Game_Resources/buttonsolid.png");
     arrowTextureRight.loadFromFile("Assets/Game_Resources/arrowright.png");
     arrowTextureLeft.loadFromFile("Assets/Game_Resources/arrowleft.png");
-
     //Zin Sprites
     zinTexture.loadFromFile("Assets/Sprites/zinSprite.png");
     zinTextureHappy.loadFromFile("Assets/Sprites/zinHappy.png");
     zinTextureConcerned.loadFromFile("Assets/Sprites/zinConcerned.png");
     zinTextureAnnoyed.loadFromFile("Assets/Sprites/zinSpriteAnnoyed.png");
-
-    //Load Entity Viewer Files Main
-    blankEntity.loadFromFile("Assets/Entities/entityBlank.png");
-    siwardEntityTexture.loadFromFile("Assets/Entities/siwardEntity.jpeg");
-    spadeEntityForest.loadFromFile("Assets/Entities/spadeEntityForest.png");
-    spadeEntityCastle.loadFromFile("Assets/Entities/spadeEntityCastle.jpg");
-    //Load Entity Viewer Files Random Events
-    treeEntity.loadFromFile("Assets/Entities/entityTree.jpeg");
-    obeliskEntity.loadFromFile("Assets/Entities/obeliskEntity.jpeg");
-    //Load Entity Viewer Files Hostile Entities
-    decayEntity.loadFromFile("Assets/Entities/decayEntity.jpeg");
-    hostileTreeEntity.loadFromFile("Assets/Entities/hostileTreeSpriteEntity.jpeg");
-    lostNunEntity.loadFromFile("Assets/Entities/lostNunEntity.jpeg");
-    decapodEntity.loadFromFile("Assets/Entities/abyssalDecapodEntity.jpeg");
-    wolfEntity.loadFromFile("Assets/Entities/wolfEntity.jpeg");
-    knightEntity.loadFromFile("Assets/Entities/knightEntity.jpeg");
-    hazeEntity.loadFromFile("Assets/Entities/hazeDemonEntity.jpeg");
-    jesterEntity.loadFromFile("Assets/Entities/courtJesterEntity.jpeg");
-    wallMimicEntity.loadFromFile("Assets/Entities/wallMimicEntity.jpeg");
-    lostKnightEntity.loadFromFile("Assets/Entities/lostKnightEntity.jpeg");
-    phantomEntity.loadFromFile("Assets/Entities/phantomEntity.jpeg");
-    eaterEntity.loadFromFile("Assets/Entities/skinEaterEntity.jpeg");
     //Load Hostile Sprites
     hostileTextureWalker.loadFromFile("Assets/HostileSprites/decaywalkersprite.jpeg");
     hostileTextureWolf.loadFromFile("Assets/HostileSprites/wolfsprite.png");
@@ -127,13 +121,47 @@ Assets::Assets()
     hostileTextureLostKnight.loadFromFile("Assets/HostileSprites/lostKnightSprite.jpeg");
     hostileTexturePhantom.loadFromFile("Assets/HostileSprites/phantomSprite.jpeg");
     hostileTextureEater.loadFromFile("Assets/HostileSprites/skinEaterSprite.jpeg");
+    hostileTextureLimbSplitter.loadFromFile("Assets/HostileSprites/limbSplitterSprite.png");
+    hostileTextureBurrower.loadFromFile("Assets/HostileSprites/burrowerSprite.png");
+    hostileTextureChatterMouth.loadFromFile("Assets/HostileSprites/chatterMouthSprite.png");
+    hostileTextureReclus.loadFromFile("Assets/HostileSprites/reclusSprite.png");
+    hostileTextureAlphaEntity.loadFromFile("Assets/HostileSprites/tendrilAlphaSprite.png");
+}
 
-    spriteElements[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
-    spriteRect[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
-    spriteText[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
-    spriteElements[5].setScale(0.15f, 0.15f);
+void Assets::loadEntities()
+{
+    //Load Entity Viewer Files Main
+    blankEntity.loadFromFile("Assets/Entities/entityBlank.png");
+    siwardEntityTexture.loadFromFile("Assets/Entities/siwardEntity.jpeg");
+    spadeEntityForest.loadFromFile("Assets/Entities/spadeEntityForest.png");
+    spadeEntityCastle.loadFromFile("Assets/Entities/spadeEntityCastle.jpg");
+    //Load Entity Viewer Files Random Events
+    treeEntity.loadFromFile("Assets/Entities/entityTree.jpeg");
+    obeliskEntity.loadFromFile("Assets/Entities/obeliskEntity.jpeg");
+    strangeCreature.loadFromFile("Assets/Entities/strangeCreatureEntity.jpeg");
+    //Load Entity Viewer Files Hostile Entities
+    decayEntity.loadFromFile("Assets/Entities/decayEntity.jpeg");
+    hostileTreeEntity.loadFromFile("Assets/Entities/hostileTreeSpriteEntity.jpeg");
+    lostNunEntity.loadFromFile("Assets/Entities/lostNunEntity.jpeg");
+    decapodEntity.loadFromFile("Assets/Entities/abyssalDecapodEntity.jpeg");
+    wolfEntity.loadFromFile("Assets/Entities/wolfEntity.jpeg");
+    knightEntity.loadFromFile("Assets/Entities/knightEntity.jpeg");
+    hazeEntity.loadFromFile("Assets/Entities/hazeDemonEntity.jpeg");
+    jesterEntity.loadFromFile("Assets/Entities/courtJesterEntity.jpeg");
+    wallMimicEntity.loadFromFile("Assets/Entities/wallMimicEntity.jpeg");
+    lostKnightEntity.loadFromFile("Assets/Entities/lostKnightEntity.jpeg");
+    phantomEntity.loadFromFile("Assets/Entities/phantomEntity.jpeg");
+    eaterEntity.loadFromFile("Assets/Entities/skinEaterEntity.jpeg");
+    limbSplitterEntity.loadFromFile("Assets/Entities/limbSplitterEntity.jpeg");
+    burrowerEntity.loadFromFile("Assets/Entities/burrowerEntity.jpeg");
+    chatterMouthEntity.loadFromFile("Assets/Entities/chatterMouthEntity.jpeg");
+    reclusEntity.loadFromFile("Assets/Entities/reclusEntity.jpeg");
+    tendrilAlphaEntity.loadFromFile("Assets/Entities/tendrilAlphaEntity.jpeg");
+}
 
-    /*bufferClick.loadFromFile("Assets/Sounds/click.wav");
+void Assets::loadSounds()
+{
+    bufferClick.loadFromFile("Assets/Sounds/click.wav");
     bufferCampfire.loadFromFile("Assets/Sounds/campfire.wav");
     bufferDecay.loadFromFile("Assets/Sounds/decayblade.wav");
     bufferVengeance.loadFromFile("Assets/Sounds/vengeance.wav");
@@ -149,15 +177,10 @@ Assets::Assets()
     blipbuffer.loadFromFile("Assets/Sounds/blipSelect.wav");
     blipmenubuffer.loadFromFile("Assets/Sounds/menuclick.wav");
     bufferAngry.loadFromFile("Assets/Sounds/angry.wav");
-    bufferCombatStart.loadFromFile("Assets/Sounds/combatstart.wav");*/
+    bufferCombatStart.loadFromFile("Assets/Sounds/combatstart.wav");
 }
 
-Assets::~Assets()
-{
-
-}
-
-//Drawing Objects
+//Init Objects
 void Assets::drawObjects()
 {
     this->drawMainWindow();
@@ -212,7 +235,7 @@ void Assets::drawMainWindow()
             spriteElements[0].setPosition(1400.0f, 765.0f);
         }
         spriteElements[0].setTexture(arrowTextureRight);
-        spriteElements[0].setScale(0.04, 0.04);
+        spriteElements[0].setScale(0.04f, 0.04f);
         //Draw Back Button
         if (this->startFrame == true) {
             spriteElements[1].setPosition(10000.0f, 10000.0f);
@@ -222,7 +245,7 @@ void Assets::drawMainWindow()
         }
         buttonBackTexture.loadFromFile("Assets/Game_Resources/buttonsolid.png");
         spriteElements[1].setTexture(arrowTextureLeft);
-        spriteElements[1].setScale(0.04, 0.04);
+        spriteElements[1].setScale(0.04f, 0.04f);
         if (eventAssets == true) {
             //Make assets hidden during Events
             rectElements[2].setPosition(1.0f, 10000.0f);
@@ -270,93 +293,82 @@ void Assets::drawStats()
     rectStatsBox.setSize(sf::Vector2f(200.0f, 600.0f));
     rectStatsBox.setOutlineColor(sf::Color::White);
     rectStatsBox.setOutlineThickness(1.0f);
-    //Side Menu Player Stats Menu Rect
-    playerStatElements[4].setPosition(rectStatsBoxX + 200, rectStatsBoxY);
-    playerStatElements[4].setSize(sf::Vector2f(20.0f, 120.0f));
-    playerStatElements[4].setOutlineColor(sf::Color::White);
-    playerStatElements[4].setOutlineThickness(1.0f);
-    //Side Menu Player Stats Menu Rect Text
-    playerTextElements[8].setFont(font);
-    playerTextElements[8].setCharacterSize(16);
-    playerTextElements[8].setPosition(rectStatsBoxX + 205, rectStatsBoxY);
-    playerTextElements[8].setString("P\nL\nA\nY\nE\nR");
-    playerTextElements[8].setFillColor(sf::Color::White);
-    //Side Menu Zin Stats Menu Rect
-    playerStatElements[5].setPosition(rectStatsBoxX + 200, rectStatsBoxY + 120);
-    playerStatElements[5].setSize(sf::Vector2f(20.0f, 100.0f));
-    playerStatElements[5].setOutlineColor(sf::Color::White);
-    playerStatElements[5].setOutlineThickness(1.0f);
-    //Side Menu Zin Stats Menu Rect Text
-    playerTextElements[9].setFont(font);
-    playerTextElements[9].setCharacterSize(16);
-    playerTextElements[9].setPosition(rectStatsBoxX + 205, rectStatsBoxY + 120);
-    playerTextElements[9].setString("\nZ\nI\nN");
-    playerTextElements[9].setFillColor(sf::Color::White);
-    //Hp text
-    playerTextElements[10].setFont(font);
-    playerTextElements[10].setCharacterSize(16);
-    playerTextElements[10].setFillColor(sf::Color(sf::Color::White));
-    playerTextElements[10].setPosition(rectStatsBoxX, rectStatsBoxY);
+
+    //Player Stat Elements Loop
+    for (int i = 0; i < playerStatElements.size(); i++) {
+        playerStatElements[i].setOutlineColor(sf::Color::White);
+        playerStatElements[i].setOutlineThickness(1.0f);
+    }
     //Level up plus Box
     playerStatElements[0].setPosition(rectStatsBoxX, rectStatsBoxY + 100);
     playerStatElements[0].setSize(sf::Vector2f(20.0f, 20.0f));
-    playerStatElements[0].setOutlineColor(sf::Color::White);
-    playerStatElements[0].setOutlineThickness(1.0f);
     //Strength plus box
     playerStatElements[1].setPosition(rectStatsBoxX, rectStatsBoxY + 180);
     playerStatElements[1].setSize(sf::Vector2f(20.0f, 20.0f));
-    playerStatElements[1].setOutlineColor(sf::Color::White);
-    playerStatElements[1].setOutlineThickness(1.0f);
     //Fortitude plus box
     playerStatElements[2].setPosition(rectStatsBoxX, rectStatsBoxY + 160);
     playerStatElements[2].setSize(sf::Vector2f(20.0f, 20.0f));
-    playerStatElements[2].setOutlineColor(sf::Color::White);
-    playerStatElements[2].setOutlineThickness(1.0f);
     //Vitality plus box
     playerStatElements[3].setPosition(rectStatsBoxX, rectStatsBoxY + 140);
     playerStatElements[3].setSize(sf::Vector2f(20.0f, 20.0f));
-    playerStatElements[3].setOutlineColor(sf::Color::White);
-    playerStatElements[3].setOutlineThickness(1.0f);
+    //Side Menu Player Stats Menu Rect
+    playerStatElements[4].setPosition(rectStatsBoxX + 200, rectStatsBoxY);
+    playerStatElements[4].setSize(sf::Vector2f(20.0f, 120.0f));
+    //Side Menu Zin Stats Menu Rect
+    playerStatElements[5].setPosition(rectStatsBoxX + 200, rectStatsBoxY + 120);
+    playerStatElements[5].setSize(sf::Vector2f(20.0f, 100.0f));
+
     //Plus sign text for level up
-    playerTextElements[0].setFont(font);
-    playerTextElements[0].setCharacterSize(24);
-    playerTextElements[0].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 94);
-    playerTextElements[0].setString("+");
+    for (int i = 0; i < playerTextPlus.size(); i++) {
+        playerTextPlus[i].setFont(font);
+    }
+    playerTextPlus[0].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 94);
+    playerTextPlus[0].setString("+");
+    playerTextPlus[0].setCharacterSize(24);
     //plus sign text for strength
-    playerTextElements[1].setFont(font);
-    playerTextElements[1].setCharacterSize(24);
-    playerTextElements[1].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 174);
-    playerTextElements[1].setString("+");
+    playerTextPlus[1].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 174);
+    playerTextPlus[1].setString("+");
+    playerTextPlus[1].setCharacterSize(24);
     //plus sign text for fortitude
-    playerTextElements[2].setFont(font);
-    playerTextElements[2].setCharacterSize(24);
-    playerTextElements[2].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 154);
-    playerTextElements[2].setString("+");
+    playerTextPlus[2].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 154);
+    playerTextPlus[2].setString("+");
+    playerTextPlus[2].setCharacterSize(24);
     //plus sign text for vitality
-    playerTextElements[3].setFont(font);
-    playerTextElements[3].setCharacterSize(24);
-    playerTextElements[3].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 133);
-    playerTextElements[3].setString("+");
+    playerTextPlus[3].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 133);
+    playerTextPlus[3].setString("+");
+    playerTextPlus[3].setCharacterSize(24);
+    //Side Menu Player Stats Menu Rect Text
+    playerTextPlus[4].setCharacterSize(16);
+    playerTextPlus[4].setPosition(rectStatsBoxX + 205, rectStatsBoxY);
+    playerTextPlus[4].setString("P\nL\nA\nY\nE\nR");
+    //Side Menu Zin Stats Menu Rect Text
+    playerTextPlus[5].setCharacterSize(16);
+    playerTextPlus[5].setPosition(rectStatsBoxX + 205, rectStatsBoxY + 120);
+    playerTextPlus[5].setString("\nZ\nI\nN");
+
+    //Player Text Elements Loop
+    for (int i = 0; i < playerTextElements.size(); i++) {
+        playerTextElements[i].setFont(font);
+        playerTextElements[i].setFillColor(sf::Color::White);
+    }
     //Title next to level box
-    playerTextElements[4].setFont(font);
-    playerTextElements[4].setCharacterSize(14);
-    playerTextElements[4].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 100);
-    playerTextElements[4].setFillColor(sf::Color::White);
+    playerTextElements[0].setCharacterSize(14);
+    playerTextElements[0].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 100);
     //Title next to strength box
-    playerTextElements[5].setFont(font);
-    playerTextElements[5].setCharacterSize(14);
-    playerTextElements[5].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 180);
-    playerTextElements[5].setFillColor(sf::Color::White);
+    playerTextElements[1].setFont(font);
+    playerTextElements[1].setCharacterSize(14);
+    playerTextElements[1].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 180);
     //Title next to fortitude box
-    playerTextElements[6].setFont(font);
-    playerTextElements[6].setCharacterSize(14);
-    playerTextElements[6].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 160);
-    playerTextElements[6].setFillColor(sf::Color::White);
+    playerTextElements[2].setFont(font);
+    playerTextElements[2].setCharacterSize(14);
+    playerTextElements[2].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 160);
     //Title next to vitality box
-    playerTextElements[7].setFont(font);
-    playerTextElements[7].setCharacterSize(14);
-    playerTextElements[7].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 140);
-    playerTextElements[7].setFillColor(sf::Color::White);
+    playerTextElements[3].setFont(font);
+    playerTextElements[3].setCharacterSize(14);
+    playerTextElements[3].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 140);
+    //Hp text
+    playerTextElements[4].setCharacterSize(16);
+    playerTextElements[4].setPosition(rectStatsBoxX, rectStatsBoxY);
 }
 
 void Assets::drawInventory()
@@ -723,6 +735,21 @@ void Assets::drawEntityViewer()
     case 16:
         entitySprite.setTexture(eaterEntity);
         break;
+    case 17:
+        entitySprite.setTexture(limbSplitterEntity);
+        break;
+    case 18:
+        entitySprite.setTexture(burrowerEntity);
+        break;
+    case 19:
+        entitySprite.setTexture(chatterMouthEntity);
+        break;
+    case 20:
+        entitySprite.setTexture(reclusEntity);
+        break;
+    case 21:
+        entitySprite.setTexture(tendrilAlphaEntity);
+        break;
     }
     //Select whether or not the sprite is visible
     switch (this->spriteViewerCounter) {
@@ -740,7 +767,7 @@ void Assets::drawEntityViewer()
         break;
     }
 
-    entitySprite.setScale(0.244, 0.244f);
+    entitySprite.setScale(0.244f, 0.244f);
 }
 
 //Drawing Map Segments
@@ -786,8 +813,8 @@ void Assets::drawMap()
         }
         //Set button map selector positions
         buttonViewMap[0].setPosition(rectMapX, rectMapY - 25);
-        buttonViewMap[1].setPosition(rectMapX + 133.0, rectMapY - 25);
-        buttonViewMap[2].setPosition(rectMapX + 266.0, rectMapY - 25);
+        buttonViewMap[1].setPosition(rectMapX + 133.0f, rectMapY - 25.0f);
+        buttonViewMap[2].setPosition(rectMapX + 266.0f, rectMapY - 25.0f);
         for (int i = 0; i < buttonViewMapText.size(); i++) {
             buttonViewMapText[i].setFont(font);
             buttonViewMapText[i].setCharacterSize(14);
@@ -796,16 +823,16 @@ void Assets::drawMap()
         buttonViewMapText[0].setPosition(rectMapX, rectMapY - 25);
         buttonViewMapText[0].setString("Forest Plane");
 
-        buttonViewMapText[1].setPosition(rectMapX + 133.0, rectMapY - 25);
+        buttonViewMapText[1].setPosition(rectMapX + 133.0f, rectMapY - 25.0f);
         buttonViewMapText[1].setString("Castle Plane");
 
-        buttonViewMapText[2].setPosition(rectMapX + 266.0, rectMapY - 25);
+        buttonViewMapText[2].setPosition(rectMapX + 266.0f, rectMapY - 25.0f);
         buttonViewMapText[2].setString("Decay Plane");
         break;
     }
 
     multiArrow.setPosition(rectMapX + 340, rectMapY + 10);
-    multiArrow.setScale(0.06, 0.06);
+    multiArrow.setScale(0.06f, 0.06f);
     switch (mapCounter) {
     case 0:
         this->drawForestMapButtons();
@@ -1328,6 +1355,13 @@ void Assets::zinSprite()
 
 void Assets::hostileSprite()
 {
+    if (this->hostileLoadOnce) {
+        spriteElements[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        spriteElements[5].setScale(0.15f, 0.15f);
+        spriteRect[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        spriteText[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        this->hostileLoadOnce = false;
+    }
     //Pick Hostile Sprite
     switch (this->hostileCounter) {
     case -1:
@@ -1467,6 +1501,61 @@ void Assets::hostileSprite()
         if (this->hostileInit == false) {
             hostileTextureEater.setRepeated(false);
             spriteElements[5].setTexture(hostileTextureEater);
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
+            this->hostileInit = true;
+        }
+        break;
+    case 13:
+        //Hostile Limb Splitter
+        if (this->hostileInit == false) {
+            hostileTextureLimbSplitter.setRepeated(false);
+            spriteElements[5].setTexture(hostileTextureLimbSplitter);
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
+            this->hostileInit = true;
+        }
+        break;
+    case 14:
+        //Hostile Burrower
+        if (this->hostileInit == false) {
+            hostileTextureBurrower.setRepeated(false);
+            spriteElements[5].setTexture(hostileTextureBurrower);
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
+            this->hostileInit = true;
+        }
+        break;
+    case 15:
+        //Hostile ChatterMouth
+        if (this->hostileInit == false) {
+            hostileTextureChatterMouth.setRepeated(false);
+            spriteElements[5].setTexture(hostileTextureChatterMouth);
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
+            this->hostileInit = true;
+        }
+        break;
+    case 16:
+        //Hostile Reclus
+        if (this->hostileInit == false) {
+            hostileTextureReclus.setRepeated(false);
+            spriteElements[5].setTexture(hostileTextureReclus);
+            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
+            this->hostileInit = true;
+        }
+        break;
+    case 17:
+        //Hostile Tendril Alpha
+        if (this->hostileInit == false) {
+            hostileTextureAlphaEntity.setRepeated(false);
+            spriteElements[5].setTexture(hostileTextureAlphaEntity);
             spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
             spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));

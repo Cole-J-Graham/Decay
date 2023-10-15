@@ -52,6 +52,13 @@ Combat::Combat()
 	this->initHostilePhantom = false;
 	this->initHostileEater = false;
 
+	//Hostile Decay Bools
+	this->initHostileLimbSplitter = false;
+	this->initHostileBurrower = false;
+	this->initHostileChatterMouth = false;
+	this->initHostileReclus = false;
+	this->initHostileTendrilAlpha = false;
+
 	//Combat Control Flow Bool
 	this->turnPlayer = true;
 	this->turnZin = false;
@@ -847,5 +854,191 @@ void Combat::initSkinEater(Assets& assets)
 		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
 		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the skin eater!";
 		this->initHostileEater = true;
+	}
+}
+
+//Combat Init Decay Hostiles
+void Combat::initLimbSplitter(Assets& assets)
+{
+	if (!this->initHostileLimbSplitter) {
+		//Make entity viewer visible
+		assets.getSpriteViewerCounter() = 0;
+		//Make limb splitter entity visible
+		assets.getEntityViewerCounter() = 17;
+		//Allow combat to start
+		this->combatEnd = false;
+		//Set wall limb splitter sprite
+		assets.getHostileCounter() = 13;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		this->hostileHp = 250;
+		this->hostileHpMax = 250;
+		this->hostileStrike = 40;
+
+		this->hostileNameNoSpc = "Limb Splitter";
+		this->hostileName = "Limb Splitter ";
+		this->hostileEncounterText = "The limb splitter stares you down, waiting for its meal...";
+		this->hostileAtkPlayerText = "The limb splitter strikes you with one of its ligaments!";
+		this->hostileAtkZinText = "The limb splitter catches Zin off guard, striking her with one of its arms!";
+		this->hostileAtkZinBlkText = "The limb splitter attempts to impale Zin with one of its arms, however you tackle her out of the way just in time!";
+
+		this->playerSlashAtkText = "You slash at the limb splitter, the abomination screaming in pain!";
+		this->playerGuardAtkText = "You watch the limb splitters ligaments, preparing yourself to defend Zin from its attacks...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the limb splitter, causing it to screech in pain!";
+
+		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the limb splitter!";
+		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the limb splitter!";
+		this->initHostileLimbSplitter = true;
+	}
+}
+
+void Combat::initBurrower(Assets& assets)
+{
+	if (!this->initHostileBurrower) {
+		//Make entity viewer visible
+		assets.getSpriteViewerCounter() = 0;
+		//Make burrower entity visible
+		assets.getEntityViewerCounter() = 18;
+		//Allow combat to start
+		this->combatEnd = false;
+		//Set burrower sprite
+		assets.getHostileCounter() = 14;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		this->hostileHp = 250;
+		this->hostileHpMax = 250;
+		this->hostileStrike = 40;
+
+		this->hostileNameNoSpc = "Burrower";
+		this->hostileName = "Burrower ";
+		this->hostileEncounterText = "The burrower quickly rushes towards you, ready to attack...";
+		this->hostileAtkPlayerText = "The burrower crashes up from the ground, striking you with its spiked body!";
+		this->hostileAtkZinText = "The burrower catches Zin off guard, striking with one of its spiked quills!";
+		this->hostileAtkZinBlkText = "The burrower bursts from the wall, attempting to consume Zin whole, however you tackle her out of the way just in time!";
+
+		this->playerSlashAtkText = "You slash at the burrower, the abomination bleeding across the crimson floor!";
+		this->playerGuardAtkText = "You listen to the burrowers movements in the walls, preparing yourself to defend Zin from its attacks...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the burrower, causing it to scream out in pain!";
+
+		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the burrower!";
+		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the burrower!";
+		this->initHostileBurrower = true;
+	}
+}
+
+void Combat::initChatterMouth(Assets& assets)
+{
+	if (!this->initHostileChatterMouth) {
+		//Make entity viewer visible
+		assets.getSpriteViewerCounter() = 0;
+		//Make chatter mouth entity visible
+		assets.getEntityViewerCounter() = 19;
+		//Allow combat to start
+		this->combatEnd = false;
+		//Set chatter mouth sprite
+		assets.getHostileCounter() = 15;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		this->hostileHp = 265;
+		this->hostileHpMax = 265;
+		this->hostileStrike = 20;
+
+		this->hostileNameNoSpc = "Chatter Mouth";
+		this->hostileName = "Chatter Mouth ";
+		this->hostileEncounterText = "The chatter mouth quickly rushes towards you, ready to attack...";
+		this->hostileAtkPlayerText = "The chatter mouth uses its wide body to swing around the limited cave space, smashing you into the wall!";
+		this->hostileAtkZinText = "The chatter mouths body strikes Zin as it swings it violently!";
+		this->hostileAtkZinBlkText = "The chatter mouth attempts to drag Zin into its serrated mouth, however you firmly grab ahold of Zin's arm and pull her out of its grasp!";
+
+		this->playerSlashAtkText = "You slash at the chatter mouth, the abomination bleeding across the crimson floor!";
+		this->playerGuardAtkText = "You watch the chatter mouths movements, preparing yourself to defend Zin from its attacks...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the chatter mouth, causing it to scream out in pain!";
+
+		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the chatter mouth!";
+		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the chatter mouth!";
+		this->initHostileChatterMouth = true;
+	}
+}
+
+void Combat::initReclus(Assets& assets)
+{
+	if (!this->initHostileReclus) {
+		//Make entity viewer visible
+		assets.getSpriteViewerCounter() = 0;
+		//Make reclus entity visible
+		assets.getEntityViewerCounter() = 20;
+		//Allow combat to start
+		this->combatEnd = false;
+		//Set reclus sprite
+		assets.getHostileCounter() = 16;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		this->hostileHp = 265;
+		this->hostileHpMax = 265;
+		this->hostileStrike = 20;
+
+		this->hostileNameNoSpc = "Reclus";
+		this->hostileName = "Reclus ";
+		this->hostileEncounterText = "The reclus moves quickly rushing forwards ready to attack...";
+		this->hostileAtkPlayerText = "The reclus smashes you with its hand into the wall!";
+		this->hostileAtkZinText = "The reclus drags its hand across the floor, striking Zin!";
+		this->hostileAtkZinBlkText = "The reclus mouth attempts to drag Zin into its serrated mouth, however you firmly grab ahold of Zin's arm and pull her out of its grasp!";
+
+		this->playerSlashAtkText = "You slash at the reclus, the abomination bleeding across the crimson floor!";
+		this->playerGuardAtkText = "You watch the reclus carefully, preparing yourself to defend Zin from its attacks...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the reclus, causing it to scream out in pain!";
+
+		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the reclus!";
+		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the reclus!";
+		this->initHostileReclus = true;
+	}
+}
+
+void Combat::initTendrilAlpha(Assets& assets)
+{
+	if (!this->initHostileTendrilAlpha) {
+		//Make entity viewer visible
+		assets.getSpriteViewerCounter() = 0;
+		//Make tendril alpha entity visible
+		assets.getEntityViewerCounter() = 21;
+		//Allow combat to start
+		this->combatEnd = false;
+		//Set tendril alpha sprite
+		assets.getHostileCounter() = 17;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		this->hostileHp = 400;
+		this->hostileHpMax = 400;
+		this->hostileStrike = 25;
+
+		this->hostileNameNoSpc = "Tendril Alpha";
+		this->hostileName = "Tendril Alpha ";
+		this->hostileEncounterText = "The abomination moves quickly rushing forwards ready to attack...";
+		this->hostileAtkPlayerText = "The abomination smashes one of its tendrils into you!";
+		this->hostileAtkZinText = "The abomination strikes Zin with one of its tendrils!";
+		this->hostileAtkZinBlkText = "The alpha attempts to swarm Zin with its tendrils, however you jump in between each tendril slicing them away!";
+
+		this->playerSlashAtkText = "You slash at the alpha, its body squirming in pain!";
+		this->playerGuardAtkText = "You watch the abominations tendrils carefully, preparing yourself to defend Zin from its attacks...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the alpha, causing it to quiver!";
+
+		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the alpha!";
+		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the alpha!";
+		this->initHostileTendrilAlpha = true;
 	}
 }
