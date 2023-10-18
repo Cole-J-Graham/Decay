@@ -154,6 +154,7 @@
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Travel.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -163,6 +164,7 @@
     <ClInclude Include="Combat.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Sprites.h" />
     <ClInclude Include="Travel.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>

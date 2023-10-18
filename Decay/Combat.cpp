@@ -130,75 +130,75 @@ void Combat::updateMoves(Assets& assets, Player& player)
 }
 
 //Core Combat Functions
-void Combat::combatLoop(Assets& assets, Player& player, Animation& animate)
+void Combat::combatLoop(Sprites& sprites, Player& player, Animation& animate)
 {
 	if (!combatEnd) {
 		//Begin combat loop initialization
 		if (initCombatOnce == false) {
-			this->initCombat(assets, player);
+			this->initCombat(sprites, player);
 			initCombatOnce = true;
 		} //Reinitialize the combat loop for each pass
 		else if (reInitCombatOnce == false) {
-			this->reInitCombat(assets);
+			this->reInitCombat(sprites);
 			reInitCombatOnce = true;
 		}
 		//Players turn
 		if (!this->playerDead) {
-			this->playerTurn(assets);
+			this->playerTurn(sprites);
 		}
 		//Zin's Turn
 		if (!this->zinDead) {
-			this->zinTurn(assets);
+			this->zinTurn(sprites);
 		}
 		//Check if hostile is dead. If so, end combat
 		if (this->hostileHp <= 0) {
-			assets.setCombatAssetsFalse();
+			sprites.setCombatAssetsFalse();
 			player.combatReward();
-			assets.text.setString("You have killed the " + this->hostileNameNoSpc + ". " + std::to_string(player.getExp()) + " Exp gained...");
-			assets.getTipBoxCounter() = -1;
+			sprites.text.setString("You have killed the " + this->hostileNameNoSpc + ". " + std::to_string(player.getExp()) + " Exp gained...");
+			sprites.getTipBoxCounter() = -1;
 			//Make entity viewer blank again
-			assets.getEntityViewerCounter() = -1;
+			sprites.getEntityViewerCounter() = -1;
 			this->combatEnd = true;
 		}
 		//Hostiles turn
-		this->hostileTurn(assets);
+		this->hostileTurn(sprites);
 		//Check if player or Zin has died
 		if (this->playerHp <= 0 && !this->playerDead) {
 			this->playerDead = true;
-			assets.text.setString("You have been left unconscious...");
+			sprites.text.setString("You have been left unconscious...");
 		}
 		if (this->zinHp <= 0 && !this->zinDead) {
 			this->zinDead = true;
-			assets.text.setString("Zin has been left unconscious...");
+			sprites.text.setString("Zin has been left unconscious...");
 		}
 		//Check if both the player and Zin have died
 		if (this->playerHp <= 0 && zinHp <= 0) {
-			this->playerDeath(assets);
-			assets.text.setString("Your party has died...");
+			this->playerDeath(sprites);
+			sprites.text.setString("Your party has died...");
 		}
 	}
 }
 
-void Combat::initCombat(Assets& assets, Player& player)
+void Combat::initCombat(Sprites& sprites, Player& player)
 {
-	assets.soundCombatStart.play(); //Play combat Sfx
-	this->updateStats(assets, player);
-	assets.text.setString(this->hostileEncounterText);
-	assets.spriteText[0].setString(assets.getPlayerName() + "     " + std::to_string(this->playerHp) + "/" + std::to_string(this->playerHpMax));
-	assets.spriteText[1].setString("Zin            " + std::to_string(this->zinHp) + "/" + std::to_string(this->zinHpMax));
-	assets.spriteText[2].setString(this->hostileName + std::to_string(this->hostileHp) + "/" + std::to_string(this->hostileHpMax));
+	sprites.soundCombatStart.play(); //Play combat Sfx
+	//this->updateStats(assets, player);
+	sprites.text.setString(this->hostileEncounterText);
+	sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(this->playerHp) + "/" + std::to_string(this->playerHpMax));
+	sprites.spriteText[1].setString("Zin            " + std::to_string(this->zinHp) + "/" + std::to_string(this->zinHpMax));
+	sprites.spriteText[2].setString(this->hostileName + std::to_string(this->hostileHp) + "/" + std::to_string(this->hostileHpMax));
 
 	this->combatEnd = false;
-	assets.setPlayerCounterInc(); //Load Player sprite with counter
-	assets.setZinCounterInc(); //Load Zins sprite with counter
-	assets.setPlayerInitFalse(); //Make usable again
-	assets.setZinInitFalse(); //Make usable again
-	assets.setHostileInitFalse(); //Make usable again
-	assets.setCombatAssetsTrue(); //Utilize all combat assets
-	assets.setInitMapFalse(); //Hide the map if its open
-	assets.setInitStatsFalse(); //Hide stats if open
-	assets.setInitInventoryFalse(); //Hide inventory if open
-	assets.setPlayerTurnAssetsTrue(); //Allow player turn
+	sprites.getPlayerCounter()++; //Load Player sprite with counter
+	sprites.getZinCounter()++; //Load Zins sprite with counter
+	sprites.setPlayerInitFalse(); //Make usable again
+	sprites.setZinInitFalse(); //Make usable again
+	sprites.setHostileInitFalse(); //Make usable again
+	sprites.setCombatAssetsTrue(); //Utilize all combat assets
+	sprites.setInitMapFalse(); //Hide the map if its open
+	sprites.setInitStatsFalse(); //Hide stats if open
+	sprites.setInitInventoryFalse(); //Hide inventory if open
+	sprites.setPlayerTurnAssetsTrue(); //Allow player turn
 }
 
 void Combat::reInitCombat(Assets& assets)
@@ -416,17 +416,17 @@ void Combat::zinSelectMove(Assets& assets)
 }
 
 //Combat Init Forest Hostiles
-void Combat::initWolf(Assets& assets)
+void Combat::initWolf(Sprites& sprites)
 {
 	if (!this->initHostileWolf) {
 		//Make entity viewer visible
-		assets.getSpriteViewerCounter() = 0;
+		sprites.getSpriteViewerCounter() = 0;
 		//Make wolf entity visible
-		assets.getEntityViewerCounter() = 9;
+		sprites.getEntityViewerCounter() = 9;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set wolf sprite
-		assets.getHostileCounter() = 1;
+		sprites.getHostileCounter() = 1;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -453,17 +453,17 @@ void Combat::initWolf(Assets& assets)
 	}
 }
 
-void Combat::initDecayWalker(Assets& assets)
+void Combat::initDecayWalker(Sprites& sprites)
 {
 	if (!this->initHostileWalker) {
 		//Make entity viewer visible
-		assets.getSpriteViewerCounter() = 0;
+		sprites.getSpriteViewerCounter() = 0;
 		//Make decay walker entity visible
-		assets.getEntityViewerCounter() = 1;
+		sprites.getEntityViewerCounter() = 1;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set walker sprite
-		assets.getHostileCounter() = 2;
+		sprites.getHostileCounter() = 2;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -490,17 +490,17 @@ void Combat::initDecayWalker(Assets& assets)
 	}
 }
 
-void Combat::initHostileTree(Assets& assets)
+void Combat::initHostileTree(Sprites& sprites)
 {
 	if (!this->initHostileTreeMimic) {
 		//Make entity viewer visible
-		assets.getSpriteViewerCounter() = 0;
+		sprites.getSpriteViewerCounter() = 0;
 		//Make tree mimic entity visible
-		assets.getEntityViewerCounter() = 5;
+		sprites.getEntityViewerCounter() = 5;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set tree mimic sprite
-		assets.getHostileCounter() = 4;
+		sprites.getHostileCounter() = 4;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -527,17 +527,17 @@ void Combat::initHostileTree(Assets& assets)
 	}
 }
 
-void Combat::initDecayKnight(Assets& assets)
+void Combat::initDecayKnight(Sprites& sprites)
 {
 	if (!this->initHostileKnight) {
 		//Make entity viewer visible
-		assets.getSpriteViewerCounter() = 0;
+		sprites.getSpriteViewerCounter() = 0;
 		//Make tree mimic entity visible
-		assets.getEntityViewerCounter() = 10;
+		sprites.getEntityViewerCounter() = 10;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set wolf sprite
-		assets.getHostileCounter() = 3;
+		sprites.getHostileCounter() = 3;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -564,13 +564,13 @@ void Combat::initDecayKnight(Assets& assets)
 	}
 }
 
-void Combat::initLostNun(Assets& assets)
+void Combat::initLostNun(Sprites& sprites)
 {
 	if (!this->initHostileLostNun) {
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set nun sprite
-		assets.getHostileCounter() = 5;
+		sprites.getHostileCounter() = 5;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -597,17 +597,17 @@ void Combat::initLostNun(Assets& assets)
 	}
 }
 
-void Combat::initDecapod(Assets& assets)
+void Combat::initDecapod(Sprites& sprites)
 {
 	if (!this->initHostileDecapod) {
 		//Make entity viewer visible
-		assets.getSpriteViewerCounter() = 0;
+		sprites.getSpriteViewerCounter() = 0;
 		//Make decapod entity visible
-		assets.getEntityViewerCounter() = 8;
+		sprites.getEntityViewerCounter() = 8;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set decapod sprite
-		assets.getHostileCounter() = 6;
+		sprites.getHostileCounter() = 6;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -634,17 +634,17 @@ void Combat::initDecapod(Assets& assets)
 	}
 }
 
-void Combat::initHazeDemon(Assets& assets)
+void Combat::initHazeDemon(Sprites& sprites)
 {
 	if (!this->initHostileDecapod) {
 		//Make entity viewer visible
-		assets.getSpriteViewerCounter() = 0;
+		sprites.getSpriteViewerCounter() = 0;
 		//Make decapod entity visible
-		assets.getEntityViewerCounter() = 11;
+		sprites.getEntityViewerCounter() = 11;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set decapod sprite
-		assets.getHostileCounter() = 7;
+		sprites.getHostileCounter() = 7;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -672,17 +672,17 @@ void Combat::initHazeDemon(Assets& assets)
 }
 
 //Combat Init Castle Hostiles
-void Combat::initCourtJester(Assets& assets)
+void Combat::initCourtJester(Sprites& sprites)
 {
 	if (!this->initHostileJester) {
 		//Make entity viewer visible
-		assets.getSpriteViewerCounter() = 0;
+		sprites.getSpriteViewerCounter() = 0;
 		//Make jester entity visible
-		assets.getEntityViewerCounter() = 12;
+		sprites.getEntityViewerCounter() = 12;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set jester sprite
-		assets.getHostileCounter() = 8;
+		sprites.getHostileCounter() = 8;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -709,17 +709,17 @@ void Combat::initCourtJester(Assets& assets)
 	}
 }
 
-void Combat::initWallMimic(Assets& assets)
+void Combat::initWallMimic(Sprites& sprites)
 {
 	if (!this->initHostileWallMimic) {
 		//Make entity viewer visible
-		assets.getSpriteViewerCounter() = 0;
+		sprites.getSpriteViewerCounter() = 0;
 		//Make wall mimic entity visible
-		assets.getEntityViewerCounter() = 13;
+		sprites.getEntityViewerCounter() = 13;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set wall mimic sprite
-		assets.getHostileCounter() = 9;
+		sprites.getHostileCounter() = 9;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -746,17 +746,17 @@ void Combat::initWallMimic(Assets& assets)
 	}
 }
 
-void Combat::initLostKnight(Assets& assets)
+void Combat::initLostKnight(Sprites& sprites)
 {
 	if (!this->initHostileLostKnight) {
 		//Make entity viewer visible
-		assets.getSpriteViewerCounter() = 0;
+		sprites.getSpriteViewerCounter() = 0;
 		//Make wall mimic entity visible
-		assets.getEntityViewerCounter() = 14;
+		sprites.getEntityViewerCounter() = 14;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set wall mimic sprite
-		assets.getHostileCounter() = 10;
+		sprites.getHostileCounter() = 10;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -783,17 +783,17 @@ void Combat::initLostKnight(Assets& assets)
 	}
 }
 
-void Combat::initPhantom(Assets& assets)
+void Combat::initPhantom(Sprites& sprites)
 {
 	if (!this->initHostilePhantom) {
 		//Make entity viewer visible
-		assets.getSpriteViewerCounter() = 0;
+		sprites.getSpriteViewerCounter() = 0;
 		//Make wall mimic entity visible
-		assets.getEntityViewerCounter() = 15;
+		sprites.getEntityViewerCounter() = 15;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set wall mimic sprite
-		assets.getHostileCounter() = 11;
+		sprites.getHostileCounter() = 11;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -820,17 +820,17 @@ void Combat::initPhantom(Assets& assets)
 	}
 }
 
-void Combat::initSkinEater(Assets& assets)
+void Combat::initSkinEater(Sprites& sprites)
 {
 	if (!this->initHostileEater) {
 		//Make entity viewer visible
-		assets.getSpriteViewerCounter() = 0;
+		sprites.getSpriteViewerCounter() = 0;
 		//Make wall mimic entity visible
-		assets.getEntityViewerCounter() = 16;
+		sprites.getEntityViewerCounter() = 16;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set wall mimic sprite
-		assets.getHostileCounter() = 12;
+		sprites.getHostileCounter() = 12;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -858,17 +858,17 @@ void Combat::initSkinEater(Assets& assets)
 }
 
 //Combat Init Decay Hostiles
-void Combat::initLimbSplitter(Assets& assets)
+void Combat::initLimbSplitter(Sprites& sprites)
 {
 	if (!this->initHostileLimbSplitter) {
 		//Make entity viewer visible
-		assets.getSpriteViewerCounter() = 0;
+		sprites.getSpriteViewerCounter() = 0;
 		//Make limb splitter entity visible
-		assets.getEntityViewerCounter() = 17;
+		sprites.getEntityViewerCounter() = 17;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set wall limb splitter sprite
-		assets.getHostileCounter() = 13;
+		sprites.getHostileCounter() = 13;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -895,17 +895,17 @@ void Combat::initLimbSplitter(Assets& assets)
 	}
 }
 
-void Combat::initBurrower(Assets& assets)
+void Combat::initBurrower(Sprites& sprites)
 {
 	if (!this->initHostileBurrower) {
 		//Make entity viewer visible
-		assets.getSpriteViewerCounter() = 0;
+		sprites.getSpriteViewerCounter() = 0;
 		//Make burrower entity visible
-		assets.getEntityViewerCounter() = 18;
+		sprites.getEntityViewerCounter() = 18;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set burrower sprite
-		assets.getHostileCounter() = 14;
+		sprites.getHostileCounter() = 14;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -932,17 +932,17 @@ void Combat::initBurrower(Assets& assets)
 	}
 }
 
-void Combat::initChatterMouth(Assets& assets)
+void Combat::initChatterMouth(Sprites& sprites)
 {
 	if (!this->initHostileChatterMouth) {
 		//Make entity viewer visible
-		assets.getSpriteViewerCounter() = 0;
+		sprites.getSpriteViewerCounter() = 0;
 		//Make chatter mouth entity visible
-		assets.getEntityViewerCounter() = 19;
+		sprites.getEntityViewerCounter() = 19;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set chatter mouth sprite
-		assets.getHostileCounter() = 15;
+		sprites.getHostileCounter() = 15;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -969,17 +969,17 @@ void Combat::initChatterMouth(Assets& assets)
 	}
 }
 
-void Combat::initReclus(Assets& assets)
+void Combat::initReclus(Sprites& sprites)
 {
 	if (!this->initHostileReclus) {
 		//Make entity viewer visible
-		assets.getSpriteViewerCounter() = 0;
+		sprites.getSpriteViewerCounter() = 0;
 		//Make reclus entity visible
-		assets.getEntityViewerCounter() = 20;
+		sprites.getEntityViewerCounter() = 20;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set reclus sprite
-		assets.getHostileCounter() = 16;
+		sprites.getHostileCounter() = 16;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -1006,17 +1006,17 @@ void Combat::initReclus(Assets& assets)
 	}
 }
 
-void Combat::initTendrilAlpha(Assets& assets)
+void Combat::initTendrilAlpha(Sprites& sprites)
 {
 	if (!this->initHostileTendrilAlpha) {
 		//Make entity viewer visible
-		assets.getSpriteViewerCounter() = 0;
+		sprites.getSpriteViewerCounter() = 0;
 		//Make tendril alpha entity visible
-		assets.getEntityViewerCounter() = 21;
+		sprites.getEntityViewerCounter() = 21;
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set tendril alpha sprite
-		assets.getHostileCounter() = 17;
+		sprites.getHostileCounter() = 17;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;

@@ -36,10 +36,10 @@ World::~World()
 }
 
 //Core Functions
-void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate)
+void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate)
 {
     //Load SFX
-    assets.loadSFX();
+    sprites.loadSFX();
     //create the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat"/*, sf::Style::Fullscreen */ );
     window.setFramerateLimit(144);
@@ -58,69 +58,63 @@ void World::bootUp(Assets& assets, Event& notevent, Combat& combat, Player& play
             case sf::Event::MouseMoved:
                 { //Mouse Hover Actions
                     //Turn buttons grey on hover
-                    this->greyOnHover(window, assets);
-                    this->printToolTip(window, assets, notevent, combat, player);
+                    this->greyOnHover(window, sprites);
+                    this->printToolTip(window, sprites, notevent, combat, player);
                 }
                 break;
             case sf::Event::MouseButtonPressed:
                 { //Get Mouse Click Input
-                    this->travelButtons(window, assets, travel, animate, player);
+                    this->travelButtons(window, sprites, travel, animate, player);
                     //If button in map is clicked, do something
-                    if (!assets.getPlayerDeath() && assets.getInitMap()) {
-                        this->mapButtons(window, assets, travel);
+                    if (!sprites.getPlayerDeath() && sprites.getInitMap()) {
+                        this->mapButtons(window, sprites, travel);
                     }
                     //Map Menu Bar Functionality
-                    this->statsFunctionality(window, combat, player, assets); //Must be loaded before menuBar(window); to withhold functionality
-                    this->menuBar(window, assets);
+                    this->statsFunctionality(window, combat, player, sprites); //Must be loaded before menuBar(window); to withhold functionality
+                    this->menuBar(window, sprites);
                     //Dialogue Box Functionality
-                    this->dialogueCombatBox(window, combat, assets, travel, notevent);
+                    this->dialogueCombatBox(window, combat, sprites, travel, notevent);
                     //Main Menu Functionality
-                    this->mainMenuButtons(window, assets, travel, animate);
+                    this->mainMenuButtons(window, sprites, travel, animate);
                     if (stop) { //Make quit button return to main function to stop program from running
                         return;
                     }
                     //Bonfire Functionality
-                    if (assets.getBonfireAssets() == true) {
-                        notevent.healCharacters(window, assets, combat);
-                        notevent.smithingSharpenBlade(window, assets, player);
-                        notevent.zinEvents(window, assets, animate);
+                    if (sprites.getBonfireAssets() == true) {
+                        notevent.healCharacters(window, sprites, combat);
+                        notevent.smithingSharpenBlade(window, sprites, player);
+                        notevent.zinEvents(window, sprites, animate);
                     }
                 }
                 break;
             case sf::Event::MouseButtonReleased:
                 {
-                    assets.setMovableFalse();
-                    assets.setMovableStatsBoxFalse();
+                    sprites.setMovableFalse();
+                    sprites.setMovableStatsBoxFalse();
                 }
             case sf::Event::KeyPressed:
                 {
-                this->userInput(assets);
+                this->userInput(sprites);
                 }
                 break;
             }
-            //Run Main Function Loop...
-            this->mainLoop(assets, notevent, combat, player, travel, animate);
+            //Main Travel Loop
+            travel.travelCore(window, sprites, notevent, combat, player, animate);
         }
         //Draw Everything...
-        this->Draw(window, assets, notevent, combat, player, travel, animate);
+        this->Draw(window, sprites, notevent, combat, player, travel, animate);
     }
 }
 
-void World::mainLoop(Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate)
-{
-    //Run Main Functions
-    travel.travelCore(window, assets, notevent, combat, player, animate);
-}
-
 //User Input
-void World::userInput(Assets& assets)
+void World::userInput(Sprites& sprites)
 {
     //Get user input for keyboard inputs
-    assets.font.loadFromFile("C:/Windows/Fonts/arial.ttf");
-    assets.playerText.setFont(assets.font);
-    assets.playerText.setCharacterSize(18);
-    assets.playerText.setFillColor(sf::Color::White);
-    assets.playerText.setPosition(0, 950);
+    sprites.font.loadFromFile("C:/Windows/Fonts/arial.ttf");
+    sprites.playerText.setFont(sprites.font);
+    sprites.playerText.setCharacterSize(18);
+    sprites.playerText.setFillColor(sf::Color::White);
+    sprites.playerText.setPosition(0, 950);
     
     playerInput += event.text.unicode;
     input = event.text.unicode;
@@ -128,13 +122,13 @@ void World::userInput(Assets& assets)
 
     //Getting user input for settings
     if (unicode == 36) {
-        assets.soundClick.play();
+        sprites.soundClick.play();
         //Make settings appear (Basically the main menu with some additions....)
-        if (!assets.getSettingsShown()) {
-            assets.getSettingsShown() = true;
+        if (!sprites.getSettingsShown()) {
+            sprites.getSettingsShown() = true;
         }
-        else if (assets.getSettingsShown()){
-            assets.getSettingsShown() = false;
+        else if (sprites.getSettingsShown()){
+            sprites.getSettingsShown() = false;
         }
     }
 }
@@ -147,77 +141,77 @@ void World::clearInput()
 }
 
 //Display Functions
-void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate)
+void World::Draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Initial Draw In
-    if (assets.getInitialDrawIn() == false) {
-        window.setIcon(assets.windowIcon.getSize().x, assets.windowIcon.getSize().y, assets.windowIcon.getPixelsPtr()); //set window icon
-        assets.setInitialDrawInTrue();
+    if (sprites.getInitialDrawIn() == false) {
+        window.setIcon(sprites.windowIcon.getSize().x, sprites.windowIcon.getSize().y, sprites.windowIcon.getPixelsPtr()); //set window icon
+        sprites.setInitialDrawInTrue();
     }
     // clear the window with black color
     window.clear(sf::Color::Black);
 
     // draw everything here...
-    if (this->mainMenu == false && !assets.getPlayerDeath()) {
-        assets.drawObjects();
-        travel.travelCore(window, assets, notevent, combat, player, animate);
+    if (this->mainMenu == false && !sprites.getPlayerDeath()) {
+        sprites.drawObjects(sprites);
+        travel.travelCore(window, sprites, notevent, combat, player, animate);
 
-        window.draw(assets.rect);
-        window.draw(assets.map);
-        window.draw(assets.playerText);
-        window.draw(assets.locationText);
-        window.draw(assets.text);
+        window.draw(sprites.rect);
+        window.draw(sprites.map);
+        window.draw(sprites.playerText);
+        window.draw(sprites.locationText);
+        window.draw(sprites.text);
 
         //Draw Entity Viewer
-        window.draw(assets.entityBox);
-        window.draw(assets.entitySprite);
-        window.draw(assets.entityBoxHeader);
-        window.draw(assets.entityBoxText);
+        window.draw(sprites.entityBox);
+        window.draw(sprites.entitySprite);
+        window.draw(sprites.entityBoxHeader);
+        window.draw(sprites.entityBoxText);
 
         //Draw all sprite border rects and text
-        for (int i = 0; i < assets.spriteRect.size(); i++) {
-            window.draw(assets.spriteRect[i]);
-            window.draw(assets.spriteText[i]);
+        for (int i = 0; i < sprites.spriteRect.size(); i++) {
+            window.draw(sprites.spriteRect[i]);
+            window.draw(sprites.spriteText[i]);
         }
         //Draw combat elements
-        for (int i = 0; i < assets.combatRect.size(); i++) {
-            window.draw(assets.combatRect[i]);
-            window.draw(assets.combatText[i]);
+        for (int i = 0; i < sprites.combatRect.size(); i++) {
+            window.draw(sprites.combatRect[i]);
+            window.draw(sprites.combatText[i]);
         }
 
         //Draw Bonfire Detection Rect
         if (travel.getBonfireInit() == true) {
-            assets.bonfireHealDetectionText.setPosition(mousePos.x - 5.0f, mousePos.y + 15.0f);
-            assets.bonfireSmithDetectionText.setPosition(mousePos.x - 5.0f, mousePos.y + 15.0f);
+            sprites.bonfireHealDetectionText.setPosition(mousePos.x - 5.0f, mousePos.y + 15.0f);
+            sprites.bonfireSmithDetectionText.setPosition(mousePos.x - 5.0f, mousePos.y + 15.0f);
             //Healing
-            window.draw(assets.bonfireHealDetectionRect);
-            window.draw(assets.bonfireHealDetectionText);
+            window.draw(sprites.bonfireHealDetectionRect);
+            window.draw(sprites.bonfireHealDetectionText);
             //Smithing
-            window.draw(assets.bonfireSmithDetectionRect);
-            window.draw(assets.bonfireSmithDetectionText);
+            window.draw(sprites.bonfireSmithDetectionRect);
+            window.draw(sprites.bonfireSmithDetectionText);
         }
 
         //Draw rectangle elements
-        for (int i = 0; i < assets.rectElements.size(); i++) {
-            window.draw(assets.rectElements[i]);
+        for (int i = 0; i < sprites.rectElements.size(); i++) {
+            window.draw(sprites.rectElements[i]);
         }
         //Draw text elements
-        for (int i = 0; i < assets.textElements.size(); i++) {
-            window.draw(assets.textElements[i]);
+        for (int i = 0; i < sprites.textElements.size(); i++) {
+            window.draw(sprites.textElements[i]);
         }
         //Draw sprite elements
-        for (int i = 0; i < assets.spriteElements.size(); i++) {
-            window.draw(assets.spriteElements[i]);
+        for (int i = 0; i < sprites.spriteElements.size(); i++) {
+            window.draw(sprites.spriteElements[i]);
         }
 
         //Draw Tip Box
-        window.draw(assets.tipBox);
-        window.draw(assets.tipBoxText);
+        window.draw(sprites.tipBox);
+        window.draw(sprites.tipBoxText);
 
         //Draw Animations
-        animate.drawAnimations(assets);
+        animate.drawAnimations(sprites);
         animate.animateDecayWarn();
         window.draw(animate.zinSprite);
         window.draw(animate.notSprite);
@@ -225,75 +219,75 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
         window.draw(animate.healSprite);
         window.draw(animate.anvilSprite);
 
-        if (assets.getInitMap() == true) {
+        if (sprites.getInitMap() == true) {
             //Draw main map rect
-            window.draw(assets.rectMap);
+            window.draw(sprites.rectMap);
             //Choose which map is selected
-            switch (assets.getMapCounter()) {
+            switch (sprites.getMapCounter()) {
             case 0:
-                this->drawForestMap(window, assets);
+                this->drawForestMap(window, sprites);
                 break;
             case 1:
-                this->drawCastleMap(window, assets);
+                this->drawCastleMap(window, sprites);
                 break;
             case 2:
-                this->drawDecayMap(window, assets);
+                this->drawDecayMap(window, sprites);
                 break;
             }
             //Make Box Movable if clicked...
-            this->movableBox(window, assets);
+            this->movableBox(window, sprites);
         }
 
-        if (assets.getInitStats() == true) {
-            window.draw(assets.rectStatsBox);
-            if (assets.getPlayerStatsInit() == true) {
-                this->printPlayerStats(window, assets, notevent, combat, player);
+        if (sprites.getInitStats() == true) {
+            window.draw(sprites.rectStatsBox);
+            if (sprites.getPlayerStatsInit() == true) {
+                this->printPlayerStats(window, sprites, notevent, combat, player);
             }
-            else if (assets.getZinStatsInit() == true) {
-                this->printZinStats(window, assets, notevent, combat, player);
+            else if (sprites.getZinStatsInit() == true) {
+                this->printZinStats(window, sprites, notevent, combat, player);
             }
-            window.draw(assets.rectStatsSideMenu);
-            window.draw(assets.playerStatsBoxButtonText);
-            window.draw(assets.zinStatsBoxButtonText);
+            window.draw(sprites.rectStatsSideMenu);
+            window.draw(sprites.playerStatsBoxButtonText);
+            window.draw(sprites.zinStatsBoxButtonText);
         }
-        if (assets.getInitInventory() == true) {
-            player.printInventory(assets);
-            window.draw(assets.rectInventoryBox);
-            window.draw(assets.inventoryText);
+        if (sprites.getInitInventory() == true) {
+            player.printInventory(sprites);
+            window.draw(sprites.rectInventoryBox);
+            window.draw(sprites.inventoryText);
         }
     }
     else if (this->mainMenu == true) {
-        assets.drawMainMenu();
-        for (int i = 0; i < assets.menuScreenElements.size(); i++) {
-            window.draw(assets.menuScreenElements[i]);
+        sprites.drawMainMenu();
+        for (int i = 0; i < sprites.menuScreenElements.size(); i++) {
+            window.draw(sprites.menuScreenElements[i]);
         }
-        for (int i = 0; i < assets.menuScreenElementsText.size(); i++) {
-            window.draw(assets.menuScreenElementsText[i]);
+        for (int i = 0; i < sprites.menuScreenElementsText.size(); i++) {
+            window.draw(sprites.menuScreenElementsText[i]);
         }
     }
-    else if (assets.getPlayerDeath()) {
-        assets.drawDeathAssets();
-        window.draw(assets.deathText);
-        window.draw(assets.menuScreenElements[1]);
-        window.draw(assets.menuScreenElements[2]);
-        window.draw(assets.menuScreenElementsText[1]);
-        window.draw(assets.menuScreenElementsText[2]);
+    else if (sprites.getPlayerDeath()) {
+        sprites.drawDeathAssets();
+        window.draw(sprites.deathText);
+        window.draw(sprites.menuScreenElements[1]);
+        window.draw(sprites.menuScreenElements[2]);
+        window.draw(sprites.menuScreenElementsText[1]);
+        window.draw(sprites.menuScreenElementsText[2]);
     }
 
     //Draw User Input Rects
-    for (int i = 0; i < assets.answerBox.size(); i++) {
-        window.draw(assets.answerBox[i]);
-        window.draw(assets.answerBoxText[i]);
+    for (int i = 0; i < sprites.answerBox.size(); i++) {
+        window.draw(sprites.answerBox[i]);
+        window.draw(sprites.answerBoxText[i]);
     }
 
     //Draw Settings to screen
-    if (assets.getSettingsShown()) {
-        assets.drawMainMenu();
-        for (int i = 0; i < assets.menuScreenElements.size(); i++) {
-            window.draw(assets.menuScreenElements[i]);
+    if (sprites.getSettingsShown()) {
+        sprites.drawMainMenu();
+        for (int i = 0; i < sprites.menuScreenElements.size(); i++) {
+            window.draw(sprites.menuScreenElements[i]);
         }
-        for (int i = 0; i < assets.menuScreenElementsText.size(); i++) {
-            window.draw(assets.menuScreenElementsText[i]);
+        for (int i = 0; i < sprites.menuScreenElementsText.size(); i++) {
+            window.draw(sprites.menuScreenElementsText[i]);
         }
     }
 
@@ -301,290 +295,290 @@ void World::Draw(sf::RenderWindow& window, Assets& assets, Event& notevent, Comb
     window.display();
 }
 
-void World::DrawMapSelectorButtons(sf::RenderWindow& window, Assets& assets)
+void World::DrawMapSelectorButtons(sf::RenderWindow& window, Sprites& sprites)
 {
     //Draw all rectangle elements for map button selectors
-    for (int i = 0; i < assets.buttonViewMap.size(); i++) {
-        window.draw(assets.buttonViewMap[i]);
+    for (int i = 0; i < sprites.buttonViewMap.size(); i++) {
+        window.draw(sprites.buttonViewMap[i]);
     }
     //Draw all rectangle elements for map button selectors text
-    for (int i = 0; i < assets.buttonViewMapText.size(); i++) {
-        window.draw(assets.buttonViewMapText[i]);
+    for (int i = 0; i < sprites.buttonViewMapText.size(); i++) {
+        window.draw(sprites.buttonViewMapText[i]);
     }
 }
 
-void World::greyOnHover(sf::RenderWindow& window, Assets& assets)
+void World::greyOnHover(sf::RenderWindow& window, Sprites& sprites)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Turn Rects Grey On Hover
-    for (int i = 0; i < assets.rectElements.size(); i++) {
-        if (assets.rectElements[i].getGlobalBounds().contains(mousePosF)) {
-            assets.rectElements[i].setFillColor(sf::Color::Transparent);
-            assets.textElements[i].setFillColor(sf::Color::White);
+    for (int i = 0; i < sprites.rectElements.size(); i++) {
+        if (sprites.rectElements[i].getGlobalBounds().contains(mousePosF)) {
+            sprites.rectElements[i].setFillColor(sf::Color::Transparent);
+            sprites.textElements[i].setFillColor(sf::Color::White);
         }
         else {
-            assets.rectElements[i].setFillColor(sf::Color::White);
-            assets.textElements[i].setFillColor(sf::Color::Black);
+            sprites.rectElements[i].setFillColor(sf::Color::White);
+            sprites.textElements[i].setFillColor(sf::Color::Black);
         }
     }
 
     //Turn dialogue box grey on hover
-    if (assets.rect.getGlobalBounds().contains(mousePosF) && assets.getShowAnsBoxesCounter() == -1) {
-        assets.rect.setFillColor(sf::Color(10, 10, 10));
+    if (sprites.rect.getGlobalBounds().contains(mousePosF) && sprites.getShowAnsBoxesCounter() == -1) {
+        sprites.rect.setFillColor(sf::Color(10, 10, 10));
     }
     else {
-        assets.rect.setFillColor(sf::Color::Black);
+        sprites.rect.setFillColor(sf::Color::Black);
     }
 
-    for (int i = 0; i < assets.answerBox.size(); i++) {
-        if (assets.answerBox[i].getGlobalBounds().contains(mousePosF)) {
-            assets.answerBox[i].setFillColor(sf::Color(25, 25, 25));
+    for (int i = 0; i < sprites.answerBox.size(); i++) {
+        if (sprites.answerBox[i].getGlobalBounds().contains(mousePosF)) {
+            sprites.answerBox[i].setFillColor(sf::Color(25, 25, 25));
         }
         else {
-            assets.answerBox[i].setFillColor(sf::Color::Black);
+            sprites.answerBox[i].setFillColor(sf::Color::Black);
         }
     }
 
     //Main Menu Buttons Grey On Hover
-    for (int i = 0; i < assets.menuScreenElements.size(); i++) {
-        if (assets.menuScreenElements[i].getGlobalBounds().contains(mousePosF)) {
-            assets.menuScreenElements[i].setFillColor(sf::Color::Transparent);
-            assets.menuScreenElementsText[i].setFillColor(sf::Color::White);
+    for (int i = 0; i < sprites.menuScreenElements.size(); i++) {
+        if (sprites.menuScreenElements[i].getGlobalBounds().contains(mousePosF)) {
+            sprites.menuScreenElements[i].setFillColor(sf::Color::Transparent);
+            sprites.menuScreenElementsText[i].setFillColor(sf::Color::White);
         }
         else {
-            assets.menuScreenElements[i].setFillColor(sf::Color::White);
-            assets.menuScreenElementsText[i].setFillColor(sf::Color::Black);
+            sprites.menuScreenElements[i].setFillColor(sf::Color::White);
+            sprites.menuScreenElementsText[i].setFillColor(sf::Color::Black);
         }
     }
 
     //Combat Rects Grey On Hover
-    for (int i = 0; i < assets.combatRect.size(); i++) {
-        if (assets.combatRect[i].getGlobalBounds().contains(mousePosF)) {
-            assets.combatRect[i].setFillColor(sf::Color::Transparent);
-            assets.combatText[i].setFillColor(sf::Color::White);
+    for (int i = 0; i < sprites.combatRect.size(); i++) {
+        if (sprites.combatRect[i].getGlobalBounds().contains(mousePosF)) {
+            sprites.combatRect[i].setFillColor(sf::Color::Transparent);
+            sprites.combatText[i].setFillColor(sf::Color::White);
         }
         else {
-            assets.combatRect[i].setFillColor(sf::Color::White);
-            assets.combatText[i].setFillColor(sf::Color::Black);
+            sprites.combatRect[i].setFillColor(sf::Color::White);
+            sprites.combatText[i].setFillColor(sf::Color::Black);
         }
     }
 
     //Sprites Grey On Hover
-    for (int i = 0; i < assets.spriteElements.size(); i++) {
-        if (assets.spriteElements[i].getGlobalBounds().contains(mousePosF)) {
-            assets.spriteElements[i].setColor(sf::Color(155, 155, 155));
+    for (int i = 0; i < sprites.spriteElements.size(); i++) {
+        if (sprites.spriteElements[i].getGlobalBounds().contains(mousePosF)) {
+            sprites.spriteElements[i].setColor(sf::Color(155, 155, 155));
         }
         else {
-            assets.spriteElements[i].setColor(sf::Color(255, 255, 255));
+            sprites.spriteElements[i].setColor(sf::Color(255, 255, 255));
         }
     }
 
     //Player Stats Grey On Hover
-    for (int i = 0; i < assets.playerStatElements.size(); i++) {
-        if (assets.playerStatElements[i].getGlobalBounds().contains(mousePosF)) {
-            assets.playerStatElements[i].setFillColor(sf::Color::Transparent);
-            assets.playerTextPlus[i].setFillColor(sf::Color::White);
+    for (int i = 0; i < sprites.playerStatElements.size(); i++) {
+        if (sprites.playerStatElements[i].getGlobalBounds().contains(mousePosF)) {
+            sprites.playerStatElements[i].setFillColor(sf::Color::Transparent);
+            sprites.playerTextPlus[i].setFillColor(sf::Color::White);
         }
         else {
-            assets.playerStatElements[i].setFillColor(sf::Color::White);
-            assets.playerTextPlus[i].setFillColor(sf::Color::Black);
+            sprites.playerStatElements[i].setFillColor(sf::Color::White);
+            sprites.playerTextPlus[i].setFillColor(sf::Color::Black);
         }
     }
 
     //Zin Stats Grey On Hover
-    for (int i = 0; i < assets.zinStatElements.size(); i++) {
-        if (assets.zinStatElements[i].getGlobalBounds().contains(mousePosF)) {
-            assets.zinStatElements[i].setFillColor(sf::Color::Transparent);
-            assets.zinTextElements[i].setFillColor(sf::Color::White);
+    for (int i = 0; i < sprites.zinStatElements.size(); i++) {
+        if (sprites.zinStatElements[i].getGlobalBounds().contains(mousePosF)) {
+            sprites.zinStatElements[i].setFillColor(sf::Color::Transparent);
+            sprites.zinTextElements[i].setFillColor(sf::Color::White);
         }
         else {
-            assets.zinStatElements[i].setFillColor(sf::Color::White);
-            assets.zinTextElements[i].setFillColor(sf::Color::Black);
+            sprites.zinStatElements[i].setFillColor(sf::Color::White);
+            sprites.zinTextElements[i].setFillColor(sf::Color::Black);
         }
     }
 
     //Map Selector Buttons Grey On Hover
-    for (int i = 0; i < assets.buttonViewMap.size(); i++) {
-        if (assets.buttonViewMap[i].getGlobalBounds().contains(mousePosF)) {
-            assets.buttonViewMap[i].setFillColor(sf::Color::White);
-            assets.buttonViewMapText[i].setFillColor(sf::Color::Black);
+    for (int i = 0; i < sprites.buttonViewMap.size(); i++) {
+        if (sprites.buttonViewMap[i].getGlobalBounds().contains(mousePosF)) {
+            sprites.buttonViewMap[i].setFillColor(sf::Color::White);
+            sprites.buttonViewMapText[i].setFillColor(sf::Color::Black);
         }
         else {
-            assets.buttonViewMap[i].setFillColor(sf::Color::Black);
-            assets.buttonViewMapText[i].setFillColor(sf::Color::White);
+            sprites.buttonViewMap[i].setFillColor(sf::Color::Black);
+            sprites.buttonViewMapText[i].setFillColor(sf::Color::White);
         }
     }
     //Map Buttons Grey On Hover
-    for (int i = 0; i < assets.mapCastleElements.size(); i++) {
-        if (assets.mapCastleElements[i].getGlobalBounds().contains(mousePosF)) {
-            assets.mapCastleElements[i].setColor(sf::Color(155, 155, 155));
+    for (int i = 0; i < sprites.mapCastleElements.size(); i++) {
+        if (sprites.mapCastleElements[i].getGlobalBounds().contains(mousePosF)) {
+            sprites.mapCastleElements[i].setColor(sf::Color(155, 155, 155));
         }
         else {
-            assets.mapCastleElements[i].setColor(sf::Color(255, 255, 255));
+            sprites.mapCastleElements[i].setColor(sf::Color(255, 255, 255));
         }
     }
 
-    for (int i = 0; i < assets.mapForestElements.size(); i++) {
-        if (assets.mapForestElements[i].getGlobalBounds().contains(mousePosF)) {
-            assets.mapForestElements[i].setColor(sf::Color(155, 155, 155));
+    for (int i = 0; i < sprites.mapForestElements.size(); i++) {
+        if (sprites.mapForestElements[i].getGlobalBounds().contains(mousePosF)) {
+            sprites.mapForestElements[i].setColor(sf::Color(155, 155, 155));
         }
         else {
-            assets.mapForestElements[i].setColor(sf::Color(255, 255, 255));
+            sprites.mapForestElements[i].setColor(sf::Color(255, 255, 255));
         }
     }
 
-    for (int i = 0; i < assets.mapDecayElements.size(); i++) {
-        if (assets.mapDecayElements[i].getGlobalBounds().contains(mousePosF)) {
-            assets.mapDecayElements[i].setColor(sf::Color(155, 155, 155));
+    for (int i = 0; i < sprites.mapDecayElements.size(); i++) {
+        if (sprites.mapDecayElements[i].getGlobalBounds().contains(mousePosF)) {
+            sprites.mapDecayElements[i].setColor(sf::Color(155, 155, 155));
         }
         else {
-            assets.mapDecayElements[i].setColor(sf::Color(255, 255, 255));
+            sprites.mapDecayElements[i].setColor(sf::Color(255, 255, 255));
         }
     }
 }
 
-void World::printPlayerStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
+void World::printPlayerStats(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player)
 {
-    assets.playerTextElements[4].setString("HP: " + std::to_string(combat.getPlayerHp()) + "/" +
+    sprites.playerTextElements[4].setString("HP: " + std::to_string(combat.getPlayerHp()) + "/" +
         std::to_string(combat.getPlayerHpMax()) + "\nDECAY: " + std::to_string(player.getDecay()) + "/" +
         std::to_string(player.getDecayMax()) + "\n\nSP: " + std::to_string(player.getSp()) +
         "\nEXP: " + std::to_string(player.getExp()) + "/" + std::to_string(player.getExpNext()));
 
-    for (int i = 0; i < assets.playerStatElements.size(); i++) {
-        window.draw(assets.playerStatElements[i]);
+    for (int i = 0; i < sprites.playerStatElements.size(); i++) {
+        window.draw(sprites.playerStatElements[i]);
     }
 
-    for (int i = 0; i < assets.playerTextPlus.size(); i++) {
-        window.draw(assets.playerTextPlus[i]);
+    for (int i = 0; i < sprites.playerTextPlus.size(); i++) {
+        window.draw(sprites.playerTextPlus[i]);
     }
 
-    for (int i = 0; i < assets.playerTextElements.size(); i++) {
-        window.draw(assets.playerTextElements[i]);
+    for (int i = 0; i < sprites.playerTextElements.size(); i++) {
+        window.draw(sprites.playerTextElements[i]);
     }
 }
 
-void World::printZinStats(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
+void World::printZinStats(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player)
 {
-    assets.zinTextElements[10].setString("HP: " + std::to_string(combat.getZinHp()) + "/" + std::to_string(combat.getZinHpMax()) + "\n\n\nSP: " + std::to_string(player.getZinSp()) +
+    sprites.zinTextElements[10].setString("HP: " + std::to_string(combat.getZinHp()) + "/" + std::to_string(combat.getZinHpMax()) + "\n\n\nSP: " + std::to_string(player.getZinSp()) +
         "\nEXP: " + std::to_string(player.getZinExp()) + "/" + std::to_string(player.getZinExpNext()));
 
-    for (int i = 0; i < assets.zinStatElements.size(); i++) {
-        window.draw(assets.playerStatElements[i]);
+    for (int i = 0; i < sprites.zinStatElements.size(); i++) {
+        window.draw(sprites.playerStatElements[i]);
     }
 
-    for (int i = 0; i < assets.zinTextElements.size(); i++) {
-        window.draw(assets.zinTextElements[i]);
+    for (int i = 0; i < sprites.zinTextElements.size(); i++) {
+        window.draw(sprites.zinTextElements[i]);
     }
 }
 
-void World::printToolTip(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player)
+void World::printToolTip(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Player Combat Buttons Functionality
-    if (assets.getPlayerStatsInit()) {
-        if (assets.playerStatElements[1].getGlobalBounds().contains(mousePosF)) {
-            assets.getTipBoxCounter() = 0;
-            assets.tipBoxText.setString("STRENGTH:\nMeasures the players raw power.\n\nIncreases all attack moves damage.");
+    if (sprites.getPlayerStatsInit()) {
+        if (sprites.playerStatElements[1].getGlobalBounds().contains(mousePosF)) {
+            sprites.getTipBoxCounter() = 0;
+            sprites.tipBoxText.setString("STRENGTH:\nMeasures the players raw power.\n\nIncreases all attack moves damage.");
         }
-        else if (assets.playerStatElements[2].getGlobalBounds().contains(mousePosF)) {
-            assets.getTipBoxCounter() = 0;
-            assets.tipBoxText.setString("FORTITUDE:\nMeasures the players survivability against decay.\n\nHigher fortitude makes the player more \nresistant to the decay.");
+        else if (sprites.playerStatElements[2].getGlobalBounds().contains(mousePosF)) {
+            sprites.getTipBoxCounter() = 0;
+            sprites.tipBoxText.setString("FORTITUDE:\nMeasures the players survivability against decay.\n\nHigher fortitude makes the player more \nresistant to the decay.");
         }
-        else if (assets.playerStatElements[3].getGlobalBounds().contains(mousePosF)) {
-            assets.getTipBoxCounter() = 0;
-            assets.tipBoxText.setString("VITALITY:\nMeasures the players health.\n\nHigh vitality allows the player to take a beating\nin combat.");
+        else if (sprites.playerStatElements[3].getGlobalBounds().contains(mousePosF)) {
+            sprites.getTipBoxCounter() = 0;
+            sprites.tipBoxText.setString("VITALITY:\nMeasures the players health.\n\nHigh vitality allows the player to take a beating\nin combat.");
         }
         else {
-            assets.getTipBoxCounter() = -1;
+            sprites.getTipBoxCounter() = -1;
         }
     }
-    else if (assets.getZinStatsInit()) {
-        if (assets.zinStatElements[1].getGlobalBounds().contains(mousePosF)) {
-            assets.getTipBoxCounter() = 0;
-            assets.tipBoxText.setString("RESOLVE:\nMeasures Zin's spells raw power.\n\nIncreases the damage of her lightning \nspells specifically.");
+    else if (sprites.getZinStatsInit()) {
+        if (sprites.zinStatElements[1].getGlobalBounds().contains(mousePosF)) {
+            sprites.getTipBoxCounter() = 0;
+            sprites.tipBoxText.setString("RESOLVE:\nMeasures Zin's spells raw power.\n\nIncreases the damage of her lightning \nspells specifically.");
         }
-        else if (assets.zinStatElements[2].getGlobalBounds().contains(mousePosF)) {
-            assets.getTipBoxCounter() = 0;
-            assets.tipBoxText.setString("PATIENCE:\nMeasures Zin's healing capabilities.\n\nHigh patience makes her heal \nsignificantly more.");
+        else if (sprites.zinStatElements[2].getGlobalBounds().contains(mousePosF)) {
+            sprites.getTipBoxCounter() = 0;
+            sprites.tipBoxText.setString("PATIENCE:\nMeasures Zin's healing capabilities.\n\nHigh patience makes her heal \nsignificantly more.");
         }
-        else if (assets.zinStatElements[3].getGlobalBounds().contains(mousePosF)) {
-            assets.getTipBoxCounter() = 0;
-            assets.tipBoxText.setString("RESILIENCE:\nMeasures Zin's health.\n\nHigh resilience allows Zin to take more \nhits and survive.");
+        else if (sprites.zinStatElements[3].getGlobalBounds().contains(mousePosF)) {
+            sprites.getTipBoxCounter() = 0;
+            sprites.tipBoxText.setString("RESILIENCE:\nMeasures Zin's health.\n\nHigh resilience allows Zin to take more \nhits and survive.");
         }
         else {
-            assets.getTipBoxCounter() = -1;
+            sprites.getTipBoxCounter() = -1;
         }
     }
     
-    if (assets.getCombatAssets()) {
-        if (assets.combatRect[0].getGlobalBounds().contains(mousePosF)) { //If attack button is clicked...
-            assets.getTipBoxCounter() = 0;
-            assets.tipBoxText.setString("SLASH:\nThe players basic attack for inflicting damage...");
+    if (sprites.getCombatAssets()) {
+        if (sprites.combatRect[0].getGlobalBounds().contains(mousePosF)) { //If attack button is clicked...
+            sprites.getTipBoxCounter() = 0;
+            sprites.tipBoxText.setString("SLASH:\nThe players basic attack for inflicting damage...");
         }
-        else if (assets.combatRect[1].getGlobalBounds().contains(mousePosF)) {
-            assets.getTipBoxCounter() = 0;
-            assets.tipBoxText.setString("GUARD:\nUses the players turn to protect Zin from \nALL damage...");
+        else if (sprites.combatRect[1].getGlobalBounds().contains(mousePosF)) {
+            sprites.getTipBoxCounter() = 0;
+            sprites.tipBoxText.setString("GUARD:\nUses the players turn to protect Zin from \nALL damage...");
         }
-        else if (assets.combatRect[2].getGlobalBounds().contains(mousePosF)) {
-            assets.getTipBoxCounter() = 0;
-            assets.tipBoxText.setString("DECAYED BLADE:\nThe player slashes his own skin open to use the \ndecay in his blood as a weapon...\n\nInflicts extra damage due to decayed blood...");
+        else if (sprites.combatRect[2].getGlobalBounds().contains(mousePosF)) {
+            sprites.getTipBoxCounter() = 0;
+            sprites.tipBoxText.setString("DECAYED BLADE:\nThe player slashes his own skin open to use the \ndecay in his blood as a weapon...\n\nInflicts extra damage due to decayed blood...");
         }
         //Zin Combat Buttons Functionality
-        else if (assets.combatRect[3].getGlobalBounds().contains(mousePosF)) {
-            assets.getTipBoxCounter() = 0;
-            assets.tipBoxText.setString("SMITE:\nZin's basic attack, inflicts damage on the \nopponent...");
+        else if (sprites.combatRect[3].getGlobalBounds().contains(mousePosF)) {
+            sprites.getTipBoxCounter() = 0;
+            sprites.tipBoxText.setString("SMITE:\nZin's basic attack, inflicts damage on the \nopponent...");
         }
-        else if (assets.combatRect[4].getGlobalBounds().contains(mousePosF)) {
-            assets.getTipBoxCounter() = 0;
-            assets.tipBoxText.setString("MEND:\nHeals the player and Zin...");
+        else if (sprites.combatRect[4].getGlobalBounds().contains(mousePosF)) {
+            sprites.getTipBoxCounter() = 0;
+            sprites.tipBoxText.setString("MEND:\nHeals the player and Zin...");
         }
-        else if (assets.combatRect[5].getGlobalBounds().contains(mousePosF)) {
-            assets.getTipBoxCounter() = 0;
-            assets.tipBoxText.setString("VENGEANCE:\nUse Zin's rage and sorrow to turn the players\nblood into sharpened blades that hurdle\ntowards the enemy...\n\nInflicts damage equal to the players current \nlost health...");
+        else if (sprites.combatRect[5].getGlobalBounds().contains(mousePosF)) {
+            sprites.getTipBoxCounter() = 0;
+            sprites.tipBoxText.setString("VENGEANCE:\nUse Zin's rage and sorrow to turn the players\nblood into sharpened blades that hurdle\ntowards the enemy...\n\nInflicts damage equal to the players current \nlost health...");
         }
         else {
-            assets.getTipBoxCounter() = -1;
+            sprites.getTipBoxCounter() = -1;
         }
     }
 }
 
 //Display Element Functionality
-void World::mainMenuButtons(sf::RenderWindow& window, Assets& assets, Travel& travel, Animation& animate)
+void World::mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel, Animation& animate)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Shared Functionality between both main menu and settings menu
-    if (assets.menuScreenElements[1].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.menuScreenElements[1].getGlobalBounds().contains(mousePosF)) {
         //Loading Game Button Funcionality (Not implemented yet...)
         std::cout << "Loading a save hypothetically speaking lmao...";
     }
-    else if (assets.menuScreenElements[2].getGlobalBounds().contains(mousePosF)) {
+    else if (sprites.menuScreenElements[2].getGlobalBounds().contains(mousePosF)) {
         //Quit Game Button Functionality
         stop = true;
         return;
     }
     //Main menu specific functionality
-    if (!assets.getIntroFinished()) {
-        if (assets.menuScreenElements[0].getGlobalBounds().contains(mousePosF)) {
+    if (!sprites.getIntroFinished()) {
+        if (sprites.menuScreenElements[0].getGlobalBounds().contains(mousePosF)) {
             //Continue to other buttons asking to skip intro or not (New Game Button)
-            assets.setBootClickedTrue();
+            sprites.setBootClickedTrue();
         }
-        else if (assets.menuScreenElements[3].getGlobalBounds().contains(mousePosF)) {
+        else if (sprites.menuScreenElements[3].getGlobalBounds().contains(mousePosF)) {
             //Intro Button Functionality
             this->mainMenu = false;
             travel.getIntroCounterDialogue() = 0; //Allow the counter to load the main image specifically just for the intro to take place
         }
-        else if (assets.menuScreenElements[4].getGlobalBounds().contains(mousePosF)) {
+        else if (sprites.menuScreenElements[4].getGlobalBounds().contains(mousePosF)) {
             //Skip Intro Button Functionality
             this->mainMenu = false;
-            assets.getIntroFinished() = true;
-            assets.setMapCounterZero(); //Skip intro and go straight to the forest
+            sprites.getIntroFinished() = true;
+            sprites.setMapCounterZero(); //Skip intro and go straight to the forest
         }
     }//Settings specific functionality
-    else if (assets.getIntroFinished()) {
-        if (assets.menuScreenElements[5].getGlobalBounds().contains(mousePosF)) {
+    else if (sprites.getIntroFinished()) {
+        if (sprites.menuScreenElements[5].getGlobalBounds().contains(mousePosF)) {
             //Saving Game Button Funcionality (Not implemented yet...)
             std::cout << "Saving game hypothetically speaking...";
         }
@@ -592,26 +586,26 @@ void World::mainMenuButtons(sf::RenderWindow& window, Assets& assets, Travel& tr
    
 }
 
-void World::travelButtons(sf::RenderWindow& window, Assets& assets, Travel& travel, Animation& animate, Player& player)
+void World::travelButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel, Animation& animate, Player& player)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Main View Buttons Control
-    if (assets.spriteElements[0].getGlobalBounds().contains(mousePosF))
+    if (sprites.spriteElements[0].getGlobalBounds().contains(mousePosF))
     {
         travel.setFrameInc();
         travel.setFrameInitFalse();
-        assets.blipsound.play();
+        sprites.blipsound.play();
         //Decay Increases Every Move
         player.getDecay()++;
         animate.getDecayWarning() = true;
         animate.getAnimationFrame() = -1;
     }
-    else if (assets.spriteElements[1].getGlobalBounds().contains(mousePosF))
+    else if (sprites.spriteElements[1].getGlobalBounds().contains(mousePosF))
     {
         travel.setFrameDec();
         travel.setFrameInitFalse();
-        assets.blipsound.play();
+        sprites.blipsound.play();
         //Decay Increases Every Move
         player.getDecay()++;
         animate.getDecayWarning() = true;
@@ -619,256 +613,256 @@ void World::travelButtons(sf::RenderWindow& window, Assets& assets, Travel& trav
     }
 }
 
-void World::menuBar(sf::RenderWindow& window, Assets& assets)
+void World::menuBar(sf::RenderWindow& window, Sprites& sprites)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Map Menu Bar Functionaliy
-    if (assets.multiArrow.getGlobalBounds().contains(mousePosF) && buttonClick == false) {
+    if (sprites.multiArrow.getGlobalBounds().contains(mousePosF) && buttonClick == false) {
         //Click Multi Arrow to make map movable
-        assets.setMovableTrue();
+        sprites.setMovableTrue();
     }
-    else if (assets.multiArrow.getGlobalBounds().contains(mousePosF) && buttonClick == false) {
-        assets.setMovableStatsBoxTrue();
+    else if (sprites.multiArrow.getGlobalBounds().contains(mousePosF) && buttonClick == false) {
+        sprites.setMovableStatsBoxTrue();
     }
-    if (assets.rectElements[2].getGlobalBounds().contains(mousePosF) && assets.getInitMap() == false) {
+    if (sprites.rectElements[2].getGlobalBounds().contains(mousePosF) && sprites.getInitMap() == false) {
         //Click to open map
-        assets.setInitMapTrue();
-        assets.blipmenu.play();
+        sprites.setInitMapTrue();
+        sprites.blipmenu.play();
     }
-    else if (assets.rectElements[2].getGlobalBounds().contains(mousePosF) && assets.getInitMap() == true) {
+    else if (sprites.rectElements[2].getGlobalBounds().contains(mousePosF) && sprites.getInitMap() == true) {
         //Click to close map
-        assets.setInitMapFalse();
-        assets.setRectMapXVal();
-        assets.setRectMapYVal();
-        this->resetMapPosition(window, assets);
-        assets.blipmenu.play();
-        assets.blipmenu.play();
+        sprites.setInitMapFalse();
+        sprites.setRectMapXVal();
+        sprites.setRectMapYVal();
+        this->resetMapPosition(window, sprites);
+        sprites.blipmenu.play();
+        sprites.blipmenu.play();
     }
     this->buttonClick = false;
     //Stats Menu Bar Functionality
-    if (assets.rectElements[0].getGlobalBounds().contains(mousePosF) && assets.getInitStats() == false) {
-        assets.setInitStatsTrue();
-        assets.setPlayerStatsInitTrue();
-        assets.blipmenu.play();
+    if (sprites.rectElements[0].getGlobalBounds().contains(mousePosF) && sprites.getInitStats() == false) {
+        sprites.setInitStatsTrue();
+        sprites.setPlayerStatsInitTrue();
+        sprites.blipmenu.play();
     }
-    else if (assets.rectElements[0].getGlobalBounds().contains(mousePosF) && assets.getInitStats() == true) {
-        assets.setInitStatsFalse();
-        assets.setPlayerStatsInitFalse();
-        assets.setZinStatsInitFalse();
-        assets.blipmenu.play();
+    else if (sprites.rectElements[0].getGlobalBounds().contains(mousePosF) && sprites.getInitStats() == true) {
+        sprites.setInitStatsFalse();
+        sprites.setPlayerStatsInitFalse();
+        sprites.setZinStatsInitFalse();
+        sprites.blipmenu.play();
     }
     //Inventory Menu Bar Functionality
-    if (assets.rectElements[1].getGlobalBounds().contains(mousePosF) && assets.getInitInventory() == false) {
-        assets.setInitInventoryTrue();
-        assets.blipmenu.play();
+    if (sprites.rectElements[1].getGlobalBounds().contains(mousePosF) && sprites.getInitInventory() == false) {
+        sprites.setInitInventoryTrue();
+        sprites.blipmenu.play();
     }
-    else if (assets.rectElements[1].getGlobalBounds().contains(mousePosF) && assets.getInitInventory() == true) {
-        assets.setInitInventoryFalse();
-        assets.blipmenu.play();
+    else if (sprites.rectElements[1].getGlobalBounds().contains(mousePosF) && sprites.getInitInventory() == true) {
+        sprites.setInitInventoryFalse();
+        sprites.blipmenu.play();
     }
 }
 
-void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player& player, Assets& assets)
+void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites)
 {
     //Add Text
-    player.statsText(assets);
+    player.statsText(sprites);
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Menu Bar Stats Functionality (Switching between who's stats are visible)
-    if (assets.playerStatElements[4].getGlobalBounds().contains(mousePosF) || assets.zinStatElements[4].getGlobalBounds().contains(mousePosF)) {
-        if (assets.getPlayerStatsInit() == false) {
-            assets.setPlayerStatsInitTrue();
-            assets.setZinStatsInitFalse();
+    if (sprites.playerStatElements[4].getGlobalBounds().contains(mousePosF) || sprites.zinStatElements[4].getGlobalBounds().contains(mousePosF)) {
+        if (sprites.getPlayerStatsInit() == false) {
+            sprites.setPlayerStatsInitTrue();
+            sprites.setZinStatsInitFalse();
         }
     }
-    if (assets.playerStatElements[5].getGlobalBounds().contains(mousePosF) || assets.zinStatElements[4].getGlobalBounds().contains(mousePosF)) {
-        if (assets.getZinStatsInit() == false) {
-            assets.setZinStatsInitTrue();
-            assets.setPlayerStatsInitFalse();
+    if (sprites.playerStatElements[5].getGlobalBounds().contains(mousePosF) || sprites.zinStatElements[4].getGlobalBounds().contains(mousePosF)) {
+        if (sprites.getZinStatsInit() == false) {
+            sprites.setZinStatsInitTrue();
+            sprites.setPlayerStatsInitFalse();
         }
     }
     //Level Up Functionality
-    if (assets.getInitStats() == true && assets.getPlayerStatsInit() == true) {
-        if (assets.playerStatElements[0].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.getInitStats() == true && sprites.getPlayerStatsInit() == true) {
+        if (sprites.playerStatElements[0].getGlobalBounds().contains(mousePosF)) {
             if (player.getExp() >= player.getExpNext()) {
                 player.setLevelInc();
                 player.setSpInc();
                 player.getExp() -= player.getExpNext();
-                assets.playerTextElements[0].setString("LEVEL " + std::to_string(player.getLevel()));
-                assets.text.setString("Level up achieved. Level " + std::to_string(player.getLevel()) + " reached. One SP point acquired...");
-                combat.updateStats(assets, player);
+                sprites.playerTextElements[0].setString("LEVEL " + std::to_string(player.getLevel()));
+                sprites.text.setString("Level up achieved. Level " + std::to_string(player.getLevel()) + " reached. One SP point acquired...");
+                combat.updateStats(sprites, player);
             }
             else if (player.getExp() <= player.getExpNext()) {
-                assets.text.setString("Required Exp not met...");
+                sprites.text.setString("Required Exp not met...");
             }
             this->buttonClick = true;
         }
     }
 
     //Strength up functionality
-    if (assets.getInitStats() == true && assets.getPlayerStatsInit() == true) {
-        if (assets.playerStatElements[1].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.getInitStats() == true && sprites.getPlayerStatsInit() == true) {
+        if (sprites.playerStatElements[1].getGlobalBounds().contains(mousePosF)) {
             if (player.getSp() >= 1) {
                 player.setStrengthInc();
                 player.setSpDec();
-                assets.playerTextElements[1].setString("STRENGTH " + std::to_string(player.getStrength()));
-                assets.text.setString("Strength improved. Level " + std::to_string(player.getStrength()) + " in strength reached. One SP point spent...");
-                combat.updateStats(assets, player);
+                sprites.playerTextElements[1].setString("STRENGTH " + std::to_string(player.getStrength()));
+                sprites.text.setString("Strength improved. Level " + std::to_string(player.getStrength()) + " in strength reached. One SP point spent...");
+                combat.updateStats(sprites, player);
             }
             else if (player.getSp() <= 0) {
-                assets.text.setString("Required SP not met...");
+                sprites.text.setString("Required SP not met...");
             }
             this->buttonClick = true;
         }
     }
     //Fortitude up functionality
-    if (assets.getInitStats() == true && assets.getPlayerStatsInit() == true) {
-        if (assets.playerStatElements[2].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.getInitStats() == true && sprites.getPlayerStatsInit() == true) {
+        if (sprites.playerStatElements[2].getGlobalBounds().contains(mousePosF)) {
             if (player.getSp() >= 1) {
                 player.setFortitudeInc();
                 player.setSpDec();
-                assets.playerTextElements[2].setString("FORTITUDE " + std::to_string(player.getFortitude()));
-                assets.text.setString("Fortitude improved. Level " + std::to_string(player.getFortitude()) + " in fortitude reached. One SP point spent...");
-                combat.updateStats(assets, player);
+                sprites.playerTextElements[2].setString("FORTITUDE " + std::to_string(player.getFortitude()));
+                sprites.text.setString("Fortitude improved. Level " + std::to_string(player.getFortitude()) + " in fortitude reached. One SP point spent...");
+                combat.updateStats(sprites, player);
             }
             else if (player.getSp() <= 0) {
-                assets.text.setString("Required SP not met...");
+                sprites.text.setString("Required SP not met...");
             }
             this->buttonClick = true;
         }
     }
     //Vitality up functionality
-    if (assets.getInitStats() == true && assets.getPlayerStatsInit() == true) {
-        if (assets.playerStatElements[3].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.getInitStats() == true && sprites.getPlayerStatsInit() == true) {
+        if (sprites.playerStatElements[3].getGlobalBounds().contains(mousePosF)) {
             if (player.getSp() >= 1) {
                 player.setVitalityInc();
                 player.setSpDec();
                 combat.getPlayerHp() += player.getVitality();
                 combat.getPlayerHpMax() = combat.getPlayerHp();
-                assets.playerTextElements[3].setString("VITALITY " + std::to_string(player.getVitality()));
-                assets.text.setString("Vitality improved. Level " + std::to_string(player.getVitality()) + " in vitality reached. One SP point spent...");
-                combat.updateStats(assets, player);
+                sprites.playerTextElements[3].setString("VITALITY " + std::to_string(player.getVitality()));
+                sprites.text.setString("Vitality improved. Level " + std::to_string(player.getVitality()) + " in vitality reached. One SP point spent...");
+                combat.updateStats(sprites, player);
             }
             else if (player.getSp() <= 0) {
-                assets.text.setString("Required SP not met...");
+                sprites.text.setString("Required SP not met...");
             }
             this->buttonClick = true;
         }
     }
     //Zin Stats Level up Functionality
-    if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
-        if (assets.zinStatElements[4].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.getInitStats() == true && sprites.getZinStatsInit() == true) {
+        if (sprites.zinStatElements[4].getGlobalBounds().contains(mousePosF)) {
             if (player.getZinExp() >= player.getZinExpNext()) {
                 player.setZinLevelInc();
                 player.setZinSpInc();
                 player.getZinExp() -= player.getZinExpNext();
-                assets.zinTextElements[4].setString("LEVEL " + std::to_string(player.getZinLevel()));
-                assets.text.setString("Level up achieved. Level " + std::to_string(player.getZinLevel()) + " reached for Zin. One SP point acquired...");
+                sprites.zinTextElements[4].setString("LEVEL " + std::to_string(player.getZinLevel()));
+                sprites.text.setString("Level up achieved. Level " + std::to_string(player.getZinLevel()) + " reached for Zin. One SP point acquired...");
                 combat.updateStatsZin(player);
             }
             else if (player.getZinExp() <= player.getZinExpNext()) {
-                assets.text.setString("Zin's required Exp not met...");
+                sprites.text.setString("Zin's required Exp not met...");
             }
             this->buttonClick = true;
         }
     }
     //Zin Resolve up Functionality
-    if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
-        if (assets.zinStatElements[1].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.getInitStats() == true && sprites.getZinStatsInit() == true) {
+        if (sprites.zinStatElements[1].getGlobalBounds().contains(mousePosF)) {
             if (player.getZinSp() >= 1) {
                 player.setZinResolveInc();
                 player.setZinSpDec();
-                assets.zinTextElements[5].setString("RESOLVE " + std::to_string(player.getZinResolve()));
-                assets.text.setString("Zin's resolve increased. Level " + std::to_string(player.getZinResolve()) + " reached in resolve for Zin. One SP point spent...");
+                sprites.zinTextElements[5].setString("RESOLVE " + std::to_string(player.getZinResolve()));
+                sprites.text.setString("Zin's resolve increased. Level " + std::to_string(player.getZinResolve()) + " reached in resolve for Zin. One SP point spent...");
                 combat.updateStatsZin(player);
             }
             else if (player.getZinExp() <= 0) {
-                assets.text.setString("Zin's required Sp not met...");
+                sprites.text.setString("Zin's required Sp not met...");
             }
             this->buttonClick = true;
         }
     }
     //Zin Patience up Functionality
-    if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
-        if (assets.zinStatElements[2].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.getInitStats() == true && sprites.getZinStatsInit() == true) {
+        if (sprites.zinStatElements[2].getGlobalBounds().contains(mousePosF)) {
             if (player.getZinSp() >= 1) {
                 player.setZinPatienceInc();
                 player.setZinSpDec();
-                assets.zinTextElements[6].setString("PATIENCE " + std::to_string(player.getZinPatience()));
-                assets.text.setString("Zin's patience increased. Level " + std::to_string(player.getZinPatience()) + " reached in patience for Zin. One SP point spent...");
+                sprites.zinTextElements[6].setString("PATIENCE " + std::to_string(player.getZinPatience()));
+                sprites.text.setString("Zin's patience increased. Level " + std::to_string(player.getZinPatience()) + " reached in patience for Zin. One SP point spent...");
                 combat.updateStatsZin(player);
             }
             else if (player.getZinExp() <= 0) {
-                assets.text.setString("Zin's required Sp not met...");
+                sprites.text.setString("Zin's required Sp not met...");
             }
             this->buttonClick = true;
         }
     }
     //Zin Resilience up Functionality
-    if (assets.getInitStats() == true && assets.getZinStatsInit() == true) {
-        if (assets.zinStatElements[3].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.getInitStats() == true && sprites.getZinStatsInit() == true) {
+        if (sprites.zinStatElements[3].getGlobalBounds().contains(mousePosF)) {
             if (player.getZinSp() >= 1) {
                 player.setZinResilienceInc();
                 player.setZinSpDec();
-                assets.zinTextElements[7].setString("RESILIENCE " + std::to_string(player.getZinResilience()));
-                assets.text.setString("Zin's resilience increased. Level " + std::to_string(player.getZinResilience()) + " reached in resilience for Zin. One SP point spent...");
+                sprites.zinTextElements[7].setString("RESILIENCE " + std::to_string(player.getZinResilience()));
+                sprites.text.setString("Zin's resilience increased. Level " + std::to_string(player.getZinResilience()) + " reached in resilience for Zin. One SP point spent...");
                 combat.updateStatsZin(player);
             }
             else if (player.getZinExp() <= 0) {
-                assets.text.setString("Zin's required Sp not met...");
+                sprites.text.setString("Zin's required Sp not met...");
             }
             this->buttonClick = true;
         }
     }
 }
 
-void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& assets, Travel& travel, Event& notevent)
+void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Sprites& sprites, Travel& travel, Event& notevent)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Player Combat Buttons Functionality
-    if (assets.combatRect[0].getGlobalBounds().contains(mousePosF)) { //If attack button is clicked...
+    if (sprites.combatRect[0].getGlobalBounds().contains(mousePosF)) { //If attack button is clicked...
         if (combat.getTurnPlayer() == true) {
             combat.setAttackCounterInc();
             combat.getPlayerPickMove() = 0;
         }
     }
-    if (assets.combatRect[1].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.combatRect[1].getGlobalBounds().contains(mousePosF)) {
         if (combat.getTurnPlayer() == true) {
             combat.setAttackCounterInc();
             combat.getPlayerPickMove() = 1;
         }
     }
-    if (assets.combatRect[2].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.combatRect[2].getGlobalBounds().contains(mousePosF)) {
         if (combat.getTurnPlayer() == true) {
             combat.setAttackCounterInc();
             combat.getPlayerPickMove() = 2;
         }
     }
     //Zin Combat Buttons Functionality
-    if (assets.combatRect[3].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.combatRect[3].getGlobalBounds().contains(mousePosF)) {
         if (combat.getTurnZin() == true) {
             combat.setZinAttackCounterInc();
             combat.getZinPickMove() = 0;
         }
     }
-    if (assets.combatRect[4].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.combatRect[4].getGlobalBounds().contains(mousePosF)) {
         if (combat.getTurnZin() == true) {
             combat.setZinAttackCounterInc();
             combat.getZinPickMove() = 1;
         }
     }
-    if (assets.combatRect[5].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.combatRect[5].getGlobalBounds().contains(mousePosF)) {
         if (combat.getTurnZin() == true) {
             combat.setZinAttackCounterInc();
             combat.getZinPickMove() = 2;
         }
     }
-    else if (assets.rect.getGlobalBounds().contains(mousePosF) && assets.getShowAnsBoxesCounter() == -1) {
+    else if (sprites.rect.getGlobalBounds().contains(mousePosF) && sprites.getShowAnsBoxesCounter() == -1) {
         //If dialogue box is clicked...
-        assets.soundClick.play();
-        assets.setDialogueCounterInc();
+        sprites.soundClick.play();
+        sprites.setDialogueCounterInc();
         travel.setFrameInitFalse(); //Allow images to be loaded again
         travel.setIntroCounterDialogueInc();
         notevent.setDialogueInc();
@@ -879,92 +873,91 @@ void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Assets& 
             combat.getZinAttackCounter() = 2;
         }
         if (combat.getTurnHostile() == true) {
-            assets.setCombatCounterInc();
+            sprites.getCombatCounter()++;
         }
-        assets.setSpadeInitFalse();
     }
-    else if (assets.getShowAnsBoxesCounter() == 0) {
-        if (assets.answerBox[0].getGlobalBounds().contains(mousePosF)) {
-            assets.getChoiceCounter() = 0;
+    else if (sprites.getShowAnsBoxesCounter() == 0) {
+        if (sprites.answerBox[0].getGlobalBounds().contains(mousePosF)) {
+            notevent.getChoiceCounter() = 0;
             travel.setIntroCounterDialogueInc();
             notevent.setDialogueInc();
-            assets.soundClick.play();
+            sprites.soundClick.play();
         }
-        else if (assets.answerBox[1].getGlobalBounds().contains(mousePosF)) {
-            assets.getChoiceCounter() = 1;
+        else if (sprites.answerBox[1].getGlobalBounds().contains(mousePosF)) {
+            notevent.getChoiceCounter() = 1;
             travel.setIntroCounterDialogueInc();
             notevent.setDialogueInc();
-            assets.soundClick.play();
+            sprites.soundClick.play();
         }
     }
 
 }
 
-void World::movableBox(sf::RenderWindow& window, Assets& assets)
+void World::movableBox(sf::RenderWindow& window, Sprites& sprites)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
-    if (assets.getMovable() == true) {
-        assets.getRectMapX() = mousePos.x - 365.0f;
-        assets.getRectMapY() = mousePos.y - 23.0f;
-        this->resetMapPosition(window, assets);
+    if (sprites.getMovable() == true) {
+        sprites.getRectMapX() = mousePos.x - 365.0f;
+        sprites.getRectMapY() = mousePos.y - 23.0f;
+        this->resetMapPosition(window, sprites);
     }
 }
 
 //Map Button Functionality
-void World::mapButtons(sf::RenderWindow& window, Assets& assets, Travel& travel)
+void World::mapButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel)
 {
-    this->selectMapView(window, assets, travel);
+    this->selectMapView(window, sprites, travel);
     //Map Button Functionality (Switching between whch button on the map is selected to change areas...)
-    switch (assets.getMapCounter()) {
+    switch (sprites.getMapCounter()) {
     case 0:
-        this->mapButtonsForest(window, assets, travel);
+        this->mapButtonsForest(window, sprites, travel);
         break;
     case 1:
-        this->mapButtonsCastle(window, assets, travel);
+        this->mapButtonsCastle(window, sprites, travel);
         break;
     case 2:
-        this->mapButtonsDecay(window, assets, travel);
+        this->mapButtonsDecay(window, sprites, travel);
         break;
     }
 }
 
-void World::mapButtonsForest(sf::RenderWindow& window, Assets& assets, Travel& travel)
+void World::mapButtonsForest(sf::RenderWindow& window, Sprites& sprites, Travel& travel)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Forest Button Functionality
-    if (assets.mapForestElements[0].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
+    if (sprites.mapForestElements[0].getGlobalBounds().contains(mousePosF)) {
+        sprites.soundWalk.play();
         travel.getForestCounter() = 0;
         travel.setFrameInitFalse();
         travel.getFrame() = 0; //Ensures whenever you move from area to area on map, player stays on 1st frame
         this->buttonClick = true;
     }
-    else if (assets.mapForestElements[1].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
+    else if (sprites.mapForestElements[1].getGlobalBounds().contains(mousePosF)) {
+        sprites.soundWalk.play();
         travel.getForestCounter() = 1;
         travel.setFrameInitFalse();
         travel.getFrame() = 0;
         this->buttonClick = true;
     }
-    else if (assets.mapForestElements[2].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
+    else if (sprites.mapForestElements[2].getGlobalBounds().contains(mousePosF)) {
+        sprites.soundWalk.play();
         travel.getForestCounter() = 2;
         travel.setFrameInitFalse();
         travel.getFrame() = 0;
         this->buttonClick = true;
     }
-    else if (assets.mapForestElements[3].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
+    else if (sprites.mapForestElements[3].getGlobalBounds().contains(mousePosF)) {
+        sprites.soundWalk.play();
         travel.getForestCounter() = 3;
         travel.setFrameInitFalse();
         travel.getFrame() = 0;
         this->buttonClick = true;
     }
-    else if (assets.mapForestElements[4].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
+    else if (sprites.mapForestElements[4].getGlobalBounds().contains(mousePosF)) {
+        sprites.soundWalk.play();
         travel.getForestCounter() = 4;
         travel.setFrameInitFalse();
         travel.getFrame() = 0;
@@ -972,41 +965,41 @@ void World::mapButtonsForest(sf::RenderWindow& window, Assets& assets, Travel& t
     }
 }
 
-void World::mapButtonsCastle(sf::RenderWindow& window, Assets& assets, Travel& travel)
+void World::mapButtonsCastle(sf::RenderWindow& window, Sprites& sprites, Travel& travel)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Castle Button Functionality
-    if (assets.mapCastleElements[0].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
+    if (sprites.mapCastleElements[0].getGlobalBounds().contains(mousePosF)) {
+        sprites.soundWalk.play();
         travel.getCastleCounter() = 0;
         travel.setFrameInitFalse();
         travel.getFrame() = 0;
         this->buttonClick = true;
     }
-    else if (assets.mapCastleElements[1].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
+    else if (sprites.mapCastleElements[1].getGlobalBounds().contains(mousePosF)) {
+        sprites.soundWalk.play();
         travel.getCastleCounter() = 1;
         travel.setFrameInitFalse();
         travel.getFrame() = 0;
         this->buttonClick = true;
     }
-    else if (assets.mapCastleElements[2].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
+    else if (sprites.mapCastleElements[2].getGlobalBounds().contains(mousePosF)) {
+        sprites.soundWalk.play();
         travel.getCastleCounter() = 2;
         travel.setFrameInitFalse();
         travel.getFrame() = 0;
         this->buttonClick = true;
     }
-    else if (assets.mapCastleElements[3].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
+    else if (sprites.mapCastleElements[3].getGlobalBounds().contains(mousePosF)) {
+        sprites.soundWalk.play();
         travel.getCastleCounter() = 3;
         travel.setFrameInitFalse();
         travel.getFrame() = 0;
         this->buttonClick = true;
     }
-    else if (assets.mapCastleElements[4].getGlobalBounds().contains(mousePosF)) {
-        assets.soundWalk.play();
+    else if (sprites.mapCastleElements[4].getGlobalBounds().contains(mousePosF)) {
+        sprites.soundWalk.play();
         travel.getCastleCounter() = 4;
         travel.setFrameInitFalse();
         travel.getFrame() = 0;
@@ -1014,41 +1007,41 @@ void World::mapButtonsCastle(sf::RenderWindow& window, Assets& assets, Travel& t
     }
 }
 
-void World::mapButtonsDecay(sf::RenderWindow& window, Assets& assets, Travel& travel)
+void World::mapButtonsDecay(sf::RenderWindow& window, Sprites& sprites, Travel& travel)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
         //Decay Button Functionality
-        if (assets.mapDecayElements[0].getGlobalBounds().contains(mousePosF)) {
-            assets.soundWalk.play();
+        if (sprites.mapDecayElements[0].getGlobalBounds().contains(mousePosF)) {
+            sprites.soundWalk.play();
             travel.getDecayCounter() = 0;
             travel.setFrameInitFalse();
             travel.getFrame() = 0;
             this->buttonClick = true;
         }
-        else if (assets.mapDecayElements[1].getGlobalBounds().contains(mousePosF)) {
-            assets.soundWalk.play();
+        else if (sprites.mapDecayElements[1].getGlobalBounds().contains(mousePosF)) {
+            sprites.soundWalk.play();
             travel.getDecayCounter() = 1;
             travel.setFrameInitFalse();
             travel.getFrame() = 0;
             this->buttonClick = true;
         }
-        else if (assets.mapDecayElements[2].getGlobalBounds().contains(mousePosF)) {
-            assets.soundWalk.play();
+        else if (sprites.mapDecayElements[2].getGlobalBounds().contains(mousePosF)) {
+            sprites.soundWalk.play();
             travel.getDecayCounter() = 2;
             travel.setFrameInitFalse();
             travel.getFrame() = 0;
             this->buttonClick = true;
         }
-        else if (assets.mapDecayElements[3].getGlobalBounds().contains(mousePosF)) {
-            assets.soundWalk.play();
+        else if (sprites.mapDecayElements[3].getGlobalBounds().contains(mousePosF)) {
+            sprites.soundWalk.play();
             travel.getDecayCounter() = 3;
             travel.setFrameInitFalse();
             travel.getFrame() = 0;
             this->buttonClick = true;
         }
-        else if (assets.mapDecayElements[4].getGlobalBounds().contains(mousePosF)) {
-            assets.soundWalk.play();
+        else if (sprites.mapDecayElements[4].getGlobalBounds().contains(mousePosF)) {
+            sprites.soundWalk.play();
             travel.getDecayCounter() = 4;
             travel.setFrameInitFalse();
             travel.getFrame() = 0;
@@ -1057,194 +1050,194 @@ void World::mapButtonsDecay(sf::RenderWindow& window, Assets& assets, Travel& tr
 }
 
 //Map Functions
-void World::resetMapPosition(sf::RenderWindow& window, Assets& assets)
+void World::resetMapPosition(sf::RenderWindow& window, Sprites& sprites)
 {
     //Forest
-    assets.forestMapView.setPosition(assets.getRectMapX(), assets.getRectMapY());
-    switch (assets.getForestAreaUnlocked()) {
+    sprites.forestMapView.setPosition(sprites.getRectMapX(), sprites.getRectMapY());
+    switch (sprites.getForestAreaUnlocked()) {
     case 0:
-        assets.mapForestElements[0].setPosition(assets.getRectMapX() + 145, assets.getRectMapY() + 25);
+        sprites.mapForestElements[0].setPosition(sprites.getRectMapX() + 145, sprites.getRectMapY() + 25);
         break;
     case 1:
-        assets.mapForestElements[0].setPosition(assets.getRectMapX() + 145, assets.getRectMapY() + 25);
-        assets.mapForestElements[1].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + 20);
+        sprites.mapForestElements[0].setPosition(sprites.getRectMapX() + 145, sprites.getRectMapY() + 25);
+        sprites.mapForestElements[1].setPosition(sprites.getRectMapX() + 34, sprites.getRectMapY() + 20);
         break;
     case 2:
-        assets.mapForestElements[0].setPosition(assets.getRectMapX() + 145, assets.getRectMapY() + 25);
-        assets.mapForestElements[1].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + 20);
-        assets.mapForestElements[2].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 240);
+        sprites.mapForestElements[0].setPosition(sprites.getRectMapX() + 145, sprites.getRectMapY() + 25);
+        sprites.mapForestElements[1].setPosition(sprites.getRectMapX() + 34, sprites.getRectMapY() + 20);
+        sprites.mapForestElements[2].setPosition(sprites.getRectMapX() + 75, sprites.getRectMapY() + 240);
         break;
     case 3:
-        assets.mapForestElements[0].setPosition(assets.getRectMapX() + 145, assets.getRectMapY() + 25);
-        assets.mapForestElements[1].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + 20);
-        assets.mapForestElements[2].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 240);
-        assets.mapForestElements[3].setPosition(assets.getRectMapX() + 175, assets.getRectMapY() + 200);
+        sprites.mapForestElements[0].setPosition(sprites.getRectMapX() + 145, sprites.getRectMapY() + 25);
+        sprites.mapForestElements[1].setPosition(sprites.getRectMapX() + 34, sprites.getRectMapY() + 20);
+        sprites.mapForestElements[2].setPosition(sprites.getRectMapX() + 75, sprites.getRectMapY() + 240);
+        sprites.mapForestElements[3].setPosition(sprites.getRectMapX() + 175, sprites.getRectMapY() + 200);
         break;
     case 4:
-        assets.mapForestElements[0].setPosition(assets.getRectMapX() + 145, assets.getRectMapY() + 25);
-        assets.mapForestElements[1].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + 20);
-        assets.mapForestElements[2].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 240);
-        assets.mapForestElements[3].setPosition(assets.getRectMapX() + 175, assets.getRectMapY() + 200);
-        assets.mapForestElements[4].setPosition(assets.getRectMapX() + 240, assets.getRectMapY() + 320);
+        sprites.mapForestElements[0].setPosition(sprites.getRectMapX() + 145, sprites.getRectMapY() + 25);
+        sprites.mapForestElements[1].setPosition(sprites.getRectMapX() + 34, sprites.getRectMapY() + 20);
+        sprites.mapForestElements[2].setPosition(sprites.getRectMapX() + 75, sprites.getRectMapY() + 240);
+        sprites.mapForestElements[3].setPosition(sprites.getRectMapX() + 175, sprites.getRectMapY() + 200);
+        sprites.mapForestElements[4].setPosition(sprites.getRectMapX() + 240, sprites.getRectMapY() + 320);
         break;
     }
-    assets.mapForestElementsText[0].setPosition(assets.getRectMapX() + 145, assets.getRectMapY() + 10);
-    assets.mapForestElementsText[1].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + 5);
-    assets.mapForestElementsText[2].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 225);
-    assets.mapForestElementsText[3].setPosition(assets.getRectMapX() + 175, assets.getRectMapY() + 185);
-    assets.mapForestElementsText[4].setPosition(assets.getRectMapX() + 240, assets.getRectMapY() + 305);
+    sprites.mapForestElementsText[0].setPosition(sprites.getRectMapX() + 145, sprites.getRectMapY() + 10);
+    sprites.mapForestElementsText[1].setPosition(sprites.getRectMapX() + 34, sprites.getRectMapY() + 5);
+    sprites.mapForestElementsText[2].setPosition(sprites.getRectMapX() + 75, sprites.getRectMapY() + 225);
+    sprites.mapForestElementsText[3].setPosition(sprites.getRectMapX() + 175, sprites.getRectMapY() + 185);
+    sprites.mapForestElementsText[4].setPosition(sprites.getRectMapX() + 240, sprites.getRectMapY() + 305);
     //Castle
-    assets.spriteMapView.setPosition(assets.getRectMapX(), assets.getRectMapY());
-    switch (assets.getCastleAreaUnlocked()) {
+    sprites.spriteMapView.setPosition(sprites.getRectMapX(), sprites.getRectMapY());
+    switch (sprites.getCastleAreaUnlocked()) {
     case 0:
-        assets.mapCastleElements[0].setPosition(assets.getRectMapX() + 27, assets.getRectMapY() + 322);
+        sprites.mapCastleElements[0].setPosition(sprites.getRectMapX() + 27, sprites.getRectMapY() + 322);
         break;
     case 1:
-        assets.mapCastleElements[0].setPosition(assets.getRectMapX() + 27, assets.getRectMapY() + 322);
-        assets.mapCastleElements[1].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 240);
+        sprites.mapCastleElements[0].setPosition(sprites.getRectMapX() + 27, sprites.getRectMapY() + 322);
+        sprites.mapCastleElements[1].setPosition(sprites.getRectMapX() + 75, sprites.getRectMapY() + 240);
         break;
     case 2:
-        assets.mapCastleElements[0].setPosition(assets.getRectMapX() + 27, assets.getRectMapY() + 322);
-        assets.mapCastleElements[1].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 240);
-        assets.mapCastleElements[2].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + 5);
+        sprites.mapCastleElements[0].setPosition(sprites.getRectMapX() + 27, sprites.getRectMapY() + 322);
+        sprites.mapCastleElements[1].setPosition(sprites.getRectMapX() + 75, sprites.getRectMapY() + 240);
+        sprites.mapCastleElements[2].setPosition(sprites.getRectMapX() + 34, sprites.getRectMapY() + 5);
         break;
     case 3:
-        assets.mapCastleElements[0].setPosition(assets.getRectMapX() + 27, assets.getRectMapY() + 322);
-        assets.mapCastleElements[1].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 240);
-        assets.mapCastleElements[2].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + 5);
-        assets.mapCastleElements[3].setPosition(assets.getRectMapX() + 200, assets.getRectMapY() + 20);
+        sprites.mapCastleElements[0].setPosition(sprites.getRectMapX() + 27, sprites.getRectMapY() + 322);
+        sprites.mapCastleElements[1].setPosition(sprites.getRectMapX() + 75, sprites.getRectMapY() + 240);
+        sprites.mapCastleElements[2].setPosition(sprites.getRectMapX() + 34, sprites.getRectMapY() + 5);
+        sprites.mapCastleElements[3].setPosition(sprites.getRectMapX() + 200, sprites.getRectMapY() + 20);
         break;
     case 4:
-        assets.mapCastleElements[0].setPosition(assets.getRectMapX() + 27, assets.getRectMapY() + 322);
-        assets.mapCastleElements[1].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 240);
-        assets.mapCastleElements[2].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + 5);
-        assets.mapCastleElements[3].setPosition(assets.getRectMapX() + 200, assets.getRectMapY() + 20);
-        assets.mapCastleElements[4].setPosition(assets.getRectMapX() + 305, assets.getRectMapY() + 210);
+        sprites.mapCastleElements[0].setPosition(sprites.getRectMapX() + 27, sprites.getRectMapY() + 322);
+        sprites.mapCastleElements[1].setPosition(sprites.getRectMapX() + 75, sprites.getRectMapY() + 240);
+        sprites.mapCastleElements[2].setPosition(sprites.getRectMapX() + 34, sprites.getRectMapY() + 5);
+        sprites.mapCastleElements[3].setPosition(sprites.getRectMapX() + 200, sprites.getRectMapY() + 20);
+        sprites.mapCastleElements[4].setPosition(sprites.getRectMapX() + 305, sprites.getRectMapY() + 210);
         break;
     }
-    assets.mapCastleElementsText[0].setPosition(assets.getRectMapX() + 27, assets.getRectMapY() + 307);
-    assets.mapCastleElementsText[1].setPosition(assets.getRectMapX() + 75, assets.getRectMapY() + 225);
-    assets.mapCastleElementsText[2].setPosition(assets.getRectMapX() + 34, assets.getRectMapY() + -10);
-    assets.mapCastleElementsText[3].setPosition(assets.getRectMapX() + 200, assets.getRectMapY() + 5);
-    assets.mapCastleElementsText[4].setPosition(assets.getRectMapX() + 305, assets.getRectMapY() + 195);
+    sprites.mapCastleElementsText[0].setPosition(sprites.getRectMapX() + 27, sprites.getRectMapY() + 307);
+    sprites.mapCastleElementsText[1].setPosition(sprites.getRectMapX() + 75, sprites.getRectMapY() + 225);
+    sprites.mapCastleElementsText[2].setPosition(sprites.getRectMapX() + 34, sprites.getRectMapY() + -10);
+    sprites.mapCastleElementsText[3].setPosition(sprites.getRectMapX() + 200, sprites.getRectMapY() + 5);
+    sprites.mapCastleElementsText[4].setPosition(sprites.getRectMapX() + 305, sprites.getRectMapY() + 195);
     //Decay
-    assets.decayMapView.setPosition(assets.getRectMapX(), assets.getRectMapY());
-    switch (assets.getDecayAreaUnlocked()) {
+    sprites.decayMapView.setPosition(sprites.getRectMapX(), sprites.getRectMapY());
+    switch (sprites.getDecayAreaUnlocked()) {
     case 0:
-        assets.mapDecayElements[0].setPosition(assets.getRectMapX() + 220, assets.getRectMapY() + 215);
+        sprites.mapDecayElements[0].setPosition(sprites.getRectMapX() + 220, sprites.getRectMapY() + 215);
         break;
     case 1:
-        assets.mapDecayElements[0].setPosition(assets.getRectMapX() + 220, assets.getRectMapY() + 215);
-        assets.mapDecayElements[1].setPosition(assets.getRectMapX() + 245, assets.getRectMapY() + 110);
+        sprites.mapDecayElements[0].setPosition(sprites.getRectMapX() + 220, sprites.getRectMapY() + 215);
+        sprites.mapDecayElements[1].setPosition(sprites.getRectMapX() + 245, sprites.getRectMapY() + 110);
         break;
     case 2:
-        assets.mapDecayElements[0].setPosition(assets.getRectMapX() + 220, assets.getRectMapY() + 215);
-        assets.mapDecayElements[1].setPosition(assets.getRectMapX() + 245, assets.getRectMapY() + 110);
-        assets.mapDecayElements[2].setPosition(assets.getRectMapX() + 200, assets.getRectMapY() + 60);
+        sprites.mapDecayElements[0].setPosition(sprites.getRectMapX() + 220, sprites.getRectMapY() + 215);
+        sprites.mapDecayElements[1].setPosition(sprites.getRectMapX() + 245, sprites.getRectMapY() + 110);
+        sprites.mapDecayElements[2].setPosition(sprites.getRectMapX() + 200, sprites.getRectMapY() + 60);
         break;
     case 3:
-        assets.mapDecayElements[0].setPosition(assets.getRectMapX() + 220, assets.getRectMapY() + 215);
-        assets.mapDecayElements[1].setPosition(assets.getRectMapX() + 245, assets.getRectMapY() + 110);
-        assets.mapDecayElements[2].setPosition(assets.getRectMapX() + 200, assets.getRectMapY() + 60);
-        assets.mapDecayElements[3].setPosition(assets.getRectMapX() + 150, assets.getRectMapY() + 40);
+        sprites.mapDecayElements[0].setPosition(sprites.getRectMapX() + 220, sprites.getRectMapY() + 215);
+        sprites.mapDecayElements[1].setPosition(sprites.getRectMapX() + 245, sprites.getRectMapY() + 110);
+        sprites.mapDecayElements[2].setPosition(sprites.getRectMapX() + 200, sprites.getRectMapY() + 60);
+        sprites.mapDecayElements[3].setPosition(sprites.getRectMapX() + 150, sprites.getRectMapY() + 40);
         break;
     case 4:
-        assets.mapDecayElements[0].setPosition(assets.getRectMapX() + 220, assets.getRectMapY() + 215);
-        assets.mapDecayElements[1].setPosition(assets.getRectMapX() + 245, assets.getRectMapY() + 110);
-        assets.mapDecayElements[2].setPosition(assets.getRectMapX() + 200, assets.getRectMapY() + 60);
-        assets.mapDecayElements[3].setPosition(assets.getRectMapX() + 150, assets.getRectMapY() + 40);
-        assets.mapDecayElements[4].setPosition(assets.getRectMapX() + 25, assets.getRectMapY() + 50);
+        sprites.mapDecayElements[0].setPosition(sprites.getRectMapX() + 220, sprites.getRectMapY() + 215);
+        sprites.mapDecayElements[1].setPosition(sprites.getRectMapX() + 245, sprites.getRectMapY() + 110);
+        sprites.mapDecayElements[2].setPosition(sprites.getRectMapX() + 200, sprites.getRectMapY() + 60);
+        sprites.mapDecayElements[3].setPosition(sprites.getRectMapX() + 150, sprites.getRectMapY() + 40);
+        sprites.mapDecayElements[4].setPosition(sprites.getRectMapX() + 25, sprites.getRectMapY() + 50);
         break;
         
     }
-    assets.mapDecayElementsText[0].setPosition(assets.getRectMapX() + 220, assets.getRectMapY() + 200);
-    assets.mapDecayElementsText[1].setPosition(assets.getRectMapX() + 245, assets.getRectMapY() + 95);
-    assets.mapDecayElementsText[2].setPosition(assets.getRectMapX() + 200, assets.getRectMapY() + 45);
-    assets.mapDecayElementsText[3].setPosition(assets.getRectMapX() + 150, assets.getRectMapY() + 25);
-    assets.mapDecayElementsText[4].setPosition(assets.getRectMapX() + 25, assets.getRectMapY() + 35);
+    sprites.mapDecayElementsText[0].setPosition(sprites.getRectMapX() + 220, sprites.getRectMapY() + 200);
+    sprites.mapDecayElementsText[1].setPosition(sprites.getRectMapX() + 245, sprites.getRectMapY() + 95);
+    sprites.mapDecayElementsText[2].setPosition(sprites.getRectMapX() + 200, sprites.getRectMapY() + 45);
+    sprites.mapDecayElementsText[3].setPosition(sprites.getRectMapX() + 150, sprites.getRectMapY() + 25);
+    sprites.mapDecayElementsText[4].setPosition(sprites.getRectMapX() + 25, sprites.getRectMapY() + 35);
 }
 
-void World::selectMapView(sf::RenderWindow& window, Assets& assets, Travel& travel)
+void World::selectMapView(sf::RenderWindow& window, Sprites& sprites, Travel& travel)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
-    if (assets.buttonViewMap[0].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.buttonViewMap[0].getGlobalBounds().contains(mousePosF)) {
         //Click to view forest from map selector buttons
-        assets.setMapCounterZero();
-        this->resetMapPosition(window, assets);
+        sprites.setMapCounterZero();
+        this->resetMapPosition(window, sprites);
 
         travel.getFrame() = 0;
-        assets.soundWalk.play();
+        sprites.soundWalk.play();
         travel.getForestCounter() = 0;
         travel.setFrameInitFalse();
         travel.getFrame() = 0;
         this->buttonClick = true;
     }
-    else if (assets.buttonViewMap[1].getGlobalBounds().contains(mousePosF)) {
+    else if (sprites.buttonViewMap[1].getGlobalBounds().contains(mousePosF)) {
         //Click to view castle from map selector buttons
-        assets.setMapCounterOne();
-        this->resetMapPosition(window, assets);
+        sprites.setMapCounterOne();
+        this->resetMapPosition(window, sprites);
 
         travel.getFrame() = 0;
-        assets.soundWalk.play();
+        sprites.soundWalk.play();
         travel.getCastleCounter() = 0;
         travel.setFrameInitFalse();
         this->buttonClick = true;
     }
-    else if (assets.buttonViewMap[2].getGlobalBounds().contains(mousePosF)) {
+    else if (sprites.buttonViewMap[2].getGlobalBounds().contains(mousePosF)) {
         //Click to view decay from map selector buttons
-        assets.setMapCounterTwo();
-        this->resetMapPosition(window, assets);
+        sprites.setMapCounterTwo();
+        this->resetMapPosition(window, sprites);
 
         travel.getFrame() = 0;
-        assets.soundWalk.play();
+        sprites.soundWalk.play();
         travel.getDecayCounter() = 0;
         travel.setFrameInitFalse();
         this->buttonClick = true;
     }
 }
 
-void World::drawForestMap(sf::RenderWindow& window, Assets& assets)
+void World::drawForestMap(sf::RenderWindow& window, Sprites& sprites)
 {
-    window.draw(assets.forestMapView);
-    window.draw(assets.multiArrow);
-    this->DrawMapSelectorButtons(window, assets);
-    for (int i = 0; i < assets.mapForestElements.size(); i++) {
-        window.draw(assets.mapForestElements[i]);
+    window.draw(sprites.forestMapView);
+    window.draw(sprites.multiArrow);
+    this->DrawMapSelectorButtons(window, sprites);
+    for (int i = 0; i < sprites.mapForestElements.size(); i++) {
+        window.draw(sprites.mapForestElements[i]);
     }
 
-    for (int i = 0; i < assets.mapForestElementsText.size(); i++) {
-        window.draw(assets.mapForestElementsText[i]);
+    for (int i = 0; i < sprites.mapForestElementsText.size(); i++) {
+        window.draw(sprites.mapForestElementsText[i]);
     }
 }
 
-void World::drawCastleMap(sf::RenderWindow& window, Assets& assets)
+void World::drawCastleMap(sf::RenderWindow& window, Sprites& sprites)
 {
     //Draw Everything
-    window.draw(assets.spriteMapView);
-    window.draw(assets.multiArrow);
-    this->DrawMapSelectorButtons(window, assets);
-    for (int i = 0; i < assets.mapCastleElements.size(); i++) {
-        window.draw(assets.mapCastleElements[i]);
+    window.draw(sprites.spriteMapView);
+    window.draw(sprites.multiArrow);
+    this->DrawMapSelectorButtons(window, sprites);
+    for (int i = 0; i < sprites.mapCastleElements.size(); i++) {
+        window.draw(sprites.mapCastleElements[i]);
     }
 
-    for (int i = 0; i < assets.mapCastleElementsText.size(); i++) {
-        window.draw(assets.mapCastleElementsText[i]);
+    for (int i = 0; i < sprites.mapCastleElementsText.size(); i++) {
+        window.draw(sprites.mapCastleElementsText[i]);
     }
 }
 
-void World::drawDecayMap(sf::RenderWindow& window, Assets& assets)
+void World::drawDecayMap(sf::RenderWindow& window, Sprites& sprites)
 {
     //Draw Everything
-    window.draw(assets.decayMapView);
-    window.draw(assets.multiArrow);
-    this->DrawMapSelectorButtons(window, assets);
-    for (int i = 0; i < assets.mapDecayElements.size(); i++) {
-        window.draw(assets.mapDecayElements[i]);
+    window.draw(sprites.decayMapView);
+    window.draw(sprites.multiArrow);
+    this->DrawMapSelectorButtons(window, sprites);
+    for (int i = 0; i < sprites.mapDecayElements.size(); i++) {
+        window.draw(sprites.mapDecayElements[i]);
     }
 
-    for (int i = 0; i < assets.mapDecayElementsText.size(); i++) {
-        window.draw(assets.mapDecayElementsText[i]);
+    for (int i = 0; i < sprites.mapDecayElementsText.size(); i++) {
+        window.draw(sprites.mapDecayElementsText[i]);
     }
 }

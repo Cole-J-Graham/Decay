@@ -2,6 +2,7 @@
 
 World world;
 Assets assets;
+Sprites sprites;
 Combat combat;
 Player player;
 Event notevent;
@@ -12,7 +13,7 @@ int main()
 {
     while (!world.getStop())
     {
-        world.bootUp(assets, notevent, combat, player, travel, animate);
+        world.bootUp(sprites, notevent, combat, player, travel, animate);
     }
 
     return 0;

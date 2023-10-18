@@ -1,6 +1,6 @@
 #ifndef COMBAT_H
 #define COMBAT_H
-#include"Assets.h"
+#include"Sprites.h"
 #include"Player.h"
 #include"Animation.h"
 
@@ -113,8 +113,8 @@ public:
 	void updateMoves(Assets& assets, Player& player);
 
 	//Core Combat Functions
-	void combatLoop(Assets& assets, Player& player, Animation& animate);
-	void initCombat(Assets& assets, Player& player);
+	void combatLoop(Sprites& sprites, Player& player, Animation& animate);
+	void initCombat(Sprites& sprites, Player& player);
 	void reInitCombat(Assets& assets);
 	void playerDeath(Assets& assets);
 
@@ -128,27 +128,27 @@ public:
 	void zinSelectMove(Assets& assets);
 
 	//Combat Init Forest Hostiles
-	void initWolf(Assets& assets);
-	void initDecayWalker(Assets& assets);
-	void initHostileTree(Assets& assets);
-	void initDecayKnight(Assets& assets);
-	void initLostNun(Assets& assets);
-	void initDecapod(Assets& assets);
-	void initHazeDemon(Assets& assets);
+	void initWolf(Sprites& sprites);
+	void initDecayWalker(Sprites& sprites);
+	void initHostileTree(Sprites& sprites);
+	void initDecayKnight(Sprites& sprites);
+	void initLostNun(Sprites& sprites);
+	void initDecapod(Sprites& sprites);
+	void initHazeDemon(Sprites& sprites);
 
 	//Combat Init Castle Hostiles
-	void initCourtJester(Assets& assets);
-	void initWallMimic(Assets& assets);
-	void initLostKnight(Assets& assets);
-	void initPhantom(Assets& assets);
-	void initSkinEater(Assets& assets);
+	void initCourtJester(Sprites& sprites);
+	void initWallMimic(Sprites& sprites);
+	void initLostKnight(Sprites& sprites);
+	void initPhantom(Sprites& sprites);
+	void initSkinEater(Sprites& sprites);
 
 	//Combat Init Decay Hostiles
-	void initLimbSplitter(Assets& assets);
-	void initBurrower(Assets& assets);
-	void initChatterMouth(Assets& assets);
-	void initReclus(Assets& assets);
-	void initTendrilAlpha(Assets& assets);
+	void initLimbSplitter(Sprites& sprites);
+	void initBurrower(Sprites& sprites);
+	void initChatterMouth(Sprites& sprites);
+	void initReclus(Sprites& sprites);
+	void initTendrilAlpha(Sprites& sprites);
 
 	//Hp Getters
 	int& getPlayerHp() { return this->playerHp; };

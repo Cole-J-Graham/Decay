@@ -27,6 +27,7 @@ private:
 
 	//Counters
 	int zinTalkCounter;
+	int choiceCounter;
 
 	int dialogue;
 
@@ -37,34 +38,34 @@ public:
 	~Event();
 
 	//Core Functions
-	void reInit(Assets& assets);
-	void hideOpenAssets(Assets& assets);
+	void reInit(Sprites& sprites);
+	void hideOpenAssets(Sprites& sprites);
 
 	//Bonfire Events
-	void healCharactersText(sf::RenderWindow& window, Assets& assets);
-	void healCharacters(sf::RenderWindow& window, Assets& assets, Combat& combat);
-	void smithingText(sf::RenderWindow& window, Assets& assets);
-	void smithingSharpenBlade(sf::RenderWindow& window, Assets& assets, Player& player);
+	void healCharactersText(sf::RenderWindow& window, Sprites& sprites);
+	void healCharacters(sf::RenderWindow& window, Sprites& sprites, Combat& combat);
+	void smithingText(sf::RenderWindow& window, Sprites& sprites);
+	void smithingSharpenBlade(sf::RenderWindow& window, Sprites& sprites, Player& player);
 
 	//Bonfire Text Events
-	void zinEvents(sf::RenderWindow& window, Assets& assets, Animation& animate);
+	void zinEvents(sf::RenderWindow& window, Sprites& sprites, Animation& animate);
 
 	//Zin Events
-	void zinInitialTalk(Assets& assets, Animation& animate);
+	void zinInitialTalk(Sprites& sprites, Animation& animate);
 
 	//Forest Entrance Events
-	void forestSiwardEncounter(Assets& assets);
+	void forestSiwardEncounter(Sprites& sprites);
 
 	//Forest Depths Events
-	void forestDepthsSpadeEncounter(Assets& assets);
-	void treeEncounter(Assets& assets, Player& player);
+	void forestDepthsSpadeEncounter(Sprites& sprites);
+	void treeEncounter(Sprites& sprites, Player& player);
 
 	//Forest Abyssal Events
-	void obeliskEncounter(Assets& assets, Player& player);
-	void lostNunEncounter(Assets& assets);
+	void obeliskEncounter(Sprites& sprites, Player& player);
+	void lostNunEncounter(Sprites& sprites);
 
 	//Castle Events
-	void spadeEncounter(Assets& assets);
+	void spadeEncounter(Sprites& sprites);
 
 	//Control Flow Getters
 	bool& getEncounterInit() { return this->encounterInit; };
@@ -76,6 +77,7 @@ public:
 
 	//Counter Getters
 	int& getZinTalkCounter() { return this->zinTalkCounter; };
+	int& getChoiceCounter() { return this->choiceCounter; };
 
 	int& getDialogue() { return this->dialogue; };
 

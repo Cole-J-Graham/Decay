@@ -10,6 +10,15 @@
 class Assets
 {
 private:
+	int dialogueCounter;
+	int combatCounter;
+	int playerCounter;
+	int zinCounter;
+	int hostileCounter;
+	int mapCounter;
+	int tipBoxCounter;
+	int showAnsBoxesCounter;
+
 	//Sprite Bool
 	bool initialDrawIn;
 	bool initMapTexture;
@@ -33,37 +42,8 @@ private:
 	int castleAreaUnlocked;
 	int decayAreaUnlocked;
 
-	//Sprite Control Flow
-	bool siwardLoadOnce;
-	bool playerLoadOnce;
-	bool zinLoadOnce;
-	bool spadeLoadOnce;
-	bool hostileLoadOnce;
 	bool startFrame;
 	bool endFrame;
-
-	bool zinInit;
-	bool spadeInit;
-	bool hostileInit;
-
-	//Sprite Border Control Flow
-	bool spriteInit;
-	bool playerInit;
-
-	//Sprite Integer Selection
-	int siwardCounter;
-	int playerCounter;
-	int zinCounter;
-	int spadeCounter;
-	int hostileCounter;
-	int mapCounter;
-	int dialogueCounter;
-	int combatCounter;
-	int showAnsBoxesCounter;
-	int choiceCounter;
-	int tipBoxCounter;
-	int spriteViewerCounter;
-	int entityViewerCounter;
 
 	//Movable
 	bool movable;
@@ -97,9 +77,6 @@ public:
 	sf::Image windowIcon;
 
 	//Textures
-	sf::Texture siwardTexture;
-	sf::Texture playerTexture;
-	sf::Texture spadeTexture;
 	sf::Texture combatTexture;
 	sf::Texture boxTexture;
 	sf::Texture mapTexture;
@@ -109,12 +86,6 @@ public:
 	sf::Texture buttonBackTexture;
 	sf::Texture textureTravel;
 	sf::Texture multiArrowTexture;
-
-	//Zin Textures
-	sf::Texture zinTexture;
-	sf::Texture zinTextureHappy;
-	sf::Texture zinTextureConcerned;
-	sf::Texture zinTextureAnnoyed;
 
 	//Map Textures
 	sf::Texture textureMapView;
@@ -245,7 +216,7 @@ public:
 	std::vector<sf::Text> textElements {rectStatsText, rectInventoryText, 
 		menuText, };
 
-	std::vector<sf::Sprite> spriteElements {button, buttonBack, spade, 
+	std::vector<sf::Sprite> spriteElements{ button, buttonBack, spade,
 		zin, player, hostile, siward };
 
 	//Stats Menu Vectors
@@ -377,61 +348,6 @@ public:
 	std::vector<sf::Text> spriteText{ textPlayer, textZin, textHostile,
 		textSpade, textSiward };
 
-	//Entity Viewer Objects
-	sf::Text entityBoxText;
-	sf::RectangleShape entityBoxHeader;
-	sf::RectangleShape entityBox;
-	sf::Sprite entitySprite;
-
-	//Viewer Files Main
-	sf::Texture blankEntity;
-	sf::Texture siwardEntityTexture;
-	sf::Texture spadeEntityForest;
-	sf::Texture spadeEntityCastle;
-
-	//Viewer Files Random Events
-	sf::Texture treeEntity;
-	sf::Texture obeliskEntity;
-	sf::Texture strangeCreature;
-
-	//Viewer Files Hostile Entities
-	sf::Texture decayEntity;
-	sf::Texture hostileTreeEntity;
-	sf::Texture lostNunEntity;
-	sf::Texture decapodEntity;
-	sf::Texture wolfEntity;
-	sf::Texture knightEntity;
-	sf::Texture hazeEntity;
-	sf::Texture jesterEntity;
-	sf::Texture wallMimicEntity;
-	sf::Texture lostKnightEntity;
-	sf::Texture phantomEntity;
-	sf::Texture eaterEntity;
-	sf::Texture limbSplitterEntity;
-	sf::Texture burrowerEntity;
-	sf::Texture chatterMouthEntity;
-	sf::Texture reclusEntity;
-	sf::Texture tendrilAlphaEntity;
-
-	//Hostile Sprite Textures
-	sf::Texture hostileTextureWolf;
-	sf::Texture hostileTextureWalker;
-	sf::Texture hostileTextureKnight;
-	sf::Texture hostileTextureTree;
-	sf::Texture hostileTextureNun;
-	sf::Texture hostileTextureDecapod;
-	sf::Texture hostileTextureHaze;
-	sf::Texture hostileTextureJester;
-	sf::Texture hostileTextureWallMimic;
-	sf::Texture hostileTextureLostKnight;
-	sf::Texture hostileTexturePhantom;
-	sf::Texture hostileTextureEater;
-	sf::Texture hostileTextureLimbSplitter;
-	sf::Texture hostileTextureBurrower;
-	sf::Texture hostileTextureChatterMouth;
-	sf::Texture hostileTextureReclus;
-	sf::Texture hostileTextureAlphaEntity;
-
 	//Sounds
 	sf::Sound sound;
 	sf::Sound blipsound;
@@ -479,7 +395,6 @@ public:
 	//Core Functions
 	void loadSprites();
 	void loadSounds();
-	void loadEntities();
 
 	//Init Objects
 	void drawObjects();
@@ -492,7 +407,6 @@ public:
 	void drawDeathAssets();
 	void drawAnswerBoxes();
 	void drawTipBox();
-	void drawEntityViewer();
 
 	//Draw Map Segments
 	void drawMap();
@@ -507,13 +421,6 @@ public:
 	//Draw Sprite Boxes
 	void drawSpriteBoxes();
 
-	//Sprite Functions
-	void playerSprite();
-	void spadeSprite();
-	void zinSprite();
-	void hostileSprite();
-	void siwardSprite();
-
 	//Sound Functions
 	void loadSFX();
 
@@ -521,6 +428,20 @@ public:
 	void initCombatAssets();
 	void playerCombatAssets();
 	void zinCombatAssets();
+
+	//Sprite Int Getters
+	int& getPlayerCounter() { return this->playerCounter; };
+	int& getZinCounter() { return this->zinCounter; };
+	int& getHostileCounter() { return this->hostileCounter; };
+	int& getCombatCounter() { return this->combatCounter; };
+	int& getDialogueCounter() { return this->dialogueCounter; };
+
+	//Sprite Int Setters
+	void setCombatCounterZero() { this->combatCounter = 0; };
+	void setCombatCounterInc() { this->combatCounter++; };
+	void setCombatCounterDec() { this->combatCounter--; };
+	void setDialogueCounterInc() { this->dialogueCounter++; };
+	void setDialogueCounterDec() { this->dialogueCounter--; };
 
 	//Sprite Bool Getters
 	bool& getInitialDrawIn() { return this->initialDrawIn; };
@@ -569,71 +490,10 @@ public:
 	int& getCastleAreaUnlocked() { return this->castleAreaUnlocked; };
 	int& getDecayAreaUnlocked() { return this->decayAreaUnlocked; };
 
-	//Sprite Control Flow Getters
-	bool& getSiwardLoadOnce() { return this->siwardLoadOnce; };
-	bool& getPlayerLoadOnce() { return this->playerLoadOnce; };
-	bool& getZinLoadOnce() { return this->zinLoadOnce; };
-	bool& getSpadeLoadOnce() { return this->spadeLoadOnce; };
-
-	bool& getZinInit() { return this->zinInit; };
-	bool& getSpadeInit() { return this->spadeInit; };
-
-	//Sprite Control Flow Setters
-	void setPlayerLoadOnceFalse() { this->playerLoadOnce = false; };
-	void setZinLoadOnceFalse() { this->zinLoadOnce = false; };
-	void setSpadeLoadOnceFalse() { this->spadeLoadOnce = false; };
-
-	void setZinInitTrue() { this->zinInit = true; };
-	void setSpadeInitTrue() { this->zinInit = true; };
-	void setHostileInitTrue() { this->hostileInit = true; };
-	void setZinInitFalse() { this->zinInit = false; };
-	void setSpadeInitFalse() { this->zinInit = false; };
-	void setHostileInitFalse() { this->hostileInit = false; };
-
-	//Sprite Border Control Flow Getters
-	bool& getSpriteInit() { return this->spriteInit; };
-	bool& getPlayerInit() { return this->playerInit; };
-
-	//Sprite Border Control Flow Setters
-	void setSpriteInitTrue() { this->spriteInit = true; };
-	void setPlayerInitTrue() { this->playerInit = true; };
-	void setSpriteInitFalse() { this->spriteInit = false; };
-	void setPlayerInitFalse() { this->playerInit = false; };
-
-	//Sprite Integer Selection Getters
-	int& getSiwardCounter() { return this->siwardCounter; };
-	int& getPlayerCounter() { return this->playerCounter; };
-	int& getZinCounter() { return this->zinCounter; };
-	int& getSpadeCounter() { return this->spadeCounter; };
-	int& getHostileCounter() { return this->hostileCounter; };
 	int& getMapCounter() { return this->mapCounter; };
-	int& getDialogueCounter() { return this->dialogueCounter; };
-	int& getCombatCounter() { return this->combatCounter; };
 	int& getShowAnsBoxesCounter() { return this->showAnsBoxesCounter; };
-	int& getChoiceCounter() { return this->choiceCounter; };
 	int& getTipBoxCounter() { return this->tipBoxCounter; };
-	int& getSpriteViewerCounter() { return this->spriteViewerCounter; };
-	int& getEntityViewerCounter() { return this->entityViewerCounter; };
 
-	//Sprite Integer Selection Setters
-	void setPlayerCounterInc() { this->playerCounter++; };
-	void setZinCounterInc() { this->zinCounter++; };
-	void setSpadeCounterInc() { this->spadeCounter++; };
-	void setMapCounterInc() { this->mapCounter++; };
-	void setDialogueCounterInc() { this->dialogueCounter++; };
-	void setCombatCounterInc() { this->combatCounter++; };
-
-	void setPlayerCounterDec() { this->playerCounter--; };
-	void setZinCounterDec() { this->zinCounter--; };
-	void setSpadeCounterDec() { this->spadeCounter--; };
-	void setMapCounterDec() { this->mapCounter--; };
-	void setDialogueCounterDec() { this->dialogueCounter--; };
-	void setCombatCounterDec() { this->combatCounter--; };
-
-	void setZinCounterZero() { this->zinCounter = 0; };
-	void setSpadeCounterZero() { this->spadeCounter = 0; };
-	void setSpadeCounterOne() { this->spadeCounter = 1; };
-	void setCombatCounterZero() { this->combatCounter = 0; };
 	void setMapCounterZero() { this->mapCounter = 0; };
 	void setMapCounterOne() { this->mapCounter = 1; };
 	void setMapCounterTwo() { this->mapCounter = 2; };

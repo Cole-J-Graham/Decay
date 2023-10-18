@@ -22,7 +22,6 @@ private:
 
 	//Counters
 	int introCounterDialogue;
-
 	int introCounter;
 	int forestCounter;
 	int castleCounter;
@@ -31,13 +30,6 @@ private:
 	//Core Bools
 	bool frameInit;
 	bool bonfireInit;
-
-	//Init Bools
-	bool forestEntranceInit;
-	bool forestDepthsInit;
-
-	bool castleHallsInit;
-	bool castleDepthsInit;
 
 	//Sound Bools
 	bool soundPlay;
@@ -51,38 +43,38 @@ public:
 	~Travel();
 
 	//Core
-	void travelCore(sf::RenderWindow& window, Assets& assets, Event& notevent, 
+	void travelCore(sf::RenderWindow& window, Sprites& sprites, Event& notevent, 
 		Combat& combat, Player& player, Animation& animate);
-	void newArea(Assets& assets, Animation& animate);
+	void newArea(Sprites& sprites, Animation& animate);
 
 	//Draw Intro
-	void intro(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
-	void introBeginning(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player);
-	void enterBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent);
+	void intro(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player);
+	void introBeginning(sf::RenderWindow& window, Sprites& sprites, Event& notevent);
+	void enterBonfire(sf::RenderWindow& window, Sprites& sprites, Event& notevent);
 
 	//Draw Forest
-	void forestMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void forestBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void forestEntrance(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void forestDepths(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void forestAbyssal(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void forestAbyssalDepths(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void forestMap(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void forestBonfire(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void forestEntrance(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void forestDepths(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void forestAbyssal(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void forestAbyssalDepths(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
 
 	//Draw Castle
-	void castleMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void castleBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void castleHalls(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void castleDepths(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void castleChambers(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void castleLabyrinth(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void castleMap(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void castleBonfire(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void castleHalls(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void castleDepths(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void castleChambers(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void castleLabyrinth(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
 
 	//Draw Decay
-	void decayMap(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void decayBonfire(sf::RenderWindow& window, Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void decayChasms(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void decayOcean(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void decayForest(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void decayGiants(Assets& assets, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void decayMap(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void decayBonfire(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void decayChasms(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void decayOcean(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void decayForest(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void decayGiants(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
 
 	//Core Getters
 	int& getFrame() { return this->frame; };
@@ -95,7 +87,6 @@ public:
 
 	//Counter Getters
 	int& getIntroCounterDialogue() { return this->introCounterDialogue; };
-
 	int& getIntroCounter() { return this->introCounter; };
 	int& getForestCounter() { return this->forestCounter; };
 	int& getCastleCounter() { return this->castleCounter; };

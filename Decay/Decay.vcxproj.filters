@@ -25,6 +25,9 @@
     <ClCompile Include="World.cpp">
       <Filter>cpp</Filter>
     </ClCompile>
+    <ClCompile Include="Sprites.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -46,6 +49,9 @@
       <Filter>.h</Filter>
     </ClInclude>
     <ClInclude Include="World.h">
+      <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprites.h">
       <Filter>.h</Filter>
     </ClInclude>
   </ItemGroup>
