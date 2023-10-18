@@ -3,6 +3,7 @@
 //Constructors & Destructors
 Assets::Assets()
 {
+    this->thomUnlocked = true;
     this->dialogueCounter = 0;
     this->combatCounter = 0;
     this->playerCounter = -1;
@@ -62,6 +63,7 @@ Assets::Assets()
     //Combat Move Unlocks
     this->combatPlayerMoves = 2;
     this->combatZinMoves = 2;
+    this->combatThomMoves = 0;
 
     //Strings
     this->playerName = "player";
@@ -89,7 +91,7 @@ void Assets::loadSprites()
 void Assets::loadSounds()
 {
     bufferClick.loadFromFile("Assets/Sounds/click.wav");
-    bufferCampfire.loadFromFile("Assets/Sounds/campfire.wav");
+    //bufferCampfire.loadFromFile("Assets/Sounds/campfire.wav");
     bufferDecay.loadFromFile("Assets/Sounds/decayblade.wav");
     bufferVengeance.loadFromFile("Assets/Sounds/vengeance.wav");
     bufferSlash.loadFromFile("Assets/Sounds/slash.wav");
@@ -1174,15 +1176,19 @@ void Assets::zinCombatAssets()
 void Assets::thomCombatAssets()
 {
     if (this->thomTurnAssets) {
-        switch (this->combatZinMoves) {
+        switch (this->combatThomMoves) {
         case 0:
-            //Draw Thom Move 1 Button
-            
+            //Draw Thom Barrier Button
+            combatRect[6].setPosition(335.0f, 795.0f);
+            //Draw Player Slash Text
+            combatText[6].setPosition(335.0f, 795.0f);
+            combatText[6].setString("Barrier");
             break;
         }
     }
     else if (!this->thomTurnAssets) {
-        
+        combatRect[6].setPosition(10000.0f, 10000.0f);
+        combatText[6].setPosition(10000.0f, 10000.0f);
     }
 }
 

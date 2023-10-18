@@ -8,6 +8,8 @@ Combat::Combat()
 	this->playerHpMax = 50;
 	this->zinHp = 35;
 	this->zinHpMax = 35;
+	this->thomHp = 30;
+	this->thomHpMax = 30;
 
 	//Hostile Stats
 	this->hostileHp = 50;
@@ -29,6 +31,7 @@ Combat::Combat()
 	//Attack Counters
 	this->attackCounter = 0;
 	this->zinAttackCounter = 0;
+	this->thomAttackCounter = 0;
 
 	//Move Unlock Bools
 	this->unlockedGuard = false;
@@ -67,15 +70,19 @@ Combat::Combat()
 
 	this->playerAttack = false;
 	this->zinAttack = false;
+	this->thomAttack = false;
 	this->hostileAttack = false;
 	this->hostileAttackZin = false;
+	this->hostileAttackThom = false;
 
 	this->playerDead = false;
 	this->zinDead = false;
+	this->thomDead = false;
 
 	//Move Selectors
 	this->playerPickMove = -1;
 	this->zinPickMove = 0;
+	this->thomPickMove = 0;
 
 	//Init Strings
 	this->playerTurnText = "You plan your next move...";
@@ -103,13 +110,13 @@ Combat::~Combat()
 }
 
 //Core Stat Functions
-void Combat::updateStats(Assets& assets, Player& player)
+void Combat::updateStats(Sprites& sprites, Player& player)
 {
 	this->playerStrike = 5 + player.getStrength() + player.getSwordPower();
 	this->playerHp = this->playerHp + player.getVitality();
 	player.getDecayMax() = 25 + player.getFortitude();
 	this->playerHpMax = this->playerHp;
-	this->updateMoves(assets, player);
+	this->updateMoves(sprites, player);
 }
 
 void Combat::updateStatsZin(Player& player)
@@ -119,12 +126,12 @@ void Combat::updateStatsZin(Player& player)
 	this->zinHpMax = this->zinHp;
 }
 
-void Combat::updateMoves(Assets& assets, Player& player)
+void Combat::updateMoves(Sprites& sprites, Player& player)
 {
 	if (player.getLevel() >= 15 && unlockedGuard == false) {
 		//Unlock Guard
-		assets.setCombatPlayerMovesInc();
-		assets.text.setString("Move 'Guard' learned!");
+		sprites.setCombatPlayerMovesInc();
+		sprites.text.setString("Move 'Guard' learned!");
 		this->unlockedGuard = true;
 	}
 }
@@ -150,6 +157,9 @@ void Combat::combatLoop(Sprites& sprites, Player& player, Animation& animate)
 		if (!this->zinDead) {
 			this->zinTurn(sprites);
 		}
+		if (!this->thomDead) {
+			this->thomTurn(sprites);
+		}
 		//Check if hostile is dead. If so, end combat
 		if (this->hostileHp <= 0) {
 			sprites.setCombatAssetsFalse();
@@ -162,7 +172,7 @@ void Combat::combatLoop(Sprites& sprites, Player& player, Animation& animate)
 		}
 		//Hostiles turn
 		this->hostileTurn(sprites);
-		//Check if player or Zin has died
+		//Check if player, Zin, or Thom has died
 		if (this->playerHp <= 0 && !this->playerDead) {
 			this->playerDead = true;
 			sprites.text.setString("You have been left unconscious...");
@@ -171,10 +181,23 @@ void Combat::combatLoop(Sprites& sprites, Player& player, Animation& animate)
 			this->zinDead = true;
 			sprites.text.setString("Zin has been left unconscious...");
 		}
-		//Check if both the player and Zin have died
-		if (this->playerHp <= 0 && zinHp <= 0) {
-			this->playerDeath(sprites);
-			sprites.text.setString("Your party has died...");
+		if (this->thomHp <= 0 && !this->thomDead) {
+			this->thomDead = true;
+			sprites.text.setString("Zin has been left unconscious...");
+		}
+		if (!sprites.getThomUnlocked()) {
+			//Check if both the player and Zin have died
+			if (this->playerHp <= 0 && this->zinHp <= 0) {
+				this->playerDeath(sprites);
+				sprites.text.setString("Your party has died...");
+			}
+		}
+		else if (sprites.getThomUnlocked()) {
+			//Check if both the player, Zin and Thom have died
+			if (this->playerHp <= 0 && this->zinHp <= 0 && this->thomHp <= 0) {
+				this->playerDeath(sprites);
+				sprites.text.setString("Your party has died...");
+			}
 		}
 	}
 }
@@ -204,77 +227,119 @@ void Combat::initCombat(Sprites& sprites, Player& player)
 	sprites.setPlayerTurnAssetsTrue(); //Allow player turn
 }
 
-void Combat::reInitCombat(Assets& assets)
+void Combat::reInitCombat(Sprites& sprites)
 {
-	//If player and zin are still alive
-	if (!this->playerDead && !this->zinDead) {
-		assets.setCombatCounterZero();
-		assets.setPlayerTurnAssetsTrue();
-		assets.setZinTurnAssetsFalse();
-		this->attackCounter = 0;
-		this->zinAttackCounter = 0;
-		this->playerAttack = false;
-		this->hostileAttack = false;
-		this->hostileAttackZin = false;
-		this->turnPlayer = true;
-		this->turnZin = false;
-		this->turnHostile = false;
-		this->zinGuarded = false;
-		this->zinAttack = false;
-	} //If the player is dead and zin is alive
-	else if (this->playerDead && !this->zinDead) {
-		assets.getCombatCounter() = 1;
-		assets.setPlayerTurnAssetsFalse();
-		assets.setZinTurnAssetsTrue();
-		this->attackCounter = 0;
-		this->zinAttackCounter = 0;
-		this->hostileAttack = false;
-		this->hostileAttackZin = false;
-		this->turnZin = true;
-		this->turnHostile = false;
-		this->zinGuarded = false;
-		this->zinAttack = false;
+	//Re init Hostile
+	this->hostileAttack = false;
+	this->hostileAttackZin = false;
+	this->hostileAttackThom = false;
+	this->turnHostile = false;
+
+	//Re init thom if he is unlocked
+	if (sprites.getThomUnlocked()) {
+		this->turnThom = false;
+		this->thomAttackCounter = 0;
+		this->thomAttack = false;
 	}
-	else if (!this->playerDead && this->zinDead) {
-		assets.setCombatCounterZero();
-		assets.setPlayerTurnAssetsTrue();
-		assets.setZinTurnAssetsFalse();
-		this->attackCounter = 0;
-		this->playerAttack = false;
-		this->hostileAttack = false;
-		this->hostileAttackZin = false;
+
+	//Re init characters if both are alive
+	if (!this->playerDead && !this->zinDead) {
+		//Player
+		sprites.setPlayerTurnAssetsTrue();
 		this->turnPlayer = true;
-		this->turnHostile = false;
+		this->attackCounter = 0;
+		this->zinGuarded = false;
+		this->playerAttack = false;
+		//Zin
+		this->zinAttackCounter = 0;
+		this->zinAttack = false;
+	}//Re init zin if she is alive and player is dead
+	else if (this->playerDead && !this->zinDead) {
+		//Zin
+		sprites.setZinTurnAssetsTrue();
+		this->turnZin = true;
+		this->zinAttackCounter = 0;
+		this->zinAttack = false;
+	}//Re init player if he is alive and zin is dead
+	else if (!this->playerDead && this->zinDead) {
+		//Player
+		sprites.setPlayerTurnAssetsTrue();
+		this->turnPlayer = true;
+		this->attackCounter = 0;
+		this->zinGuarded = false;
+		this->playerAttack = false;
 	}
 }
 
-void Combat::playerDeath(Assets& assets)
+void Combat::playerDeath(Sprites& sprites)
 {
-	assets.setCombatAssetsFalse();
-	assets.setPlayerDeathTrue();
+	sprites.setCombatAssetsFalse();
+	sprites.setPlayerDeathTrue();
 }
 
 //Combat Functions
-void Combat::playerTurn(Assets& assets)
+void Combat::playerTurn(Sprites& sprites)
 {
 	if (this->turnPlayer == true) {
 		switch (this->attackCounter) {
 		case 0:
-			assets.text.setString(this->playerTurnText);
+			sprites.text.setString(this->playerTurnText);
 			break;
 		case 1:
 			//Player Attacks Hostile
 			if (this->playerAttack == false) {
-				this->playerSelectMove(assets);
+				this->playerSelectMove(sprites);
 				this->playerAttack = true;
 			}
 			break;
 		case 2:
 			this->turnPlayer = false;
-			if (!this->zinDead) {
-				this->turnZin = true;
+			if (sprites.getThomUnlocked()) {
+				if (!this->zinDead) {
+					this->turnZin = true;
+				}
+				else if (this->zinDead && !this->thomDead) {
+					this->turnThom = true;
+				}
+				else if (this->zinDead && this->thomDead) {
+					this->turnHostile = true;
+				}
 			}
-			else {
+			else if (!sprites.getThomUnlocked()) {
+				if (!this->zinDead) {
+					this->turnZin = true;
+				}
+				else if (this->zinDead) {
+					this->turnHostile = true;
+				}
+			}
+			break;
+		}
+	}
+}
+
+void Combat::zinTurn(Sprites& sprites)
+{
+	if (this->turnZin == true) {
+		switch (this->zinAttackCounter) {
+		case 0:
+			sprites.text.setString(this->zinTurnText);
+			sprites.setZinTurnAssetsTrue();
+			break;
+		case 1:
+			//Zin Attacks Hostile
+			if (this->zinAttack == false) {
+				this->zinSelectMove(sprites);
+				this->zinAttack = true;
+			}
+			break;
+		case 2:
+			if (sprites.getThomUnlocked()) {
+				this->turnZin = false;
+				this->turnThom = true;
+			}
+			else if (!sprites.getThomUnlocked()) {
+				this->turnZin = false;
 				this->turnHostile = true;
 			}
 			break;
@@ -282,61 +347,82 @@ void Combat::playerTurn(Assets& assets)
 	}
 }
 
-void Combat::zinTurn(Assets& assets)
+void Combat::thomTurn(Sprites& sprites)
 {
-	if (turnZin == true) {
-		switch (this->zinAttackCounter) {
+	if (this->turnThom == true) {
+		switch (this->thomAttackCounter) {
 		case 0:
-			assets.text.setString(this->zinTurnText);
-			assets.setZinTurnAssetsTrue();
+			sprites.text.setString("Thom prepares his next move");
+			sprites.setThomTurnAssetsTrue();
 			break;
 		case 1:
-			//Zin Attacks Hostile
-			if (this->zinAttack == false) {
-				this->zinSelectMove(assets);
-				this->zinAttack = true;
+			//Thoms turn
+			if (this->thomAttack == false) {
+				this->thomSelectMove(sprites);
+				this->thomAttack = true;
 			}
 			break;
 		case 2:
-			this->turnZin = false;
+			this->turnThom = false;
 			this->turnHostile = true;
 			break;
 		}
 	}
 }
 
-void Combat::hostileTurn(Assets& assets)
+void Combat::hostileTurn(Sprites& sprites)
 {
 	if (this->turnHostile == true) {
-		//Hostile Attacks Player and Zin
-		switch (assets.getCombatCounter()) {
+		switch (sprites.getCombatCounter()) {
 		case 0:
-			if (this->hostileAttack == false) {
+			//Hostile Attacks Player
+			if (this->playerDead) {
+				sprites.getCombatCounter() = 1;
+			}
+			if (!this->hostileAttack) {
 				this->playerHp -= this->hostileStrike;
-				assets.soundCom.play();
-				assets.spriteText[0].setString(assets.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
-				assets.text.setString(this->hostileAtkPlayerText);
+				sprites.soundCom.play();
+				sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
+				sprites.text.setString(this->hostileAtkPlayerText);
 				this->hostileAttack = true;
 			}
 			break;
 		case 1:
-			if (this->zinGuarded == false && this->hostileAttackZin == false && !this->zinDead) {
+			//Hostile Attacks Zin
+			if (this->zinDead) {
+				sprites.getCombatCounter() = 2;
+			}
+			if (!this->zinGuarded && !this->hostileAttackZin && !this->zinDead) {
 				this->zinHp -= this->hostileStrike;
-				assets.soundCom.play();
-				assets.spriteText[1].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));
-				assets.text.setString(this->hostileAtkZinText);
+				sprites.soundCom.play();
+				sprites.spriteText[1].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));
+				sprites.text.setString(this->hostileAtkZinText);
 				this->hostileAttackZin = true;
 			}
-			else if (this->zinGuarded == true && this->hostileAttackZin == false && !this->zinDead) {
-				assets.soundGuarded.play();
-				assets.text.setString(this->hostileAtkZinBlkText);
+			else if (this->zinGuarded == true && !this->hostileAttackZin && !this->zinDead) {
+				sprites.soundGuarded.play();
+				sprites.text.setString(this->hostileAtkZinBlkText);
 				this->hostileAttackZin = true;
-			}
-			else if (this->zinDead) {
-				assets.getCombatCounter() = 2;
 			}
 			break;
 		case 2:
+			//Check if Thom is unlocked. If not, skip entirely.
+			if (!sprites.getThomUnlocked()) {
+				sprites.getCombatCounter() = 3;
+			}
+			if (this->thomDead) {
+				sprites.getCombatCounter() = 3;
+			}
+			//Hostile Attacks Thom
+			if (!this->thomDead && !this->hostileAttackThom) {
+				this->thomHp -= this->hostileStrike;
+				sprites.soundCom.play();
+				sprites.spriteText[1].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));
+				sprites.text.setString("The hostile strikes Thom!");
+				this->hostileAttackThom = true;
+			}
+			break;
+		case 3:
 			this->reInitCombatOnce = false;
 			break;
 		}
@@ -345,49 +431,49 @@ void Combat::hostileTurn(Assets& assets)
 }
 
 //Combat Pick Attacks
-void Combat::playerSelectMove(Assets& assets)
+void Combat::playerSelectMove(Sprites& sprites)
 {
 	switch (this->playerPickMove) {
 	case 0:
 		//Strike
-		assets.soundSlash.play();
+		sprites.soundSlash.play();
 		this->hostileHp -= this->playerStrike;
-		assets.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
-		assets.setPlayerTurnAssetsFalse();
-		assets.text.setString(this->playerSlashAtkText);
+		sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
+		sprites.setPlayerTurnAssetsFalse();
+		sprites.text.setString(this->playerSlashAtkText);
 		break;
 	case 1:
 		//Guard Zin
-		assets.soundGuard.play();
-		assets.setPlayerTurnAssetsFalse();
+		sprites.soundGuard.play();
+		sprites.setPlayerTurnAssetsFalse();
 		this->zinGuarded = true;
-		assets.text.setString(this->playerGuardAtkText);
+		sprites.text.setString(this->playerGuardAtkText);
 		break;
 	case 2:
 		//Decayed blade
-		assets.soundDecay.play();
+		sprites.soundDecay.play();
 		this->hostileHp -= this->decayedBlade;
-		assets.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
-		assets.setPlayerTurnAssetsFalse();
-		assets.text.setString(this->playerDecayAtkText);
+		sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
+		sprites.setPlayerTurnAssetsFalse();
+		sprites.text.setString(this->playerDecayAtkText);
 		break;
 	}
 }
 
-void Combat::zinSelectMove(Assets& assets)
+void Combat::zinSelectMove(Sprites& sprites)
 {
 	switch (this->zinPickMove) {
 	case 0:
 		//Smite the hostile
-		assets.soundSmite.play();
+		sprites.soundSmite.play();
 		this->hostileHp -= this->zinSmite;
-		assets.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
-		assets.setZinTurnAssetsFalse();
-		assets.text.setString(this->zinSmiteAtkText);
+		sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
+		sprites.setZinTurnAssetsFalse();
+		sprites.text.setString(this->zinSmiteAtkText);
 		break;
 	case 1:
 		//Mend party
-		assets.soundMend.play();
+		sprites.soundMend.play();
 		if (this->playerHp < this->playerHpMax) {
 			this->playerHp += this->zinMend;
 			if (this->playerHp > this->playerHpMax) {
@@ -400,22 +486,36 @@ void Combat::zinSelectMove(Assets& assets)
 				this->zinHp = this->zinHpMax;
 			}
 		}
-		assets.spriteText[0].setString(assets.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
-		assets.spriteText[1].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));
-		assets.setZinTurnAssetsFalse();
-		assets.text.setString(this->zinMendAtkText);
+		sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
+		sprites.spriteText[1].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));
+		sprites.setZinTurnAssetsFalse();
+		sprites.text.setString(this->zinMendAtkText);
 		break;
 	case 2:
-		//Use Vengeance the hostile
-		assets.soundVengeance.play();
+		//Use Vengeance on the hostile
+		sprites.soundVengeance.play();
 		this->zinVengeance = this->playerHpMax - this->playerHp;
 		this->hostileHp -= this->zinVengeance;
-		assets.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
-		assets.setZinTurnAssetsFalse();
-		assets.text.setString(this->zinVengeanceAtkText);
+		sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
+		sprites.setZinTurnAssetsFalse();
+		sprites.text.setString(this->zinVengeanceAtkText);
 		break;
 	}
 	
+}
+
+void Combat::thomSelectMove(Sprites& sprites)
+{
+	switch (this->thomPickMove) {
+	case 0:
+		//Thom places barrier around player
+		sprites.soundGuarded.play();
+		sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
+		sprites.getThomTurnAssets() = false;
+		sprites.text.setString("Thom casts a barrier to protect the player!");
+		sprites.setThomTurnAssetsFalse();
+		break;
+	}
 }
 
 //Combat Init Forest Hostiles

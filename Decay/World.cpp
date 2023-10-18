@@ -45,7 +45,7 @@ void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& pl
     window.setFramerateLimit(144);
     // run the program as long as the window is open
     while (window.isOpen()) {
-        std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
+        //std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
         clock.restart();
         clickTime.restart();
         // check all the window's events that were triggered since the last iteration of the loop
@@ -863,6 +863,13 @@ void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Sprites&
             combat.getZinPickMove() = 2;
         }
     }
+    //Thom Combat Buttons Functionality
+    if (sprites.combatRect[6].getGlobalBounds().contains(mousePosF)) {
+        if (combat.getTurnThom() == true) {
+            combat.getThomAttackCounter()++;
+            combat.getThomPickMove() = 0;
+        }
+    }
     else if (sprites.rect.getGlobalBounds().contains(mousePosF) && sprites.getShowAnsBoxesCounter() == -1) {
         //If dialogue box is clicked...
         sprites.soundClick.play();
@@ -875,6 +882,9 @@ void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Sprites&
         }
         if (combat.getZinAttackCounter() == 1) {
             combat.getZinAttackCounter() = 2;
+        }
+        if (sprites.getThomUnlocked() && combat.getThomAttackCounter() == 1) {
+            combat.getThomAttackCounter() = 2;
         }
         if (combat.getTurnHostile() == true) {
             sprites.getCombatCounter()++;

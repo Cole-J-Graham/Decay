@@ -10,6 +10,7 @@
 class Assets
 {
 private:
+	bool thomUnlocked;
 	int dialogueCounter;
 	int combatCounter;
 	int playerCounter;
@@ -70,6 +71,7 @@ private:
 	//Combat Move Unlocks
 	int combatPlayerMoves;
 	int combatZinMoves;
+	int combatThomMoves;
 
 	//Strings
 	std::string playerName;
@@ -165,8 +167,6 @@ public:
 	sf::RectangleShape rectStatsSideMenu;
 	sf::RectangleShape playerStatsBoxButton;
 	sf::RectangleShape rectInventoryBox;
-	sf::RectangleShape rectSmite;
-	sf::RectangleShape rectDecay;
 	sf::RectangleShape buttonMap;
 	sf::RectangleShape tipBox;
 	sf::RectangleShape rectSettings;
@@ -201,11 +201,6 @@ public:
 	sf::RectangleShape rectPatiencePointsBox;
 	sf::RectangleShape rectResiliencePointsBox;
 
-	//Combat Assets
-	sf::RectangleShape rectSlash;
-	sf::RectangleShape rectGuard;
-	sf::RectangleShape rectMend;
-	sf::RectangleShape rectVengeance;
 	sf::Sprite hostile;
 
 	//Text
@@ -242,9 +237,18 @@ public:
 	sf::Text statsPatienceTextTitle;
 	sf::Text statsResilienceTextTitle;
 
+	//Combat Assets
+	sf::RectangleShape rectSlash;
+	sf::RectangleShape rectGuard;
+	sf::RectangleShape rectMend;
+	sf::RectangleShape rectVengeance;
+	sf::RectangleShape rectSmite;
+	sf::RectangleShape rectDecay;
+	sf::RectangleShape rectBarrier;
+
 
 	std::vector<sf::RectangleShape> combatRect{ rectSlash, rectGuard, 
-		rectDecay, rectSmite, rectMend, rectVengeance };
+		rectDecay, rectSmite, rectMend, rectVengeance, rectBarrier };
 
 	//combatText Vect Objects
 	sf::Text attackText;
@@ -253,9 +257,10 @@ public:
 	sf::Text textMend;
 	sf::Text textVengeance;
 	sf::Text textDecay;
+	sf::Text textBarrier;
 
 	std::vector<sf::Text> combatText{ attackText, smiteText, 
-		textGuard, textMend, textVengeance, textDecay };
+		textGuard, textMend, textVengeance, textDecay, textBarrier };
 
 	//Main Vectors
 	std::vector<sf::RectangleShape> rectElements {rectStats, rectInventory, 
@@ -465,6 +470,7 @@ public:
 	bool& getPlusboxes() { return this->plusboxes; };
 	bool& getEndFrame() { return this->endFrame; };
 	bool& getStartFrame() { return this->startFrame; };
+	bool& getThomUnlocked() { return this->thomUnlocked; };
 
 	//Sprite Bool Setters
 	void setInitialDrawInTrue()  { this->initialDrawIn = true; };
@@ -545,17 +551,20 @@ public:
 	void setBonfireAssetsTrue() { this->bonfireAssets = true; };
 	void setPlayerTurnAssetsTrue() { this->playerTurnAssets = true; };
 	void setZinTurnAssetsTrue() { this->zinTurnAssets = true; };
+	void setThomTurnAssetsTrue() { this->thomTurnAssets = true; };
 	void setPlayerDeathTrue() { this->playerDeath = true; };
 
 	void setCombatAssetsFalse() { this->combatAssets = false; };
 	void setBonfireAssetsFalse() { this->bonfireAssets = false; };
 	void setPlayerTurnAssetsFalse() { this->playerTurnAssets = false; };
 	void setZinTurnAssetsFalse() { this->zinTurnAssets = false; };
+	void setThomTurnAssetsFalse() { this->thomTurnAssets = false; };
 	void setPlayerDeathFalse() { this->playerDeath = false; };
 
 	//Combat Move Unlock Getters
 	int& getCombatPlayerMoves() { return this->combatPlayerMoves; };
 	int& getCombatZinMoves() { return this->combatZinMoves; };
+	int& getCombatThomMoves() { return this->combatThomMoves; };
 
 	//Combat Move Unlock Setters
 	void setCombatPlayerMovesInc() { this->combatPlayerMoves++; };

@@ -540,7 +540,7 @@ void Sprites::thomSprite(Assets& assets)
 
     //Sprite Options, ect
     thomTexture.setRepeated(false);
-    spriteElements[7].setScale(0.95f, 0.95f);
+    spriteElements[7].setScale(0.48f, 0.48f);
 }
 
 void Sprites::siwardSprite()

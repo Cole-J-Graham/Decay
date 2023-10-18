@@ -12,6 +12,8 @@ private:
 	int playerHpMax;
 	int zinHp;
 	int zinHpMax;
+	int thomHp;
+	int thomHpMax;
 
 	//Hostile Stats
 	int hostileHp;
@@ -33,6 +35,7 @@ private:
 	//Attack Counters
 	int attackCounter;
 	int zinAttackCounter;
+	int thomAttackCounter;
 
 	//Move Unlocks
 	bool unlockedGuard;
@@ -67,20 +70,25 @@ private:
 	//Combat Control Flow Bool
 	bool turnPlayer;
 	bool turnZin;
+	bool turnThom;
 	bool turnHostile;
 	bool zinGuarded;
 
 	bool playerAttack;
 	bool zinAttack;
+	bool thomAttack;
 	bool hostileAttack;
 	bool hostileAttackZin;
+	bool hostileAttackThom;
 
 	bool playerDead;
 	bool zinDead;
+	bool thomDead;
 
 	//Move Selectors
 	int playerPickMove;
 	int zinPickMove;
+	int thomPickMove;
 
 	//Init Strings
 	std::string playerTurnText;
@@ -108,24 +116,26 @@ public:
 	~Combat();
 
 	//Core Stat Functions
-	void updateStats(Assets& assets, Player& player);
+	void updateStats(Sprites& sprites, Player& player);
 	void updateStatsZin(Player& player);
-	void updateMoves(Assets& assets, Player& player);
+	void updateMoves(Sprites& sprites, Player& player);
 
 	//Core Combat Functions
 	void combatLoop(Sprites& sprites, Player& player, Animation& animate);
 	void initCombat(Sprites& sprites, Player& player);
-	void reInitCombat(Assets& assets);
-	void playerDeath(Assets& assets);
+	void reInitCombat(Sprites& sprites);
+	void playerDeath(Sprites& sprites);
 
 	//Combat Functions
-	void playerTurn(Assets& assets);
-	void zinTurn(Assets& assets);
-	void hostileTurn(Assets& assets);
+	void playerTurn(Sprites& sprites);
+	void zinTurn(Sprites& sprites);
+	void thomTurn(Sprites& sprites);
+	void hostileTurn(Sprites& sprites);
 
 	//Combat Pick Attacks
-	void playerSelectMove(Assets& assets);
-	void zinSelectMove(Assets& assets);
+	void playerSelectMove(Sprites& sprites);
+	void zinSelectMove(Sprites& sprites);
+	void thomSelectMove(Sprites& sprites);
 
 	//Combat Init Forest Hostiles
 	void initWolf(Sprites& sprites);
@@ -175,6 +185,7 @@ public:
 	//Attack Counter Getters
 	int& getAttackCounter() { return this->attackCounter; };
 	int& getZinAttackCounter() { return this->zinAttackCounter; };
+	int& getThomAttackCounter() { return this->thomAttackCounter; };
 
 	void setAttackCounterInc() { this->attackCounter++; };
 	void setZinAttackCounterInc() { this->zinAttackCounter++; };
@@ -190,6 +201,7 @@ public:
 	//Combat Control Flow Bool Getters
 	bool& getTurnPlayer() { return this->turnPlayer; };
 	bool& getTurnZin() { return this->turnZin; };
+	bool& getTurnThom() { return this->turnThom; };
 	bool& getTurnHostile() { return this->turnHostile; };
 	bool& getZinGuarded() { return this->zinGuarded; };
 
@@ -201,6 +213,7 @@ public:
 	//Move Selector Getters
 	int& getPlayerPickMove() { return this->playerPickMove; };
 	int& getZinPickMove() { return this->zinPickMove; };
+	int& getThomPickMove() { return this->thomPickMove; };
 };
 
 #endif
