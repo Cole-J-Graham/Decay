@@ -56,6 +56,7 @@ void Sprites::drawObjects(Assets& assets)
     //Sprite Assets
     this->playerSprite(assets);
     this->zinSprite(assets);
+    this->thomSprite(assets);
     this->hostileSprite(assets);
     this->siwardSprite();
     this->spadeSprite();
@@ -70,6 +71,9 @@ void Sprites::loadSprites()
     zinTextureHappy.loadFromFile("Assets/Sprites/zinHappy.png");
     zinTextureConcerned.loadFromFile("Assets/Sprites/zinConcerned.png");
     zinTextureAnnoyed.loadFromFile("Assets/Sprites/zinSpriteAnnoyed.png");
+
+    //Thom Sprites
+    thomTexture.loadFromFile("Assets/Sprites/thomNormal.png");
 
     //Load Hostile Sprites
     hostileTextureWalker.loadFromFile("Assets/HostileSprites/decaywalkersprite.jpeg");
@@ -515,6 +519,28 @@ void Sprites::zinSprite(Assets& assets)
     //Sprite Options, ect
     zinTexture.setRepeated(false);
     spriteElements[3].setScale(0.0504f, 0.0504f);
+}
+
+void Sprites::thomSprite(Assets& assets)
+{
+    //Pick Thom Emotion
+    switch (assets.getThomCounter()) {
+    case -1:
+        spriteElements[7].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        spriteRect[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        spriteText[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        break;
+    case 0:
+        spriteElements[7].setTexture(thomTexture);
+        spriteElements[7].setPosition(sf::Vector2f(50.0f, 500.0f));
+        spriteRect[5].setPosition(sf::Vector2f(50.0f, 500.0f));
+        spriteText[5].setPosition(sf::Vector2f(50.0f, 653.0f));
+        break;
+    }
+
+    //Sprite Options, ect
+    thomTexture.setRepeated(false);
+    spriteElements[7].setScale(0.95f, 0.95f);
 }
 
 void Sprites::siwardSprite()

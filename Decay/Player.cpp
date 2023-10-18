@@ -64,10 +64,10 @@ void Player::statsText(Assets& assets)
 	assets.playerTextElements[2].setString("FORTITUDE " + std::to_string(this->fortitude));
 	assets.playerTextElements[3].setString("VITALITY " + std::to_string(this->vitality));
 
-	assets.zinTextElements[4].setString("LEVEL " + std::to_string(this->zinLevel));
-	assets.zinTextElements[5].setString("RESOLVE " + std::to_string(this->zinResolve));
-	assets.zinTextElements[6].setString("PATIENCE " + std::to_string(this->zinPatience));
-	assets.zinTextElements[7].setString("RESILIENCE " + std::to_string(this->zinResilience));
+	assets.zinTextElements[0].setString("LEVEL " + std::to_string(this->zinLevel));
+	assets.zinTextElements[1].setString("RESOLVE " + std::to_string(this->zinResolve));
+	assets.zinTextElements[2].setString("PATIENCE " + std::to_string(this->zinPatience));
+	assets.zinTextElements[3].setString("RESILIENCE " + std::to_string(this->zinResilience));
 }
 
 void Player::printInventory(Assets& assets)

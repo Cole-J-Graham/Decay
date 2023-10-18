@@ -44,13 +44,15 @@ public:
 	void hostileSprite(Assets& assets);
 	void playerSprite(Assets& assets);
 	void zinSprite(Assets& assets);
+	void thomSprite(Assets& assets);
 	void siwardSprite();
 	void spadeSprite();
 
 	//Sprite Textures
-	sf::Texture siwardTexture;
 	sf::Texture playerTexture;
+	sf::Texture thomTexture;
 	sf::Texture spadeTexture;
+	sf::Texture siwardTexture;
 	//Zin Textures
 	sf::Texture zinTexture;
 	sf::Texture zinTextureHappy;

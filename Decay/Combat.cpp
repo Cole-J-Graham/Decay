@@ -191,9 +191,12 @@ void Combat::initCombat(Sprites& sprites, Player& player)
 	this->combatEnd = false;
 	sprites.getPlayerCounter()++; //Load Player sprite with counter
 	sprites.getZinCounter()++; //Load Zins sprite with counter
+	sprites.getThomCounter()++; //Load Thom Sprite with counter
+
 	sprites.setPlayerInitFalse(); //Make usable again
 	sprites.setZinInitFalse(); //Make usable again
 	sprites.setHostileInitFalse(); //Make usable again
+
 	sprites.setCombatAssetsTrue(); //Utilize all combat assets
 	sprites.setInitMapFalse(); //Hide the map if its open
 	sprites.setInitStatsFalse(); //Hide stats if open

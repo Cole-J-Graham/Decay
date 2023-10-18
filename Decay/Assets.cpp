@@ -5,8 +5,9 @@ Assets::Assets()
 {
     this->dialogueCounter = 0;
     this->combatCounter = 0;
-    this->zinCounter = -1;
     this->playerCounter = -1;
+    this->zinCounter = -1;
+    this->thomCounter = -1;
     this->hostileCounter = -1;
     this->mapCounter = -1;
     this->tipBoxCounter = -1;
@@ -56,6 +57,7 @@ Assets::Assets()
     this->bonfireAssets = false;
     this->playerTurnAssets = false;
     this->zinTurnAssets = false;
+    this->thomTurnAssets = false;
 
     //Combat Move Unlocks
     this->combatPlayerMoves = 2;
@@ -182,188 +184,6 @@ void Assets::drawMainWindow()
         spriteElements[0].setPosition(1400.0f, 10000.0f);
         spriteElements[1].setPosition(445.0f, 10000.0f);
     }
-}
-
-void Assets::drawStats()
-{
-    //Main Rect
-    rectStatsBox.setFillColor(sf::Color::Black);
-    rectStatsBox.setPosition(rectStatsBoxX, rectStatsBoxY);
-    rectStatsBox.setSize(sf::Vector2f(200.0f, 600.0f));
-    rectStatsBox.setOutlineColor(sf::Color::White);
-    rectStatsBox.setOutlineThickness(1.0f);
-
-    //Player Stat Elements Loop
-    for (int i = 0; i < playerStatElements.size(); i++) {
-        playerStatElements[i].setOutlineColor(sf::Color::White);
-        playerStatElements[i].setOutlineThickness(1.0f);
-    }
-    //Level up plus Box
-    playerStatElements[0].setPosition(rectStatsBoxX, rectStatsBoxY + 100);
-    playerStatElements[0].setSize(sf::Vector2f(20.0f, 20.0f));
-    //Strength plus box
-    playerStatElements[1].setPosition(rectStatsBoxX, rectStatsBoxY + 180);
-    playerStatElements[1].setSize(sf::Vector2f(20.0f, 20.0f));
-    //Fortitude plus box
-    playerStatElements[2].setPosition(rectStatsBoxX, rectStatsBoxY + 160);
-    playerStatElements[2].setSize(sf::Vector2f(20.0f, 20.0f));
-    //Vitality plus box
-    playerStatElements[3].setPosition(rectStatsBoxX, rectStatsBoxY + 140);
-    playerStatElements[3].setSize(sf::Vector2f(20.0f, 20.0f));
-    //Side Menu Player Stats Menu Rect
-    playerStatElements[4].setPosition(rectStatsBoxX + 200, rectStatsBoxY);
-    playerStatElements[4].setSize(sf::Vector2f(20.0f, 120.0f));
-    //Side Menu Zin Stats Menu Rect
-    playerStatElements[5].setPosition(rectStatsBoxX + 200, rectStatsBoxY + 120);
-    playerStatElements[5].setSize(sf::Vector2f(20.0f, 100.0f));
-
-    //Plus sign text for level up
-    for (int i = 0; i < playerTextPlus.size(); i++) {
-        playerTextPlus[i].setFont(font);
-    }
-    playerTextPlus[0].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 94);
-    playerTextPlus[0].setString("+");
-    playerTextPlus[0].setCharacterSize(24);
-    //plus sign text for strength
-    playerTextPlus[1].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 174);
-    playerTextPlus[1].setString("+");
-    playerTextPlus[1].setCharacterSize(24);
-    //plus sign text for fortitude
-    playerTextPlus[2].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 154);
-    playerTextPlus[2].setString("+");
-    playerTextPlus[2].setCharacterSize(24);
-    //plus sign text for vitality
-    playerTextPlus[3].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 133);
-    playerTextPlus[3].setString("+");
-    playerTextPlus[3].setCharacterSize(24);
-    //Side Menu Player Stats Menu Rect Text
-    playerTextPlus[4].setCharacterSize(16);
-    playerTextPlus[4].setPosition(rectStatsBoxX + 205, rectStatsBoxY);
-    playerTextPlus[4].setString("P\nL\nA\nY\nE\nR");
-    //Side Menu Zin Stats Menu Rect Text
-    playerTextPlus[5].setCharacterSize(16);
-    playerTextPlus[5].setPosition(rectStatsBoxX + 205, rectStatsBoxY + 120);
-    playerTextPlus[5].setString("\nZ\nI\nN");
-
-    //Player Text Elements Loop
-    for (int i = 0; i < playerTextElements.size(); i++) {
-        playerTextElements[i].setFont(font);
-        playerTextElements[i].setFillColor(sf::Color::White);
-    }
-    //Title next to level box
-    playerTextElements[0].setCharacterSize(14);
-    playerTextElements[0].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 100);
-    //Title next to strength box
-    playerTextElements[1].setFont(font);
-    playerTextElements[1].setCharacterSize(14);
-    playerTextElements[1].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 180);
-    //Title next to fortitude box
-    playerTextElements[2].setFont(font);
-    playerTextElements[2].setCharacterSize(14);
-    playerTextElements[2].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 160);
-    //Title next to vitality box
-    playerTextElements[3].setFont(font);
-    playerTextElements[3].setCharacterSize(14);
-    playerTextElements[3].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 140);
-    //Hp text
-    playerTextElements[4].setCharacterSize(16);
-    playerTextElements[4].setPosition(rectStatsBoxX, rectStatsBoxY);
-}
-
-void Assets::drawInventory()
-{
-    //Main Rect
-    rectInventoryBox.setFillColor(sf::Color::Black);
-    rectInventoryBox.setPosition(rectInventoryBoxX, rectInventoryBoxY);
-    rectInventoryBox.setSize(sf::Vector2f(200.0f, 600.0f));
-    rectInventoryBox.setOutlineColor(sf::Color::White);
-    rectInventoryBox.setOutlineThickness(1.0f);
-    //Inventory Text
-    inventoryText.setFont(font);
-    inventoryText.setCharacterSize(16);
-    inventoryText.setFillColor(sf::Color(sf::Color::White));
-    inventoryText.setPosition(rectInventoryBoxX, rectInventoryBoxY);
-}
-
-void Assets::drawZinStats()
-{
-    //Level up plus Box
-    zinStatElements[0].setPosition(rectStatsBoxX, rectStatsBoxY + 100);
-    zinStatElements[0].setSize(sf::Vector2f(20.0f, 20.0f));
-    zinStatElements[0].setOutlineColor(sf::Color::White);
-    zinStatElements[0].setOutlineThickness(1.0f);
-    //Resolve plus box
-    zinStatElements[1].setPosition(rectStatsBoxX, rectStatsBoxY + 180);
-    zinStatElements[1].setSize(sf::Vector2f(20.0f, 20.0f));
-    zinStatElements[1].setOutlineColor(sf::Color::White);
-    zinStatElements[1].setOutlineThickness(1.0f);
-    //Patience plus box
-    zinStatElements[2].setPosition(rectStatsBoxX, rectStatsBoxY + 160);
-    zinStatElements[2].setSize(sf::Vector2f(20.0f, 20.0f));
-    zinStatElements[2].setOutlineColor(sf::Color::White);
-    zinStatElements[2].setOutlineThickness(1.0f);
-    //Resilience plus box
-    zinStatElements[3].setPosition(rectStatsBoxX, rectStatsBoxY + 140);
-    zinStatElements[3].setSize(sf::Vector2f(20.0f, 20.0f));
-    zinStatElements[3].setOutlineColor(sf::Color::White);
-    zinStatElements[3].setOutlineThickness(1.0f);
-    //Plus sign text for level up
-    zinTextElements[0].setFont(font);
-    zinTextElements[0].setCharacterSize(24);
-    zinTextElements[0].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 94);
-    zinTextElements[0].setString("+");
-    //plus sign text for resolve
-    zinTextElements[1].setFont(font);
-    zinTextElements[1].setCharacterSize(24);
-    zinTextElements[1].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 174);
-    zinTextElements[1].setString("+");
-    //plus sign text for patience
-    zinTextElements[2].setFont(font);
-    zinTextElements[2].setCharacterSize(24);
-    zinTextElements[2].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 154);
-    zinTextElements[2].setString("+");
-    //plus sign text for resilience
-    zinTextElements[3].setFont(font);
-    zinTextElements[3].setCharacterSize(24);
-    zinTextElements[3].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 133);
-    zinTextElements[3].setString("+");
-    //Title next to level box
-    zinTextElements[4].setFont(font);
-    zinTextElements[4].setCharacterSize(14);
-    zinTextElements[4].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 100);
-    zinTextElements[4].setFillColor(sf::Color::White);
-    //Title next to resolve box
-    zinTextElements[5].setFont(font);
-    zinTextElements[5].setCharacterSize(14);
-    zinTextElements[5].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 180);
-    zinTextElements[5].setFillColor(sf::Color::White);
-    //Title next to patience box
-    zinTextElements[6].setFont(font);
-    zinTextElements[6].setCharacterSize(14);
-    zinTextElements[6].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 160);
-    zinTextElements[6].setFillColor(sf::Color::White);
-    //Title next to resilience box
-    zinTextElements[7].setFont(font);
-    zinTextElements[7].setCharacterSize(14);
-    zinTextElements[7].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 140);
-    zinTextElements[7].setFillColor(sf::Color::White);
-    //Side Menu Player Stats Menu Rect Text
-    zinTextElements[8].setFont(font);
-    zinTextElements[8].setCharacterSize(16);
-    zinTextElements[8].setPosition(rectStatsBoxX + 205, rectStatsBoxY);
-    zinTextElements[8].setString("P\nL\nA\nY\nE\nR");
-    zinTextElements[8].setFillColor(sf::Color::White);
-    //Side Menu Zin Stats Menu Rect Text
-    zinTextElements[9].setFont(font);
-    zinTextElements[9].setCharacterSize(16);
-    zinTextElements[9].setPosition(rectStatsBoxX + 205, rectStatsBoxY + 120);
-    zinTextElements[9].setString("\nZ\nI\nN");
-    zinTextElements[9].setFillColor(sf::Color::White);
-    //Hp text
-    zinTextElements[10].setFont(font);
-    zinTextElements[10].setCharacterSize(16);
-    zinTextElements[10].setFillColor(sf::Color(sf::Color::White));
-    zinTextElements[10].setPosition(rectStatsBoxX, rectStatsBoxY);
 }
 
 void Assets::drawText()
@@ -559,6 +379,187 @@ void Assets::drawTipBox()
         tipBoxText.setPosition(1500, 650);
         break;
     }
+}
+
+//Stat && Inventory Functions
+void Assets::drawStats()
+{
+    //Main Rect
+    rectStatsBox.setFillColor(sf::Color::Black);
+    rectStatsBox.setPosition(rectStatsBoxX, rectStatsBoxY);
+    rectStatsBox.setSize(sf::Vector2f(200.0f, 600.0f));
+    rectStatsBox.setOutlineColor(sf::Color::White);
+    rectStatsBox.setOutlineThickness(1.0f);
+
+    //Player Stat Elements Loop
+    for (int i = 0; i < playerStatElements.size(); i++) {
+        playerStatElements[i].setOutlineColor(sf::Color::White);
+        playerStatElements[i].setOutlineThickness(1.0f);
+    }
+    //Level up plus Box
+    playerStatElements[0].setPosition(rectStatsBoxX, rectStatsBoxY + 100);
+    playerStatElements[0].setSize(sf::Vector2f(20.0f, 20.0f));
+    //Strength plus box
+    playerStatElements[1].setPosition(rectStatsBoxX, rectStatsBoxY + 180);
+    playerStatElements[1].setSize(sf::Vector2f(20.0f, 20.0f));
+    //Fortitude plus box
+    playerStatElements[2].setPosition(rectStatsBoxX, rectStatsBoxY + 160);
+    playerStatElements[2].setSize(sf::Vector2f(20.0f, 20.0f));
+    //Vitality plus box
+    playerStatElements[3].setPosition(rectStatsBoxX, rectStatsBoxY + 140);
+    playerStatElements[3].setSize(sf::Vector2f(20.0f, 20.0f));
+    //Side Menu Player Stats Menu Rect
+    playerStatElements[4].setPosition(rectStatsBoxX + 200, rectStatsBoxY);
+    playerStatElements[4].setSize(sf::Vector2f(20.0f, 120.0f));
+    //Side Menu Zin Stats Menu Rect
+    playerStatElements[5].setPosition(rectStatsBoxX + 200, rectStatsBoxY + 120);
+    playerStatElements[5].setSize(sf::Vector2f(20.0f, 100.0f));
+
+    //Plus sign text for level up
+    for (int i = 0; i < playerTextPlus.size(); i++) {
+        playerTextPlus[i].setFont(font);
+    }
+    playerTextPlus[0].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 94);
+    playerTextPlus[0].setString("+");
+    playerTextPlus[0].setCharacterSize(24);
+    //plus sign text for strength
+    playerTextPlus[1].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 174);
+    playerTextPlus[1].setString("+");
+    playerTextPlus[1].setCharacterSize(24);
+    //plus sign text for fortitude
+    playerTextPlus[2].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 154);
+    playerTextPlus[2].setString("+");
+    playerTextPlus[2].setCharacterSize(24);
+    //plus sign text for vitality
+    playerTextPlus[3].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 133);
+    playerTextPlus[3].setString("+");
+    playerTextPlus[3].setCharacterSize(24);
+    //Side Menu Player Stats Menu Rect Text
+    playerTextPlus[4].setCharacterSize(16);
+    playerTextPlus[4].setPosition(rectStatsBoxX + 205, rectStatsBoxY);
+    playerTextPlus[4].setString("P\nL\nA\nY\nE\nR");
+    //Side Menu Zin Stats Menu Rect Text
+    playerTextPlus[5].setCharacterSize(16);
+    playerTextPlus[5].setPosition(rectStatsBoxX + 205, rectStatsBoxY + 120);
+    playerTextPlus[5].setString("\nZ\nI\nN");
+
+    //Player Text Elements Loop
+    for (int i = 0; i < playerTextElements.size(); i++) {
+        playerTextElements[i].setFont(font);
+        playerTextElements[i].setFillColor(sf::Color::White);
+    }
+    //Title next to level box
+    playerTextElements[0].setCharacterSize(14);
+    playerTextElements[0].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 100);
+    //Title next to strength box
+    playerTextElements[1].setFont(font);
+    playerTextElements[1].setCharacterSize(14);
+    playerTextElements[1].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 180);
+    //Title next to fortitude box
+    playerTextElements[2].setFont(font);
+    playerTextElements[2].setCharacterSize(14);
+    playerTextElements[2].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 160);
+    //Title next to vitality box
+    playerTextElements[3].setFont(font);
+    playerTextElements[3].setCharacterSize(14);
+    playerTextElements[3].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 140);
+    //Hp text
+    playerTextElements[4].setCharacterSize(16);
+    playerTextElements[4].setPosition(rectStatsBoxX, rectStatsBoxY);
+}
+
+void Assets::drawZinStats()
+{
+    //Zin Stat Elements Loop
+    for (int i = 0; i < zinStatElements.size(); i++) {
+        zinStatElements[i].setOutlineColor(sf::Color::White);
+        zinStatElements[i].setOutlineThickness(1.0f);
+    }
+    //Level up plus Box
+    zinStatElements[0].setPosition(rectStatsBoxX, rectStatsBoxY + 100);
+    zinStatElements[0].setSize(sf::Vector2f(20.0f, 20.0f));
+    //Strength plus box
+    zinStatElements[1].setPosition(rectStatsBoxX, rectStatsBoxY + 180);
+    zinStatElements[1].setSize(sf::Vector2f(20.0f, 20.0f));
+    //Fortitude plus box
+    zinStatElements[2].setPosition(rectStatsBoxX, rectStatsBoxY + 160);
+    zinStatElements[2].setSize(sf::Vector2f(20.0f, 20.0f));
+    //Vitality plus box
+    zinStatElements[3].setPosition(rectStatsBoxX, rectStatsBoxY + 140);
+    zinStatElements[3].setSize(sf::Vector2f(20.0f, 20.0f));
+    //Side Menu Zin Stats Menu Rect
+    zinStatElements[4].setPosition(rectStatsBoxX + 200, rectStatsBoxY);
+    zinStatElements[4].setSize(sf::Vector2f(20.0f, 120.0f));
+    //Side Menu Zin Stats Menu Rect
+    zinStatElements[5].setPosition(rectStatsBoxX + 200, rectStatsBoxY + 120);
+    zinStatElements[5].setSize(sf::Vector2f(20.0f, 100.0f));
+
+    //Plus sign text for level up
+    for (int i = 0; i < zinTextPlus.size(); i++) {
+        zinTextPlus[i].setFont(font);
+    }
+    zinTextPlus[0].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 94);
+    zinTextPlus[0].setString("+");
+    zinTextPlus[0].setCharacterSize(24);
+    //plus sign text for resolve
+    zinTextPlus[1].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 174);
+    zinTextPlus[1].setString("+");
+    zinTextPlus[1].setCharacterSize(24);
+    //plus sign text for patience
+    zinTextPlus[2].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 154);
+    zinTextPlus[2].setString("+");
+    zinTextPlus[2].setCharacterSize(24);
+    //plus sign text for resilience
+    zinTextPlus[3].setPosition(rectStatsBoxX + 3, rectStatsBoxY + 133);
+    zinTextPlus[3].setString("+");
+    zinTextPlus[3].setCharacterSize(24);
+    //Side Menu Zin Stats Menu Rect Text
+    zinTextPlus[4].setCharacterSize(16);
+    zinTextPlus[4].setPosition(rectStatsBoxX + 205, rectStatsBoxY);
+    zinTextPlus[4].setString("P\nL\nA\nY\nE\nR");
+    //Side Menu Zin Stats Menu Rect Text
+    zinTextPlus[5].setCharacterSize(16);
+    zinTextPlus[5].setPosition(rectStatsBoxX + 205, rectStatsBoxY + 120);
+    zinTextPlus[5].setString("\nZ\nI\nN");
+
+    //Zin Text Elements Loop
+    for (int i = 0; i < zinTextElements.size(); i++) {
+        zinTextElements[i].setFont(font);
+        zinTextElements[i].setFillColor(sf::Color::White);
+    }
+    //Title next to level box
+    zinTextElements[0].setCharacterSize(14);
+    zinTextElements[0].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 100);
+    //Title next to resolve box
+    zinTextElements[1].setFont(font);
+    zinTextElements[1].setCharacterSize(14);
+    zinTextElements[1].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 180);
+    //Title next to patience box
+    zinTextElements[2].setFont(font);
+    zinTextElements[2].setCharacterSize(14);
+    zinTextElements[2].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 160);
+    //Title next to resilience box
+    zinTextElements[3].setFont(font);
+    zinTextElements[3].setCharacterSize(14);
+    zinTextElements[3].setPosition(rectStatsBoxX + 25, rectStatsBoxY + 140);
+    //Hp text
+    zinTextElements[4].setCharacterSize(16);
+    zinTextElements[4].setPosition(rectStatsBoxX, rectStatsBoxY);
+}
+
+void Assets::drawInventory()
+{
+    //Main Rect
+    rectInventoryBox.setFillColor(sf::Color::Black);
+    rectInventoryBox.setPosition(rectInventoryBoxX, rectInventoryBoxY);
+    rectInventoryBox.setSize(sf::Vector2f(200.0f, 600.0f));
+    rectInventoryBox.setOutlineColor(sf::Color::White);
+    rectInventoryBox.setOutlineThickness(1.0f);
+    //Inventory Text
+    inventoryText.setFont(font);
+    inventoryText.setCharacterSize(16);
+    inventoryText.setFillColor(sf::Color(sf::Color::White));
+    inventoryText.setPosition(rectInventoryBoxX, rectInventoryBoxY);
 }
 
 //Drawing Map Segments
@@ -1031,6 +1032,7 @@ void Assets::drawSpriteBoxes()
     textZin.setString("Zin");
     textSpade.setString("Spade");
     textSiward.setString("Siward");
+    textThom.setString("Thom");
 }
 
 //Combat Asset Functions
@@ -1049,6 +1051,7 @@ void Assets::initCombatAssets()
         }
         this->playerCombatAssets();
         this->zinCombatAssets();
+        this->thomCombatAssets();
     }
     else if (!combatAssets && !bonfireAssets && !eventAssets) {
         //Hide all combat assets
@@ -1063,6 +1066,7 @@ void Assets::initCombatAssets()
         playerCounter = -1;
         zinCounter = -1;
         hostileCounter = -1;
+        thomCounter = -1;
     }
 }
 
@@ -1164,6 +1168,21 @@ void Assets::zinCombatAssets()
         combatText[3].setPosition(10000.0f, 10000.0f);
         combatText[4].setPosition(10000.0f, 10000.0f);
         combatText[5].setPosition(10000.0f, 10000.0f);
+    }
+}
+
+void Assets::thomCombatAssets()
+{
+    if (this->thomTurnAssets) {
+        switch (this->combatZinMoves) {
+        case 0:
+            //Draw Thom Move 1 Button
+            
+            break;
+        }
+    }
+    else if (!this->thomTurnAssets) {
+        
     }
 }
 

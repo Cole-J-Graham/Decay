@@ -390,11 +390,11 @@ void World::greyOnHover(sf::RenderWindow& window, Sprites& sprites)
     for (int i = 0; i < sprites.zinStatElements.size(); i++) {
         if (sprites.zinStatElements[i].getGlobalBounds().contains(mousePosF)) {
             sprites.zinStatElements[i].setFillColor(sf::Color::Transparent);
-            sprites.zinTextElements[i].setFillColor(sf::Color::White);
+            sprites.zinTextPlus[i].setFillColor(sf::Color::White);
         }
         else {
             sprites.zinStatElements[i].setFillColor(sf::Color::White);
-            sprites.zinTextElements[i].setFillColor(sf::Color::Black);
+            sprites.zinTextPlus[i].setFillColor(sf::Color::Black);
         }
     }
 
@@ -409,6 +409,7 @@ void World::greyOnHover(sf::RenderWindow& window, Sprites& sprites)
             sprites.buttonViewMapText[i].setFillColor(sf::Color::White);
         }
     }
+
     //Map Buttons Grey On Hover
     for (int i = 0; i < sprites.mapCastleElements.size(); i++) {
         if (sprites.mapCastleElements[i].getGlobalBounds().contains(mousePosF)) {
@@ -460,11 +461,15 @@ void World::printPlayerStats(sf::RenderWindow& window, Sprites& sprites, Event& 
 
 void World::printZinStats(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player)
 {
-    sprites.zinTextElements[10].setString("HP: " + std::to_string(combat.getZinHp()) + "/" + std::to_string(combat.getZinHpMax()) + "\n\n\nSP: " + std::to_string(player.getZinSp()) +
+    sprites.zinTextElements[4].setString("HP: " + std::to_string(combat.getZinHp()) + "/" + std::to_string(combat.getZinHpMax()) + "\n\n\nSP: " + std::to_string(player.getZinSp()) +
         "\nEXP: " + std::to_string(player.getZinExp()) + "/" + std::to_string(player.getZinExpNext()));
 
     for (int i = 0; i < sprites.zinStatElements.size(); i++) {
         window.draw(sprites.playerStatElements[i]);
+    }
+
+    for (int i = 0; i < sprites.zinTextPlus.size(); i++) {
+        window.draw(sprites.zinTextPlus[i]);
     }
 
     for (int i = 0; i < sprites.zinTextElements.size(); i++) {
@@ -670,13 +675,13 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Menu Bar Stats Functionality (Switching between who's stats are visible)
-    if (sprites.playerStatElements[4].getGlobalBounds().contains(mousePosF) || sprites.zinStatElements[4].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.playerStatElements[4].getGlobalBounds().contains(mousePosF)) {
         if (sprites.getPlayerStatsInit() == false) {
             sprites.setPlayerStatsInitTrue();
             sprites.setZinStatsInitFalse();
         }
     }
-    if (sprites.playerStatElements[5].getGlobalBounds().contains(mousePosF) || sprites.zinStatElements[4].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.zinStatElements[5].getGlobalBounds().contains(mousePosF)) {
         if (sprites.getZinStatsInit() == false) {
             sprites.setZinStatsInitTrue();
             sprites.setPlayerStatsInitFalse();
@@ -699,7 +704,6 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
             this->buttonClick = true;
         }
     }
-
     //Strength up functionality
     if (sprites.getInitStats() == true && sprites.getPlayerStatsInit() == true) {
         if (sprites.playerStatElements[1].getGlobalBounds().contains(mousePosF)) {
@@ -752,12 +756,12 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
     }
     //Zin Stats Level up Functionality
     if (sprites.getInitStats() == true && sprites.getZinStatsInit() == true) {
-        if (sprites.zinStatElements[4].getGlobalBounds().contains(mousePosF)) {
+        if (sprites.zinStatElements[0].getGlobalBounds().contains(mousePosF)) {
             if (player.getZinExp() >= player.getZinExpNext()) {
                 player.setZinLevelInc();
                 player.setZinSpInc();
                 player.getZinExp() -= player.getZinExpNext();
-                sprites.zinTextElements[4].setString("LEVEL " + std::to_string(player.getZinLevel()));
+                sprites.zinTextElements[0].setString("LEVEL " + std::to_string(player.getZinLevel()));
                 sprites.text.setString("Level up achieved. Level " + std::to_string(player.getZinLevel()) + " reached for Zin. One SP point acquired...");
                 combat.updateStatsZin(player);
             }
@@ -773,7 +777,7 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
             if (player.getZinSp() >= 1) {
                 player.setZinResolveInc();
                 player.setZinSpDec();
-                sprites.zinTextElements[5].setString("RESOLVE " + std::to_string(player.getZinResolve()));
+                sprites.zinTextElements[1].setString("RESOLVE " + std::to_string(player.getZinResolve()));
                 sprites.text.setString("Zin's resolve increased. Level " + std::to_string(player.getZinResolve()) + " reached in resolve for Zin. One SP point spent...");
                 combat.updateStatsZin(player);
             }
@@ -789,7 +793,7 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
             if (player.getZinSp() >= 1) {
                 player.setZinPatienceInc();
                 player.setZinSpDec();
-                sprites.zinTextElements[6].setString("PATIENCE " + std::to_string(player.getZinPatience()));
+                sprites.zinTextElements[2].setString("PATIENCE " + std::to_string(player.getZinPatience()));
                 sprites.text.setString("Zin's patience increased. Level " + std::to_string(player.getZinPatience()) + " reached in patience for Zin. One SP point spent...");
                 combat.updateStatsZin(player);
             }
@@ -805,7 +809,7 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
             if (player.getZinSp() >= 1) {
                 player.setZinResilienceInc();
                 player.setZinSpDec();
-                sprites.zinTextElements[7].setString("RESILIENCE " + std::to_string(player.getZinResilience()));
+                sprites.zinTextElements[3].setString("RESILIENCE " + std::to_string(player.getZinResilience()));
                 sprites.text.setString("Zin's resilience increased. Level " + std::to_string(player.getZinResilience()) + " reached in resilience for Zin. One SP point spent...");
                 combat.updateStatsZin(player);
             }

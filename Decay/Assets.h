@@ -14,6 +14,7 @@ private:
 	int combatCounter;
 	int playerCounter;
 	int zinCounter;
+	int thomCounter;
 	int hostileCounter;
 	int mapCounter;
 	int tipBoxCounter;
@@ -63,6 +64,7 @@ private:
 	bool bonfireAssets;
 	bool playerTurnAssets;
 	bool zinTurnAssets;
+	bool thomTurnAssets;
 	bool playerDeath;
 
 	//Combat Move Unlocks
@@ -73,6 +75,51 @@ private:
 	std::string playerName;
 	
 public:
+	//Constructors & Destructors
+	Assets();
+	~Assets();
+
+	//Core Functions
+	void loadSprites();
+	void loadSounds();
+
+	//Draw Functions
+	void drawObjects();
+	void drawMainWindow();
+	void drawText();
+	void drawMainMenu();
+	void drawDeathAssets();
+	void drawAnswerBoxes();
+	void drawTipBox();
+
+	//Stat && Inventory Functions
+	void drawStats();
+	void drawZinStats();
+	void drawInventory();
+
+
+	//Draw Map Segments
+	void drawMap();
+	void drawForestMapButtons();
+	void drawCastleMapButtons();
+	void drawDecayMapButtons();
+
+	//Detection Functions
+	void bonfireHealDetection();
+	void bonfireSmithDetection();
+
+	//Draw Sprite Boxes
+	void drawSpriteBoxes();
+
+	//Sound Functions
+	void loadSFX();
+
+	//Combat Asset Functions
+	void initCombatAssets();
+	void playerCombatAssets();
+	void zinCombatAssets();
+	void thomCombatAssets();
+
 	//Window Icon
 	sf::Image windowIcon;
 
@@ -95,6 +142,7 @@ public:
 	sf::Sprite player;
 	sf::Sprite spade;
 	sf::Sprite zin;
+	sf::Sprite thom;
 	sf::Sprite box;
 	sf::Sprite map;
 	sf::Sprite button;
@@ -217,7 +265,7 @@ public:
 		menuText, };
 
 	std::vector<sf::Sprite> spriteElements{ button, buttonBack, spade,
-		zin, player, hostile, siward };
+		zin, player, hostile, siward, thom };
 
 	//Stats Menu Vectors
 	std::vector<sf::RectangleShape> playerStatElements {rectStatsPointsBox, rectStrengthPointsBox,
@@ -232,10 +280,11 @@ public:
 	std::vector<sf::RectangleShape> zinStatElements {rectStatsPointsBoxZin, rectResolvePointsBox,
 		rectPatiencePointsBox, rectResiliencePointsBox, playerStatsBoxButton, zinStatsBoxButton};
 
-	std::vector<sf::Text> zinTextElements {statsPointsTextZin, statsResolveText,
-		statsPatienceText, statsResilienceText, statsPointsTextTitleZin,
-		statsResolveTextTitle, statsPatienceTextTitle, statsResilienceTextTitle, 
-		playerStatsBoxButtonText, zinStatsBoxButtonText, statsText};
+	std::vector<sf::Text> zinTextPlus{ statsPointsTextZin, statsResolveText,
+	statsPatienceText, statsResilienceText, playerStatsBoxButtonText, zinStatsBoxButtonText };
+
+		std::vector<sf::Text> zinTextElements {statsPointsTextTitleZin,
+		statsResolveTextTitle, statsPatienceTextTitle, statsResilienceTextTitle, statsText};
 
 	//Forest Map Sprites
 	sf::Sprite forestMapView;
@@ -335,18 +384,20 @@ public:
 	sf::RectangleShape boxHostile;
 	sf::RectangleShape boxSpade;
 	sf::RectangleShape boxSiward;
+	sf::RectangleShape boxThom;
 
 	std::vector<sf::RectangleShape> spriteRect{ boxPlayer, boxZin, boxHostile,
-		 boxSpade, boxSiward };
+		 boxSpade, boxSiward, boxThom };
 
 	sf::Text textPlayer;
 	sf::Text textZin;
 	sf::Text textHostile;
 	sf::Text textSpade;
 	sf::Text textSiward;
+	sf::Text textThom;
 
 	std::vector<sf::Text> spriteText{ textPlayer, textZin, textHostile,
-		textSpade, textSiward };
+		textSpade, textSiward, textThom };
 
 	//Sounds
 	sf::Sound sound;
@@ -388,50 +439,10 @@ public:
 	//Music
 	sf::Music music;
 
-	//Constructors & Destructors
-	Assets();
-	~Assets();
-
-	//Core Functions
-	void loadSprites();
-	void loadSounds();
-
-	//Init Objects
-	void drawObjects();
-	void drawMainWindow();
-	void drawStats();
-	void drawInventory();
-	void drawZinStats();
-	void drawText();
-	void drawMainMenu();
-	void drawDeathAssets();
-	void drawAnswerBoxes();
-	void drawTipBox();
-
-	//Draw Map Segments
-	void drawMap();
-	void drawForestMapButtons();
-	void drawCastleMapButtons();
-	void drawDecayMapButtons();
-
-	//Detection Functions
-	void bonfireHealDetection();
-	void bonfireSmithDetection();
-
-	//Draw Sprite Boxes
-	void drawSpriteBoxes();
-
-	//Sound Functions
-	void loadSFX();
-
-	//Combat Asset Functions
-	void initCombatAssets();
-	void playerCombatAssets();
-	void zinCombatAssets();
-
 	//Sprite Int Getters
 	int& getPlayerCounter() { return this->playerCounter; };
 	int& getZinCounter() { return this->zinCounter; };
+	int& getThomCounter() { return this->thomCounter; };
 	int& getHostileCounter() { return this->hostileCounter; };
 	int& getCombatCounter() { return this->combatCounter; };
 	int& getDialogueCounter() { return this->dialogueCounter; };
@@ -526,6 +537,7 @@ public:
 	bool& getBonfireAssets() { return this->bonfireAssets; };
 	bool& getPlayerTurnAssets() { return this->playerTurnAssets; };
 	bool& getZinTurnAssets() { return this->zinTurnAssets; };
+	bool& getThomTurnAssets() { return this->thomTurnAssets; };
 	bool& getPlayerDeath() { return this->playerDeath; };
 
 	//Initialize Combat Assets Setters
