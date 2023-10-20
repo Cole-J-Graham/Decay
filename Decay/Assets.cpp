@@ -3,7 +3,7 @@
 //Constructors & Destructors
 Assets::Assets()
 {
-    this->thomUnlocked = true;
+    this->thomUnlocked = false;
     this->dialogueCounter = 0;
     this->combatCounter = 0;
     this->playerCounter = -1;
@@ -63,7 +63,7 @@ Assets::Assets()
     //Combat Move Unlocks
     this->combatPlayerMoves = 2;
     this->combatZinMoves = 2;
-    this->combatThomMoves = 0;
+    this->combatThomMoves = 1;
 
     //Strings
     this->playerName = "player";
@@ -107,6 +107,9 @@ void Assets::loadSounds()
     blipmenubuffer.loadFromFile("Assets/Sounds/menuclick.wav");
     bufferAngry.loadFromFile("Assets/Sounds/angry.wav");
     bufferCombatStart.loadFromFile("Assets/Sounds/combatstart.wav");
+    bufferPlayerGuarded.loadFromFile("Assets/Sounds/playerguarded.wav");
+    bufferThomGuard.loadFromFile("Assets/Sounds/thomatkguard.wav");
+    bufferEnraged.loadFromFile("Assets/Sounds/enraged.wav");
 }
 
 //Draw Fuctions
@@ -1184,29 +1187,53 @@ void Assets::thomCombatAssets()
             combatText[6].setPosition(335.0f, 795.0f);
             combatText[6].setString("Barrier");
             break;
+        case 1:
+            //Draw Thom Barrier Button
+            combatRect[6].setPosition(335.0f, 795.0f);
+            //Draw Player Slash Text
+            combatText[6].setPosition(335.0f, 795.0f);
+            combatText[6].setString("Barrier");
+            //Draw Thom Barrier Button
+            combatRect[7].setPosition(335.0f, 765.0f);
+            //Draw Player Slash Text
+            combatText[7].setPosition(335.0f, 765.0f);
+            combatText[7].setString("Enrage");
+            break;
         }
     }
     else if (!this->thomTurnAssets) {
         combatRect[6].setPosition(10000.0f, 10000.0f);
         combatText[6].setPosition(10000.0f, 10000.0f);
+        combatRect[7].setPosition(10000.0f, 10000.0f);
+        combatText[7].setPosition(10000.0f, 10000.0f);
     }
 }
 
 //Sound Functions
 void Assets::loadSFX()
 {
-    //Set Volume Levels
-    blipmenu.setVolume(60);
-
-   //Click Sound
+    //Click Sound
     soundClick.setBuffer(bufferClick);
     //Load Campfire Sound
     soundCampfire.setBuffer(bufferCampfire);
+
+    //Load Hover Sound
+    soundHover.setBuffer(bufferSoundHover);
+    //Load Walk Sound
+    soundWalk.setBuffer(bufferWalk);
+    //Load Text Sfx
+    sound.setBuffer(buffer);
+    //Load Button Sfx
+    blipsound.setBuffer(blipbuffer);
+    blipmenu.setBuffer(blipmenubuffer);
+
+    //Load Combat Sound Effects
+    soundCom.setBuffer(bufferCom);
     //Load Decay Blade Sound
     soundDecay.setBuffer(bufferDecay);
     //Load Vengeance Sound
     soundVengeance.setBuffer(bufferVengeance);
-    //Load Smite Sound
+    //Load Slash Sound
     soundSlash.setBuffer(bufferSlash);
     //Load Smite Sound
     soundSmite.setBuffer(bufferSmite);
@@ -1216,20 +1243,17 @@ void Assets::loadSFX()
     soundGuarded.setBuffer(bufferGuarded);
     //Load Guard Sound
     soundGuard.setBuffer(bufferGuard);
-    //Load Hover Sound
-    soundHover.setBuffer(bufferSoundHover);
-    //Load Walk Sound
-    soundWalk.setBuffer(bufferWalk);
-    //Load Combat Sound Effects
-    soundCom.setBuffer(bufferCom);
-    //Load Text Sfx
-    sound.setBuffer(buffer);
-    //Load Button Sfx
-    blipsound.setBuffer(blipbuffer);
-    blipmenu.setBuffer(blipmenubuffer);
-    blipmenu.setVolume(60);
     //Load Anger Sfx
     soundAngry.setBuffer(bufferAngry);
     //Load Combat Start Sfx
     soundCombatStart.setBuffer(bufferCombatStart);
+    //Load Thom Guarding Player Sfx
+    soundPlayerGuarded.setBuffer(bufferPlayerGuarded);
+    //Load Thom's Barrier Shattering Sfx
+    soundThomGuard.setBuffer(bufferThomGuard);
+    //Load Enraged Sfx
+    soundEnraged.setBuffer(bufferEnraged);
+   
+    //Set Volume Levels
+    blipmenu.setVolume(60);
 }

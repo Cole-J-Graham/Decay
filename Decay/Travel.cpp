@@ -72,6 +72,10 @@ void Travel::enterBonfire(sf::RenderWindow& window, Sprites& sprites, Event& not
     sprites.setZinInitFalse();
     //Set correct frame for zins sprite to appear
     sprites.getZinCounter() = 0;
+    //Set correct frame for Thom is he is unlocked
+    if (sprites.getThomUnlocked()) {
+        sprites.getThomCounter() = 0;
+    }
     //Draw detection rects for healing and smithing
     this->bonfireInit = true;
     sprites.setBonfireAssetsTrue();

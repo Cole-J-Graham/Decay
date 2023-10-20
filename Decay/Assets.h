@@ -245,10 +245,11 @@ public:
 	sf::RectangleShape rectSmite;
 	sf::RectangleShape rectDecay;
 	sf::RectangleShape rectBarrier;
+	sf::RectangleShape rectEnraged;
 
 
 	std::vector<sf::RectangleShape> combatRect{ rectSlash, rectGuard, 
-		rectDecay, rectSmite, rectMend, rectVengeance, rectBarrier };
+		rectDecay, rectSmite, rectMend, rectVengeance, rectBarrier, rectEnraged };
 
 	//combatText Vect Objects
 	sf::Text attackText;
@@ -258,9 +259,10 @@ public:
 	sf::Text textVengeance;
 	sf::Text textDecay;
 	sf::Text textBarrier;
+	sf::Text textEnraged;
 
 	std::vector<sf::Text> combatText{ attackText, smiteText, 
-		textGuard, textMend, textVengeance, textDecay, textBarrier };
+		textGuard, textMend, textVengeance, textDecay, textBarrier, textEnraged };
 
 	//Main Vectors
 	std::vector<sf::RectangleShape> rectElements {rectStats, rectInventory, 
@@ -408,29 +410,36 @@ public:
 	sf::Sound sound;
 	sf::Sound blipsound;
 	sf::Sound blipmenu;
-	sf::Sound soundCom;
 	sf::Sound soundWalk;
-	sf::Sound soundAngry;
-	sf::Sound soundCombatStart;
 	sf::Sound soundHover;
-	sf::Sound soundGuard;
-	sf::Sound soundGuarded;
-	sf::Sound soundMend;
-	sf::Sound soundSmite;
-	sf::Sound soundSlash;
-	sf::Sound soundVengeance;
-	sf::Sound soundDecay;
 	sf::Sound soundCampfire;
 	sf::Sound soundClick;
-
+	//Combat Sounds
+	sf::Sound soundCom;
+	sf::Sound soundDecay;
+	sf::Sound soundVengeance;
+	sf::Sound soundSlash;
+	sf::Sound soundSmite;
+	sf::Sound soundMend;
+	sf::Sound soundGuarded;
+	sf::Sound soundGuard;
+	sf::Sound soundAngry;
+	sf::Sound soundCombatStart;
+	sf::Sound soundPlayerGuarded;
+	sf::Sound soundThomGuard;
+	sf::Sound soundEnraged;
+	//Sound Buffers
 	sf::SoundBuffer buffer;
 	sf::SoundBuffer blipbuffer;
 	sf::SoundBuffer blipmenubuffer;
-	sf::SoundBuffer bufferCom;
 	sf::SoundBuffer bufferWalk;
+	sf::SoundBuffer bufferSoundHover;
+	sf::SoundBuffer bufferCampfire;
+	sf::SoundBuffer bufferClick;
+	//Combat Buffers
+	sf::SoundBuffer bufferCom;
 	sf::SoundBuffer bufferAngry;
 	sf::SoundBuffer bufferCombatStart;
-	sf::SoundBuffer bufferSoundHover;
 	sf::SoundBuffer bufferGuard;
 	sf::SoundBuffer bufferGuarded;
 	sf::SoundBuffer bufferMend;
@@ -438,8 +447,9 @@ public:
 	sf::SoundBuffer bufferSlash;
 	sf::SoundBuffer bufferVengeance;
 	sf::SoundBuffer bufferDecay;
-	sf::SoundBuffer bufferCampfire;
-	sf::SoundBuffer bufferClick;
+	sf::SoundBuffer bufferPlayerGuarded;
+	sf::SoundBuffer bufferThomGuard;
+	sf::SoundBuffer bufferEnraged;
 
 	//Music
 	sf::Music music;

@@ -67,6 +67,7 @@ Combat::Combat()
 	this->turnZin = false;
 	this->turnHostile = false;
 	this->zinGuarded = false;
+	this->thomEnraged = false;
 
 	this->playerAttack = false;
 	this->zinAttack = false;
@@ -94,6 +95,7 @@ Combat::Combat()
 	this->hostileAtkPlayerText = "The hostile swings back! Click to continue...";
 	this->hostileAtkZinText = "The hostile swings at Zin! Click to continue...";
 	this->hostileAtkZinBlkText = "You block Zin from the strike! Click to continue...";
+	this->hostileAtkPlayerBlkText = "Thom's barrier casted around you protects you from the enemy!";
 
 	this->playerSlashAtkText = "You strike the combatant! Click to continue...";
 	this->playerGuardAtkText = "You plant yourself in between Zin and the enemy! Click to continue...";
@@ -102,6 +104,9 @@ Combat::Combat()
 	this->zinSmiteAtkText = "Zin smites the combatant! Click to continue...";
 	this->zinMendAtkText = "Zin heals the party! Click to continue...";
 	this->zinVengeanceAtkText = "Zin takes vengeance, brutally stirking the enemy! Click to continue...";
+
+	this->thomBarrierAtkText = "Thom uses decay from his body to manipulate a barrier around the player!";
+	this->thomEnragedAtkText = "Thom's form slowly melts as he allows the decay to take root in his body. Thom is now enraged!";
 }
 
 Combat::~Combat()
@@ -168,6 +173,7 @@ void Combat::combatLoop(Sprites& sprites, Player& player, Animation& animate)
 			sprites.getTipBoxCounter() = -1;
 			//Make entity viewer blank again
 			sprites.getEntityViewerCounter() = -1;
+			this->thomEnraged = false;
 			this->combatEnd = true;
 		}
 		//Hostiles turn
@@ -214,7 +220,11 @@ void Combat::initCombat(Sprites& sprites, Player& player)
 	this->combatEnd = false;
 	sprites.getPlayerCounter()++; //Load Player sprite with counter
 	sprites.getZinCounter()++; //Load Zins sprite with counter
-	sprites.getThomCounter()++; //Load Thom Sprite with counter
+	//Load Thom Sprite with counter if he is unlocked
+	if (sprites.getThomUnlocked()) {
+		sprites.getThomCounter()++;
+		sprites.spriteText[5].setString("Thom          " + std::to_string(this->thomHp) + "/" + std::to_string(this->thomHpMax));
+	}
 
 	sprites.setPlayerInitFalse(); //Make usable again
 	sprites.setZinInitFalse(); //Make usable again
@@ -234,12 +244,14 @@ void Combat::reInitCombat(Sprites& sprites)
 	this->hostileAttackZin = false;
 	this->hostileAttackThom = false;
 	this->turnHostile = false;
+	sprites.getCombatCounter() = 0;
 
 	//Re init thom if he is unlocked
 	if (sprites.getThomUnlocked()) {
 		this->turnThom = false;
 		this->thomAttackCounter = 0;
 		this->thomAttack = false;
+		this->playerGuarded = false;
 	}
 
 	//Re init characters if both are alive
@@ -352,13 +364,28 @@ void Combat::thomTurn(Sprites& sprites)
 	if (this->turnThom == true) {
 		switch (this->thomAttackCounter) {
 		case 0:
-			sprites.text.setString("Thom prepares his next move");
-			sprites.setThomTurnAssetsTrue();
+			if (!this->thomEnraged) {
+				sprites.text.setString("Thom prepares his next move");
+				sprites.setThomTurnAssetsTrue();
+			}
+			else if (this->thomEnraged) {
+				this->thomAttackCounter = 1;
+			}
 			break;
 		case 1:
 			//Thoms turn
-			if (this->thomAttack == false) {
+			if (!this->thomAttack && !this->thomEnraged) {
 				this->thomSelectMove(sprites);
+				this->thomAttack = true;
+			}
+			else if (this->thomAttack == false && this->thomEnraged) {
+				sprites.text.setString("Thom still stands in a state of pure rage...");
+				this->enraged--;
+				if (this->enraged == 0) {
+					this->thomEnraged = false;
+					sprites.getThomCounter() = 0;
+					sprites.text.setString("Thom snaps out of his rage!");
+				}
 				this->thomAttack = true;
 			}
 			break;
@@ -379,11 +406,16 @@ void Combat::hostileTurn(Sprites& sprites)
 			if (this->playerDead) {
 				sprites.getCombatCounter() = 1;
 			}
-			if (!this->hostileAttack) {
+			if (!this->hostileAttack && !this->playerGuarded) {
 				this->playerHp -= this->hostileStrike;
 				sprites.soundCom.play();
 				sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
 				sprites.text.setString(this->hostileAtkPlayerText);
+				this->hostileAttack = true;
+			}
+			else if (!this->hostileAttack && this->playerGuarded) {
+				sprites.text.setString(this->hostileAtkPlayerBlkText);
+				sprites.soundPlayerGuarded.play();
 				this->hostileAttack = true;
 			}
 			break;
@@ -417,7 +449,7 @@ void Combat::hostileTurn(Sprites& sprites)
 			if (!this->thomDead && !this->hostileAttackThom) {
 				this->thomHp -= this->hostileStrike;
 				sprites.soundCom.play();
-				sprites.spriteText[1].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));
+				sprites.spriteText[5].setString("Thom          " + std::to_string(this->thomHp) + "/" + std::to_string(this->thomHpMax));
 				sprites.text.setString("The hostile strikes Thom!");
 				this->hostileAttackThom = true;
 			}
@@ -486,8 +518,15 @@ void Combat::zinSelectMove(Sprites& sprites)
 				this->zinHp = this->zinHpMax;
 			}
 		}
+		if (this->thomHp < this->thomHpMax) {
+			this->thomHp += this->zinMend;
+			if (this->thomHp > this->thomHpMax) {
+				this->thomHp = this->thomHpMax;
+			}
+		}
 		sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
 		sprites.spriteText[1].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));
+		sprites.spriteText[5].setString("Thom          " + std::to_string(this->thomHp) + "/" + std::to_string(this->thomHpMax));
 		sprites.setZinTurnAssetsFalse();
 		sprites.text.setString(this->zinMendAtkText);
 		break;
@@ -509,10 +548,19 @@ void Combat::thomSelectMove(Sprites& sprites)
 	switch (this->thomPickMove) {
 	case 0:
 		//Thom places barrier around player
-		sprites.soundGuarded.play();
+		this->playerGuarded = true;
+		sprites.soundThomGuard.play();
 		sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
-		sprites.getThomTurnAssets() = false;
-		sprites.text.setString("Thom casts a barrier to protect the player!");
+		sprites.text.setString(this->thomBarrierAtkText);
+		sprites.setThomTurnAssetsFalse();
+		break;
+	case 1:
+		//Thom enters rage mode
+		this->thomEnraged = true;
+		this->enraged = 3;
+		sprites.getThomCounter() = 1;
+		sprites.soundEnraged.play();
+		sprites.text.setString(this->thomEnragedAtkText);
 		sprites.setThomTurnAssetsFalse();
 		break;
 	}

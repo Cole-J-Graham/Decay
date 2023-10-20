@@ -51,6 +51,7 @@ public:
 	//Sprite Textures
 	sf::Texture playerTexture;
 	sf::Texture thomTexture;
+	sf::Texture thomEnragedTexture;
 	sf::Texture spadeTexture;
 	sf::Texture siwardTexture;
 	//Zin Textures

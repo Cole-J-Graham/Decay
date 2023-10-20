@@ -74,6 +74,7 @@ void Sprites::loadSprites()
 
     //Thom Sprites
     thomTexture.loadFromFile("Assets/Sprites/thomNormal.png");
+    thomEnragedTexture.loadFromFile("Assets/Sprites/thomRage.png");
 
     //Load Hostile Sprites
     hostileTextureWalker.loadFromFile("Assets/HostileSprites/decaywalkersprite.jpeg");
@@ -532,6 +533,12 @@ void Sprites::thomSprite(Assets& assets)
         break;
     case 0:
         spriteElements[7].setTexture(thomTexture);
+        spriteElements[7].setPosition(sf::Vector2f(50.0f, 500.0f));
+        spriteRect[5].setPosition(sf::Vector2f(50.0f, 500.0f));
+        spriteText[5].setPosition(sf::Vector2f(50.0f, 653.0f));
+        break;
+    case 1:
+        spriteElements[7].setTexture(thomEnragedTexture);
         spriteElements[7].setPosition(sf::Vector2f(50.0f, 500.0f));
         spriteRect[5].setPosition(sf::Vector2f(50.0f, 500.0f));
         spriteText[5].setPosition(sf::Vector2f(50.0f, 653.0f));

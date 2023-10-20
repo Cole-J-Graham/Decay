@@ -29,6 +29,9 @@ private:
 	int zinMend;
 	int zinVengeance;
 
+	//Thom Moves
+	int enraged;
+
 	//Hostile Moves
 	int hostileStrike;
 
@@ -73,6 +76,8 @@ private:
 	bool turnThom;
 	bool turnHostile;
 	bool zinGuarded;
+	bool playerGuarded;
+	bool thomEnraged;
 
 	bool playerAttack;
 	bool zinAttack;
@@ -100,6 +105,7 @@ private:
 	std::string hostileAtkPlayerText;
 	std::string hostileAtkZinText;
 	std::string hostileAtkZinBlkText;
+	std::string hostileAtkPlayerBlkText;
 
 	std::string playerSlashAtkText;
 	std::string playerGuardAtkText;
@@ -108,6 +114,9 @@ private:
 	std::string zinSmiteAtkText;
 	std::string zinMendAtkText;
 	std::string zinVengeanceAtkText;
+
+	std::string thomBarrierAtkText;
+	std::string thomEnragedAtkText;
 
 public:
 

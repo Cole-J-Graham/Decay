@@ -543,6 +543,14 @@ void World::printToolTip(sf::RenderWindow& window, Sprites& sprites, Event& note
             sprites.getTipBoxCounter() = 0;
             sprites.tipBoxText.setString("VENGEANCE:\nUse Zin's rage and sorrow to turn the players\nblood into sharpened blades that hurdle\ntowards the enemy...\n\nInflicts damage equal to the players current \nlost health...");
         }
+        else if (sprites.combatRect[6].getGlobalBounds().contains(mousePosF)) {
+            sprites.getTipBoxCounter() = 0;
+            sprites.tipBoxText.setString("BARRIER:\nThom casts a barrier made of Decay,\nblocking some of the players damage.");
+        }
+        else if (sprites.combatRect[7].getGlobalBounds().contains(mousePosF)) {
+            sprites.getTipBoxCounter() = 0;
+            sprites.tipBoxText.setString("ENRAGE:\nThom enters a state of pure rage.\nThis lasts for three turns, boosting\nall party damage.\n\nThom is unable to use any other moves during\nhis state of rage.");
+        }
         else {
             sprites.getTipBoxCounter() = -1;
         }
@@ -868,6 +876,12 @@ void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Sprites&
         if (combat.getTurnThom() == true) {
             combat.getThomAttackCounter()++;
             combat.getThomPickMove() = 0;
+        }
+    }
+    if (sprites.combatRect[7].getGlobalBounds().contains(mousePosF)) {
+        if (combat.getTurnThom() == true) {
+            combat.getThomAttackCounter()++;
+            combat.getThomPickMove() = 1;
         }
     }
     else if (sprites.rect.getGlobalBounds().contains(mousePosF) && sprites.getShowAnsBoxesCounter() == -1) {
