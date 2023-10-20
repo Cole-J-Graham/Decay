@@ -17,6 +17,7 @@ private:
 	bool encounterInitTwo;
 
 	//Event Availability Bools
+	bool thomEncountered;
 	bool siwardEncounteredForest;
 	bool spadeEncounteredForest;
 
@@ -59,6 +60,7 @@ public:
 	//Forest Depths Events
 	void forestDepthsSpadeEncounter(Sprites& sprites);
 	void treeEncounter(Sprites& sprites, Player& player);
+	void thomEncounter(Sprites& sprites);
 
 	//Forest Abyssal Events
 	void obeliskEncounter(Sprites& sprites, Player& player);

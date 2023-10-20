@@ -74,6 +74,9 @@ void Event::healCharacters(sf::RenderWindow& window, Sprites& sprites, Combat& c
     if (sprites.bonfireHealDetectionRect.getGlobalBounds().contains(mousePosF)) {
         combat.getPlayerHp() = combat.getPlayerHpMax();
         combat.getZinHp() = combat.getZinHpMax();
+        if (sprites.getThomUnlocked()) {
+            combat.getThomHp() = combat.getThomHpMax();
+        }
         sprites.text.setString("All party members Hp restored...");
         sprites.spriteText[1].setString("Zin            " + std::to_string(combat.getZinHp()) + "/" + std::to_string(combat.getZinHpMax()));
     }
@@ -439,6 +442,73 @@ void Event::treeEncounter(Sprites& sprites, Player& player)
             sprites.getEventAssets() = false;
             sprites.getEntityViewerCounter() = -1;
             this->treeEncountered = true;
+            break;
+        }
+    }
+}
+
+void Event::thomEncounter(Sprites& sprites)
+{
+    if (!this->thomEncountered) {
+        this->reInit(sprites);
+        switch (this->dialogue) {
+        case 0:
+            this->hideOpenAssets(sprites);
+            //Make Thom's entity visible
+            sprites.getEntityViewerCounter() = 22;
+            sprites.text.setString("*You hear a rustling in the bushes which alerts you. You draw your sword as you notice the creature reveal itself.*\n\n*It's a very small creature, about the size of two human hands. It looks up to you confused...*");
+            break;
+        case 1:
+            sprites.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
+            sprites.getZinCounter() = 1; //Set correct frame for zins sprite to appear
+            sprites.text.setString("Look at that little guy! *Zin bends down and reaches to pet the small creature. The creature actually responds well, rubbing against her hand in joy.*\n\n*You stare at the creature as Zin pets it, trying to figure out exactly what it is. It looks almost like a small dog, but you also know that it's definitely not a dog...\b");
+            break;
+        case 2:
+            sprites.text.setString("*You notice that the black fur on its body is actually decay. The entire small animal is just some amalgamation of decay, however it's not hostile...*");
+            break;
+        case 3:
+            sprites.text.setString("'Can we take it with us?! I bet he'd make a great pet!' *Zin is clearly quite excited over this creature*");
+            break;
+        case 4:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'I mean, I guess it seems harmless...? But you realize it's covered in decay, right?'");
+            sprites.answerBoxText[1].setString("2. 'Zin, that entire thing is a decay cesspool. We are not taking it with us.'");
+            break;
+        case 5:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("'I know, I can feel the presence of decay. But it seems like this little dude can control it to some extent! So what do you say, can we take him?'\n\n*Zin continues petting it as you realize the creature is definitely manipulating the decay on its own... Somehow...*");
+                break;
+            case 1:
+                sprites.text.setString("'Awwwe, come on! I'll take good care of it! It's not like I can't handle decay! I'm practically made for this little creature! Plus, look at him, he can control the decay! Come on, can we please take him?'\n\n*Zin continues petting it as you realize the creature is definitely manipulating the decay on its own... Somehow...*");
+                break;
+            }
+            break;
+        case 6:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'Alright, we'll take the little guy.'");
+            sprites.answerBoxText[1].setString("2. 'We are not taking that thing with us. It's just too much of a risk.'");
+            break;
+        case 7:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.getThomUnlocked() = true;
+                sprites.text.setString("'Yay! I know we won't regret it! I'm gonna name him 'Thom', after my dad! Before he died! Not after!\n\nParty member gained.'");
+                break;
+            case 1:
+                sprites.getZinCounter() = 4;
+                sprites.text.setString("'Alright, fine... I'm sorry...'\n\n*You feel a bit bad but you're sure she'll get over it soon. She is a kid after all.*");
+                break;
+            }
+            break;
+        case 8:
+            sprites.getZinCounter() = -1;
+            sprites.text.setString("");
+            sprites.getEventAssets() = false;
+            sprites.getEntityViewerCounter() = -1;
+            this->thomEncountered = true;
             break;
         }
     }

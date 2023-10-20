@@ -174,6 +174,8 @@ public:
 	int& getPlayerHpMax() { return this->playerHpMax; };
 	int& getZinHp() { return this->zinHp; };
 	int& getZinHpMax() { return this->zinHpMax; };
+	int& getThomHp() { return this->thomHp; };
+	int& getThomHpMax() { return this->thomHpMax; };
 
 	//Hostile Getters
 	int& getHostileHp() { return this->hostileHp; };

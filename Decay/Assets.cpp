@@ -3,7 +3,7 @@
 //Constructors & Destructors
 Assets::Assets()
 {
-    this->thomUnlocked = false;
+    this->thomUnlocked = true;
     this->dialogueCounter = 0;
     this->combatCounter = 0;
     this->playerCounter = -1;

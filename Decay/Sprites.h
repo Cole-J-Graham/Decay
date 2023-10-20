@@ -59,6 +59,7 @@ public:
 	sf::Texture zinTextureHappy;
 	sf::Texture zinTextureConcerned;
 	sf::Texture zinTextureAnnoyed;
+	sf::Texture zinTextureSad;
 	//Hostile Sprite Textures
 	sf::Texture hostileTextureWolf;
 	sf::Texture hostileTextureWalker;
@@ -85,6 +86,7 @@ public:
 	sf::Sprite entitySprite;
 	//Viewer Files Main
 	sf::Texture blankEntity;
+	sf::Texture thomEntity;
 	sf::Texture siwardEntityTexture;
 	sf::Texture spadeEntityForest;
 	sf::Texture spadeEntityCastle;

@@ -71,6 +71,7 @@ void Sprites::loadSprites()
     zinTextureHappy.loadFromFile("Assets/Sprites/zinHappy.png");
     zinTextureConcerned.loadFromFile("Assets/Sprites/zinConcerned.png");
     zinTextureAnnoyed.loadFromFile("Assets/Sprites/zinSpriteAnnoyed.png");
+    zinTextureSad.loadFromFile("Assets/Sprites/zinSad.png");
 
     //Thom Sprites
     thomTexture.loadFromFile("Assets/Sprites/thomNormal.png");
@@ -100,6 +101,7 @@ void Sprites::loadEntities()
 {
     //Load Entity Viewer Files Main
     blankEntity.loadFromFile("Assets/Entities/entityBlank.png");
+    thomEntity.loadFromFile("Assets/Entities/thomEntity.jpeg");
     siwardEntityTexture.loadFromFile("Assets/Entities/siwardEntity.jpeg");
     spadeEntityForest.loadFromFile("Assets/Entities/spadeEntityForest.png");
     spadeEntityCastle.loadFromFile("Assets/Entities/spadeEntityCastle.jpg");
@@ -215,6 +217,9 @@ void Sprites::drawEntityViewer()
         break;
     case 21:
         entitySprite.setTexture(tendrilAlphaEntity);
+        break;
+    case 22:
+        entitySprite.setTexture(thomEntity);
         break;
     }
     //Select whether or not the sprite is visible
@@ -511,6 +516,12 @@ void Sprites::zinSprite(Assets& assets)
         break;
     case 3:
         spriteElements[3].setTexture(zinTextureAnnoyed);
+        spriteElements[3].setPosition(sf::Vector2f(50.0f, 300.0f));
+        spriteRect[1].setPosition(sf::Vector2f(50.0f, 300.0f));
+        spriteText[1].setPosition(sf::Vector2f(50.0f, 453.0f));
+        break;
+    case 4:
+        spriteElements[3].setTexture(zinTextureSad);
         spriteElements[3].setPosition(sf::Vector2f(50.0f, 300.0f));
         spriteRect[1].setPosition(sf::Vector2f(50.0f, 300.0f));
         spriteText[1].setPosition(sf::Vector2f(50.0f, 453.0f));
