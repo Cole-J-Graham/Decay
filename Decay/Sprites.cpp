@@ -9,8 +9,6 @@ Sprites::Sprites()
     this->hostileInit = false;
 
     //Sprite Control Flow
-    this->siwardLoadOnce = true;
-    this->playerLoadOnce = true;
     this->zinLoadOnce = true;
     this->spadeLoadOnce = true;
 
@@ -66,6 +64,9 @@ void Sprites::drawObjects(Assets& assets)
 //Loading Functions
 void Sprites::loadSprites()
 {
+    //Player Sprites
+    playerTexture.loadFromFile("Assets/Sprites/player.png");
+
     //Zin Sprites
     zinTexture.loadFromFile("Assets/Sprites/zinSprite.png");
     zinTextureHappy.loadFromFile("Assets/Sprites/zinHappy.png");
@@ -76,6 +77,11 @@ void Sprites::loadSprites()
     //Thom Sprites
     thomTexture.loadFromFile("Assets/Sprites/thomNormal.png");
     thomEnragedTexture.loadFromFile("Assets/Sprites/thomRage.png");
+
+    //Siward Sprites
+    siwardTexture.loadFromFile("Assets/Sprites/siward.png");
+    siwardTextureDecaying.loadFromFile("Assets/Sprites/siwardDecaying.png");
+    siwardTextureDecayed.loadFromFile("Assets/Sprites/siwardDecayed.png");
 
     //Load Hostile Sprites
     hostileTextureWalker.loadFromFile("Assets/HostileSprites/decaywalkersprite.jpeg");
@@ -103,6 +109,8 @@ void Sprites::loadEntities()
     blankEntity.loadFromFile("Assets/Entities/entityBlank.png");
     thomEntity.loadFromFile("Assets/Entities/thomEntity.jpeg");
     siwardEntityTexture.loadFromFile("Assets/Entities/siwardEntity.jpeg");
+    siwardEntityCastleTexture.loadFromFile("Assets/Entities/siwardCastle.jpeg");
+    siwardEntityDuelTexture.loadFromFile("Assets/Entities/siwardCastleDuel.jpeg");
     spadeEntityForest.loadFromFile("Assets/Entities/spadeEntityForest.png");
     spadeEntityCastle.loadFromFile("Assets/Entities/spadeEntityCastle.jpg");
     //Load Entity Viewer Files Random Events
@@ -221,6 +229,12 @@ void Sprites::drawEntityViewer()
     case 22:
         entitySprite.setTexture(thomEntity);
         break;
+    case 23:
+        entitySprite.setTexture(siwardEntityCastleTexture);
+        break;
+    case 24:
+        entitySprite.setTexture(siwardEntityDuelTexture);
+        break;
     }
     //Select whether or not the sprite is visible
     switch (this->spriteViewerCounter) {
@@ -244,224 +258,158 @@ void Sprites::drawEntityViewer()
 //Sprite Functions
 void Sprites::hostileSprite(Assets& assets)
 {
-    if (this->hostileLoadOnce) {
-        spriteElements[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
-        spriteElements[5].setScale(0.15f, 0.15f);
-        spriteRect[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
-        spriteText[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
-        this->hostileLoadOnce = false;
-    }
     //Pick Hostile Sprite
     switch (assets.getHostileCounter()) {
     case -1:
         spriteElements[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        spriteRect[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        spriteText[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        spriteElements[5].setScale(0.15f, 0.15f);
         break;
     case 0:
-        if (this->hostileInit == false) {
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            this->hostileInit = true;
-        }
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
         break;
     case 1:
         //Wolf Sprite
-        if (this->hostileInit == false) {
-            hostileTextureWolf.setRepeated(false);
-            spriteElements[5].setTexture(hostileTextureWolf);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            this->hostileInit = true;
-        }
+        hostileTextureWolf.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureWolf);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     case 2:
         //Decay Walker Sprite
-        if (this->hostileInit == false) {
-            hostileTextureWalker.setRepeated(false);
-            spriteElements[5].setTexture(hostileTextureWalker);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            spriteElements[5].setScale(0.235f, 0.235f);
-            this->hostileInit = true;
-        }
+        hostileTextureWalker.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureWalker);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     case 3:
         //Decay knight Sprite
-        if (this->hostileInit == false) {
-            hostileTextureKnight.setRepeated(false);
-            spriteElements[5].setTexture(hostileTextureKnight);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            spriteElements[5].setScale(0.235f, 0.235f);
-            this->hostileInit = true;
-        }
+        hostileTextureKnight.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureKnight);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     case 4:
         //Hostile Tree Mimic
-        if (this->hostileInit == false) {
-            hostileTextureTree.setRepeated(false);
-            spriteElements[5].setTexture(hostileTextureTree);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            this->hostileInit = true;
-        }
+        hostileTextureTree.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureTree);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     case 5:
         //Hostile Nun
-        if (this->hostileInit == false) {
-            hostileTextureNun.setRepeated(false);
-            spriteElements[5].setTexture(hostileTextureNun);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            this->hostileInit = true;
-        }
+        hostileTextureNun.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureNun);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     case 6:
         //Hostile Decapod
-        if (this->hostileInit == false) {
-            hostileTextureDecapod.setRepeated(false);
-            spriteElements[5].setTexture(hostileTextureDecapod);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            this->hostileInit = true;
-        }
+        hostileTextureDecapod.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureDecapod);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     case 7:
         //Hostile Haze Demon
-        if (this->hostileInit == false) {
-            hostileTextureHaze.setRepeated(false);
-            spriteElements[5].setTexture(hostileTextureHaze);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            this->hostileInit = true;
-        }
+        hostileTextureHaze.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureHaze);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     case 8:
         //Hostile Jester
-        if (this->hostileInit == false) {
-            hostileTextureJester.setRepeated(false);
-            spriteElements[5].setTexture(hostileTextureJester);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            this->hostileInit = true;
-        }
+        hostileTextureJester.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureJester);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     case 9:
         //Hostile Wall Mimic
-        if (this->hostileInit == false) {
-            hostileTextureWallMimic.setRepeated(false);
-            spriteElements[5].setTexture(hostileTextureWallMimic);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            this->hostileInit = true;
-        }
+        hostileTextureWallMimic.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureWallMimic);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     case 10:
         //Hostile Lost Knight
-        if (this->hostileInit == false) {
-            hostileTextureLostKnight.setRepeated(false);
-            spriteElements[5].setTexture(hostileTextureLostKnight);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            this->hostileInit = true;
-        }
+        hostileTextureLostKnight.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureLostKnight);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     case 11:
         //Hostile Phantom
-        if (this->hostileInit == false) {
-            hostileTexturePhantom.setRepeated(false);
-            spriteElements[5].setTexture(hostileTexturePhantom);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            this->hostileInit = true;
-        }
+        hostileTexturePhantom.setRepeated(false);
+        spriteElements[5].setTexture(hostileTexturePhantom);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     case 12:
         //Hostile Skin Eater
-        if (this->hostileInit == false) {
-            hostileTextureEater.setRepeated(false);
-            spriteElements[5].setTexture(hostileTextureEater);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            this->hostileInit = true;
-        }
+        hostileTextureEater.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureEater);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     case 13:
         //Hostile Limb Splitter
-        if (this->hostileInit == false) {
-            hostileTextureLimbSplitter.setRepeated(false);
-            spriteElements[5].setTexture(hostileTextureLimbSplitter);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            this->hostileInit = true;
-        }
+        hostileTextureLimbSplitter.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureLimbSplitter);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     case 14:
         //Hostile Burrower
-        if (this->hostileInit == false) {
-            hostileTextureBurrower.setRepeated(false);
-            spriteElements[5].setTexture(hostileTextureBurrower);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            this->hostileInit = true;
-        }
+        hostileTextureBurrower.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureBurrower);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     case 15:
         //Hostile ChatterMouth
-        if (this->hostileInit == false) {
-            hostileTextureChatterMouth.setRepeated(false);
-            spriteElements[5].setTexture(hostileTextureChatterMouth);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            this->hostileInit = true;
-        }
+        hostileTextureChatterMouth.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureChatterMouth);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     case 16:
         //Hostile Reclus
-        if (this->hostileInit == false) {
-            hostileTextureReclus.setRepeated(false);
-            spriteElements[5].setTexture(hostileTextureReclus);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            this->hostileInit = true;
-        }
+        hostileTextureReclus.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureReclus);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     case 17:
         //Hostile Tendril Alpha
-        if (this->hostileInit == false) {
-            hostileTextureAlphaEntity.setRepeated(false);
-            spriteElements[5].setTexture(hostileTextureAlphaEntity);
-            spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
-            this->hostileInit = true;
-        }
+        hostileTextureAlphaEntity.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureAlphaEntity);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
     }
 }
 
 void Sprites::playerSprite(Assets& assets)
 {
-    //Initialize Player Sprite
-    if (this->playerLoadOnce == true) {
-        playerTexture.loadFromFile("Assets/Sprites/player.png");
-        spriteElements[4].setPosition(sf::Vector2f(10000.0f, 10000.0f));
-        this->playerLoadOnce = false;
-    }
     //Pick Player Sprite Emotion
     switch (assets.getPlayerCounter()) {
     case -1:
@@ -470,20 +418,17 @@ void Sprites::playerSprite(Assets& assets)
         spriteText[0].setPosition(10000.0f, 10000.0f);
         break;
     case 0:
-        if (this->playerInit == false) {
-            playerTexture.loadFromFile("Assets/Sprites/player.png");
-            spriteElements[4].setPosition(sf::Vector2f(50.0f, 100.0f));
-            spriteRect[0].setPosition(50.0f, 100.0f);
-            spriteText[0].setPosition(50.0f, 253.0f);
-            this->playerInit = true;
-        }
+        //Normal Player
+        spriteElements[4].setTexture(playerTexture);
+        spriteElements[4].setPosition(sf::Vector2f(50.0f, 100.0f));
+        spriteRect[0].setPosition(50.0f, 100.0f);
+        spriteText[0].setPosition(50.0f, 253.0f);
         break;
     }
 
     //Sprite Options, ect
     playerTexture.setSmooth(true);
     playerTexture.setRepeated(false);
-    spriteElements[4].setTexture(playerTexture);
     spriteElements[4].setScale(0.244f, 0.244f);
 }
 
@@ -563,30 +508,34 @@ void Sprites::thomSprite(Assets& assets)
 
 void Sprites::siwardSprite()
 {
-    //Initialize Siward Sprite
-    if (this->siwardLoadOnce == true) {
-        siwardTexture.loadFromFile("Assets/Sprites/siward.png");
-        spriteElements[6].setPosition(sf::Vector2f(10000.0f, 10000.0f));
-        this->siwardLoadOnce = false;
-    }
-    //Pick Siward Sprite Emotion
+    //Pick Siward Sprite Decay State
     switch (this->siwardCounter) {
     case -1:
         spriteElements[6].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteRect[4].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         break;
     case 0:
-        if (this->siwardLoadOnce == false) {
-            spriteElements[6].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[4].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            this->siwardLoadOnce = true;
-        }
+        //Regular Siward
+        spriteElements[6].setTexture(siwardTexture);
+        spriteElements[6].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[4].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        break;
+    case 1:
+        //Decaying Siward
+        spriteElements[6].setTexture(siwardTextureDecaying);
+        spriteElements[6].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[4].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        break;
+    case 2:
+        //Decayed Siward
+        spriteElements[6].setTexture(siwardTextureDecayed);
+        spriteElements[6].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[4].setPosition(sf::Vector2f(1650.0f, 300.0f));
         break;
     }
 
     //Sprite Options, ect
     siwardTexture.setRepeated(false);
-    spriteElements[6].setTexture(siwardTexture);
     spriteElements[6].setScale(0.24f, 0.24f);
 }
 

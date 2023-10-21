@@ -12,8 +12,6 @@ private:
 	//Sprite Control Flow
 	bool zinLoadOnce;
 	bool spadeLoadOnce;
-	bool siwardLoadOnce;
-	bool playerLoadOnce;
 
 	//Sprite Border Control Flow
 	bool spriteInit;
@@ -54,6 +52,8 @@ public:
 	sf::Texture thomEnragedTexture;
 	sf::Texture spadeTexture;
 	sf::Texture siwardTexture;
+	sf::Texture siwardTextureDecaying;
+	sf::Texture siwardTextureDecayed;
 	//Zin Textures
 	sf::Texture zinTexture;
 	sf::Texture zinTextureHappy;
@@ -88,6 +88,8 @@ public:
 	sf::Texture blankEntity;
 	sf::Texture thomEntity;
 	sf::Texture siwardEntityTexture;
+	sf::Texture siwardEntityCastleTexture;
+	sf::Texture siwardEntityDuelTexture;
 	sf::Texture spadeEntityForest;
 	sf::Texture spadeEntityCastle;
 	//Viewer Files Random Events
@@ -114,8 +116,6 @@ public:
 	sf::Texture tendrilAlphaEntity;
 
 	//Sprite Control Flow Getters
-	bool& getSiwardLoadOnce() { return this->siwardLoadOnce; };
-	bool& getPlayerLoadOnce() { return this->playerLoadOnce; };
 	bool& getZinLoadOnce() { return this->zinLoadOnce; };
 	bool& getSpadeLoadOnce() { return this->spadeLoadOnce; };
 
@@ -123,7 +123,6 @@ public:
 	bool& getSpadeInit() { return this->spadeInit; };
 
 	//Sprite Control Flow Setters
-	void setPlayerLoadOnceFalse() { this->playerLoadOnce = false; };
 	void setZinLoadOnceFalse() { this->zinLoadOnce = false; };
 	void setSpadeLoadOnceFalse() { this->spadeLoadOnce = false; };
 

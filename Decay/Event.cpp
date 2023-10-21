@@ -8,12 +8,14 @@ Event::Event()
     this->sfxUsed = false;
     this->itemGained = false;
 
-    this->encounterInit = true;
-    this->encounterInitTwo = true;
-
     //Event Availability Bools
+    this->thomEncountered = false;
     this->siwardEncounteredForest = false;
+    this->siwardEncounteredCastle = false;
+    this->siwardEncounteredFinal = false;
+
     this->spadeEncounteredForest = false;
+    this->spadeEncounteredCastle = false;
 
     this->treeEncountered = false;
     this->obeliskEncountered = false;
@@ -78,7 +80,9 @@ void Event::healCharacters(sf::RenderWindow& window, Sprites& sprites, Combat& c
             combat.getThomHp() = combat.getThomHpMax();
         }
         sprites.text.setString("All party members Hp restored...");
+        sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(combat.getPlayerHp()) + "/" + std::to_string(combat.getPlayerHpMax()));
         sprites.spriteText[1].setString("Zin            " + std::to_string(combat.getZinHp()) + "/" + std::to_string(combat.getZinHpMax()));
+        sprites.spriteText[5].setString("Thom          " + std::to_string(combat.getThomHp()) + "/" + std::to_string(combat.getThomHpMax()));
     }
 }
 
@@ -217,7 +221,6 @@ void Event::forestSiwardEncounter(Sprites& sprites)
         case 0:
             sprites.getSpriteViewerCounter() = 0; //Make entity viewer visible
             sprites.getEntityViewerCounter() = 0; //Make siward entity visible
-            sprites.getSiwardLoadOnce() = false; //Allow to be used again
             sprites.getSiwardCounter() = 0; //Make Siwards Sprite Appear
             this->hideOpenAssets(sprites);
             sprites.text.setString("A knight suddenly appears from around a tree, practically ambushing your view. Though he seems to get startled from your presence as well...");
@@ -652,29 +655,48 @@ void Event::lostNunEncounter(Sprites& sprites)
     }
 }
 
-//Castle Events
+//Castle Hall Events
 void Event::spadeEncounter(Sprites& sprites)
 {
-    //Initiate Dialogue
-    switch (sprites.getDialogueCounter()) {
-    case 0:
-        if (this->encounterInit == true) {
-            sprites.setSpriteInitTrue(); //Initialize Sprite Border
-            sprites.setSpadeCounterZero(); //Pick which Spade Sprite to use via switch statement
-            sprites.text.setString("Hey, what are you doing here...?"); //Set text for what's happening
-            this->encounterInit = false; //Ensure this only runs once...
+    if (!this->spadeEncounteredCastle) {
+        this->reInit(sprites);
+        switch (this->dialogue) {
+        case 0:
+            break;
+        case 1:
+            break;
         }
-        break;
-    case 1:
-        if (this->encounterInitTwo == true) {
-            sprites.setSpadeCounterOne();
-            sprites.text.setString("Get OUT!");
-            sprites.soundAngry.play();
-            this->encounterInitTwo = false;
+    }
+}
+
+//Castle Depth Events
+void Event::castleSiwardEncounter(Sprites& sprites)
+{
+    if (!this->siwardEncounteredCastle) {
+        this->reInit(sprites);
+        switch (this->dialogue) {
+        case 0:
+            sprites.text.setString("*You notice a familiar set of armor standing amongst a pile of corpses.*\n\n'Hello there sir! It's good to see a friendly face amongst the chaos! I see you and the little one appear to be doing alright. This is great news!'");
+            sprites.getEntityViewerCounter() = 23;
+            sprites.getSpriteViewerCounter() = 0;
+            sprites.getSiwardCounter() = 1;
+            break;
+        case 1:
+            break;
         }
-        break;
-    case 2:
-        std::cout << "Success";
-        break;
+    }
+}
+
+//Castle Labyrinth Events
+void Event::castleSiwardFinalEncounter(Sprites& sprites)
+{
+    if (!this->siwardEncounteredFinal) {
+        this->reInit(sprites);
+        switch (this->dialogue) {
+        case 0:
+            break;
+        case 1:
+            break;
+        }
     }
 }

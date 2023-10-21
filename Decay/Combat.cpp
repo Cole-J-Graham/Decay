@@ -252,6 +252,7 @@ void Combat::reInitCombat(Sprites& sprites)
 		this->thomAttackCounter = 0;
 		this->thomAttack = false;
 		this->playerGuarded = false;
+		sprites.getThomTurnAssets() = false;
 	}
 
 	//Re init characters if both are alive
@@ -263,10 +264,15 @@ void Combat::reInitCombat(Sprites& sprites)
 		this->zinGuarded = false;
 		this->playerAttack = false;
 		//Zin
+		sprites.setZinTurnAssetsFalse();
+		this->turnZin = false;
 		this->zinAttackCounter = 0;
 		this->zinAttack = false;
 	}//Re init zin if she is alive and player is dead
 	else if (this->playerDead && !this->zinDead) {
+		//Player
+		sprites.setPlayerTurnAssetsFalse();
+		this->turnPlayer = false;
 		//Zin
 		sprites.setZinTurnAssetsTrue();
 		this->turnZin = true;
@@ -280,6 +286,9 @@ void Combat::reInitCombat(Sprites& sprites)
 		this->attackCounter = 0;
 		this->zinGuarded = false;
 		this->playerAttack = false;
+		//Zin
+		sprites.setZinTurnAssetsFalse();
+		this->turnZin = false;
 	}
 }
 

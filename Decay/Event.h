@@ -13,13 +13,14 @@ private:
 	bool sfxUsed;
 	bool itemGained;
 
-	bool encounterInit;
-	bool encounterInitTwo;
-
 	//Event Availability Bools
 	bool thomEncountered;
 	bool siwardEncounteredForest;
+	bool siwardEncounteredCastle;
+	bool siwardEncounteredFinal;
+
 	bool spadeEncounteredForest;
+	bool spadeEncounteredCastle;
 
 	bool treeEncountered;
 	bool obeliskEncountered;
@@ -66,12 +67,17 @@ public:
 	void obeliskEncounter(Sprites& sprites, Player& player);
 	void lostNunEncounter(Sprites& sprites);
 
-	//Castle Events
+	//Castle Hall Events
 	void spadeEncounter(Sprites& sprites);
 
+	//Castle Depth Events
+	void castleSiwardEncounter(Sprites& sprites);
+
+	//Castle Labyrinth Events
+	void castleSiwardFinalEncounter(Sprites& sprites);
+
+
 	//Control Flow Getters
-	bool& getEncounterInit() { return this->encounterInit; };
-	bool& getEncounterInitTow() { return this->encounterInitTwo; };
 	bool& getReInitialize() { return this->reInitialize; };
 
 	//Event Availability Bools
