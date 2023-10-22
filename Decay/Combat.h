@@ -95,6 +95,9 @@ private:
 	int zinPickMove;
 	int thomPickMove;
 
+	//Animation Control
+	bool firstAttack;
+
 	//Init Strings
 	std::string playerTurnText;
 	std::string zinTurnText;
@@ -131,19 +134,19 @@ public:
 
 	//Core Combat Functions
 	void combatLoop(Sprites& sprites, Player& player, Animation& animate);
-	void initCombat(Sprites& sprites, Player& player);
+	void initCombat(Sprites& sprites, Player& player, Animation& animate);
 	void reInitCombat(Sprites& sprites);
 	void playerDeath(Sprites& sprites);
 
 	//Combat Functions
-	void playerTurn(Sprites& sprites);
-	void zinTurn(Sprites& sprites);
+	void playerTurn(Sprites& sprites, Animation& animate);
+	void zinTurn(Sprites& sprites, Animation& animate);
 	void thomTurn(Sprites& sprites);
-	void hostileTurn(Sprites& sprites);
+	void hostileTurn(Sprites& sprites, Animation& animate);
 
 	//Combat Pick Attacks
-	void playerSelectMove(Sprites& sprites);
-	void zinSelectMove(Sprites& sprites);
+	void playerSelectMove(Sprites& sprites, Animation& animate);
+	void zinSelectMove(Sprites& sprites, Animation& animate);
 	void thomSelectMove(Sprites& sprites);
 
 	//Combat Init Forest Hostiles

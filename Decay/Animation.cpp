@@ -3,9 +3,13 @@
 Animation::Animation()
 {
 	this->animationFrame = -1;
+	this->combatAnimationFrame = -1;
+	this->combatAnimationLocation = -1;
 
 	this->zinTalkNot = true;
 	this->decayWarning = false;
+
+	this->animEnd = true;
 	
 	decayWarn.setPosition(10000, 10000);
 
@@ -33,6 +37,14 @@ Animation::Animation()
 	anvil4.loadFromFile("Assets/Game_Resources/anvil4.png");
 	anvil5.loadFromFile("Assets/Game_Resources/anvil5.png");
 	anvilSprite.setScale(1.6f, 1.6f);
+
+	hit1.loadFromFile("Assets/Game_Resources/hitanimation1.png");
+	hit2.loadFromFile("Assets/Game_Resources/hitanimation2.png");
+	hit3.loadFromFile("Assets/Game_Resources/hitanimation3.png");
+	hit4.loadFromFile("Assets/Game_Resources/hitanimation4.png");
+	hit5.loadFromFile("Assets/Game_Resources/hitanimation5.png");
+	hit6.loadFromFile("Assets/Game_Resources/hitanimation6.png");
+	hitSprite.setScale(0.24f, 0.24f);
 
 	font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
 }
@@ -66,6 +78,37 @@ void Animation::animateTimer()
 		else if (this->animationFrame == 3) {
 			this->animationFrame = -1;
 			timer.restart();
+		}
+	}
+}
+
+void Animation::animateCombatTimer()
+{
+	combatElapsed = combatTimer.getElapsedTime();
+	if (combatElapsed.asSeconds() >= 0.1f) {
+		if (this->combatAnimationFrame == -1) {
+			this->combatAnimationFrame++;
+			combatTimer.restart();
+		}
+		else if (this->combatAnimationFrame == 0) {
+			this->combatAnimationFrame++;
+			combatTimer.restart();
+		}
+		else if (this->combatAnimationFrame == 1) {
+			this->combatAnimationFrame++;
+			combatTimer.restart();
+		}
+		else if (this->combatAnimationFrame == 2) {
+			this->combatAnimationFrame++;
+			combatTimer.restart();
+		}
+		else if (this->combatAnimationFrame == 3) {
+			this->combatAnimationFrame++;
+			combatTimer.restart();
+		}
+		else if (this->combatAnimationFrame == 4) {
+			this->combatAnimationFrame = -1;
+			combatTimer.restart();
 		}
 	}
 }
@@ -204,6 +247,57 @@ void Animation::animateHeal(Assets& assets)
 		break;
 	case 3:
 		healSprite.setTexture(heal5);
+		break;
+	}
+}
+
+void Animation::animateAttack(Assets& assets)
+{
+	//Set Animation Position
+	switch (this->combatAnimationLocation) {
+	case -1:
+		hitSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
+		break;
+	case 0:
+		//Hostile Sprite Location
+		hitSprite.setPosition(sf::Vector2f(1650.0f, 300.0f));
+		break;
+	case 1:
+		//Player Sprite Location
+		hitSprite.setPosition(sf::Vector2f(50.0f, 100.0f));
+		break;
+	case 2:
+		//Zin Sprite Location
+		hitSprite.setPosition(sf::Vector2f(50.0f, 300.0f));
+		break;
+	case 3:
+		//Thom Sprite Location
+		hitSprite.setPosition(sf::Vector2f(50.0f, 500.0f));
+		break;
+	}
+
+	//Animate Hit Animation
+	this->animateCombatTimer();
+	switch (this->combatAnimationFrame) {
+	case -1:
+		hitSprite.setTexture(hit1);
+		break;
+	case 0:
+		hitSprite.setTexture(hit2);
+		break;
+	case 1:
+		hitSprite.setTexture(hit3);
+		break;
+	case 2:
+		hitSprite.setTexture(hit4);
+		break;
+	case 3:
+		hitSprite.setTexture(hit5);
+		break;
+	case 4:
+		hitSprite.setTexture(hit6);
+		hitSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
+		this->animEnd = true;
 		break;
 	}
 }

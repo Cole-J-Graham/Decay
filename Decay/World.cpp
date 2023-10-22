@@ -218,6 +218,8 @@ void World::Draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
         window.draw(animate.decayWarn);
         window.draw(animate.healSprite);
         window.draw(animate.anvilSprite);
+        window.draw(animate.hitSprite);
+        
 
         if (sprites.getInitMap() == true) {
             //Draw main map rect

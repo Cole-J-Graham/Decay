@@ -11,9 +11,13 @@ class Animation
 {
 private:
 	int animationFrame;
+	int combatAnimationFrame;
+	int combatAnimationLocation;
 
 	bool zinTalkNot;
 	bool decayWarning;
+
+	bool animEnd;
 
 public:
 	Animation();
@@ -42,16 +46,29 @@ public:
 	sf::Texture anvil4;
 	sf::Texture anvil5;
 
+	sf::Texture hit1;
+	sf::Texture hit2;
+	sf::Texture hit3;
+	sf::Texture hit4;
+	sf::Texture hit5;
+	sf::Texture hit6;
+
+
 	sf::Sprite zinSprite;
 	sf::Sprite notSprite;
 	sf::Sprite healSprite;
 	sf::Sprite anvilSprite;
+	sf::Sprite hitSprite;
 
 	sf::Clock timer;
+	sf::Clock combatTimer;
+
 	sf::Time elapsed;
+	sf::Time combatElapsed;
 
 	//Core Animation Functions
 	void animateTimer();
+	void animateCombatTimer();
 
 	//Animation Functions
 	void animateZin();
@@ -59,15 +76,19 @@ public:
 	void animateDecayWarn();
 	void animateAnvil(Assets& assets);
 	void animateHeal(Assets& assets);
+	void animateAttack(Assets& assets);
 
 	//Draw Animation Functions
 	void drawAnimations(Assets& assets);
 
 	//Getters
 	int& getAnimationFrame() { return this->animationFrame; };
+	int& getCombatAnimationFrame() { return this->combatAnimationFrame; };
+	int& getCombatAnimationLocation() { return this->combatAnimationLocation; };
 
 	bool& getZinTalkNot() { return this->zinTalkNot; };
 	bool& getDecayWarning() { return this->decayWarning; };
+	bool& getAnimEnd() { return this->animEnd; };
 
 	//Setters
 	void setTimerRestart() { timer.restart(); };
