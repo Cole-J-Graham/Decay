@@ -273,7 +273,7 @@ void Event::forestSiwardEncounter(Sprites& sprites)
         case 8:
             sprites.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
             sprites.getZinCounter() = 0; //Set correct frame for zins sprite to appear
-            sprites.text.setString("Well... That dude was strange. I'm sure you want to talk about what he said but... Let's wait till we get back to the bonfire.");
+            sprites.text.setString("Well... That dude was strange... I think we can trust him though. I hope.");
             break;
         case 9:
             sprites.getZinCounter() = -1;
@@ -281,6 +281,7 @@ void Event::forestSiwardEncounter(Sprites& sprites)
             sprites.getEventAssets() = false;
             //Make siwards entity invisible
             sprites.getEntityViewerCounter() = -1;
+            this->reInitialize = true;//Reset dialogue counter for other events
             this->siwardEncounteredForest = true;
             break;
         }
@@ -369,6 +370,7 @@ void Event::forestDepthsSpadeEncounter(Sprites& sprites)
             sprites.getEventAssets() = false;
             //Make spades entity invisible
             sprites.getEntityViewerCounter() = -1;
+            this->reInitialize = true;//Reset dialogue counter for other events
             this->spadeEncounteredForest = true;
             break;
         }
@@ -444,6 +446,7 @@ void Event::treeEncounter(Sprites& sprites, Player& player)
             sprites.text.setString("");
             sprites.getEventAssets() = false;
             sprites.getEntityViewerCounter() = -1;
+            this->reInitialize = true;//Reset dialogue counter for other events
             this->treeEncountered = true;
             break;
         }
@@ -511,6 +514,7 @@ void Event::thomEncounter(Sprites& sprites)
             sprites.text.setString("");
             sprites.getEventAssets() = false;
             sprites.getEntityViewerCounter() = -1;
+            this->reInitialize = true;//Reset dialogue counter for other events
             this->thomEncountered = true;
             break;
         }
@@ -593,6 +597,7 @@ void Event::obeliskEncounter(Sprites& sprites, Player& player)
             sprites.getEventAssets() = false;
             sprites.getEntityViewerCounter() = -1;
             this->itemGained = false;
+            this->reInitialize = true;//Reset dialogue counter for other events
             this->obeliskEncountered = true;
             break;
         }
@@ -649,6 +654,7 @@ void Event::lostNunEncounter(Sprites& sprites)
             sprites.getZinCounter() = -1;
             sprites.text.setString("");
             sprites.getEventAssets() = false;
+            this->reInitialize = true;//Reset dialogue counter for other events
             this->nunEncountered = true;
             break;
         }
@@ -676,12 +682,73 @@ void Event::castleSiwardEncounter(Sprites& sprites)
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
-            sprites.text.setString("*You notice a familiar set of armor standing amongst a pile of corpses.*\n\n'Hello there sir! It's good to see a friendly face amongst the chaos! I see you and the little one appear to be doing alright. This is great news!'");
+            this->hideOpenAssets(sprites);
+            sprites.text.setString("*You notice a familiar set of armor standing amongst a pile of corpses.*\n\n'Hello there sir! It's good to see a friendly face amongst the chaos! I see you and the little one appear to be doing alright. This is great news!\n\n*You look at Siwards face through his helmet, the darkness of decay slowly spilling out. He's getting much worse...*'");
             sprites.getEntityViewerCounter() = 23;
             sprites.getSpriteViewerCounter() = 0;
             sprites.getSiwardCounter() = 1;
             break;
         case 1:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'Are you doing alright, Siward?'");
+            sprites.answerBoxText[1].setString("2. 'Your decay... It's gotten a lot worse.'");
+            break;
+        case 2:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("'Well, if I'm honest with you it's been quite rough, brother. But I've held on much longer than I thought I was going to! Through the woods and into the castle, I still tower over the foes of this wretched disease!'\n\n*He slowly looks down to his hands covered in blood as his smile fades...*\n\n'Though, my time is quite limited, brother...'");
+                break;
+            case 1:
+                sprites.text.setString("'That is has, brother. But I won't let that drag me down! I still tower above the foes of this horrid plague!'\n\n*He slowly looks down to his hands covered in blood as his smile fades...*\n\n'Though, my time is quite limited, brother...'");
+                break;
+            }
+            break;
+        case 3:
+            sprites.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
+            sprites.getZinCounter() = 4; //Set correct frame for zins sprite to appear
+            sprites.text.setString("*Zin buds into the converstaion, clearly bothered by this news.* 'But there's got to be something we can do, right? We can't just let you die like everyone else! Let me cleanse you, please!'");
+            break;
+        case 4:
+            sprites.text.setString("*The knight smiles at Zin as he steps off the pile of corpses he made. He kneels next to the child before speaking.*\n\n'Now now, don't cry over a warrior meeting his fate, young one. I knew what I was signing up for the day I joined the guard...'\n\n'As kind of an offer as it is to cleanse me, it's merely a temporary fix. I need you to save your strength to cleanse your friend here.' *The knight says as he points to you.*");
+            break;
+        case 5:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.getZinCounter() = -1;
+            sprites.answerBoxText[0].setString("1. 'So what do you plan to do exactly if you aren't planning to cleanse yourself at all?'");
+            sprites.answerBoxText[1].setString("2. 'Are you deciding to die here?'");
+            break;
+        case 6:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("'I plan to cleanse this area as much as possible to help travelers towards the heart of the decay. It is the only place we have hope to destroy this plague.'");
+                break;
+            case 1:
+                sprites.text.setString("'When my body falters and I fall, I simply wish to not be a burden to anyone else. I pray to the Lord I do not end up as one of these things...' *Siward says as he points down to the bodies of the decayed he's slaughtered.*\n\n'All I wish to do is to cleanse the path for travelers attempting to reach the heart of the decay. To finally end this horrible disease.'");
+                break;
+            }
+            break;
+        case 7:
+            sprites.text.setString("*You perk up in confusion* 'The heart of the decay? You know of a place we might be able to stop the decay?'");
+            break;
+        case 8:
+            sprites.text.setString("*Siward raises his eyebrows as he seems to come to a realization.* 'Perhaps you two are the ones that must reach the heart. I've heard rumors only a priest can break the roots of the decay.'\n\n'But to answer your question, there is likely a place to stop the decay. I've only heard about it, though down past this castles labyrinth you will find a underground road leading to a crimson cave...'\n\n'This cave apparently continues for miles and is said it is the closest anyone has ever gotten to the start of where the decay came from. If you can get to the heart, there's a chance you two can stop this.'\n\n'Though it's merely a rumor, it makes sense to me.'");
+            break;
+        case 9:
+            sprites.text.setString("*You look back to Siward...* 'If these rumors turn out to be true, we'll see if we can bring down this horrible disease.'");
+            break;
+        case 10:
+            sprites.text.setString("*Siward raises his fist and clenches it as a sign of strength* 'That's what I like to hear! You and this little one will avenge us all!'\n\n*He looks back out towards the other paths in the castle that noww echo the cries of the damned...* 'Now if you both would excuse me, I have more abominatioins to put to rest. Travel safely and remember the fallen!'");
+            break;
+        case 11:
+            sprites.text.setString("*You watch as Siward steps off to slaughter more of the decayed. It seems as though you may now have your work cut out for you. Traveling to the very pits of hell sounds suicidal. Though you step forwards nonetheless...*");
+            break;
+        case 12:
+            sprites.text.setString("");
+            sprites.getEventAssets() = false;
+            this->reInitialize = true;//Reset dialogue counter for other events
+            this->siwardEncounteredCastle = true;
             break;
         }
     }

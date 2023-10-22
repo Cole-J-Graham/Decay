@@ -409,15 +409,13 @@ void Travel::forestDepths(Sprites& sprites, Event& notevent, Combat& combat, Pla
         }
         break;
     case 2:
-        //Prep Encounter Dialogue
-        //notevent.getReInitialize() = true;
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths3.jpeg");
             this->frameInit = true;
         }
         break;
     case 3:
-        //notevent.treeEncounter(assets, player);
+        notevent.treeEncounter(sprites, player);
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths4.jpeg");
             this->frameInit = true;
@@ -523,19 +521,17 @@ void Travel::forestAbyssal(Sprites& sprites, Event& notevent, Combat& combat, Pl
         }
         break;
     case 3:
-        //Prep Encounter Dialogue
-        //notevent.getReInitialize() = true;
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods4.jpeg");
             this->frameInit = true;
         }
         break;
     case 4:
+        notevent.obeliskEncounter(sprites, player);
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods5.jpeg");
             this->frameInit = true;
         }
-        //notevent.obeliskEncounter(assets, player);
         break;
     case 5:
         if (!this->frameInit) {
@@ -568,8 +564,6 @@ void Travel::forestAbyssal(Sprites& sprites, Event& notevent, Combat& combat, Pl
         }
         break;
     case 10:
-        //Prep Encounter Dialogue
-        notevent.getReInitialize() = true;
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods11.jpeg");
             this->frameInit = true;
@@ -921,6 +915,7 @@ void Travel::castleDepths(Sprites& sprites, Event& notevent, Combat& combat, Pla
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths11.jpeg");
             this->frameInit = true;
         }
+        notevent.castleSiwardEncounter(sprites);
         break;
     case 11:
         if (!this->frameInit) {
