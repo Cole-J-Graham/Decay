@@ -41,7 +41,7 @@ void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& pl
     //Load SFX
     sprites.loadSFX();
     //create the window
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat"/*, sf::Style::Fullscreen */ );
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat", sf::Style::Fullscreen  );
     window.setFramerateLimit(144);
     // run the program as long as the window is open
     while (window.isOpen()) {
@@ -259,6 +259,8 @@ void World::Draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
         }
     }
     else if (this->mainMenu == true) {
+        animate.animateMenu(sprites);
+        window.draw(animate.menuSprite);
         sprites.drawMainMenu();
         for (int i = 0; i < sprites.menuScreenElements.size(); i++) {
             window.draw(sprites.menuScreenElements[i]);
@@ -567,10 +569,12 @@ void World::mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Travel& 
     //Shared Functionality between both main menu and settings menu
     if (sprites.menuScreenElements[1].getGlobalBounds().contains(mousePosF)) {
         //Loading Game Button Funcionality (Not implemented yet...)
+        sprites.soundClick.play();
         std::cout << "Loading a save hypothetically speaking lmao...";
     }
     else if (sprites.menuScreenElements[2].getGlobalBounds().contains(mousePosF)) {
         //Quit Game Button Functionality
+        sprites.soundClick.play();
         stop = true;
         return;
     }
@@ -578,15 +582,18 @@ void World::mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Travel& 
     if (!sprites.getIntroFinished()) {
         if (sprites.menuScreenElements[0].getGlobalBounds().contains(mousePosF)) {
             //Continue to other buttons asking to skip intro or not (New Game Button)
+            sprites.soundClick.play();
             sprites.setBootClickedTrue();
         }
         else if (sprites.menuScreenElements[3].getGlobalBounds().contains(mousePosF)) {
             //Intro Button Functionality
+            sprites.soundClick.play();
             this->mainMenu = false;
             travel.getIntroCounterDialogue() = 0; //Allow the counter to load the main image specifically just for the intro to take place
         }
         else if (sprites.menuScreenElements[4].getGlobalBounds().contains(mousePosF)) {
             //Skip Intro Button Functionality
+            sprites.soundClick.play();
             this->mainMenu = false;
             sprites.getIntroFinished() = true;
             sprites.setMapCounterZero(); //Skip intro and go straight to the forest

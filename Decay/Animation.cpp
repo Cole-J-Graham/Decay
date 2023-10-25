@@ -5,6 +5,10 @@ Animation::Animation()
 	this->animationFrame = -1;
 	this->combatAnimationFrame = -1;
 	this->combatAnimationLocation = -1;
+	this->menuAnimationFrame = -1;
+
+	this->menuCycleSlow = true;
+	this->menuCycleFast = false;
 
 	this->zinTalkNot = true;
 	this->decayWarning = false;
@@ -45,6 +49,14 @@ Animation::Animation()
 	hit5.loadFromFile("Assets/Game_Resources/hitanimation5.png");
 	hit6.loadFromFile("Assets/Game_Resources/hitanimation6.png");
 	hitSprite.setScale(0.24f, 0.24f);
+
+	menu1.loadFromFile("Assets/Game_Resources/decay menu1.png");
+	menu2.loadFromFile("Assets/Game_Resources/decay menu2.png");
+	menu3.loadFromFile("Assets/Game_Resources/decay menu3.png");
+	menu4.loadFromFile("Assets/Game_Resources/decay menu4.png");
+	menu5.loadFromFile("Assets/Game_Resources/decay menu5.png");
+	menu6.loadFromFile("Assets/Game_Resources/decay menu6.png");
+	menuSprite.setPosition(620, 260);
 
 	font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
 }
@@ -109,6 +121,50 @@ void Animation::animateCombatTimer()
 		else if (this->combatAnimationFrame == 4) {
 			this->combatAnimationFrame = -1;
 			combatTimer.restart();
+		}
+	}
+}
+
+void Animation::animateMenuTimer()
+{
+	if (this->menuCycleSlow) {
+		menuElapsed = menuTimer.getElapsedTime();
+		if (menuElapsed.asSeconds() >= 1.5f) {
+			if (this->menuAnimationFrame == -1) {
+				this->menuAnimationFrame++;
+				menuTimer.restart();
+			}
+			else if (this->menuAnimationFrame == 0) {
+				this->menuAnimationFrame++;
+				menuTimer.restart();
+			}
+			else if (this->menuAnimationFrame == 1) {
+				this->menuAnimationFrame++;
+				menuTimer.restart();
+				this->menuCycleFast = true;
+				this->menuCycleSlow = false;
+			}
+		}
+	}
+	else if (this->menuCycleFast) {
+		menuElapsedFast = menuTimerFast.getElapsedTime();
+		if (menuElapsedFast.asSeconds() >= 0.001f) {
+			if (this->menuAnimationFrame == 2) {
+				this->menuAnimationFrame++;
+				menuTimerFast.restart();
+			}
+			else if (this->menuAnimationFrame == 3) {
+				this->menuAnimationFrame++;
+				this->menuAnimationFrame = -1;
+				menuTimerFast.restart();
+				this->menuCycleSlow = true;
+			}
+			else if (this->menuAnimationFrame == 4) {
+				this->menuAnimationFrame++;
+				this->menuAnimationFrame = -1;
+				menuTimerFast.restart();
+				this->menuCycleSlow = true;
+			}
 		}
 	}
 }
@@ -298,6 +354,32 @@ void Animation::animateAttack(Assets& assets)
 		hitSprite.setTexture(hit6);
 		hitSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
 		this->animEnd = true;
+		break;
+	}
+}
+
+void Animation::animateMenu(Assets& assets)
+{
+	//Animate Hit Animation
+	this->animateMenuTimer();
+	switch (this->menuAnimationFrame) {
+	case -1:
+		menuSprite.setTexture(menu1);
+		break;
+	case 0:
+		menuSprite.setTexture(menu2);
+		break;
+	case 1:
+		menuSprite.setTexture(menu3);
+		break;
+	case 2:
+		menuSprite.setTexture(menu4);
+		break;
+	case 3:
+		menuSprite.setTexture(menu5);
+		break;
+	case 4:
+		menuSprite.setTexture(menu6);
 		break;
 	}
 }

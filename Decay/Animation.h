@@ -13,9 +13,12 @@ private:
 	int animationFrame;
 	int combatAnimationFrame;
 	int combatAnimationLocation;
+	int menuAnimationFrame;
 
 	bool zinTalkNot;
 	bool decayWarning;
+	bool menuCycleSlow;
+	bool menuCycleFast;
 
 	bool animEnd;
 
@@ -53,22 +56,35 @@ public:
 	sf::Texture hit5;
 	sf::Texture hit6;
 
+	sf::Texture menu1;
+	sf::Texture menu2;
+	sf::Texture menu3;
+	sf::Texture menu4;
+	sf::Texture menu5;
+	sf::Texture menu6;
+
 
 	sf::Sprite zinSprite;
 	sf::Sprite notSprite;
 	sf::Sprite healSprite;
 	sf::Sprite anvilSprite;
 	sf::Sprite hitSprite;
+	sf::Sprite menuSprite;
 
 	sf::Clock timer;
 	sf::Clock combatTimer;
+	sf::Clock menuTimer;
+	sf::Clock menuTimerFast;
 
 	sf::Time elapsed;
 	sf::Time combatElapsed;
+	sf::Time menuElapsed;
+	sf::Time menuElapsedFast;
 
 	//Core Animation Functions
 	void animateTimer();
 	void animateCombatTimer();
+	void animateMenuTimer();
 
 	//Animation Functions
 	void animateZin();
@@ -77,6 +93,7 @@ public:
 	void animateAnvil(Assets& assets);
 	void animateHeal(Assets& assets);
 	void animateAttack(Assets& assets);
+	void animateMenu(Assets& assets);
 
 	//Draw Animation Functions
 	void drawAnimations(Assets& assets);

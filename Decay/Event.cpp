@@ -739,7 +739,7 @@ void Event::castleSiwardEncounter(Sprites& sprites)
             sprites.text.setString("*You look back to Siward...* 'If these rumors turn out to be true, we'll see if we can bring down this horrible disease.'");
             break;
         case 10:
-            sprites.text.setString("*Siward raises his fist and clenches it as a sign of strength* 'That's what I like to hear! You and this little one will avenge us all!'\n\n*He looks back out towards the other paths in the castle that noww echo the cries of the damned...* 'Now if you both would excuse me, I have more abominatioins to put to rest. Travel safely and remember the fallen!'");
+            sprites.text.setString("*Siward raises his fist and clenches it as a sign of strength* 'That's what I like to hear! You and this little one will avenge us all!'\n\n*He looks back out towards the other paths in the castle that now echo the cries of the damned...* 'Now if you both would excuse me, I have more abominations to put to rest. Travel safely and remember the fallen!'");
             break;
         case 11:
             sprites.text.setString("*You watch as Siward steps off to slaughter more of the decayed. It seems as though you may now have your work cut out for you. Traveling to the very pits of hell sounds suicidal. Though you step forwards nonetheless...*");
@@ -747,6 +747,8 @@ void Event::castleSiwardEncounter(Sprites& sprites)
         case 12:
             sprites.text.setString("");
             sprites.getEventAssets() = false;
+            sprites.getSpriteViewerCounter() = -1;
+            sprites.getSiwardCounter() = -1;
             this->reInitialize = true;//Reset dialogue counter for other events
             this->siwardEncounteredCastle = true;
             break;
@@ -761,9 +763,20 @@ void Event::castleSiwardFinalEncounter(Sprites& sprites)
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
+            this->hideOpenAssets(sprites);
+            sprites.text.setString("*You see Siward standing before you, clearly in immense pain. He stands alone, only dead bodies near him.* 'No... You two... Please- g ge...' *Siward stops muttering as you notice his legs begin to walk closer to you. It looks as though he's lost the control of his legs...*\n\n*Suddenly, Siward clenches his sword and stabs himself through the chest with a great force! He screams in pain and drops to his knees...* 'I just... don't let me do it... don't let me...'");
+            sprites.getEntityViewerCounter() = 24;
+            sprites.getSpriteViewerCounter() = 0;
+            sprites.getSiwardCounter() = 2;
             break;
         case 1:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'You can do it, Siward! Fight the decay!'");
+            sprites.answerBoxText[1].setString("2. 'We will do what we must, friend...'");
             break;
+        case 2:
+            sprites.getShowAnsBoxesCounter() = -1;
+            sprites.text.setString("*Siward loses all control of his body as he rips the sword back out from his chest. The gaping hole leaks its last crimson drop of blood before quickly being replaced by a darkness blacker then the abyss itself. It's do or die.*");
         }
     }
 }
