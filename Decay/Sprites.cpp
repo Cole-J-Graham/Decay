@@ -3,19 +3,6 @@
 //Contructors and Destructors
 Sprites::Sprites()
 {
-    this->hostileLoadOnce = true;
-    this->zinInit = false;
-    this->spadeInit = false;
-    this->hostileInit = false;
-
-    //Sprite Control Flow
-    this->zinLoadOnce = true;
-    this->spadeLoadOnce = true;
-
-    //Sprite Border Control Flow
-    this->spriteInit = false;
-    this->playerInit = false;
-
     //Sprite Integer Selection
     this->spriteViewerCounter = -1;
     this->entityViewerCounter = -1;
@@ -83,6 +70,12 @@ void Sprites::loadSprites()
     siwardTextureDecaying.loadFromFile("Assets/Sprites/siwardDecaying.png");
     siwardTextureDecayed.loadFromFile("Assets/Sprites/siwardDecayed.png");
 
+    //Spade Sprites
+    spadeTexture.loadFromFile("Assets/Sprites/spadeNormal.png");
+    spadeTextureAngry.loadFromFile("Assets/Sprites/spadeAngry.png");
+    spadeTextureHappy.loadFromFile("Assets/Sprites/spadeSmug.png");
+    spadeTextureSmug.loadFromFile("Assets/Sprites/spadeHappy.png");
+
     //Load Hostile Sprites
     hostileTextureWalker.loadFromFile("Assets/HostileSprites/decaywalkersprite.jpeg");
     hostileTextureWolf.loadFromFile("Assets/HostileSprites/wolfsprite.png");
@@ -112,6 +105,7 @@ void Sprites::loadEntities()
     siwardEntityCastleTexture.loadFromFile("Assets/Entities/siwardCastle.jpeg");
     siwardEntityDuelTexture.loadFromFile("Assets/Entities/siwardCastleDuel.jpeg");
     spadeEntityForest.loadFromFile("Assets/Entities/spadeEntityForest.png");
+    spadeEntityAbyssalForest.loadFromFile("Assets/Entities/spadeForestAbyssalEntity.jpeg");
     spadeEntityCastle.loadFromFile("Assets/Entities/spadeEntityCastle.jpg");
     //Load Entity Viewer Files Random Events
     treeEntity.loadFromFile("Assets/Entities/entityTree.jpeg");
@@ -234,6 +228,9 @@ void Sprites::drawEntityViewer()
         break;
     case 24:
         entitySprite.setTexture(siwardEntityDuelTexture);
+        break;
+    case 25:
+        entitySprite.setTexture(spadeEntityAbyssalForest);
         break;
     }
     //Select whether or not the sprite is visible
@@ -541,12 +538,6 @@ void Sprites::siwardSprite()
 
 void Sprites::spadeSprite()
 {
-    //Initialize Spade Sprite
-    if (this->spadeLoadOnce == true) {
-        spadeTexture.loadFromFile("Assets/Sprites/spadePixel.png");
-        spriteElements[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
-        this->spadeLoadOnce = false;
-    }
     //Pick Spade Sprite Emotion
     switch (this->spadeCounter) {
     case -1:
@@ -554,24 +545,33 @@ void Sprites::spadeSprite()
         spriteRect[3].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         break;
     case 0:
-        if (this->spadeInit == false) {
-            spadeTexture.loadFromFile("Assets/Sprites/spadePixel.png");
-            spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
-            this->spadeInit = true;
-        }
+        //Normal Spade
+        spriteElements[2].setTexture(spadeTexture);
+        spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
         break;
     case 1:
-        if (this->spadeInit == false) {
-            spadeTexture.loadFromFile("Assets/Sprites/spadePixelAngry.png");
-            this->spadeInit = true;
-        }
+        //Angry Spade
+        spriteElements[2].setTexture(spadeTextureAngry);
+        spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        break;
+    case 2:
+        //Happy Spade
+        spriteElements[2].setTexture(spadeTextureHappy);
+        spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        break;
+    case 3:
+        //Smug Spade
+        spriteElements[2].setTexture(spadeTextureSmug);
+        spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
         break;
     }
 
     //Sprite Options, ect
     spadeTexture.setSmooth(true);
     spadeTexture.setRepeated(false);
-    spriteElements[2].setTexture(spadeTexture);
     spriteElements[2].setScale(0.050f, 0.050f);
 }

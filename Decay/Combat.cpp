@@ -54,6 +54,7 @@ Combat::Combat()
 	this->initHostileLostKnight = false;
 	this->initHostilePhantom = false;
 	this->initHostileEater = false;
+	this->initHostileSiward = false;
 
 	//Hostile Decay Bools
 	this->initHostileLimbSplitter = false;
@@ -225,7 +226,6 @@ void Combat::initCombat(Sprites& sprites, Player& player, Animation& animate)
 	sprites.spriteText[1].setString("Zin            " + std::to_string(this->zinHp) + "/" + std::to_string(this->zinHpMax));
 	sprites.spriteText[2].setString(this->hostileName + std::to_string(this->hostileHp) + "/" + std::to_string(this->hostileHpMax));
 
-	this->combatEnd = false;
 	sprites.getPlayerCounter()++; //Load Player sprite with counter
 	sprites.getZinCounter()++; //Load Zins sprite with counter
 	//Load Thom Sprite with counter if he is unlocked
@@ -233,10 +233,6 @@ void Combat::initCombat(Sprites& sprites, Player& player, Animation& animate)
 		sprites.getThomCounter()++;
 		sprites.spriteText[5].setString("Thom          " + std::to_string(this->thomHp) + "/" + std::to_string(this->thomHpMax));
 	}
-
-	sprites.setPlayerInitFalse(); //Make usable again
-	sprites.setZinInitFalse(); //Make usable again
-	sprites.setHostileInitFalse(); //Make usable again
 
 	sprites.setCombatAssetsTrue(); //Utilize all combat assets
 	sprites.setInitMapFalse(); //Hide the map if its open
@@ -655,7 +651,7 @@ void Combat::initDecayWalker(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 35;
+		this->hostileHp = 1;
 		this->hostileHpMax = 35;
 		this->hostileStrike = 2;
 
@@ -764,7 +760,7 @@ void Combat::initLostNun(Sprites& sprites)
 		//Set parameters for hostile
 		this->hostileHp = 200;
 		this->hostileHpMax = 200;
-		this->hostileStrike = 20;
+		this->hostileStrike = 1;
 
 		this->hostileNameNoSpc = "Lost Nun";
 		this->hostileName = "Lost Nun ";
@@ -799,7 +795,7 @@ void Combat::initDecapod(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 75;
+		this->hostileHp = 1;
 		this->hostileHpMax = 75;
 		this->hostileStrike = 12;
 
@@ -1041,6 +1037,39 @@ void Combat::initSkinEater(Sprites& sprites)
 		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
 		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the skin eater!";
 		this->initHostileEater = true;
+	}
+}
+
+void Combat::initSiward(Sprites& sprites)
+{
+	if (!this->initHostileSiward) {
+		//Combat Text for Siward (Due to him having a seperate sprite sheet from hostiles)
+		sprites.spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
+		//Allow combat to start
+		this->combatEnd = false;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		this->hostileHp = 500;
+		this->hostileHpMax = 1000;
+		this->hostileStrike = 40;
+
+		this->hostileNameNoSpc = "Siward";
+		this->hostileName = "Siward ";
+		this->hostileEncounterText = "Siward stands with decay dripping from the front of his helmet...";
+		this->hostileAtkPlayerText = "Siward slashes his sword at you with the precision of a true knight!";
+		this->hostileAtkZinText = "Siward slashes towards Zin, brutally striking her!";
+		this->hostileAtkZinBlkText = "Siward sends his sword towards Zin with great might, however you deflect it just in time!";
+
+		this->playerSlashAtkText = "You slash Siward, the knight gritting his teeth in pain!";
+		this->playerGuardAtkText = "You watch Siward's movements, preparing to defend Zin from his brutal strikes...";
+		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over Siward, though it seems to have little effect...";
+
+		this->zinSmiteAtkText = "Zin places her hands together reluctantly and creates a bolt of lightning, smiting Siward!";
+		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into Siward!";
+		this->initHostileSiward = true;
 	}
 }
 

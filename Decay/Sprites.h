@@ -4,19 +4,6 @@ class Sprites : public Assets
 {
 
 private:
-	bool zinInit;
-	bool spadeInit;
-	bool hostileInit;
-	bool hostileLoadOnce;
-
-	//Sprite Control Flow
-	bool zinLoadOnce;
-	bool spadeLoadOnce;
-
-	//Sprite Border Control Flow
-	bool spriteInit;
-	bool playerInit;
-
 	//Sprite Integer Selection
 	int spriteViewerCounter;
 	int entityViewerCounter;
@@ -48,18 +35,24 @@ public:
 
 	//Sprite Textures
 	sf::Texture playerTexture;
-	sf::Texture thomTexture;
-	sf::Texture thomEnragedTexture;
-	sf::Texture spadeTexture;
-	sf::Texture siwardTexture;
-	sf::Texture siwardTextureDecaying;
-	sf::Texture siwardTextureDecayed;
 	//Zin Textures
 	sf::Texture zinTexture;
 	sf::Texture zinTextureHappy;
 	sf::Texture zinTextureConcerned;
 	sf::Texture zinTextureAnnoyed;
 	sf::Texture zinTextureSad;
+	//Thom Textures
+	sf::Texture thomTexture;
+	sf::Texture thomEnragedTexture;
+	//Siward Textures
+	sf::Texture siwardTexture;
+	sf::Texture siwardTextureDecaying;
+	sf::Texture siwardTextureDecayed;
+	//Spade Textures
+	sf::Texture spadeTexture;
+	sf::Texture spadeTextureAngry;
+	sf::Texture spadeTextureHappy;
+	sf::Texture spadeTextureSmug;
 	//Hostile Sprite Textures
 	sf::Texture hostileTextureWolf;
 	sf::Texture hostileTextureWalker;
@@ -91,6 +84,7 @@ public:
 	sf::Texture siwardEntityCastleTexture;
 	sf::Texture siwardEntityDuelTexture;
 	sf::Texture spadeEntityForest;
+	sf::Texture spadeEntityAbyssalForest;
 	sf::Texture spadeEntityCastle;
 	//Viewer Files Random Events
 	sf::Texture treeEntity;
@@ -114,34 +108,6 @@ public:
 	sf::Texture chatterMouthEntity;
 	sf::Texture reclusEntity;
 	sf::Texture tendrilAlphaEntity;
-
-	//Sprite Control Flow Getters
-	bool& getZinLoadOnce() { return this->zinLoadOnce; };
-	bool& getSpadeLoadOnce() { return this->spadeLoadOnce; };
-
-	bool& getZinInit() { return this->zinInit; };
-	bool& getSpadeInit() { return this->spadeInit; };
-
-	//Sprite Control Flow Setters
-	void setZinLoadOnceFalse() { this->zinLoadOnce = false; };
-	void setSpadeLoadOnceFalse() { this->spadeLoadOnce = false; };
-
-	void setZinInitTrue() { this->zinInit = true; };
-	void setSpadeInitTrue() { this->zinInit = true; };
-	void setHostileInitTrue() { this->hostileInit = true; };
-	void setZinInitFalse() { this->zinInit = false; };
-	void setSpadeInitFalse() { this->zinInit = false; };
-	void setHostileInitFalse() { this->hostileInit = false; };
-
-	//Sprite Border Control Flow Getters
-	bool& getSpriteInit() { return this->spriteInit; };
-	bool& getPlayerInit() { return this->playerInit; };
-
-	//Sprite Border Control Flow Setters
-	void setSpriteInitTrue() { this->spriteInit = true; };
-	void setPlayerInitTrue() { this->playerInit = true; };
-	void setSpriteInitFalse() { this->spriteInit = false; };
-	void setPlayerInitFalse() { this->playerInit = false; };
 
 	//Sprite Integer Selection Getters
 	int& getSiwardCounter() { return this->siwardCounter; };

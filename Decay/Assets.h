@@ -155,6 +155,7 @@ public:
 
 	//Rectangles
 	sf::RectangleShape rect;
+	sf::RectangleShape mapBorder;
 	sf::RectangleShape rectMap;
 	sf::RectangleShape rectStats;
 	sf::RectangleShape rectInventory;

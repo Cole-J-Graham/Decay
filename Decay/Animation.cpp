@@ -148,7 +148,7 @@ void Animation::animateMenuTimer()
 	}
 	else if (this->menuCycleFast) {
 		menuElapsedFast = menuTimerFast.getElapsedTime();
-		if (menuElapsedFast.asSeconds() >= 0.001f) {
+		if (menuElapsedFast.asSeconds() >= 0.0001f) {
 			if (this->menuAnimationFrame == 2) {
 				this->menuAnimationFrame++;
 				menuTimerFast.restart();

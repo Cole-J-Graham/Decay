@@ -20,6 +20,7 @@ private:
 	bool siwardEncounteredFinal;
 
 	bool spadeEncounteredForest;
+	bool spadeEncounteredAbyssalForest;
 	bool spadeEncounteredCastle;
 
 	bool treeEncountered;
@@ -67,8 +68,11 @@ public:
 	void obeliskEncounter(Sprites& sprites, Player& player);
 	void lostNunEncounter(Sprites& sprites);
 
+	//Forest Abyssal Depths Events
+	void forestAbyssalSpadeEncounter(Sprites& sprites, Player& player);
+
 	//Castle Hall Events
-	void spadeEncounter(Sprites& sprites);
+	void castleSpadeEncounter(Sprites& sprites);
 
 	//Castle Depth Events
 	void castleSiwardEncounter(Sprites& sprites);
@@ -81,6 +85,7 @@ public:
 	bool& getReInitialize() { return this->reInitialize; };
 
 	//Event Availability Bools
+	bool& getSiwardEncounteredFinal() { return this->siwardEncounteredFinal; };
 	bool& getNunEncountered() { return this->nunEncountered; };
 
 	//Counter Getters

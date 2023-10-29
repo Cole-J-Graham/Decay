@@ -62,6 +62,7 @@ private:
 	bool initHostileLostKnight;
 	bool initHostilePhantom;
 	bool initHostileEater;
+	bool initHostileSiward;
 
 	//Hostile Decay Bools
 	bool initHostileLimbSplitter;
@@ -164,6 +165,7 @@ public:
 	void initLostKnight(Sprites& sprites);
 	void initPhantom(Sprites& sprites);
 	void initSkinEater(Sprites& sprites);
+	void initSiward(Sprites& sprites);
 
 	//Combat Init Decay Hostiles
 	void initLimbSplitter(Sprites& sprites);

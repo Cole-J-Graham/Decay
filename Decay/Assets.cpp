@@ -120,6 +120,11 @@ void Assets::drawMainWindow()
     rect.setSize(sf::Vector2f(1920.0f, 825.0f));
     rect.setOutlineColor(sf::Color::White);
     rect.setOutlineThickness(1.0f);
+    mapBorder.setPosition(440.0f, -200.0f);
+    mapBorder.setSize(sf::Vector2f(1024.0f, 1024.0f));
+    mapBorder.setOutlineColor(sf::Color::White);
+    mapBorder.setOutlineThickness(1.0f);
+    mapBorder.setFillColor(sf::Color::Transparent);
     if (combatAssets == false && bonfireAssets == false) {
         //Draw Rect Element Similiarities
         for (int i = 0; i < rectElements.size(); i++) {

@@ -45,9 +45,8 @@ void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& pl
     window.setFramerateLimit(144);
     // run the program as long as the window is open
     while (window.isOpen()) {
-        //std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
+        std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
         clock.restart();
-        clickTime.restart();
         // check all the window's events that were triggered since the last iteration of the loop
         while (window.pollEvent(event)) {
             switch (event.type) { // Close Window on Closed Event
@@ -56,46 +55,41 @@ void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& pl
                 window.close();
                 break;
             case sf::Event::MouseMoved:
-                { //Mouse Hover Actions
-                    //Turn buttons grey on hover
-                    this->greyOnHover(window, sprites);
-                    this->printToolTip(window, sprites, notevent, combat, player);
-                }
+                //Mouse Hover Actions
+                //Turn buttons grey on hover
+                this->greyOnHover(window, sprites);
+                this->printToolTip(window, sprites, notevent, combat, player);
                 break;
             case sf::Event::MouseButtonPressed:
-                { //Get Mouse Click Input
-                    this->travelButtons(window, sprites, travel, animate, player);
-                    //If button in map is clicked, do something
-                    if (!sprites.getPlayerDeath() && sprites.getInitMap()) {
-                        this->mapButtons(window, sprites, travel);
-                    }
-                    //Map Menu Bar Functionality
-                    this->statsFunctionality(window, combat, player, sprites); //Must be loaded before menuBar(window); to withhold functionality
-                    this->menuBar(window, sprites);
-                    //Dialogue Box Functionality
-                    this->dialogueCombatBox(window, combat, sprites, travel, notevent);
-                    //Main Menu Functionality
-                    this->mainMenuButtons(window, sprites, travel, animate);
-                    if (stop) { //Make quit button return to main function to stop program from running
-                        return;
-                    }
-                    //Bonfire Functionality
-                    if (sprites.getBonfireAssets() == true) {
-                        notevent.healCharacters(window, sprites, combat);
-                        notevent.smithingSharpenBlade(window, sprites, player);
-                        notevent.zinEvents(window, sprites, animate);
-                    }
+                //Get Mouse Click Input
+                this->travelButtons(window, sprites, travel, animate, player);
+                //If button in map is clicked, do something
+                if (!sprites.getPlayerDeath() && sprites.getInitMap()) {
+                    this->mapButtons(window, sprites, travel);
+                }
+                //Map Menu Bar Functionality
+                this->statsFunctionality(window, combat, player, sprites); //Must be loaded before menuBar(window); to withhold functionality
+                this->menuBar(window, sprites);
+                //Dialogue Box Functionality
+                this->dialogueCombatBox(window, combat, sprites, travel, notevent);
+                //Main Menu Functionality
+                this->mainMenuButtons(window, sprites, travel, animate);
+                if (stop) { //Make quit button return to main function to stop program from running
+                    return;
+                }
+                //Bonfire Functionality
+                if (sprites.getBonfireAssets() == true) {
+                    notevent.healCharacters(window, sprites, combat);
+                    notevent.smithingSharpenBlade(window, sprites, player);
+                    notevent.zinEvents(window, sprites, animate);
                 }
                 break;
             case sf::Event::MouseButtonReleased:
-                {
-                    sprites.setMovableFalse();
-                    sprites.setMovableStatsBoxFalse();
-                }
+                sprites.setMovableFalse();
+                sprites.setMovableStatsBoxFalse();
+                break;
             case sf::Event::KeyPressed:
-                {
                 this->userInput(sprites);
-                }
                 break;
             }
             //Main Travel Loop
@@ -160,6 +154,7 @@ void World::Draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
 
         window.draw(sprites.rect);
         window.draw(sprites.map);
+        window.draw(sprites.mapBorder);
         window.draw(sprites.playerText);
         window.draw(sprites.locationText);
         window.draw(sprites.text);
@@ -713,7 +708,6 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
                 player.getExp() -= player.getExpNext();
                 sprites.playerTextElements[0].setString("LEVEL " + std::to_string(player.getLevel()));
                 sprites.text.setString("Level up achieved. Level " + std::to_string(player.getLevel()) + " reached. One SP point acquired...");
-                combat.updateStats(sprites, player);
             }
             else if (player.getExp() <= player.getExpNext()) {
                 sprites.text.setString("Required Exp not met...");

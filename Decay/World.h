@@ -20,7 +20,6 @@ private:
 	sf::RenderWindow window;
 	sf::Image image;
 	sf::Clock clock;
-	sf::Clock clickTime;
 
 	sf::String playerInput;
 

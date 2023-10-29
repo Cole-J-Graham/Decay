@@ -15,6 +15,7 @@ Event::Event()
     this->siwardEncounteredFinal = false;
 
     this->spadeEncounteredForest = false;
+    this->spadeEncounteredAbyssalForest = false;
     this->spadeEncounteredCastle = false;
 
     this->treeEncountered = false;
@@ -165,7 +166,6 @@ void Event::zinInitialTalk(Sprites& sprites, Animation& animate)
 {
     switch (this->dialogue) {
     case 0:
-        sprites.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
         sprites.getZinCounter() = 0; //Set correct frame for zins sprite to appear
         sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
         sprites.answerBoxText[0].setString("1. 'So, what was it you wanted to talk about?'");
@@ -271,7 +271,6 @@ void Event::forestSiwardEncounter(Sprites& sprites)
             sprites.getSiwardCounter() = -1;
             break;
         case 8:
-            sprites.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
             sprites.getZinCounter() = 0; //Set correct frame for zins sprite to appear
             sprites.text.setString("Well... That dude was strange... I think we can trust him though. I hope.");
             break;
@@ -295,12 +294,10 @@ void Event::forestDepthsSpadeEncounter(Sprites& sprites)
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
-            sprites.getSpriteViewerCounter() = 0; //Make entity viewer visible
             sprites.getEntityViewerCounter() = 3; //Make spade entity visible
-            sprites.getSpadeLoadOnce() = false; //Allow to be used again
             sprites.getSpadeCounter() = 0; //Make Spades Sprite Appear
             this->hideOpenAssets(sprites);
-            sprites.text.setString("Suddenly, a strange girl ambushes you. Your keen senses were unable to detect her.");
+            sprites.text.setString("*Suddenly, a strange girl ambushes you. Your keen senses were unable to detect her.*");
             break;
         case 1:
             sprites.text.setString("Hahaha! You looked almost scared for a minute there! It's just me! You're fine.");
@@ -404,7 +401,6 @@ void Event::treeEncounter(Sprites& sprites, Player& player)
             break;
         case 4:
             sprites.getShowAnsBoxesCounter() = -1;
-            sprites.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
             sprites.getZinCounter() = 0; //Set correct frame for zins sprite to appear
             if (!this->sfxUsed) {
                 sprites.soundSmite.play(); //Play smite sfx
@@ -465,7 +461,6 @@ void Event::thomEncounter(Sprites& sprites)
             sprites.text.setString("*You hear a rustling in the bushes which alerts you. You draw your sword as you notice the creature reveal itself.*\n\n*It's a very small creature, about the size of two human hands. It looks up to you confused...*");
             break;
         case 1:
-            sprites.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
             sprites.getZinCounter() = 1; //Set correct frame for zins sprite to appear
             sprites.text.setString("Look at that little guy! *Zin bends down and reaches to pet the small creature. The creature actually responds well, rubbing against her hand in joy.*\n\n*You stare at the creature as Zin pets it, trying to figure out exactly what it is. It looks almost like a small dog, but you also know that it's definitely not a dog...\b");
             break;
@@ -610,7 +605,6 @@ void Event::lostNunEncounter(Sprites& sprites)
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
-            sprites.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
             sprites.getZinCounter() = 0; //Set concerned frame
             sprites.getSpriteViewerCounter() = 0; //Make entity viewer visible
             sprites.getEntityViewerCounter() = 7; //Make nun entity visible
@@ -661,8 +655,96 @@ void Event::lostNunEncounter(Sprites& sprites)
     }
 }
 
+//Forest Abyssal Depths Events
+void Event::forestAbyssalSpadeEncounter(Sprites& sprites, Player& player)
+{
+    if (!this->spadeEncounteredAbyssalForest) {
+        this->reInit(sprites);
+        switch (this->dialogue) {
+        case 0:
+            sprites.getEntityViewerCounter() = 25;
+            sprites.getSpadeCounter() = 0;
+            this->hideOpenAssets(sprites);
+            sprites.text.setString("'Helllloooo again! Did you miss me...?'");
+            break;
+        case 1:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. *Sigh heavily*");
+            sprites.answerBoxText[1].setString("2. 'Have you been following us?'");
+            break;
+        case 2:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("'I knew you'd be happy to see me! Anyways, that witch fucking ran off when I started shouting at her but she left behind something interesting...'\n\n*She pulls out a potion from her back pocket labled with multiple skulls across it. Immediately she attempts to hide the labels and peel them off hoping you don't notice...*");
+                break;
+            case 1:
+                sprites.text.setString("'Well of course. Why wouldn't I be? Anyways, that witch fucking ran off when I started shouting at her but she left behind something interesting...'\n\n*She pulls out a potion from her back pocket labled with multiple skulls across it. Immediately she attempts to hide the labels and peel them off hoping you don't notice...*");
+                break;
+            }
+            break;
+        case 3:
+            sprites.getShowAnsBoxesCounter() = 0;
+            sprites.answerBoxText[0].setString("1. *Sigh even louder this time...*");
+            sprites.answerBoxText[1].setString("2. 'You're delusional if you think I can't see the labels on that thing...'");
+            break;
+        case 4:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("'Whaaaaat? Why do you keep sighing? It'll bring back your memories.'");
+                break;
+            case 1:
+                sprites.text.setString("'Pffffff, what labels? You sound fucking insane right now. You know that? That you sound insane? With the words coming from your mouth?'\n\n'You're fucking crazy.'");
+                break;
+            }
+            break;
+        case 5:
+            sprites.text.setString("*Suddenly, Zin buds into the conversation, clearly looking annoyed...*\n\n'He is not drinking that stuff. I'm not letting him.'");
+            sprites.getZinCounter() = 3; //Set correct frame for zins sprite to appear
+            break;
+        case 6:
+            sprites.text.setString("'Oh, now suddenly his little rat wants to bud in now, does she?! Urgh, you little...' *The jester takes a step back and seems to try to calm herself.*\n\n'Remember Spade, remember, this is what your friends said NOT to do. Just breathe... BREATHE. BREATHE! AHHHHH I HATE YOU!'");
+            sprites.getSpadeCounter() = 1;
+            break;
+        case 7:
+            sprites.text.setString("*The jester takes a step back once more, taking a deep breath before speaking again.*\n\n 'Hahaha, sorry about that sudden outburst... I just get very emotional sometimes is all. Anywho, let's start over! Could you pleeeasse drink this funny bottle I found? '");
+            sprites.getSpadeCounter() = 3;
+            break;
+        case 8:
+            sprites.getShowAnsBoxesCounter() = 0;
+            sprites.answerBoxText[0].setString("1. 'Yeah, aight.' *Down the potion.*");
+            sprites.answerBoxText[1].setString("2. 'You're absolutely insane. I am not drinking that.'");
+            break;
+        case 9:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("*Your stomach begins to tiwst and turn with horrible agony. She definitely poisoned you...* +25 Decay...\n\n'Do you remember me yet, do you, DO YOU? YOU WON'T FOR LONG, HA HA!' *The jester then proceeds to run off into the woods whilst cackling to herself...*\n\n*Zin chimes in after the jester leaves your sight.* 'She has some serious problems... Also why the HELL would you drink that? I need to cleanse you when we get back...'");
+                sprites.getZinCounter() = 2;
+                player.getDecay() += 25;
+                break;
+            case 1:
+                sprites.text.setString("*Spade looks defeated from your reply, clearly upset...* 'Fine then, this stuff is sooooo good that I'll just keep it to myself then!'\n\n'I TRIED to share but I guess now I'll have to enjoy it all on my own.' *She gulps it down, instantly puking it up after...*\n\n'WHAT THE FUCK IS THIS SHIT? AGHHHHHH!' *She proceeds to hurl the empty glass bottle into the woods and run off screaming...*");
+                sprites.getSpadeCounter() = 1;
+                break;
+            }
+            break;
+        case 10:
+            sprites.getSpadeCounter() = -1;
+            sprites.getZinCounter() = -1;
+            sprites.getEntityViewerCounter() = -1;
+            sprites.text.setString("");
+            sprites.getEventAssets() = false;
+            this->reInitialize = true;//Reset dialogue counter for other events
+            this->spadeEncounteredAbyssalForest = true;
+            break;
+        }
+    }
+}
+
 //Castle Hall Events
-void Event::spadeEncounter(Sprites& sprites)
+void Event::castleSpadeEncounter(Sprites& sprites)
 {
     if (!this->spadeEncounteredCastle) {
         this->reInit(sprites);
@@ -705,7 +787,6 @@ void Event::castleSiwardEncounter(Sprites& sprites)
             }
             break;
         case 3:
-            sprites.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
             sprites.getZinCounter() = 4; //Set correct frame for zins sprite to appear
             sprites.text.setString("*Zin buds into the converstaion, clearly bothered by this news.* 'But there's got to be something we can do, right? We can't just let you die like everyone else! Let me cleanse you, please!'");
             break;
@@ -747,7 +828,7 @@ void Event::castleSiwardEncounter(Sprites& sprites)
         case 12:
             sprites.text.setString("");
             sprites.getEventAssets() = false;
-            sprites.getSpriteViewerCounter() = -1;
+            sprites.getEntityViewerCounter() = -1;
             sprites.getSiwardCounter() = -1;
             this->reInitialize = true;//Reset dialogue counter for other events
             this->siwardEncounteredCastle = true;
@@ -764,7 +845,7 @@ void Event::castleSiwardFinalEncounter(Sprites& sprites)
         switch (this->dialogue) {
         case 0:
             this->hideOpenAssets(sprites);
-            sprites.text.setString("*You see Siward standing before you, clearly in immense pain. He stands alone, only dead bodies near him.* 'No... You two... Please- g ge...' *Siward stops muttering as you notice his legs begin to walk closer to you. It looks as though he's lost the control of his legs...*\n\n*Suddenly, Siward clenches his sword and stabs himself through the chest with a great force! He screams in pain and drops to his knees...* 'I just... don't let me do it... don't let me...'");
+            sprites.text.setString("*You see Siward standing before you, clearly in immense pain. He stands alone, only dead bodies near him.* 'No... You two... Please- g ge...' *Siward stops muttering as you notice his legs begin to walk closer to you.\nIt looks as though he's lost the control of his legs...*\n\n*Suddenly, Siward clenches his sword and stabs himself through the chest with a great force! He screams in pain and drops to his knees...* 'I just... don't let me do it... don't let me...'");
             sprites.getEntityViewerCounter() = 24;
             sprites.getSpriteViewerCounter() = 0;
             sprites.getSiwardCounter() = 2;
@@ -777,6 +858,10 @@ void Event::castleSiwardFinalEncounter(Sprites& sprites)
         case 2:
             sprites.getShowAnsBoxesCounter() = -1;
             sprites.text.setString("*Siward loses all control of his body as he rips the sword back out from his chest. The gaping hole leaks its last crimson drop of blood before quickly being replaced by a darkness blacker then the abyss itself. It's do or die.*");
+            break;
+        case 3:
+            this->siwardEncounteredFinal = true;
+            break;
         }
     }
 }

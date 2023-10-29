@@ -68,8 +68,6 @@ void Travel::enterBonfire(sf::RenderWindow& window, Sprites& sprites, Event& not
     notevent.smithingText(window, sprites);
     //Make the entity viewer dissapear
     sprites.getSpriteViewerCounter() = -1;
-    //Allow Zins sprite to be used again through the boolean
-    sprites.setZinInitFalse();
     //Set correct frame for zins sprite to appear
     sprites.getZinCounter() = 0;
     //Set correct frame for Thom is he is unlocked
@@ -163,7 +161,6 @@ void Travel::introBeginning(sf::RenderWindow& window, Sprites& sprites, Event& n
         sprites.text.setString("When you awaken, you realize you're still in the woods, however you notice a small figure just beneath the foot of a tree. You look down at yourself and notice a lack of former injuries.\nShe must have healed you.");
         break;
     case 8:
-        sprites.setZinInitFalse(); //Allow Zins sprite to be used again through the boolean
         sprites.getZinCounter() = 0; //Set correct frame for zins sprite to appear
         sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
         sprites.answerBoxText[0].setString("1. 'Are you a priest, kid?'");
@@ -472,6 +469,7 @@ void Travel::forestDepths(Sprites& sprites, Event& notevent, Combat& combat, Pla
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths12.jpeg");
             this->frameInit = true;
         }
+        notevent.forestDepthsSpadeEncounter(sprites);
         break;
     case 12:
         if (!this->frameInit) {
@@ -620,6 +618,7 @@ void Travel::forestAbyssalDepths(Sprites& sprites, Event& notevent, Combat& comb
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths2.jpeg");
             this->frameInit = true;
         }
+        notevent.forestAbyssalSpadeEncounter(sprites, player);
         break;
     case 2:
         if (!this->frameInit) {
@@ -853,7 +852,7 @@ void Travel::castleDepths(Sprites& sprites, Event& notevent, Combat& combat, Pla
             this->frameInit = true;
         }
         //Initialize Spade and Sprite
-        notevent.spadeEncounter(sprites);
+        notevent.castleSpadeEncounter(sprites);
         break;
     case 1:
         sprites.getStartFrame() = false;
@@ -1143,6 +1142,11 @@ void Travel::castleLabyrinth(Sprites& sprites, Event& notevent, Combat& combat, 
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth15.jpeg");
             this->frameInit = true;
+        }
+        notevent.castleSiwardFinalEncounter(sprites);
+        if (notevent.getSiwardEncounteredFinal()) {
+            combat.initSiward(sprites);
+            combat.combatLoop(sprites, player, animate);
         }
         break;
     }
