@@ -53,6 +53,7 @@ void Sprites::loadSprites()
 {
     //Player Sprites
     playerTexture.loadFromFile("Assets/Sprites/player.png");
+    playerTextureRage.loadFromFile("Assets/Sprites/playerRage.png");
 
     //Zin Sprites
     zinTexture.loadFromFile("Assets/Sprites/zinSprite.png");
@@ -415,8 +416,15 @@ void Sprites::playerSprite(Assets& assets)
         spriteText[0].setPosition(10000.0f, 10000.0f);
         break;
     case 0:
-        //Normal Player
+        //PLayer Normal
         spriteElements[4].setTexture(playerTexture);
+        spriteElements[4].setPosition(sf::Vector2f(50.0f, 100.0f));
+        spriteRect[0].setPosition(50.0f, 100.0f);
+        spriteText[0].setPosition(50.0f, 253.0f);
+        break;
+    case 1:
+        //Player Rage
+        spriteElements[4].setTexture(playerTextureRage);
         spriteElements[4].setPosition(sf::Vector2f(50.0f, 100.0f));
         spriteRect[0].setPosition(50.0f, 100.0f);
         spriteText[0].setPosition(50.0f, 253.0f);
@@ -434,36 +442,49 @@ void Sprites::zinSprite(Assets& assets)
     //Pick Zin Sprite Emotion
     switch (assets.getZinCounter()) {
     case -1:
+        //Hide Zin Sprite
         spriteElements[3].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteRect[1].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteText[1].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         break;
     case 0:
+        //Normal Zin
         spriteElements[3].setTexture(zinTexture);
         spriteElements[3].setPosition(sf::Vector2f(50.0f, 300.0f));
         spriteRect[1].setPosition(sf::Vector2f(50.0f, 300.0f));
         spriteText[1].setPosition(sf::Vector2f(50.0f, 453.0f));
         break;
     case 1:
+        //Zin Happy
         spriteElements[3].setTexture(zinTextureHappy);
         spriteElements[3].setPosition(sf::Vector2f(50.0f, 300.0f));
         spriteRect[1].setPosition(sf::Vector2f(50.0f, 300.0f));
         spriteText[1].setPosition(sf::Vector2f(50.0f, 453.0f));
         break;
     case 2:
+        //Zin Concerned
         spriteElements[3].setTexture(zinTextureConcerned);
         spriteElements[3].setPosition(sf::Vector2f(50.0f, 300.0f));
         spriteRect[1].setPosition(sf::Vector2f(50.0f, 300.0f));
         spriteText[1].setPosition(sf::Vector2f(50.0f, 453.0f));
         break;
     case 3:
+        //Zin Annoyed
         spriteElements[3].setTexture(zinTextureAnnoyed);
         spriteElements[3].setPosition(sf::Vector2f(50.0f, 300.0f));
         spriteRect[1].setPosition(sf::Vector2f(50.0f, 300.0f));
         spriteText[1].setPosition(sf::Vector2f(50.0f, 453.0f));
         break;
     case 4:
+        //Zin Sad
         spriteElements[3].setTexture(zinTextureSad);
+        spriteElements[3].setPosition(sf::Vector2f(50.0f, 300.0f));
+        spriteRect[1].setPosition(sf::Vector2f(50.0f, 300.0f));
+        spriteText[1].setPosition(sf::Vector2f(50.0f, 453.0f));
+        break;
+    case 5:
+        //Zin Scared
+        spriteElements[3].setTexture(zinTextureScared);
         spriteElements[3].setPosition(sf::Vector2f(50.0f, 300.0f));
         spriteRect[1].setPosition(sf::Vector2f(50.0f, 300.0f));
         spriteText[1].setPosition(sf::Vector2f(50.0f, 453.0f));
@@ -480,17 +501,20 @@ void Sprites::thomSprite(Assets& assets)
     //Pick Thom Emotion
     switch (assets.getThomCounter()) {
     case -1:
+        //Hide Thom
         spriteElements[7].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteRect[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteText[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         break;
     case 0:
+        //Normal Thom
         spriteElements[7].setTexture(thomTexture);
         spriteElements[7].setPosition(sf::Vector2f(50.0f, 500.0f));
         spriteRect[5].setPosition(sf::Vector2f(50.0f, 500.0f));
         spriteText[5].setPosition(sf::Vector2f(50.0f, 653.0f));
         break;
     case 1:
+        //Enraged Thom
         spriteElements[7].setTexture(thomEnragedTexture);
         spriteElements[7].setPosition(sf::Vector2f(50.0f, 500.0f));
         spriteRect[5].setPosition(sf::Vector2f(50.0f, 500.0f));
@@ -508,6 +532,7 @@ void Sprites::siwardSprite()
     //Pick Siward Sprite Decay State
     switch (this->siwardCounter) {
     case -1:
+        //Hide Siward
         spriteElements[6].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteRect[4].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         break;

@@ -513,6 +513,7 @@ void Travel::forestAbyssal(Sprites& sprites, Event& notevent, Combat& combat, Pl
         }
         break;
     case 2:
+        notevent.forestAbyssalSpadeEncounter(sprites, player);
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods3.jpeg");
             this->frameInit = true;

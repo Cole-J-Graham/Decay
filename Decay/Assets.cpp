@@ -104,6 +104,7 @@ void Assets::loadSounds()
     bufferCom.loadFromFile("Assets/Sounds/Boss hit 1.wav");
     buffer.loadFromFile("Assets/Sounds/Text 1.wav");
     blipbuffer.loadFromFile("Assets/Sounds/blipSelect.wav");
+    statBuffer.loadFromFile("Assets/Sounds/statsup.wav");
     blipmenubuffer.loadFromFile("Assets/Sounds/menuclick.wav");
     bufferAngry.loadFromFile("Assets/Sounds/angry.wav");
     bufferCombatStart.loadFromFile("Assets/Sounds/combatstart.wav");
@@ -1231,6 +1232,8 @@ void Assets::loadSFX()
     //Load Button Sfx
     blipsound.setBuffer(blipbuffer);
     blipmenu.setBuffer(blipmenubuffer);
+    //Load Stats Sfx
+    statSound.setBuffer(statBuffer);
 
     //Load Combat Sound Effects
     soundCom.setBuffer(bufferCom);

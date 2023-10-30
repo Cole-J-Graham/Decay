@@ -35,12 +35,14 @@ public:
 
 	//Sprite Textures
 	sf::Texture playerTexture;
+	sf::Texture playerTextureRage;
 	//Zin Textures
 	sf::Texture zinTexture;
 	sf::Texture zinTextureHappy;
 	sf::Texture zinTextureConcerned;
 	sf::Texture zinTextureAnnoyed;
 	sf::Texture zinTextureSad;
+	sf::Texture zinTextureScared;
 	//Thom Textures
 	sf::Texture thomTexture;
 	sf::Texture thomEnragedTexture;

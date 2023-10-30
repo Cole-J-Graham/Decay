@@ -22,11 +22,15 @@ private:
 	bool spadeEncounteredForest;
 	bool spadeEncounteredAbyssalForest;
 	bool spadeEncounteredCastle;
+	bool spadeEncounteredCastlePoison;
 
 	bool treeEncountered;
 	bool obeliskEncountered;
 
 	bool nunEncountered;
+
+	//Event Control Flow Bools
+	bool spadePoison;
 
 	//Counters
 	int zinTalkCounter;
@@ -73,6 +77,7 @@ public:
 
 	//Castle Hall Events
 	void castleSpadeEncounter(Sprites& sprites);
+	void castleSpadeEncounterPoison(Sprites& sprites);
 
 	//Castle Depth Events
 	void castleSiwardEncounter(Sprites& sprites);

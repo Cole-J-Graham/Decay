@@ -691,12 +691,14 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
         if (sprites.getPlayerStatsInit() == false) {
             sprites.setPlayerStatsInitTrue();
             sprites.setZinStatsInitFalse();
+            sprites.statSound.play();
         }
     }
     if (sprites.zinStatElements[5].getGlobalBounds().contains(mousePosF)) {
         if (sprites.getZinStatsInit() == false) {
             sprites.setZinStatsInitTrue();
             sprites.setPlayerStatsInitFalse();
+            sprites.statSound.play();
         }
     }
     //Level Up Functionality
@@ -708,6 +710,7 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
                 player.getExp() -= player.getExpNext();
                 sprites.playerTextElements[0].setString("LEVEL " + std::to_string(player.getLevel()));
                 sprites.text.setString("Level up achieved. Level " + std::to_string(player.getLevel()) + " reached. One SP point acquired...");
+                sprites.statSound.play();
             }
             else if (player.getExp() <= player.getExpNext()) {
                 sprites.text.setString("Required Exp not met...");
@@ -724,6 +727,7 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
                 sprites.playerTextElements[1].setString("STRENGTH " + std::to_string(player.getStrength()));
                 sprites.text.setString("Strength improved. Level " + std::to_string(player.getStrength()) + " in strength reached. One SP point spent...");
                 combat.updateStats(sprites, player);
+                sprites.statSound.play();
             }
             else if (player.getSp() <= 0) {
                 sprites.text.setString("Required SP not met...");
@@ -740,6 +744,7 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
                 sprites.playerTextElements[2].setString("FORTITUDE " + std::to_string(player.getFortitude()));
                 sprites.text.setString("Fortitude improved. Level " + std::to_string(player.getFortitude()) + " in fortitude reached. One SP point spent...");
                 combat.updateStats(sprites, player);
+                sprites.statSound.play();
             }
             else if (player.getSp() <= 0) {
                 sprites.text.setString("Required SP not met...");
@@ -758,6 +763,7 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
                 sprites.playerTextElements[3].setString("VITALITY " + std::to_string(player.getVitality()));
                 sprites.text.setString("Vitality improved. Level " + std::to_string(player.getVitality()) + " in vitality reached. One SP point spent...");
                 combat.updateStats(sprites, player);
+                sprites.statSound.play();
             }
             else if (player.getSp() <= 0) {
                 sprites.text.setString("Required SP not met...");
@@ -775,6 +781,7 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
                 sprites.zinTextElements[0].setString("LEVEL " + std::to_string(player.getZinLevel()));
                 sprites.text.setString("Level up achieved. Level " + std::to_string(player.getZinLevel()) + " reached for Zin. One SP point acquired...");
                 combat.updateStatsZin(player);
+                sprites.statSound.play();
             }
             else if (player.getZinExp() <= player.getZinExpNext()) {
                 sprites.text.setString("Zin's required Exp not met...");
@@ -791,6 +798,7 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
                 sprites.zinTextElements[1].setString("RESOLVE " + std::to_string(player.getZinResolve()));
                 sprites.text.setString("Zin's resolve increased. Level " + std::to_string(player.getZinResolve()) + " reached in resolve for Zin. One SP point spent...");
                 combat.updateStatsZin(player);
+                sprites.statSound.play();
             }
             else if (player.getZinExp() <= 0) {
                 sprites.text.setString("Zin's required Sp not met...");
@@ -807,6 +815,7 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
                 sprites.zinTextElements[2].setString("PATIENCE " + std::to_string(player.getZinPatience()));
                 sprites.text.setString("Zin's patience increased. Level " + std::to_string(player.getZinPatience()) + " reached in patience for Zin. One SP point spent...");
                 combat.updateStatsZin(player);
+                sprites.statSound.play();
             }
             else if (player.getZinExp() <= 0) {
                 sprites.text.setString("Zin's required Sp not met...");
@@ -823,6 +832,7 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
                 sprites.zinTextElements[3].setString("RESILIENCE " + std::to_string(player.getZinResilience()));
                 sprites.text.setString("Zin's resilience increased. Level " + std::to_string(player.getZinResilience()) + " reached in resilience for Zin. One SP point spent...");
                 combat.updateStatsZin(player);
+                sprites.statSound.play();
             }
             else if (player.getZinExp() <= 0) {
                 sprites.text.setString("Zin's required Sp not met...");

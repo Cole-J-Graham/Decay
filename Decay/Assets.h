@@ -411,6 +411,7 @@ public:
 	sf::Sound sound;
 	sf::Sound blipsound;
 	sf::Sound blipmenu;
+	sf::Sound statSound;
 	sf::Sound soundWalk;
 	sf::Sound soundHover;
 	sf::Sound soundCampfire;
@@ -433,6 +434,7 @@ public:
 	sf::SoundBuffer buffer;
 	sf::SoundBuffer blipbuffer;
 	sf::SoundBuffer blipmenubuffer;
+	sf::SoundBuffer statBuffer;
 	sf::SoundBuffer bufferWalk;
 	sf::SoundBuffer bufferSoundHover;
 	sf::SoundBuffer bufferCampfire;

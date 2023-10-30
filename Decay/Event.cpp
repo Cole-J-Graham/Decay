@@ -17,11 +17,15 @@ Event::Event()
     this->spadeEncounteredForest = false;
     this->spadeEncounteredAbyssalForest = false;
     this->spadeEncounteredCastle = false;
+    this->spadeEncounteredCastlePoison = false;
 
     this->treeEncountered = false;
     this->obeliskEncountered = false;
 
     this->nunEncountered = false;
+
+    //Event Control Flow Bools
+    this->spadePoison = false;
 
     //Counters
     this->zinTalkCounter = -1;
@@ -723,10 +727,12 @@ void Event::forestAbyssalSpadeEncounter(Sprites& sprites, Player& player)
                 sprites.text.setString("*Your stomach begins to tiwst and turn with horrible agony. She definitely poisoned you...* +25 Decay...\n\n'Do you remember me yet, do you, DO YOU? YOU WON'T FOR LONG, HA HA!' *The jester then proceeds to run off into the woods whilst cackling to herself...*\n\n*Zin chimes in after the jester leaves your sight.* 'She has some serious problems... Also why the HELL would you drink that? I need to cleanse you when we get back...'");
                 sprites.getZinCounter() = 2;
                 player.getDecay() += 25;
+                this->spadePoison = true;
                 break;
             case 1:
                 sprites.text.setString("*Spade looks defeated from your reply, clearly upset...* 'Fine then, this stuff is sooooo good that I'll just keep it to myself then!'\n\n'I TRIED to share but I guess now I'll have to enjoy it all on my own.' *She gulps it down, instantly puking it up after...*\n\n'WHAT THE FUCK IS THIS SHIT? AGHHHHHH!' *She proceeds to hurl the empty glass bottle into the woods and run off screaming...*");
                 sprites.getSpadeCounter() = 1;
+                this->spadePoison = false;
                 break;
             }
             break;
@@ -750,8 +756,166 @@ void Event::castleSpadeEncounter(Sprites& sprites)
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
+            sprites.getEntityViewerCounter() = 4;
+            sprites.getSpadeCounter() = 0;
+            this->hideOpenAssets(sprites);
+            sprites.text.setString("*Suddenly, a familiar face appears around the corner. You almost dread the fact you see her once more...* 'Oh, uh hello again... Are you doing alright?' *Her demeanor seems to have shifted entirely since you last spoke...*");
             break;
         case 1:
+            sprites.getShowAnsBoxesCounter() = 0;
+            sprites.answerBoxText[0].setString("1. 'Uh, fine I guess? How's your stomach after drinking that shit?'");
+            sprites.answerBoxText[1].setString("2. 'Better than you, bastard. I mean after you drank that shit it almost killed you.'");
+            break;
+        case 2:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("*She seems somewhat surprised that you're being civil with her after everything.* 'Not so great to be honest, but I realized that something was extremely wrong with me. The way I acted, especially in front of the little one... It felt horribly wrong. How could I do such a thing?'");
+                break;
+            case 1:
+                sprites.text.setString("*She frowns but doesn't retort as you'd expect...* 'Well, that's a fair response... I've acted absolutely obscene towards you and the little one. My actions cannot be forgiven and I apologize greatly for that.'");
+                break;
+            }
+            break;
+        case 3:
+            sprites.getShowAnsBoxesCounter() = 0;
+            sprites.answerBoxText[0].setString("1. 'What the hell did that potion do to you?'");
+            sprites.answerBoxText[1].setString("2. 'You seem much more level headed suddenly. Why is that?'");
+            break;
+        case 4:
+            sprites.getShowAnsBoxesCounter() = -1;
+            sprites.text.setString("'Well, after the plague set in, I remember a horrible choice I had made. I was cowering for my life much like the many others in the castle when a lich spoke to me. They asked if I wished to die or to transform...'");
+            break;
+        case 5:
+            sprites.getShowAnsBoxesCounter() = 0;
+            sprites.answerBoxText[0].setString("1. 'So, you're saying a lich did that to you?'");
+            sprites.answerBoxText[1].setString("2. 'What exactly were the terms of the deal with it?'");
+            break;
+        case 6:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("*She seems to feel ashamed of the fact she's speaking about this. She seems oddly familiar now that she isn't acting outrageous...*\n\n'Yes, I am. I shouldn't have accepted his deal but... I just wished to live. I am afraid to die.'");
+                break;
+            case 1:
+                sprites.text.setString("*She seems to feel ashamed of the fact she's speaking about this. She seems oddly familiar now that she isn't acting outrageous...*\n\n'Well, it was quite simple in all honesty. It said I could either die right then and now... or keep living... under his curse of insanity. It found it amusing to watch people suffer. It makes me sick to think about.'");
+                break;
+            }
+            break;
+        case 7:
+            sprites.getZinCounter() = 4;
+            sprites.getSpadeCounter() = 2;
+            sprites.text.setString("*Zin buds into the conversation suddenly as you notice sniffling coming from behind you.* 'I'm sorry I was rude to you. I thought you were bad and I didn't know...'\n\n*Spade kneels next to Zin attempting to reassure her.* 'There's nothing to apologize about! You didn't know, kiddo. You were just trying to protect the person you care about and I find that admirable.'");
+            break;
+        case 8:
+            sprites.getZinCounter() = 1;
+            sprites.text.setString("*As she kneels and kindly reassures Zin, you definitely recognize her from the castle. In your times at the medical ward helping with the ill, you recall her face smiling to other children.*");
+            break;
+        case 9:
+            sprites.getZinCounter() = -1;
+            sprites.getShowAnsBoxesCounter() = 0;
+            sprites.answerBoxText[0].setString("1. 'Actually, do I know you from the castle?'");
+            sprites.answerBoxText[1].setString("2. 'I think I recognize you from the medical ward of the castle...'");
+            break;
+        case 10:
+            sprites.getShowAnsBoxesCounter() = -1;
+            sprites.text.setString("'Yes, that's where I worked in the day! I was the jester that was in charge of cheering up the ill. Most of the kingdom stayed away from the ill, sealing them away in their dark corners where they waited to die... But the thought of that made me sad, which is why I wanted to cheer them up the best I could.'");
+            break;
+        case 11:
+            sprites.getShowAnsBoxesCounter() = 0;
+            sprites.answerBoxText[0].setString("1. 'Well, I apologize for thinking you were insane.'");
+            sprites.answerBoxText[1].setString("2. 'It's good to know you aren't actually nuts.'");
+            break;
+        case 12:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("'That's perfectly normal, I was being absolutely ridiculous, so my apologies for that. It feels so great to be talking normally again with people. After my memories flooded back and I felt normal again, I had no one to talk to. So this is nice. But once more, I apologize...'");
+                break;
+            case 1:
+                sprites.text.setString("'I wouldn't call myself perfectly normal, but I'm certainly not who you thought I was. Once again, my apologies for my actions and words. I cannot be sorry enough...'");
+                break;
+            }
+            break;
+        case 13:
+            sprites.getShowAnsBoxesCounter() = 0;
+            sprites.answerBoxText[0].setString("1. 'It's quite alright. Don't worry about it.'");
+            sprites.answerBoxText[1].setString("2. 'I'll look past it this once.'");
+            break;
+        case 14:
+            sprites.getSpadeCounter() = 1;
+            sprites.text.setString("*She stares into the distance momentarily before continuing...* 'Well, in any case I best get going. I wish you and the little one the best of luck and if we ever cross paths again never hesitate to ask for anything.'\n\n*She waves goodbye as she walks off in the distance. Suddenly, someone that seemed quite unstable in your book is now perfectly normal. What a strange world this has truly become, you think to yourself...*");
+            break;
+        case 15:
+            sprites.getSpadeCounter() = -1;
+            sprites.getZinCounter() = -1;
+            sprites.getEntityViewerCounter() = -1;
+            sprites.text.setString("");
+            sprites.getEventAssets() = false;
+            this->reInitialize = true;//Reset dialogue counter for other events
+            this->spadeEncounteredCastle = true;
+            break;
+        }
+    }
+}
+
+void Event::castleSpadeEncounterPoison(Sprites& sprites)
+{
+    if (!this->spadeEncounteredCastlePoison) {
+        this->reInit(sprites);
+        switch (this->dialogue) {
+        case 0:
+            sprites.getEntityViewerCounter() = 4;
+            sprites.getSpadeCounter() = 0;
+            this->hideOpenAssets(sprites);
+            sprites.text.setString("'Heya, pal! How're you? I missed talking with you!'");
+            break;
+        case 1:
+            sprites.getShowAnsBoxesCounter() = 0;
+            sprites.answerBoxText[0].setString("1. 'Can't say likewise.'");
+            sprites.answerBoxText[1].setString("2. 'Why shouldn't I just kill you right here right now?'");
+            break;
+        case 2:
+            sprites.getShowAnsBoxesCounter() = -1;
+            sprites.getSpadeCounter() = 3;
+            sprites.text.setString("'Awwwwwe, cmon! Don't be like that! You know I'm great! Hey hey hey, do you remember me yet?");
+            break;
+        case 3:
+            sprites.getShowAnsBoxesCounter() = 0;
+            sprites.answerBoxText[0].setString("1. 'No, I don't remember you.'");
+            sprites.answerBoxText[1].setString("2. 'Nope. But you're gonna remember me.'");
+            break;
+        case 4:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("*The girl grins even wider...* 'What a shame! Turns out you drank that all for nothing now, hmmm? I can't believe someone that's survived out here for so long would be so foolish.'");
+                break;
+            case 1:
+                sprites.text.setString("*The girl grins even wider...* 'Oh yeah, what are you gonna do? I'm real scared... Heh'");
+                break;
+            }
+            break;
+        case 5:
+            sprites.getZinCounter() = 1;
+            sprites.text.setString("*Zin suddenly speaks up, clearly pissed off at how she's treating you.* 'I wanna kill her. Can I kill her? Let me kill her...'");
+            break;
+        case 6:
+            sprites.text.setString("*The jester grins even wider, staring at Zin as she towers over her.* 'Oh? And how are you gonna do that, little girl? Stab me? Cut me up into little pieces? Smite me maybe? Use some of that magic?'");
+            break;
+        case 7:
+            sprites.getZinCounter() = 2;
+            sprites.text.setString("*The jester continues to intimidate Zin, moving closer...*\n\n'Do you realize what I could do to you? How easily I could murder you without this shmuck over here being able to do a single thing about it? I'm merely toying with my prey until I rip you apart.'");
+            break;
+        case 8:
+            sprites.getZinCounter() = 5;
+            sprites.text.setString("*Morphing from a human shape, the girl slowly begins to melt as the form she take changes... Slowly but surely, she becomes that of a horrid tentacle like being made of human flesh! She brings forth a tentacle, attempting to strike Zin!*");
+            break;
+        case 9:
+            sprites.getPlayerCounter() = 1;
+            sprites.text.setString("*Before the tentacle could connect and hit Zin, you rush to block the attack. You can tell you're going to be too late to block the attack, however you feel your rage seep into the decay rotting your bones... Something changes. You feel a spark of energy as you launch forwards!*\n\nYou stand your ground being hit by the brute force of what would've been a fatal attack to Zin. You finally speak once more...* 'Just another fucking abomination.'");
+            break;
+        case 10:
             break;
         }
     }
