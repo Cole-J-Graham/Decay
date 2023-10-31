@@ -56,8 +56,6 @@ void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& pl
                 break;
             case sf::Event::MouseMoved:
                 //Mouse Hover Actions
-                //Turn buttons grey on hover
-                this->greyOnHover(window, sprites);
                 this->printToolTip(window, sprites, notevent, combat, player);
                 break;
             case sf::Event::MouseButtonPressed:
@@ -149,6 +147,7 @@ void World::Draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
 
     // draw everything here...
     if (this->mainMenu == false && !sprites.getPlayerDeath()) {
+        sprites.greyOnHover(window);
         sprites.drawObjects(sprites);
         travel.travelCore(window, sprites, notevent, combat, player, animate);
 
@@ -254,6 +253,7 @@ void World::Draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
         }
     }
     else if (this->mainMenu == true) {
+        sprites.greyOnHover(window);
         animate.animateMenu(sprites);
         window.draw(animate.menuSprite);
         sprites.drawMainMenu();
@@ -303,138 +303,6 @@ void World::DrawMapSelectorButtons(sf::RenderWindow& window, Sprites& sprites)
     //Draw all rectangle elements for map button selectors text
     for (int i = 0; i < sprites.buttonViewMapText.size(); i++) {
         window.draw(sprites.buttonViewMapText[i]);
-    }
-}
-
-void World::greyOnHover(sf::RenderWindow& window, Sprites& sprites)
-{
-    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-    //Turn Rects Grey On Hover
-    for (int i = 0; i < sprites.rectElements.size(); i++) {
-        if (sprites.rectElements[i].getGlobalBounds().contains(mousePosF)) {
-            sprites.rectElements[i].setFillColor(sf::Color::Transparent);
-            sprites.textElements[i].setFillColor(sf::Color::White);
-        }
-        else {
-            sprites.rectElements[i].setFillColor(sf::Color::White);
-            sprites.textElements[i].setFillColor(sf::Color::Black);
-        }
-    }
-
-    //Turn dialogue box grey on hover
-    if (sprites.rect.getGlobalBounds().contains(mousePosF) && sprites.getShowAnsBoxesCounter() == -1) {
-        sprites.rect.setFillColor(sf::Color(10, 10, 10));
-    }
-    else {
-        sprites.rect.setFillColor(sf::Color::Black);
-    }
-
-    for (int i = 0; i < sprites.answerBox.size(); i++) {
-        if (sprites.answerBox[i].getGlobalBounds().contains(mousePosF)) {
-            sprites.answerBox[i].setFillColor(sf::Color(25, 25, 25));
-        }
-        else {
-            sprites.answerBox[i].setFillColor(sf::Color::Black);
-        }
-    }
-
-    //Main Menu Buttons Grey On Hover
-    for (int i = 0; i < sprites.menuScreenElements.size(); i++) {
-        if (sprites.menuScreenElements[i].getGlobalBounds().contains(mousePosF)) {
-            sprites.menuScreenElements[i].setFillColor(sf::Color::Transparent);
-            sprites.menuScreenElementsText[i].setFillColor(sf::Color::White);
-        }
-        else {
-            sprites.menuScreenElements[i].setFillColor(sf::Color::White);
-            sprites.menuScreenElementsText[i].setFillColor(sf::Color::Black);
-        }
-    }
-
-    //Combat Rects Grey On Hover
-    for (int i = 0; i < sprites.combatRect.size(); i++) {
-        if (sprites.combatRect[i].getGlobalBounds().contains(mousePosF)) {
-            sprites.combatRect[i].setFillColor(sf::Color::Transparent);
-            sprites.combatText[i].setFillColor(sf::Color::White);
-        }
-        else {
-            sprites.combatRect[i].setFillColor(sf::Color::White);
-            sprites.combatText[i].setFillColor(sf::Color::Black);
-        }
-    }
-
-    //Sprites Grey On Hover
-    for (int i = 0; i < sprites.spriteElements.size(); i++) {
-        if (sprites.spriteElements[i].getGlobalBounds().contains(mousePosF)) {
-            sprites.spriteElements[i].setColor(sf::Color(155, 155, 155));
-        }
-        else {
-            sprites.spriteElements[i].setColor(sf::Color(255, 255, 255));
-        }
-    }
-
-    //Player Stats Grey On Hover
-    for (int i = 0; i < sprites.playerStatElements.size(); i++) {
-        if (sprites.playerStatElements[i].getGlobalBounds().contains(mousePosF)) {
-            sprites.playerStatElements[i].setFillColor(sf::Color::Transparent);
-            sprites.playerTextPlus[i].setFillColor(sf::Color::White);
-        }
-        else {
-            sprites.playerStatElements[i].setFillColor(sf::Color::White);
-            sprites.playerTextPlus[i].setFillColor(sf::Color::Black);
-        }
-    }
-
-    //Zin Stats Grey On Hover
-    for (int i = 0; i < sprites.zinStatElements.size(); i++) {
-        if (sprites.zinStatElements[i].getGlobalBounds().contains(mousePosF)) {
-            sprites.zinStatElements[i].setFillColor(sf::Color::Transparent);
-            sprites.zinTextPlus[i].setFillColor(sf::Color::White);
-        }
-        else {
-            sprites.zinStatElements[i].setFillColor(sf::Color::White);
-            sprites.zinTextPlus[i].setFillColor(sf::Color::Black);
-        }
-    }
-
-    //Map Selector Buttons Grey On Hover
-    for (int i = 0; i < sprites.buttonViewMap.size(); i++) {
-        if (sprites.buttonViewMap[i].getGlobalBounds().contains(mousePosF)) {
-            sprites.buttonViewMap[i].setFillColor(sf::Color::White);
-            sprites.buttonViewMapText[i].setFillColor(sf::Color::Black);
-        }
-        else {
-            sprites.buttonViewMap[i].setFillColor(sf::Color::Black);
-            sprites.buttonViewMapText[i].setFillColor(sf::Color::White);
-        }
-    }
-
-    //Map Buttons Grey On Hover
-    for (int i = 0; i < sprites.mapCastleElements.size(); i++) {
-        if (sprites.mapCastleElements[i].getGlobalBounds().contains(mousePosF)) {
-            sprites.mapCastleElements[i].setColor(sf::Color(155, 155, 155));
-        }
-        else {
-            sprites.mapCastleElements[i].setColor(sf::Color(255, 255, 255));
-        }
-    }
-
-    for (int i = 0; i < sprites.mapForestElements.size(); i++) {
-        if (sprites.mapForestElements[i].getGlobalBounds().contains(mousePosF)) {
-            sprites.mapForestElements[i].setColor(sf::Color(155, 155, 155));
-        }
-        else {
-            sprites.mapForestElements[i].setColor(sf::Color(255, 255, 255));
-        }
-    }
-
-    for (int i = 0; i < sprites.mapDecayElements.size(); i++) {
-        if (sprites.mapDecayElements[i].getGlobalBounds().contains(mousePosF)) {
-            sprites.mapDecayElements[i].setColor(sf::Color(155, 155, 155));
-        }
-        else {
-            sprites.mapDecayElements[i].setColor(sf::Color(255, 255, 255));
-        }
     }
 }
 

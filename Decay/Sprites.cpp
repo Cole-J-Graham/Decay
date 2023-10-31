@@ -600,3 +600,76 @@ void Sprites::spadeSprite()
     spadeTexture.setRepeated(false);
     spriteElements[2].setScale(0.050f, 0.050f);
 }
+
+//Display Functions
+void Sprites::greyOnHover(sf::RenderWindow& window)
+{
+    this->greyOnHoverRect(window, rectElements, textElements);
+    this->greyOnHoverRect(window, menuScreenElements, menuScreenElementsText);
+    this->greyOnHoverRect(window, combatRect, combatText);
+    this->greyOnHoverRect(window, playerStatElements, playerTextPlus);
+    this->greyOnHoverRect(window, zinStatElements, zinTextPlus);
+    this->greyOnHoverRect(window, buttonViewMap, buttonViewMapText);
+
+    this->highlightOnHover(window, answerBox);
+
+    this->greyOnHoverSprite(window, spriteElements);
+    this->greyOnHoverSprite(window, mapCastleElements);
+    this->greyOnHoverSprite(window, mapForestElements);
+    this->greyOnHoverSprite(window, mapDecayElements);
+}
+
+void Sprites::greyOnHoverRect(sf::RenderWindow& window, std::vector<sf::RectangleShape>& inputRect, std::vector<sf::Text>& inputText)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+
+    for (int i = 0; i < inputRect.size(); i++) {
+        if (inputRect[i].getGlobalBounds().contains(mousePosF)) {
+            inputRect[i].setFillColor(sf::Color::Transparent);
+            inputText[i].setFillColor(sf::Color::White);
+        }
+        else {
+            inputRect[i].setFillColor(sf::Color::White);
+            inputText[i].setFillColor(sf::Color::Black);
+        }
+    }
+
+    //Turn dialogue box grey on hover
+    if (rect.getGlobalBounds().contains(mousePosF) && getShowAnsBoxesCounter() == -1) {
+        rect.setFillColor(sf::Color(10, 10, 10));
+    }
+    else {
+        rect.setFillColor(sf::Color::Black);
+    }
+}
+
+void Sprites::highlightOnHover(sf::RenderWindow& window, std::vector<sf::RectangleShape>& inputRect)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+
+    for (int i = 0; i < inputRect.size(); i++) {
+        if (inputRect[i].getGlobalBounds().contains(mousePosF)) {
+            inputRect[i].setFillColor(sf::Color(25, 25, 25));
+        }
+        else {
+            inputRect[i].setFillColor(sf::Color::Black);
+        }
+    }
+}
+
+void Sprites::greyOnHoverSprite(sf::RenderWindow& window, std::vector<sf::Sprite>& inputSprite)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+
+    for (int i = 0; i < inputSprite.size(); i++) {
+        if (inputSprite[i].getGlobalBounds().contains(mousePosF)) {
+            inputSprite[i].setColor(sf::Color(155, 155, 155));
+        }
+        else {
+            inputSprite[i].setColor(sf::Color(255, 255, 255));
+        }
+    }
+}

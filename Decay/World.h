@@ -30,7 +30,6 @@ private:
 	//Core
 	std::string input;
 	std::string targetHpView;
-
 	int unicode;
 	int random;
 	int test;
@@ -68,7 +67,6 @@ public:
 	//Display Functions
 	void Draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate);
 	void DrawMapSelectorButtons(sf::RenderWindow& window, Sprites& sprites);
-	void greyOnHover(sf::RenderWindow& window, Sprites& sprites);
 	void printPlayerStats(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player);
 	void printZinStats(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player);
 

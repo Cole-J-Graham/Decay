@@ -33,6 +33,12 @@ public:
 	void siwardSprite();
 	void spadeSprite();
 
+	//Display Functions
+	void greyOnHover(sf::RenderWindow& window);
+	void greyOnHoverRect(sf::RenderWindow& window, std::vector<sf::RectangleShape>& holder, std::vector<sf::Text>& inputText);
+	void highlightOnHover(sf::RenderWindow& window, std::vector<sf::RectangleShape>& inputRect);
+	void greyOnHoverSprite(sf::RenderWindow& window, std::vector<sf::Sprite>& inputSprite);
+
 	//Sprite Textures
 	sf::Texture playerTexture;
 	sf::Texture playerTextureRage;
