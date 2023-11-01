@@ -74,10 +74,14 @@ public:
 	void mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel, Animation& animate);
 	void travelButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel, Animation& animate, Player& player);
 	void menuBar(sf::RenderWindow& window, Sprites& sprites);
-	void statsFunctionality(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites);
 	void dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Sprites& sprites, Travel& travel, Event& notevent);
 	void movableBox(sf::RenderWindow& window, Sprites& sprites);
 	void printToolTip(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player);
+
+	//Stat Functionality
+	void statsFunctionality(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites);
+	void levelUp(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites, sf::RectangleShape& inputRect, int& lvl, int& sp, int& exp, int& expNext);
+	void statUp(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites, sf::RectangleShape& inputRect, int& stat, int& sp, int& exp, int& expNext);
 
 	//Map Button Functionality
 	void mapButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel);

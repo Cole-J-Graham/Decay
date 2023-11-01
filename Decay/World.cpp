@@ -548,168 +548,6 @@ void World::menuBar(sf::RenderWindow& window, Sprites& sprites)
     }
 }
 
-void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites)
-{
-    //Add Text
-    player.statsText(sprites);
-    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-    //Menu Bar Stats Functionality (Switching between who's stats are visible)
-    if (sprites.playerStatElements[4].getGlobalBounds().contains(mousePosF)) {
-        if (sprites.getPlayerStatsInit() == false) {
-            sprites.setPlayerStatsInitTrue();
-            sprites.setZinStatsInitFalse();
-            sprites.statSound.play();
-        }
-    }
-    if (sprites.zinStatElements[5].getGlobalBounds().contains(mousePosF)) {
-        if (sprites.getZinStatsInit() == false) {
-            sprites.setZinStatsInitTrue();
-            sprites.setPlayerStatsInitFalse();
-            sprites.statSound.play();
-        }
-    }
-    //Level Up Functionality
-    if (sprites.getInitStats() == true && sprites.getPlayerStatsInit() == true) {
-        if (sprites.playerStatElements[0].getGlobalBounds().contains(mousePosF)) {
-            if (player.getExp() >= player.getExpNext()) {
-                player.setLevelInc();
-                player.setSpInc();
-                player.getExp() -= player.getExpNext();
-                sprites.playerTextElements[0].setString("LEVEL " + std::to_string(player.getLevel()));
-                sprites.text.setString("Level up achieved. Level " + std::to_string(player.getLevel()) + " reached. One SP point acquired...");
-                sprites.statSound.play();
-            }
-            else if (player.getExp() <= player.getExpNext()) {
-                sprites.text.setString("Required Exp not met...");
-            }
-            this->buttonClick = true;
-        }
-    }
-    //Strength up functionality
-    if (sprites.getInitStats() == true && sprites.getPlayerStatsInit() == true) {
-        if (sprites.playerStatElements[1].getGlobalBounds().contains(mousePosF)) {
-            if (player.getSp() >= 1) {
-                player.setStrengthInc();
-                player.setSpDec();
-                sprites.playerTextElements[1].setString("STRENGTH " + std::to_string(player.getStrength()));
-                sprites.text.setString("Strength improved. Level " + std::to_string(player.getStrength()) + " in strength reached. One SP point spent...");
-                combat.updateStats(sprites, player);
-                sprites.statSound.play();
-            }
-            else if (player.getSp() <= 0) {
-                sprites.text.setString("Required SP not met...");
-            }
-            this->buttonClick = true;
-        }
-    }
-    //Fortitude up functionality
-    if (sprites.getInitStats() == true && sprites.getPlayerStatsInit() == true) {
-        if (sprites.playerStatElements[2].getGlobalBounds().contains(mousePosF)) {
-            if (player.getSp() >= 1) {
-                player.setFortitudeInc();
-                player.setSpDec();
-                sprites.playerTextElements[2].setString("FORTITUDE " + std::to_string(player.getFortitude()));
-                sprites.text.setString("Fortitude improved. Level " + std::to_string(player.getFortitude()) + " in fortitude reached. One SP point spent...");
-                combat.updateStats(sprites, player);
-                sprites.statSound.play();
-            }
-            else if (player.getSp() <= 0) {
-                sprites.text.setString("Required SP not met...");
-            }
-            this->buttonClick = true;
-        }
-    }
-    //Vitality up functionality
-    if (sprites.getInitStats() == true && sprites.getPlayerStatsInit() == true) {
-        if (sprites.playerStatElements[3].getGlobalBounds().contains(mousePosF)) {
-            if (player.getSp() >= 1) {
-                player.setVitalityInc();
-                player.setSpDec();
-                combat.getPlayerHp() += player.getVitality();
-                combat.getPlayerHpMax() = combat.getPlayerHp();
-                sprites.playerTextElements[3].setString("VITALITY " + std::to_string(player.getVitality()));
-                sprites.text.setString("Vitality improved. Level " + std::to_string(player.getVitality()) + " in vitality reached. One SP point spent...");
-                combat.updateStats(sprites, player);
-                sprites.statSound.play();
-            }
-            else if (player.getSp() <= 0) {
-                sprites.text.setString("Required SP not met...");
-            }
-            this->buttonClick = true;
-        }
-    }
-    //Zin Stats Level up Functionality
-    if (sprites.getInitStats() == true && sprites.getZinStatsInit() == true) {
-        if (sprites.zinStatElements[0].getGlobalBounds().contains(mousePosF)) {
-            if (player.getZinExp() >= player.getZinExpNext()) {
-                player.setZinLevelInc();
-                player.setZinSpInc();
-                player.getZinExp() -= player.getZinExpNext();
-                sprites.zinTextElements[0].setString("LEVEL " + std::to_string(player.getZinLevel()));
-                sprites.text.setString("Level up achieved. Level " + std::to_string(player.getZinLevel()) + " reached for Zin. One SP point acquired...");
-                combat.updateStatsZin(player);
-                sprites.statSound.play();
-            }
-            else if (player.getZinExp() <= player.getZinExpNext()) {
-                sprites.text.setString("Zin's required Exp not met...");
-            }
-            this->buttonClick = true;
-        }
-    }
-    //Zin Resolve up Functionality
-    if (sprites.getInitStats() == true && sprites.getZinStatsInit() == true) {
-        if (sprites.zinStatElements[1].getGlobalBounds().contains(mousePosF)) {
-            if (player.getZinSp() >= 1) {
-                player.setZinResolveInc();
-                player.setZinSpDec();
-                sprites.zinTextElements[1].setString("RESOLVE " + std::to_string(player.getZinResolve()));
-                sprites.text.setString("Zin's resolve increased. Level " + std::to_string(player.getZinResolve()) + " reached in resolve for Zin. One SP point spent...");
-                combat.updateStatsZin(player);
-                sprites.statSound.play();
-            }
-            else if (player.getZinExp() <= 0) {
-                sprites.text.setString("Zin's required Sp not met...");
-            }
-            this->buttonClick = true;
-        }
-    }
-    //Zin Patience up Functionality
-    if (sprites.getInitStats() == true && sprites.getZinStatsInit() == true) {
-        if (sprites.zinStatElements[2].getGlobalBounds().contains(mousePosF)) {
-            if (player.getZinSp() >= 1) {
-                player.setZinPatienceInc();
-                player.setZinSpDec();
-                sprites.zinTextElements[2].setString("PATIENCE " + std::to_string(player.getZinPatience()));
-                sprites.text.setString("Zin's patience increased. Level " + std::to_string(player.getZinPatience()) + " reached in patience for Zin. One SP point spent...");
-                combat.updateStatsZin(player);
-                sprites.statSound.play();
-            }
-            else if (player.getZinExp() <= 0) {
-                sprites.text.setString("Zin's required Sp not met...");
-            }
-            this->buttonClick = true;
-        }
-    }
-    //Zin Resilience up Functionality
-    if (sprites.getInitStats() == true && sprites.getZinStatsInit() == true) {
-        if (sprites.zinStatElements[3].getGlobalBounds().contains(mousePosF)) {
-            if (player.getZinSp() >= 1) {
-                player.setZinResilienceInc();
-                player.setZinSpDec();
-                sprites.zinTextElements[3].setString("RESILIENCE " + std::to_string(player.getZinResilience()));
-                sprites.text.setString("Zin's resilience increased. Level " + std::to_string(player.getZinResilience()) + " reached in resilience for Zin. One SP point spent...");
-                combat.updateStatsZin(player);
-                sprites.statSound.play();
-            }
-            else if (player.getZinExp() <= 0) {
-                sprites.text.setString("Zin's required Sp not met...");
-            }
-            this->buttonClick = true;
-        }
-    }
-}
-
 void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Sprites& sprites, Travel& travel, Event& notevent)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
@@ -811,6 +649,92 @@ void World::movableBox(sf::RenderWindow& window, Sprites& sprites)
         sprites.getRectMapX() = mousePos.x - 365.0f;
         sprites.getRectMapY() = mousePos.y - 23.0f;
         this->resetMapPosition(window, sprites);
+    }
+}
+
+//Stat Functionality
+void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites)
+{
+    //Add Text
+    player.statsText(sprites);
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+    //Menu Bar Stats Functionality (Switching between who's stats are visible)
+    if (sprites.playerStatElements[4].getGlobalBounds().contains(mousePosF)) {
+        if (sprites.getPlayerStatsInit() == false) {
+            sprites.setPlayerStatsInitTrue();
+            sprites.setZinStatsInitFalse();
+            sprites.statSound.play();
+        }
+    }
+    if (sprites.zinStatElements[5].getGlobalBounds().contains(mousePosF)) {
+        if (sprites.getZinStatsInit() == false) {
+            sprites.setZinStatsInitTrue();
+            sprites.setPlayerStatsInitFalse();
+            sprites.statSound.play();
+        }
+    }
+
+    if (sprites.getPlayerStatsInit()) {
+        //Call functions for player functionality
+        this->levelUp(window, combat, player, sprites, sprites.playerStatElements[0], player.getLevel(), player.getSp(), player.getExp(), player.getExpNext());
+        this->statUp(window, combat, player, sprites, sprites.playerStatElements[1], player.getStrength(), player.getSp(), player.getExp(), player.getExpNext());
+        this->statUp(window, combat, player, sprites, sprites.playerStatElements[2], player.getFortitude(), player.getSp(), player.getExp(), player.getExpNext());
+        this->statUp(window, combat, player, sprites, sprites.playerStatElements[3], player.getVitality(), player.getSp(), player.getExp(), player.getExpNext());
+    }
+    else if (sprites.getZinStatsInit()) {
+        //Call functions for Zin functionality
+        this->levelUp(window, combat, player, sprites, sprites.zinStatElements[0], player.getZinLevel(), player.getZinSp(), player.getZinExp(), player.getZinExpNext());
+        this->statUp(window, combat, player, sprites, sprites.zinStatElements[1], player.getZinResolve(), player.getZinSp(), player.getZinExp(), player.getZinExpNext());
+        this->statUp(window, combat, player, sprites, sprites.zinStatElements[2], player.getZinPatience(), player.getZinSp(), player.getZinExp(), player.getZinExpNext());
+        this->statUp(window, combat, player, sprites, sprites.zinStatElements[3], player.getZinResilience(), player.getZinSp(), player.getZinExp(), player.getZinExpNext());
+    }
+}
+
+void World::levelUp(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites, sf::RectangleShape& inputRect, int& lvl, int& sp, int& exp, int& expNext)
+{
+    player.statsText(sprites);
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+
+    if (sprites.getInitStats()) {
+        if (inputRect.getGlobalBounds().contains(mousePosF)) {
+            if (exp >= expNext) {
+                lvl++;
+                sp++;
+                exp -= expNext;
+                sprites.playerTextElements[0].setString("LEVEL " + std::to_string(player.getLevel()));
+                sprites.text.setString("Level up achieved. Level " + std::to_string(player.getLevel()) + " reached. One SP point acquired...");
+                sprites.statSound.play();
+            }
+            else if (exp <= expNext) {
+                sprites.text.setString("Required Exp not met...");
+            }
+            this->buttonClick = true;
+        }
+    }
+}
+
+void World::statUp(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites, sf::RectangleShape& inputRect, int& stat, int& sp, int& exp, int& expNext)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+
+    if (sprites.getInitStats()) {
+        if (inputRect.getGlobalBounds().contains(mousePosF)) {
+            if (sp >= 1) {
+                stat++;
+                sp--;
+                sprites.playerTextElements[1].setString("STRENGTH " + std::to_string(player.getStrength()));
+                sprites.text.setString("Strength improved. Level " + std::to_string(player.getStrength()) + " in strength reached. One SP point spent...");
+                combat.updateStats(sprites, player);
+                sprites.statSound.play();
+            }
+            else if (sp <= 0) {
+                sprites.text.setString("Required SP not met...");
+            }
+            this->buttonClick = true;
+        }
     }
 }
 
