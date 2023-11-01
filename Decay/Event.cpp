@@ -913,9 +913,75 @@ void Event::castleSpadeEncounterPoison(Sprites& sprites)
             break;
         case 9:
             sprites.getPlayerCounter() = 1;
-            sprites.text.setString("*Before the tentacle could connect and hit Zin, you rush to block the attack. You can tell you're going to be too late to block the attack, however you feel your rage seep into the decay rotting your bones... Something changes. You feel a spark of energy as you launch forwards!*\n\nYou stand your ground being hit by the brute force of what would've been a fatal attack to Zin. You finally speak once more...* 'Just another fucking abomination.'");
+            sprites.text.setString("*Before the tentacle could connect and hit Zin, you rush to block the attack. You can tell you're going to be too late to block the attack, however you feel your rage seep into the decay thats slowly rotting your bones... Something changes. You feel a spark of energy as you launch forwards!*\n\n*You stand your ground being hit by the brute force of what would've been a fatal attack to Zin. You finally speak once more...* 'Just another fucking abomination.'");
             break;
         case 10:
+            sprites.getSpadeCounter() = 1;
+            sprites.text.setString("*The jester stares at you with an amused look.* 'Oh my, now what do we have here? You look PISSED! I'd be afraid if I cared about dying. Maybe now would actually be a good time to run...'");
+            break;
+        case 11:
+            sprites.getShowAnsBoxesCounter() = 0;
+            sprites.answerBoxText[0].setString("1. *Attack without a word*");
+            sprites.answerBoxText[1].setString("2. 'What makes you think I'd give you the chance to?'");
+            break;
+        case 12:
+            sprites.getSpadeCounter() = -1;
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("*You launch forwards, the jester narrowly dodging your attack as you clearly notice the fear in her eyes from your sudden assault. She springs backwards and leaps out of a nearby castle window without any care as to what's below.\n\nShe seemed desperate to leave that situation. Makes you wonder... who's really the monster?*");
+                break;
+            case 1:
+                sprites.text.setString("'Well, you speaking is a pretty good chance!' *The jester quips back before leaping out a nearby window out of the castle. Seems she's gone... For now.*");
+                break;
+            }
+            break;
+        case 13:
+            sprites.text.setString("*Zin looks to you in shock after all of the chaos...* 'What the hell happened to you? How are you... glowing? It almost seems like it's slowly fading now?'");
+            break;
+        case 14:
+            sprites.getPlayerCounter() = 0;
+            sprites.getShowAnsBoxesCounter() = 0;
+            sprites.answerBoxText[0].setString("1. 'I have no idea. She just pisses me off...'");
+            sprites.answerBoxText[1].setString("2. 'I'm a freak I guess.'");
+            break;
+        case 15:
+            sprites.getZinCounter() = 0;
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("*Zin looks to be relieved but still understandably troubled by the situation...* 'Yeah, maybe a little too much. Look, I get that you're sort of insane and all but this is some freaky shit even for you...'");
+                break;
+            case 1:
+                sprites.text.setString("*Zin looks to be relieved but still understandably troubled by the situation...* 'Well, you're damn right about that. You're always pulling some freaky shit out of your sleeve.'");
+                break;
+            }
+            break;
+        case 16:
+            sprites.getShowAnsBoxesCounter() = 0;
+            sprites.answerBoxText[0].setString("1. 'This coming from the girl that literally turns my blood into blades?'");
+            sprites.answerBoxText[1].setString("2. 'Well, I wouldn't be normal if I was on this journey...'");
+            break;
+        case 17:
+            sprites.getZinCounter() = 2;
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("*Zin looks as though she's about to retort, however she pauses herself before speaking and seems to regather her thoughts...* 'Yeah, no, that's actually a fair point. Let's just get moving...'");
+                break;
+            case 1:
+                sprites.text.setString("*Zin looks to be relieved but still understandably troubled by the situation...* 'Well, you're damn right about that. You're always pulling some freaky shit out of your sleeve.'");
+                break;
+            }
+            break;
+        case 18:
+            sprites.getPlayerCounter() = -1;
+            sprites.getZinCounter() = -1;
+            sprites.getEntityViewerCounter() = -1;
+            sprites.text.setString("");
+            sprites.getEventAssets() = false;
+            this->reInitialize = true;//Reset dialogue counter for other events
+            this->spadeEncounteredCastlePoison = true;
             break;
         }
     }
