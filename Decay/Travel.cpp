@@ -348,7 +348,7 @@ void Travel::forestEntrance(Sprites& sprites, Event& notevent, Combat& combat, P
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest11.jpeg");
             this->frameInit = true;
         }
-        notevent.forestSiwardEncounter(sprites);
+        notevent.forestSiwardEnc(sprites);
         break;
     case 11:
         if (!this->frameInit) {
@@ -405,7 +405,7 @@ void Travel::forestDepths(Sprites& sprites, Event& notevent, Combat& combat, Pla
         }
         break;
     case 3:
-        notevent.treeEncounter(sprites, player);
+        notevent.treeEnc(sprites, player);
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths4.jpeg");
             this->frameInit = true;
@@ -451,7 +451,7 @@ void Travel::forestDepths(Sprites& sprites, Event& notevent, Combat& combat, Pla
         }
         break;
     case 10:
-        notevent.forestDepthsSpadeEncounter(sprites);
+        notevent.forestDepthsSpadeEnc(sprites);
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths11.jpeg");
             this->frameInit = true;
@@ -462,7 +462,7 @@ void Travel::forestDepths(Sprites& sprites, Event& notevent, Combat& combat, Pla
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths12.jpeg");
             this->frameInit = true;
         }
-        notevent.forestDepthsSpadeEncounter(sprites);
+        notevent.forestDepthsSpadeEnc(sprites);
         break;
     case 12:
         if (!this->frameInit) {
@@ -506,7 +506,7 @@ void Travel::forestAbyssal(Sprites& sprites, Event& notevent, Combat& combat, Pl
         }
         break;
     case 2:
-        notevent.forestAbyssalSpadeEncounter(sprites, player);
+        notevent.forestAbyssalSpadeEnc(sprites, player);
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods3.jpeg");
             this->frameInit = true;
@@ -519,7 +519,7 @@ void Travel::forestAbyssal(Sprites& sprites, Event& notevent, Combat& combat, Pl
         }
         break;
     case 4:
-        notevent.obeliskEncounter(sprites, player);
+        notevent.obeliskEnc(sprites, player);
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods5.jpeg");
             this->frameInit = true;
@@ -562,8 +562,8 @@ void Travel::forestAbyssal(Sprites& sprites, Event& notevent, Combat& combat, Pl
         }
         break;
     case 11:
-        notevent.lostNunEncounter(sprites);
-        if (notevent.getNunEncountered()) {
+        notevent.lostNunEnc(sprites);
+        if (notevent.getNunEnced()) {
             combat.initLostNun(sprites);
             combat.combatLoop(sprites, player, animate);
         }
@@ -612,7 +612,7 @@ void Travel::forestAbyssalDepths(Sprites& sprites, Event& notevent, Combat& comb
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths2.jpeg");
             this->frameInit = true;
         }
-        notevent.forestAbyssalSpadeEncounter(sprites, player);
+        notevent.forestAbyssalSpadeEnc(sprites, player);
         break;
     case 2:
         if (!this->frameInit) {
@@ -847,10 +847,10 @@ void Travel::castleDepths(Sprites& sprites, Event& notevent, Combat& combat, Pla
         }
         //Initialize Spade and Sprite
         if (notevent.getSpadePoison()) {
-            notevent.castleSpadeEncounterPoison(sprites);
+            notevent.castleSpadeEncPoison(sprites);
         }
         else {
-            notevent.castleSpadeEncounter(sprites);
+            notevent.castleSpadeEnc(sprites);
         }
         break;
     case 1:
@@ -913,7 +913,7 @@ void Travel::castleDepths(Sprites& sprites, Event& notevent, Combat& combat, Pla
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths11.jpeg");
             this->frameInit = true;
         }
-        notevent.castleSiwardEncounter(sprites);
+        notevent.castleSiwardEnc(sprites);
         break;
     case 11:
         if (!this->frameInit) {
@@ -1142,8 +1142,8 @@ void Travel::castleLabyrinth(Sprites& sprites, Event& notevent, Combat& combat, 
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth15.jpeg");
             this->frameInit = true;
         }
-        notevent.castleSiwardFinalEncounter(sprites);
-        if (notevent.getSiwardEncounteredFinal()) {
+        notevent.castleSiwardFinalEnc(sprites);
+        if (notevent.getSiwardEncedFinal()) {
             combat.initSiward(sprites);
             combat.combatLoop(sprites, player, animate);
         }

@@ -14,21 +14,22 @@ private:
 	bool itemGained;
 
 	//Event Availability Bools
-	bool thomEncountered;
-	bool siwardEncounteredForest;
-	bool siwardEncounteredCastle;
-	bool siwardEncounteredFinal;
+	bool thomEnced;
+	bool siwardEncedForest;
+	bool siwardEncedCastle;
+	bool siwardEncedFinal;
 
-	bool spadeEncounteredForest;
-	bool spadeEncounteredAbyssalForest;
-	bool spadeEncounteredCastle;
-	bool spadeEncounteredCastlePoison;
-	bool spadeEncounteredDecay;
+	bool spadeEncedForest;
+	bool spadeEncedAbyssalForest;
+	bool spadeEncedCastle;
+	bool spadeEncedCastlePoison;
+	bool spadeEncedDecay;
+	bool spadeEncedDecayPoison;
 
-	bool treeEncountered;
-	bool obeliskEncountered;
+	bool treeEnced;
+	bool obeliskEnced;
 
-	bool nunEncountered;
+	bool nunEnced;
 
 	//Event Control Flow Bools
 	bool spadePoison;
@@ -53,7 +54,7 @@ public:
 	void healCharactersText(sf::RenderWindow& window, Sprites& sprites);
 	void healCharacters(sf::RenderWindow& window, Sprites& sprites, Combat& combat);
 	void smithingText(sf::RenderWindow& window, Sprites& sprites);
-	void smithingSharpenBlade(sf::RenderWindow& window, Sprites& sprites, Player& player);
+	void smithingSharpenBlade(sf::RenderWindow& window, Sprites& sprites, Player& player, Combat& combat);
 
 	//Bonfire Text Events
 	void zinEvents(sf::RenderWindow& window, Sprites& sprites, Animation& animate);
@@ -62,40 +63,41 @@ public:
 	void zinInitialTalk(Sprites& sprites, Animation& animate);
 
 	//Forest Entrance Events
-	void forestSiwardEncounter(Sprites& sprites);
+	void forestSiwardEnc(Sprites& sprites);
 
 	//Forest Depths Events
-	void forestDepthsSpadeEncounter(Sprites& sprites);
-	void treeEncounter(Sprites& sprites, Player& player);
-	void thomEncounter(Sprites& sprites);
+	void forestDepthsSpadeEnc(Sprites& sprites);
+	void treeEnc(Sprites& sprites, Player& player);
+	void thomEnc(Sprites& sprites);
 
 	//Forest Abyssal Events
-	void obeliskEncounter(Sprites& sprites, Player& player);
-	void lostNunEncounter(Sprites& sprites);
+	void obeliskEnc(Sprites& sprites, Player& player);
+	void lostNunEnc(Sprites& sprites);
 
 	//Forest Abyssal Depths Events
-	void forestAbyssalSpadeEncounter(Sprites& sprites, Player& player);
+	void forestAbyssalSpadeEnc(Sprites& sprites, Player& player);
 
 	//Castle Hall Events
-	void castleSpadeEncounter(Sprites& sprites);
-	void castleSpadeEncounterPoison(Sprites& sprites);
+	void castleSpadeEnc(Sprites& sprites);
+	void castleSpadeEncPoison(Sprites& sprites);
 
 	//Castle Depth Events
-	void castleSiwardEncounter(Sprites& sprites);
+	void castleSiwardEnc(Sprites& sprites);
 
 	//Castle Labyrinth Events
-	void castleSiwardFinalEncounter(Sprites& sprites);
+	void castleSiwardFinalEnc(Sprites& sprites);
 
-	//Decay Events
-	void decaySpadeEncounter(Sprites& sprites);
+	//Decay Forest Events
+	void decaySpadeEnc(Sprites& sprites);
+	void decaySpadeEncPoison(Sprites& sprites);
 
 
 	//Control Flow Getters
 	bool& getReInitialize() { return this->reInitialize; };
 
 	//Event Availability Bools
-	bool& getSiwardEncounteredFinal() { return this->siwardEncounteredFinal; };
-	bool& getNunEncountered() { return this->nunEncountered; };
+	bool& getSiwardEncedFinal() { return this->siwardEncedFinal; };
+	bool& getNunEnced() { return this->nunEnced; };
 
 	//Counter Getters
 	int& getZinTalkCounter() { return this->zinTalkCounter; };

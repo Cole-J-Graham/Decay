@@ -78,7 +78,7 @@ void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& pl
                 //Bonfire Functionality
                 if (sprites.getBonfireAssets() == true) {
                     notevent.healCharacters(window, sprites, combat);
-                    notevent.smithingSharpenBlade(window, sprites, player);
+                    notevent.smithingSharpenBlade(window, sprites, player, combat);
                     notevent.zinEvents(window, sprites, animate);
                 }
                 break;

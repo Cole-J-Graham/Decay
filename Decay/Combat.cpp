@@ -96,7 +96,7 @@ Combat::Combat()
 
 	this->hostileNameNoSpc = "Abomination";
 	this->hostileName = "Abomination";
-	this->hostileEncounterText = "A combatant ambushes you! Pick your next step carefully...";
+	this->hostileEncText = "A combatant ambushes you! Pick your next step carefully...";
 	this->hostileAtkPlayerText = "The hostile swings back! Click to continue...";
 	this->hostileAtkZinText = "The hostile swings at Zin! Click to continue...";
 	this->hostileAtkZinBlkText = "You block Zin from the strike! Click to continue...";
@@ -224,7 +224,7 @@ void Combat::initCombat(Sprites& sprites, Player& player, Animation& animate)
 {
 	sprites.soundCombatStart.play(); //Play combat Sfx
 	//this->updateStats(assets, player);
-	sprites.text.setString(this->hostileEncounterText);
+	sprites.text.setString(this->hostileEncText);
 	sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(this->playerHp) + "/" + std::to_string(this->playerHpMax));
 	sprites.spriteText[1].setString("Zin            " + std::to_string(this->zinHp) + "/" + std::to_string(this->zinHpMax));
 	sprites.spriteText[2].setString(this->hostileName + std::to_string(this->hostileHp) + "/" + std::to_string(this->hostileHpMax));
@@ -623,7 +623,7 @@ void Combat::initWolf(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Wolf";
 		this->hostileName = "Wolf	    ";
-		this->hostileEncounterText = "A wolf leaps out of the bushes, ambushing you!";
+		this->hostileEncText = "A wolf leaps out of the bushes, ambushing you!";
 		this->hostileAtkPlayerText = "The wolf lunges forwards, biting you!";
 		this->hostileAtkZinText = "The wolf jumps towards Zin, biting her!";
 		this->hostileAtkZinBlkText = "The wolf leaps in the air towards Zin, however you block it just in time!";
@@ -660,7 +660,7 @@ void Combat::initDecayWalker(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Decay Walker";
 		this->hostileName = "Decay Walker ";
-		this->hostileEncounterText = "A horrific creature appears before you, threatening your life!";
+		this->hostileEncText = "A horrific creature appears before you, threatening your life!";
 		this->hostileAtkPlayerText = "The walking pile of decay swings at you, striking you!";
 		this->hostileAtkZinText = "The walker jumps towards Zin, hitting her!";
 		this->hostileAtkZinBlkText = "The walker leaps towards Zin, however you deflect the attack just in time!";
@@ -697,7 +697,7 @@ void Combat::initHostileTree(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Tree Mimic";
 		this->hostileName = "Tree Mimic ";
-		this->hostileEncounterText = "A tree shifts into a horrifying creature, revealing itself and lunging at you!";
+		this->hostileEncText = "A tree shifts into a horrifying creature, revealing itself and lunging at you!";
 		this->hostileAtkPlayerText = "The mimic strikes you with a spiked branch!";
 		this->hostileAtkZinText = "The mimic launches at Zin, striking her with a branch!";
 		this->hostileAtkZinBlkText = "The mimic rushes towards Zin, however you deflect its strike just in time!";
@@ -734,7 +734,7 @@ void Combat::initDecayKnight(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Decay Knight";
 		this->hostileName = "Decay Knight ";
-		this->hostileEncounterText = "You're ambushed by a horrifying knight rotting from decay!";
+		this->hostileEncText = "You're ambushed by a horrifying knight rotting from decay!";
 		this->hostileAtkPlayerText = "The knight lunges forwards with precision, striking you!";
 		this->hostileAtkZinText = "The knight swings his sword at Zin, striking her!";
 		this->hostileAtkZinBlkText = "The knight lunges his sword towards Zin, however you deflect it just on time!";
@@ -767,7 +767,7 @@ void Combat::initLostNun(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Lost Nun";
 		this->hostileName = "Lost Nun ";
-		this->hostileEncounterText = "The woman steps forwards, revealing the sheer spread of her decay. She readies to attack you.";
+		this->hostileEncText = "The woman steps forwards, revealing the sheer spread of her decay. She readies to attack you.";
 		this->hostileAtkPlayerText = "The nun launches forwards as she spews out rotting decay, brutally striking you!";
 		this->hostileAtkZinText = "The nun targets Zin, hitting her with horrifying amounts of molten decay!";
 		this->hostileAtkZinBlkText = "The nun targets Zin launching more decay at her, however you deflect it just on time!";
@@ -804,7 +804,7 @@ void Combat::initDecapod(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Abyssal Decapod";
 		this->hostileName = "Abyssal Decapod ";
-		this->hostileEncounterText = "The horrifying abomination stands before you as its face wriggles with tentacles...";
+		this->hostileEncText = "The horrifying abomination stands before you as its face wriggles with tentacles...";
 		this->hostileAtkPlayerText = "The horrifying abomination grabs ahold of you and strikes you violently!";
 		this->hostileAtkZinText = "The creature spits acid directly at Zin, hitting her with it!";
 		this->hostileAtkZinBlkText = "The abomination attempts to spit at Zin with acid, however you block it with your sword just in time!";
@@ -841,7 +841,7 @@ void Combat::initHazeDemon(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Haze Demon";
 		this->hostileName = "Haze Demon ";
-		this->hostileEncounterText = "The horrifying abomination stands before you as it creatres a strange auora...";
+		this->hostileEncText = "The horrifying abomination stands before you as it creatres a strange auora...";
 		this->hostileAtkPlayerText = "The horrifying abomination grabs ahold of you and strikes you violently!";
 		this->hostileAtkZinText = "The creature splices the air in front Zin, hitting her with the airwaves!";
 		this->hostileAtkZinBlkText = "The abomination attempts to split the air towards Zin, however you block it just in time!";
@@ -879,7 +879,7 @@ void Combat::initCourtJester(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Court Jester";
 		this->hostileName = "Court Jester ";
-		this->hostileEncounterText = "The jester stands with a horrifying grin...";
+		this->hostileEncText = "The jester stands with a horrifying grin...";
 		this->hostileAtkPlayerText = "The jester stabs you with a small dagger, brutally injuring you!";
 		this->hostileAtkZinText = "The jester sprints towards Zin, stabbing her with his knife!";
 		this->hostileAtkZinBlkText = "The jester runs towards Zin with a disgusting smile and a knife in his hand, however you block the knife just in time!";
@@ -916,7 +916,7 @@ void Combat::initWallMimic(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Wall Mimic";
 		this->hostileName = "Wall Mimic ";
-		this->hostileEncounterText = "The walls begin to shift as the face appears before you.";
+		this->hostileEncText = "The walls begin to shift as the face appears before you.";
 		this->hostileAtkPlayerText = "The walls shift as the mimic launches towards you, striking you!";
 		this->hostileAtkZinText = "The mimic targets Zin, striking her with extreme force!";
 		this->hostileAtkZinBlkText = "The mimic attempts to bite Zin, however you tackle her out of the way just in time!";
@@ -953,7 +953,7 @@ void Combat::initLostKnight(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Lost Knight";
 		this->hostileName = "Lost Knight ";
-		this->hostileEncounterText = "The knight stands in protest, ready to fight to the death...";
+		this->hostileEncText = "The knight stands in protest, ready to fight to the death...";
 		this->hostileAtkPlayerText = "The knight stabs you with his sword!";
 		this->hostileAtkZinText = "The knight dashes towards Zin, slightly hesitanting due to her being a child. Despite this, he still strikes her!";
 		this->hostileAtkZinBlkText = "The knight dashes towards Zin slashing at her, however you block the blade just in time!";
@@ -990,7 +990,7 @@ void Combat::initPhantom(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Phantom";
 		this->hostileName = "Phantom ";
-		this->hostileEncounterText = "The phantom phases into existence right before you, charging...";
+		this->hostileEncText = "The phantom phases into existence right before you, charging...";
 		this->hostileAtkPlayerText = "The phantom appears right before you, striking you before you can react!";
 		this->hostileAtkZinText = "The phantom vanishes before reappearing next to Zin, using the opprotunity to strike her!";
 		this->hostileAtkZinBlkText = "The phantom runs towards Zin with a disgusting smirk, however you block the attack just in time!";
@@ -1027,7 +1027,7 @@ void Combat::initSkinEater(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Skin Eater";
 		this->hostileName = "Skin Eater ";
-		this->hostileEncounterText = "The skin eater stands with a horrifying face, locking eyes with you...";
+		this->hostileEncText = "The skin eater stands with a horrifying face, locking eyes with you...";
 		this->hostileAtkPlayerText = "The skin eater attempts to bite you but only grazes you!";
 		this->hostileAtkZinText = "The skin eater sprints towards Zin, lunging at her and striking her!";
 		this->hostileAtkZinBlkText = "The skin eater runs towards Zin, however you pull Zin out of the way just in time!";
@@ -1060,7 +1060,7 @@ void Combat::initSiward(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Siward";
 		this->hostileName = "Siward ";
-		this->hostileEncounterText = "Siward stands with decay dripping from the front of his helmet...";
+		this->hostileEncText = "Siward stands with decay dripping from the front of his helmet...";
 		this->hostileAtkPlayerText = "Siward slashes his sword at you with the precision of a true knight!";
 		this->hostileAtkZinText = "Siward slashes towards Zin, brutally striking her!";
 		this->hostileAtkZinBlkText = "Siward sends his sword towards Zin with great might, however you deflect it just in time!";
@@ -1098,7 +1098,7 @@ void Combat::initLimbSplitter(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Limb Splitter";
 		this->hostileName = "Limb Splitter ";
-		this->hostileEncounterText = "The limb splitter stares you down, waiting for its meal...";
+		this->hostileEncText = "The limb splitter stares you down, waiting for its meal...";
 		this->hostileAtkPlayerText = "The limb splitter strikes you with one of its ligaments!";
 		this->hostileAtkZinText = "The limb splitter catches Zin off guard, striking her with one of its arms!";
 		this->hostileAtkZinBlkText = "The limb splitter attempts to impale Zin with one of its arms, however you tackle her out of the way just in time!";
@@ -1135,7 +1135,7 @@ void Combat::initBurrower(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Burrower";
 		this->hostileName = "Burrower ";
-		this->hostileEncounterText = "The burrower quickly rushes towards you, ready to attack...";
+		this->hostileEncText = "The burrower quickly rushes towards you, ready to attack...";
 		this->hostileAtkPlayerText = "The burrower crashes up from the ground, striking you with its spiked body!";
 		this->hostileAtkZinText = "The burrower catches Zin off guard, striking with one of its spiked quills!";
 		this->hostileAtkZinBlkText = "The burrower bursts from the wall, attempting to consume Zin whole, however you tackle her out of the way just in time!";
@@ -1172,7 +1172,7 @@ void Combat::initChatterMouth(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Chatter Mouth";
 		this->hostileName = "Chatter Mouth ";
-		this->hostileEncounterText = "The chatter mouth quickly rushes towards you, ready to attack...";
+		this->hostileEncText = "The chatter mouth quickly rushes towards you, ready to attack...";
 		this->hostileAtkPlayerText = "The chatter mouth uses its wide body to swing around the limited cave space, smashing you into the wall!";
 		this->hostileAtkZinText = "The chatter mouths body strikes Zin as it swings it violently!";
 		this->hostileAtkZinBlkText = "The chatter mouth attempts to drag Zin into its serrated mouth, however you firmly grab ahold of Zin's arm and pull her out of its grasp!";
@@ -1209,7 +1209,7 @@ void Combat::initReclus(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Reclus";
 		this->hostileName = "Reclus ";
-		this->hostileEncounterText = "The reclus moves quickly rushing forwards ready to attack...";
+		this->hostileEncText = "The reclus moves quickly rushing forwards ready to attack...";
 		this->hostileAtkPlayerText = "The reclus smashes you with its hand into the wall!";
 		this->hostileAtkZinText = "The reclus drags its hand across the floor, striking Zin!";
 		this->hostileAtkZinBlkText = "The reclus mouth attempts to drag Zin into its serrated mouth, however you firmly grab ahold of Zin's arm and pull her out of its grasp!";
@@ -1246,7 +1246,7 @@ void Combat::initTendrilAlpha(Sprites& sprites)
 
 		this->hostileNameNoSpc = "Tendril Alpha";
 		this->hostileName = "Tendril Alpha ";
-		this->hostileEncounterText = "The abomination moves quickly rushing forwards ready to attack...";
+		this->hostileEncText = "The abomination moves quickly rushing forwards ready to attack...";
 		this->hostileAtkPlayerText = "The abomination smashes one of its tendrils into you!";
 		this->hostileAtkZinText = "The abomination strikes Zin with one of its tendrils!";
 		this->hostileAtkZinBlkText = "The alpha attempts to swarm Zin with its tendrils, however you jump in between each tendril slicing them away!";

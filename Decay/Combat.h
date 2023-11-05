@@ -106,7 +106,7 @@ private:
 
 	std::string hostileNameNoSpc;
 	std::string hostileName;
-	std::string hostileEncounterText;
+	std::string hostileEncText;
 	std::string hostileAtkPlayerText;
 	std::string hostileAtkZinText;
 	std::string hostileAtkZinBlkText;

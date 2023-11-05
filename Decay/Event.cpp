@@ -9,20 +9,22 @@ Event::Event()
     this->itemGained = false;
 
     //Event Availability Bools
-    this->thomEncountered = false;
-    this->siwardEncounteredForest = false;
-    this->siwardEncounteredCastle = false;
-    this->siwardEncounteredFinal = false;
+    this->thomEnced = false;
+    this->siwardEncedForest = false;
+    this->siwardEncedCastle = false;
+    this->siwardEncedFinal = false;
 
-    this->spadeEncounteredForest = false;
-    this->spadeEncounteredAbyssalForest = false;
-    this->spadeEncounteredCastle = false;
-    this->spadeEncounteredCastlePoison = false;
+    this->spadeEncedForest = false;
+    this->spadeEncedAbyssalForest = false;
+    this->spadeEncedCastle = false;
+    this->spadeEncedCastlePoison = false;
+    this->spadeEncedDecay = false;
+    this->spadeEncedDecayPoison = false;
 
-    this->treeEncountered = false;
-    this->obeliskEncountered = false;
+    this->treeEnced = false;
+    this->obeliskEnced = false;
 
-    this->nunEncountered = false;
+    this->nunEnced = false;
 
     //Event Control Flow Bools
     this->spadePoison = false;
@@ -88,6 +90,8 @@ void Event::healCharacters(sf::RenderWindow& window, Sprites& sprites, Combat& c
         sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(combat.getPlayerHp()) + "/" + std::to_string(combat.getPlayerHpMax()));
         sprites.spriteText[1].setString("Zin            " + std::to_string(combat.getZinHp()) + "/" + std::to_string(combat.getZinHpMax()));
         sprites.spriteText[5].setString("Thom          " + std::to_string(combat.getThomHp()) + "/" + std::to_string(combat.getThomHpMax()));
+        combat.getComTextRemoved() = false;
+        combat.combatTextTime.restart();//Reset text
     }
 }
 
@@ -105,7 +109,7 @@ void Event::smithingText(sf::RenderWindow& window, Sprites& sprites)
     }
 }
 
-void Event::smithingSharpenBlade(sf::RenderWindow& window, Sprites& sprites, Player& player)
+void Event::smithingSharpenBlade(sf::RenderWindow& window, Sprites& sprites, Player& player, Combat& combat)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -133,9 +137,13 @@ void Event::smithingSharpenBlade(sf::RenderWindow& window, Sprites& sprites, Pla
                 player.printInventory(sprites);
                 break;
             }
+            combat.getComTextRemoved() = false;
+            combat.combatTextTime.restart();//Reset text
         }
         else if (player.getSmithingStones() <= 0) {
             sprites.text.setString("You lack the required smithing stones to improve your sword...");
+            combat.getComTextRemoved() = false;
+            combat.combatTextTime.restart();//Reset text
         }
     }
 }
@@ -217,9 +225,9 @@ void Event::zinInitialTalk(Sprites& sprites, Animation& animate)
 }
 
 //Forest Entrance Events
-void Event::forestSiwardEncounter(Sprites& sprites)
+void Event::forestSiwardEnc(Sprites& sprites)
 {
-    if (!this->siwardEncounteredForest) {
+    if (!this->siwardEncedForest) {
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
@@ -285,16 +293,16 @@ void Event::forestSiwardEncounter(Sprites& sprites)
             //Make siwards entity invisible
             sprites.getEntityViewerCounter() = -1;
             this->reInitialize = true;//Reset dialogue counter for other events
-            this->siwardEncounteredForest = true;
+            this->siwardEncedForest = true;
             break;
         }
     }
 }
 
 //Forest Depths Events
-void Event::forestDepthsSpadeEncounter(Sprites& sprites)
+void Event::forestDepthsSpadeEnc(Sprites& sprites)
 {
-    if (!this->spadeEncounteredForest) {
+    if (!this->spadeEncedForest) {
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
@@ -372,15 +380,15 @@ void Event::forestDepthsSpadeEncounter(Sprites& sprites)
             //Make spades entity invisible
             sprites.getEntityViewerCounter() = -1;
             this->reInitialize = true;//Reset dialogue counter for other events
-            this->spadeEncounteredForest = true;
+            this->spadeEncedForest = true;
             break;
         }
     }
 }
 
-void Event::treeEncounter(Sprites& sprites, Player& player)
+void Event::treeEnc(Sprites& sprites, Player& player)
 {
-    if (!this->treeEncountered) {
+    if (!this->treeEnced) {
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
@@ -447,15 +455,15 @@ void Event::treeEncounter(Sprites& sprites, Player& player)
             sprites.getEventAssets() = false;
             sprites.getEntityViewerCounter() = -1;
             this->reInitialize = true;//Reset dialogue counter for other events
-            this->treeEncountered = true;
+            this->treeEnced = true;
             break;
         }
     }
 }
 
-void Event::thomEncounter(Sprites& sprites)
+void Event::thomEnc(Sprites& sprites)
 {
-    if (!this->thomEncountered) {
+    if (!this->thomEnced) {
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
@@ -514,16 +522,16 @@ void Event::thomEncounter(Sprites& sprites)
             sprites.getEventAssets() = false;
             sprites.getEntityViewerCounter() = -1;
             this->reInitialize = true;//Reset dialogue counter for other events
-            this->thomEncountered = true;
+            this->thomEnced = true;
             break;
         }
     }
 }
 
 //Forest Abyssal Events
-void Event::obeliskEncounter(Sprites& sprites, Player& player)
+void Event::obeliskEnc(Sprites& sprites, Player& player)
 {
-    if (!this->obeliskEncountered) {
+    if (!this->obeliskEnced) {
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
@@ -597,15 +605,15 @@ void Event::obeliskEncounter(Sprites& sprites, Player& player)
             sprites.getEntityViewerCounter() = -1;
             this->itemGained = false;
             this->reInitialize = true;//Reset dialogue counter for other events
-            this->obeliskEncountered = true;
+            this->obeliskEnced = true;
             break;
         }
     }
 }
 
-void Event::lostNunEncounter(Sprites& sprites)
+void Event::lostNunEnc(Sprites& sprites)
 {
-    if (!this->nunEncountered) {
+    if (!this->nunEnced) {
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
@@ -653,16 +661,16 @@ void Event::lostNunEncounter(Sprites& sprites)
             sprites.text.setString("");
             sprites.getEventAssets() = false;
             this->reInitialize = true;//Reset dialogue counter for other events
-            this->nunEncountered = true;
+            this->nunEnced = true;
             break;
         }
     }
 }
 
 //Forest Abyssal Depths Events
-void Event::forestAbyssalSpadeEncounter(Sprites& sprites, Player& player)
+void Event::forestAbyssalSpadeEnc(Sprites& sprites, Player& player)
 {
-    if (!this->spadeEncounteredAbyssalForest) {
+    if (!this->spadeEncedAbyssalForest) {
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
@@ -743,16 +751,16 @@ void Event::forestAbyssalSpadeEncounter(Sprites& sprites, Player& player)
             sprites.text.setString("");
             sprites.getEventAssets() = false;
             this->reInitialize = true;//Reset dialogue counter for other events
-            this->spadeEncounteredAbyssalForest = true;
+            this->spadeEncedAbyssalForest = true;
             break;
         }
     }
 }
 
 //Castle Hall Events
-void Event::castleSpadeEncounter(Sprites& sprites)
+void Event::castleSpadeEnc(Sprites& sprites)
 {
-    if (!this->spadeEncounteredCastle) {
+    if (!this->spadeEncedCastle) {
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
@@ -854,15 +862,15 @@ void Event::castleSpadeEncounter(Sprites& sprites)
             sprites.text.setString("");
             sprites.getEventAssets() = false;
             this->reInitialize = true;//Reset dialogue counter for other events
-            this->spadeEncounteredCastle = true;
+            this->spadeEncedCastle = true;
             break;
         }
     }
 }
 
-void Event::castleSpadeEncounterPoison(Sprites& sprites)
+void Event::castleSpadeEncPoison(Sprites& sprites)
 {
-    if (!this->spadeEncounteredCastlePoison) {
+    if (!this->spadeEncedCastlePoison) {
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
@@ -982,16 +990,16 @@ void Event::castleSpadeEncounterPoison(Sprites& sprites)
             sprites.text.setString("");
             sprites.getEventAssets() = false;
             this->reInitialize = true;//Reset dialogue counter for other events
-            this->spadeEncounteredCastlePoison = true;
+            this->spadeEncedCastlePoison = true;
             break;
         }
     }
 }
 
 //Castle Depth Events
-void Event::castleSiwardEncounter(Sprites& sprites)
+void Event::castleSiwardEnc(Sprites& sprites)
 {
-    if (!this->siwardEncounteredCastle) {
+    if (!this->siwardEncedCastle) {
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
@@ -1062,16 +1070,16 @@ void Event::castleSiwardEncounter(Sprites& sprites)
             sprites.getEntityViewerCounter() = -1;
             sprites.getSiwardCounter() = -1;
             this->reInitialize = true;//Reset dialogue counter for other events
-            this->siwardEncounteredCastle = true;
+            this->siwardEncedCastle = true;
             break;
         }
     }
 }
 
 //Castle Labyrinth Events
-void Event::castleSiwardFinalEncounter(Sprites& sprites)
+void Event::castleSiwardFinalEnc(Sprites& sprites)
 {
-    if (!this->siwardEncounteredFinal) {
+    if (!this->siwardEncedFinal) {
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
@@ -1092,23 +1100,101 @@ void Event::castleSiwardFinalEncounter(Sprites& sprites)
             break;
         case 3:
             this->reInitialize = true;//Reset dialogue counter for other events
-            this->siwardEncounteredFinal = true;
+            this->siwardEncedFinal = true;
             break;
         }
     }
 }
 
 //Decay Forest Events
-void Event::decaySpadeEncounter(Sprites& sprites)
+void Event::decaySpadeEnc(Sprites& sprites)
 {
-    if (!this->spadeEncounteredDecay) {
+    if (!this->spadeEncedDecay) {
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
             this->hideOpenAssets(sprites);
             sprites.getSpadeCounter() = 0;
             sprites.getEntityViewerCounter() = 26;
+            sprites.text.setString("*You notice a strange woman ahead wearing a peasants dress... But once you get closer, you recognize the person. It's Spade the jester! You almost didn't recognize her in normal clothes...*\n\n'Hello! It's good to see you two again. I normally wouldn't want to be this far out near the root of the decay but... I have something for you both.'");
+            break;
+        case 1:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'What would that be?'");
+            sprites.answerBoxText[1].setString("2. 'You didn't have to do that.'");
+            break;
+        case 2:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("'Well, you both fight such horrific creatures constantly... so I figured that something practical to both of your survival would be best...'\n\n*She hands out what looks to be a stone made of pure light...* +1 Ancient Smithing Stone");
+                break;
+            case 1:
+                sprites.text.setString("'Well... I wanted to. It's not like I'm neww to anything out here, even if I'd probably be less capable against them now. But anyways, take this...'\n\n*She hands out what looks to be a stone made of pure light...* +1 Ancient Smithing Stone");
+                break;
+            }
+            break;
+        case 3:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'It's a smithing stone?'");
+            sprites.answerBoxText[1].setString("2. 'This looks so delicate... What do I do with it?'");
+            break;
+        case 4:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("'It is a smithing stone. I was told legends of a stone that's capable of making a sword as sharp as the edge of the void itself... Whatever that means exactly...'\n\n*She gives a kind smile before handing it towards you* 'I thought of you two and wanted you both to be safe.' *She hands out what looks to be a stone made of pure light...* +1 Ancient Smithing Stone");
+                break;
+            case 1:
+                sprites.text.setString("'Well... I wanted to. It's not like I'm new to anything out here, even if I'd probably be less capable against them now. But anyways, take this...'\n\n*She hands out what looks to be a stone made of pure light...* +1 Ancient Smithing Stone");
+                break;
+            }
+            break;
+        case 5:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'Well, I appreciate it. This will certainly be of great use I'm sure.'");
+            sprites.answerBoxText[1].setString("2. 'This will help with slaying the abominations that lay ahead.'");
+            break;
+        case 6:
+            sprites.getShowAnsBoxesCounter() = -1;
+            sprites.text.setString("*She gives a warm smile back to you.* 'I'm glad to hear that. And thanks again for uh- having patience with me when I was insane. That must have taken a lot of effort...'");
+            break;
+        case 7:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'Don't mention it.'");
+            sprites.answerBoxText[1].setString("2. 'It was a pain in the ass and so are you.'");
+            break;
+        case 8:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("'Well, I'm going to go back to safer territory now. Best of luck you two. I truly hope you both will be what this world needs.'");
+                break;
+            case 1:
+                sprites.text.setString("*She awkwardly laughs, seeming to take your sudden outburst as a joke. Or perhaps she simply doesn't want to acknowledge what you said...* 'Well, I'm going to go back to safer territory now. Best of luck you two. I truly hope you both will be what this world needs.'");
+                break;
+            }
+            break;
+        case 9:
+            sprites.getSpadeCounter() = 0;
+            sprites.getEntityViewerCounter() = -1;
+            sprites.text.setString("And with that, you watch what seemed like an absolutely insane, irrate jester walk off as a normal and kind girl. You take it as a lesson to not judge books by their covers...*\n\n*Until you remember all the horrific shit you've fought that definitely looks like their goddamn cover. Fuck life lessons here, let's just get out alive.*");
+            break;
+        case 10:
             sprites.text.setString("");
+            this->reInitialize = true;//Reset dialogue counter for other events
+            this->spadeEncedDecay = true;
+            break;
+        }
+    }
+}
+
+void Event::decaySpadeEncPoison(Sprites& sprites)
+{
+    if (!this->spadeEncedDecayPoison) {
+        this->reInit(sprites);
+        switch (this->dialogue) {
+        case 0:
             break;
         }
     }
