@@ -97,6 +97,7 @@ private:
 	int thomPickMove;
 
 	//Animation Control
+	bool comTextRemoved;
 	bool firstAttack;
 
 	//Init Strings
@@ -230,6 +231,12 @@ public:
 	int& getPlayerPickMove() { return this->playerPickMove; };
 	int& getZinPickMove() { return this->zinPickMove; };
 	int& getThomPickMove() { return this->thomPickMove; };
+
+	//Animation Control Getters
+	bool& getComTextRemoved() { return this->comTextRemoved; };
+
+	sf::Time combatTextElapsed;
+	sf::Clock combatTextTime;
 };
 
 #endif

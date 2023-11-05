@@ -88,6 +88,7 @@ Combat::Combat()
 
 	//Animation Control
 	this->firstAttack = false;
+	this->comTextRemoved = true;
 
 	//Init Strings
 	this->playerTurnText = "You plan your next move...";
@@ -178,6 +179,8 @@ void Combat::combatLoop(Sprites& sprites, Player& player, Animation& animate)
 			sprites.setCombatAssetsFalse();
 			player.combatReward();
 			sprites.text.setString("You have killed the " + this->hostileNameNoSpc + ". " + std::to_string(player.getExp()) + " Exp gained...");
+			combatTextTime.restart();//Start timer to remove text
+			this->comTextRemoved = false;//Remove text
 			sprites.getTipBoxCounter() = -1;
 			//Make entity viewer blank again
 			sprites.getEntityViewerCounter() = -1;
@@ -651,7 +654,7 @@ void Combat::initDecayWalker(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 1;
+		this->hostileHp = 35;
 		this->hostileHpMax = 35;
 		this->hostileStrike = 2;
 

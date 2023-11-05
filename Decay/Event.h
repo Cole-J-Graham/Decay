@@ -23,6 +23,7 @@ private:
 	bool spadeEncounteredAbyssalForest;
 	bool spadeEncounteredCastle;
 	bool spadeEncounteredCastlePoison;
+	bool spadeEncounteredDecay;
 
 	bool treeEncountered;
 	bool obeliskEncountered;
@@ -85,6 +86,9 @@ public:
 	//Castle Labyrinth Events
 	void castleSiwardFinalEncounter(Sprites& sprites);
 
+	//Decay Events
+	void decaySpadeEncounter(Sprites& sprites);
+
 
 	//Control Flow Getters
 	bool& getReInitialize() { return this->reInitialize; };
@@ -98,6 +102,9 @@ public:
 	int& getChoiceCounter() { return this->choiceCounter; };
 
 	int& getDialogue() { return this->dialogue; };
+
+	//Event Control Flow Getters
+	bool& getSpadePoison() { return this->spadePoison; };
 
 	//Setters
 	void setDialogueInc() { this->dialogue++; };

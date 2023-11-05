@@ -45,7 +45,7 @@ void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& pl
     window.setFramerateLimit(144);
     // run the program as long as the window is open
     while (window.isOpen()) {
-        std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
+        //std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
         clock.restart();
         // check all the window's events that were triggered since the last iteration of the loop
         while (window.pollEvent(event)) {
@@ -147,6 +147,11 @@ void World::Draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
 
     // draw everything here...
     if (this->mainMenu == false && !sprites.getPlayerDeath()) {
+        combat.combatTextElapsed = combat.combatTextTime.getElapsedTime();//Reset stats text after 3 seconds
+        if (combat.combatTextElapsed.asSeconds() >= 3 && !combat.getComTextRemoved()) {
+            sprites.text.setString("");
+            combat.getComTextRemoved() = true;
+        }
         sprites.greyOnHover(window);
         sprites.drawObjects(sprites);
         travel.travelCore(window, sprites, notevent, combat, player, animate);
@@ -235,6 +240,10 @@ void World::Draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
         }
 
         if (sprites.getInitStats() == true) {
+            textElapsed = textTime.getElapsedTime();//Reset stats text after 3 seconds
+            if (textElapsed.asSeconds() >= 3) {
+                sprites.text.setString("");
+            }
             window.draw(sprites.rectStatsBox);
             if (sprites.getPlayerStatsInit() == true) {
                 this->printPlayerStats(window, sprites, notevent, combat, player);
@@ -693,18 +702,19 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
 
 void World::levelUp(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites, sf::RectangleShape& inputRect, int& lvl, int& sp, int& exp, int& expNext)
 {
-    player.statsText(sprites);
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
     if (sprites.getInitStats()) {
         if (inputRect.getGlobalBounds().contains(mousePosF)) {
+            textTime.restart();
             if (exp >= expNext) {
                 lvl++;
                 sp++;
                 exp -= expNext;
-                sprites.playerTextElements[0].setString("LEVEL " + std::to_string(player.getLevel()));
-                sprites.text.setString("Level up achieved. Level " + std::to_string(player.getLevel()) + " reached. One SP point acquired...");
+                player.statsText(sprites);
+                sprites.playerTextElements[0].setString("LEVEL " + std::to_string(lvl));
+                sprites.text.setString("Level up achieved. Level " + std::to_string(lvl) + " reached. One SP point acquired...");
                 sprites.statSound.play();
             }
             else if (exp <= expNext) {
@@ -722,11 +732,12 @@ void World::statUp(sf::RenderWindow& window, Combat& combat, Player& player, Spr
 
     if (sprites.getInitStats()) {
         if (inputRect.getGlobalBounds().contains(mousePosF)) {
+            textTime.restart();
             if (sp >= 1) {
                 stat++;
                 sp--;
-                sprites.playerTextElements[1].setString("STRENGTH " + std::to_string(player.getStrength()));
-                sprites.text.setString("Strength improved. Level " + std::to_string(player.getStrength()) + " in strength reached. One SP point spent...");
+                player.statsText(sprites);
+                sprites.text.setString("Stat improved...");
                 combat.updateStats(sprites, player);
                 sprites.statSound.play();
             }

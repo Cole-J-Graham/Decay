@@ -94,6 +94,8 @@ public:
 	sf::Texture spadeEntityForest;
 	sf::Texture spadeEntityAbyssalForest;
 	sf::Texture spadeEntityCastle;
+	sf::Texture spadeEntityCrimson;
+	sf::Texture spadeEntityCrimsonPoison;
 	//Viewer Files Random Events
 	sf::Texture treeEntity;
 	sf::Texture obeliskEntity;

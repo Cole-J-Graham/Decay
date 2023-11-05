@@ -150,7 +150,7 @@ void Travel::introBeginning(sf::RenderWindow& window, Sprites& sprites, Event& n
             sprites.soundWalk.play();
             this->frameInit = true;
         }
-        sprites.text.setString("You begin walking for what feels like days, time passage beginning to slip into a distant memory. You know something's wrong when you begin asking question like 'Who am I?', 'Where am I?'\n\nYou eventually pass out...");
+        sprites.text.setString("*You begin walking for what feels like days, time passage beginning to slip into a distant memory. You know something's wrong when you begin asking question like 'Who am I?', 'Where am I?'*\n\n*You eventually pass out...*");
         break;
     case 7:
         if (!this->frameInit) {
@@ -158,12 +158,12 @@ void Travel::introBeginning(sf::RenderWindow& window, Sprites& sprites, Event& n
             sprites.soundWalk.play();
             this->frameInit = true;
         }
-        sprites.text.setString("When you awaken, you realize you're still in the woods, however you notice a small figure just beneath the foot of a tree. You look down at yourself and notice a lack of former injuries.\nShe must have healed you.");
+        sprites.text.setString("*When you awaken, you realize you're still in the woods and laying on the floor, however you notice a small figure just beneath the foot of a tree. You look down at yourself and notice a lack of former injuries.*\n\n*She must have healed you... And given by her ears she looks like an elf. You assume she must be a priestess.*");
         break;
     case 8:
         sprites.getZinCounter() = 0; //Set correct frame for zins sprite to appear
         sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
-        sprites.answerBoxText[0].setString("1. 'Are you a priest, kid?'");
+        sprites.answerBoxText[0].setString("1. *Try to stand*");
         sprites.answerBoxText[1].setString("2. 'Did you save me?'");
         break;
     case 9:
@@ -171,54 +171,47 @@ void Travel::introBeginning(sf::RenderWindow& window, Sprites& sprites, Event& n
         sprites.getShowAnsBoxesCounter() = -1;
         switch (notevent.getChoiceCounter()) {
         case 0:
-            sprites.text.setString("'Uh... Yeah, I am. It doesn't mean I could help that though...\n\n*She points to your arm covered in decay, slowly rotting.\n\n*You roll your sleeve back up, hiding the wound, wondering how much time you have left...*'");
+            sprites.text.setString("'Hey, be careful. I patched you up but uh... Well I can't do much about that long term...' *The girl states as she points to the decay festering in your arm.*\n\n*She seems to perk up slightly before speaking again...* 'Though, I am able to cleanse it for a time to keep you going.'");
             break;
         case 1:
-            sprites.text.setString("'I did the best I could, but your decay...'\n\n*She points to your arm covered in it, slowly rotting.\n\n*You roll your sleeve back up, hiding the wound, wondering how much time you have left...*");
+            sprites.text.setString("'I did the best I could, but your decay...'\n\n*She points to your arm covered in it, slowly rotting. *You roll your sleeve back up, hiding the wound, wondering how much time you have left...*\n\n*She seems to perk up slightly before speaking again...* 'But I am able to cleanse it for a short time... to keep you going.'");
             break;
         }
         break;
     case 10:
         sprites.getZinCounter() = 0;
         sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
-        sprites.answerBoxText[0].setString("1. 'Well, I appreciate you saving my life. I would be dead without your help.'");
-        sprites.answerBoxText[1].setString("2. 'Did you come from the castle?'");
+        sprites.answerBoxText[0].setString("1. 'Thanks.'");
+        sprites.answerBoxText[1].setString("2. 'I know how the decay works, kid.'");
         break;
     case 11:
-        sprites.getZinCounter() = 0;
         sprites.getShowAnsBoxesCounter() = -1;
         switch (notevent.getChoiceCounter()) {
         case 0:
-            sprites.text.setString("*She refrains from speaking further, only looks away briefly from you.*");
+            sprites.getZinCounter() = 1;
+            sprites.text.setString("*The girl smiles from your simple thanks, taking the liberty to speak again.* 'My name is Zin, what's yours?'\n\n*Before you can answer, she suddenly seems to perk up once more.* 'Wait, I know you! You're that knight guy from the castle!'");
             break;
         case 1:
-            sprites.text.setString("'I did but... They burnt everything... It's all gone.'");
+            sprites.getZinCounter() = 3;
+            sprites.text.setString("*The girl looks slightly annoyed from your remark...* 'I just wanted to make sure you knew. A lot of people dealing with this stuff have no clue how bad it really is...' *She seems to almost be pouting...*\n\n*She continues to mutter before suddenly perking up...* 'My name is Zin by the wa- Hold on, I think I know you! You're that knight from the castle, aren't you?'");
             break;
         }
         break;
     case 12:
         sprites.getZinCounter() = 0;
         sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
-        sprites.answerBoxText[0].setString("1. 'I should be off.' *Take your leave*");
-        sprites.answerBoxText[1].setString("2. 'Do you know how to survive out here? In the woods I mean.'");
+        sprites.answerBoxText[0].setString("1. 'How'd you know?'");
+        sprites.answerBoxText[1].setString("2. 'Yeah, back when there was a castle...'");
         break;
     case 13:
         sprites.getZinCounter() = 0;
-        sprites.getShowAnsBoxesCounter() = -1;
-        switch (notevent.getChoiceCounter()) {
-        case 0:
-            sprites.text.setString("*You stand up and begin to leave when the girl follows you and shouts.*\n\n'Wait! I need you to help me... If you leave me by myself... Could we just start a fire and talk instead? It's cold.'\n\n*You look down at your lack of fire starter...*");
-            break;
-        case 1:
-            sprites.text.setString("'No, not really. We need to make a fire, don't we?'\n\n*You look down at your lack of fire starter...*");
-            break;
-        }
+        sprites.text.setString("'I knew I thought I recognized you. Now it makes sense, you must have gotten infected while helping around the medical ward, huh?' *As she talks you notice her shivering...*");
         break;
     case 14:
         sprites.getZinCounter() = 0;
         sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
-        sprites.answerBoxText[0].setString("1. 'Well, kid, you're the mage here. Can you cast fire?'");
-        sprites.answerBoxText[1].setString("2. 'I'm out of firestarter, so it might take me a minute...'");
+        sprites.answerBoxText[0].setString("1. *Change subject* 'We need to get a fire going. Are you able to cast fire magic?'");
+        sprites.answerBoxText[1].setString("2. 'Yeah, that is how I caught the decay unfortunately. But even with the decay, we still need to worry about the basic elements. Are you able to cast fire magic?'");
         break;
     case 15:
         sprites.getZinCounter() = 0;
@@ -228,7 +221,7 @@ void Travel::introBeginning(sf::RenderWindow& window, Sprites& sprites, Event& n
             sprites.text.setString("'I can cast some lower level fire spells, but I would rather not use smite... It might attract creatures...'\n\n*You feel a bit confused by her words. Smite? That's a very high level lightning spell...*\n\n*She begins lighting a fire as you help stoke it, bringing the flame to life...*");
             break;
         case 1:
-            sprites.text.setString("*The girl perks up in excitment briefly*\n\nI have firestarter! Or uh, well I can cast something that can get us going at least...\n\n*She begins lighting a fire as you help stoke it, bringing the flame to life...*");
+            sprites.text.setString("*The girl perks up briefly* 'I can cast something that can get it sparked at least...'\n\n*She begins lighting a fire as you help stoke it, bringing the flame to life...*");
             break;
         }
         break;
@@ -853,7 +846,12 @@ void Travel::castleDepths(Sprites& sprites, Event& notevent, Combat& combat, Pla
             this->frameInit = true;
         }
         //Initialize Spade and Sprite
-        notevent.castleSpadeEncounter(sprites);
+        if (notevent.getSpadePoison()) {
+            notevent.castleSpadeEncounterPoison(sprites);
+        }
+        else {
+            notevent.castleSpadeEncounter(sprites);
+        }
         break;
     case 1:
         sprites.getStartFrame() = false;

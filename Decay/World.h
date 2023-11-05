@@ -20,6 +20,8 @@ private:
 	sf::RenderWindow window;
 	sf::Image image;
 	sf::Clock clock;
+	sf::Clock textTime;
+	sf::Time textElapsed;
 
 	sf::String playerInput;
 

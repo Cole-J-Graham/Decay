@@ -541,20 +541,20 @@ void Event::obeliskEncounter(Sprites& sprites, Player& player)
             sprites.getShowAnsBoxesCounter() = -1;
             switch (this->choiceCounter) {
             case 0:
-                sprites.text.setString("*You move towards the obelisk, but as you do you notice that it seems like the distance between you and the object is not changing. Instead, you're somehow staying the same distance from it despite moving towards it. You feel a horrible pain in your gut as you keep walking...*");
+                sprites.text.setString("*You move towards the obelisk, but as you do you notice that it seems like the distance between you and the object is not changing.\n\nInstead, you're somehow staying the same distance from it despite moving towards it. You feel a horrible pain in your gut as you keep walking...*");
                 break;
             case 1:
-                sprites.text.setString("*You move away from the obelisk, but as you do you notice that it seems like the distance between you and the object is not changing. Instead, you're somehow staying the same distance from it despite moving away from it. You feel a horrible pain in your gut as you keep backing up...*");
+                sprites.text.setString("*You move away from the obelisk, but as you do you notice that it seems like the distance between you and the object is not changing.\n\nInstead, you're somehow staying the same distance from it despite moving away from it. You feel a horrible pain in your gut as you keep backing up...*");
                 break;
             }
             break;
         case 3:
-            sprites.text.setString("*Suddenly, you hear a voice inside of your head begin to speak to you. It sounds inhuman, almost otherwordly.*\n\n'What is it you wish for? Riches, or power?");
+            sprites.text.setString("*Suddenly, you hear a voice inside of your head begin to speak to you. It sounds inhuman, almost otherwordly.*\n\n'What is it you wish for? Riches, or power?'");
             break;
         case 4:
             sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
             sprites.answerBoxText[0].setString("1. *Play along with it*");
-            sprites.answerBoxText[1].setString("2. 'What the hell are you?'");
+            sprites.answerBoxText[1].setString("2. 'Chocolate shake? Burger? Uhh... Burger?'");
             break;
         case 5:
             sprites.getShowAnsBoxesCounter() = -1;
@@ -712,7 +712,7 @@ void Event::forestAbyssalSpadeEncounter(Sprites& sprites, Player& player)
             sprites.getSpadeCounter() = 1;
             break;
         case 7:
-            sprites.text.setString("*The jester takes a step back once more, taking a deep breath before speaking again.*\n\n 'Hahaha, sorry about that sudden outburst... I just get very emotional sometimes is all. Anywho, let's start over! Could you pleeeasse drink this funny bottle I found? '");
+            sprites.text.setString("*The jester takes a step back once more, taking a deep breath before speaking again.*\n\n'Hahaha, sorry about that sudden outburst... I just get very emotional sometimes is all. Anywho, let's start over! Could you pleeeasse drink this funny bottle I found?'");
             sprites.getSpadeCounter() = 3;
             break;
         case 8:
@@ -770,7 +770,7 @@ void Event::castleSpadeEncounter(Sprites& sprites)
             sprites.getShowAnsBoxesCounter() = -1;
             switch (this->choiceCounter) {
             case 0:
-                sprites.text.setString("*She seems somewhat surprised that you're being civil with her after everything.* 'Not so great to be honest, but I realized that something was extremely wrong with me. The way I acted, especially in front of the little one... It felt horribly wrong. How could I do such a thing?'");
+                sprites.text.setString("*She seems somewhat surprised that you're being civil with her after everything.*\n\n'Not so great to be honest, but I realized that something was extremely wrong with me. The way I acted, especially in front of the little one... It felt horribly wrong. How could I do such a thing?'");
                 break;
             case 1:
                 sprites.text.setString("*She frowns but doesn't retort as you'd expect...* 'Well, that's a fair response... I've acted absolutely obscene towards you and the little one. My actions cannot be forgiven and I apologize greatly for that.'");
@@ -843,6 +843,7 @@ void Event::castleSpadeEncounter(Sprites& sprites)
             sprites.answerBoxText[1].setString("2. 'I'll look past it this once.'");
             break;
         case 14:
+            sprites.getShowAnsBoxesCounter() = -1;
             sprites.getSpadeCounter() = 1;
             sprites.text.setString("*She stares into the distance momentarily before continuing...* 'Well, in any case I best get going. I wish you and the little one the best of luck and if we ever cross paths again never hesitate to ask for anything.'\n\n*She waves goodbye as she walks off in the distance. Suddenly, someone that seemed quite unstable in your book is now perfectly normal. What a strange world this has truly become, you think to yourself...*");
             break;
@@ -897,7 +898,7 @@ void Event::castleSpadeEncounterPoison(Sprites& sprites)
             }
             break;
         case 5:
-            sprites.getZinCounter() = 1;
+            sprites.getZinCounter() = 3;
             sprites.text.setString("*Zin suddenly speaks up, clearly pissed off at how she's treating you.* 'I wanna kill her. Can I kill her? Let me kill her...'");
             break;
         case 6:
@@ -909,15 +910,15 @@ void Event::castleSpadeEncounterPoison(Sprites& sprites)
             break;
         case 8:
             sprites.getZinCounter() = 5;
-            sprites.text.setString("*Morphing from a human shape, the girl slowly begins to melt as the form she take changes... Slowly but surely, she becomes that of a horrid tentacle like being made of human flesh! She brings forth a tentacle, attempting to strike Zin!*");
+            sprites.text.setString("*Morphing from a human shape, the girl slowly begins to melt as the form she take changes... Slowly but surely, she becomes that of a horrid tentacle like being made of human flesh!\n\nShe brings forth a tentacle, attempting to strike Zin!*");
             break;
         case 9:
             sprites.getPlayerCounter() = 1;
-            sprites.text.setString("*Before the tentacle could connect and hit Zin, you rush to block the attack. You can tell you're going to be too late to block the attack, however you feel your rage seep into the decay thats slowly rotting your bones... Something changes. You feel a spark of energy as you launch forwards!*\n\n*You stand your ground being hit by the brute force of what would've been a fatal attack to Zin. You finally speak once more...* 'Just another fucking abomination.'");
+            sprites.text.setString("*Before the tentacle could connect and hit Zin, you rush to block the attack. You can tell you're going to be too late to block the attack, however you feel your rage seep into the decay thats slowly rotting your bones...\n\nSomething changes. You feel a spark of energy as you launch forwards!*\n\n*You stand your ground being hit by the brute force of what would've been a fatal attack to Zin. You finally speak once more...* 'Just another fucking abomination.'");
             break;
         case 10:
             sprites.getSpadeCounter() = 1;
-            sprites.text.setString("*The jester stares at you with an amused look.* 'Oh my, now what do we have here? You look PISSED! I'd be afraid if I cared about dying. Maybe now would actually be a good time to run...'");
+            sprites.text.setString("*The jester stares at you with an annoyed look.* 'Oh my, now what do we have here? You look PISSED! I'd be afraid if I cared about dying. Maybe now would actually be a good time to run...'");
             break;
         case 11:
             sprites.getShowAnsBoxesCounter() = 0;
@@ -929,7 +930,7 @@ void Event::castleSpadeEncounterPoison(Sprites& sprites)
             sprites.getShowAnsBoxesCounter() = -1;
             switch (this->choiceCounter) {
             case 0:
-                sprites.text.setString("*You launch forwards, the jester narrowly dodging your attack as you clearly notice the fear in her eyes from your sudden assault. She springs backwards and leaps out of a nearby castle window without any care as to what's below.\n\nShe seemed desperate to leave that situation. Makes you wonder... who's really the monster?*");
+                sprites.text.setString("*You launch forwards, the jester narrowly dodging your attack as you clearly notice the fear in her eyes from your sudden assault.\n\nShe springs backwards and leaps out of a nearby castle window without any care as to what's below.\n\nShe seemed desperate to leave that situation. Makes you wonder... who's really the monster?*");
                 break;
             case 1:
                 sprites.text.setString("'Well, you speaking is a pretty good chance!' *The jester quips back before leaping out a nearby window out of the castle. Seems she's gone... For now.*");
@@ -1082,7 +1083,7 @@ void Event::castleSiwardFinalEncounter(Sprites& sprites)
             break;
         case 1:
             sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
-            sprites.answerBoxText[0].setString("1. 'You can do it, Siward! Fight the decay!'");
+            sprites.answerBoxText[0].setString("1. 'Siward? Can you still hear me?'");
             sprites.answerBoxText[1].setString("2. 'We will do what we must, friend...'");
             break;
         case 2:
@@ -1090,7 +1091,24 @@ void Event::castleSiwardFinalEncounter(Sprites& sprites)
             sprites.text.setString("*Siward loses all control of his body as he rips the sword back out from his chest. The gaping hole leaks its last crimson drop of blood before quickly being replaced by a darkness blacker then the abyss itself. It's do or die.*");
             break;
         case 3:
+            this->reInitialize = true;//Reset dialogue counter for other events
             this->siwardEncounteredFinal = true;
+            break;
+        }
+    }
+}
+
+//Decay Forest Events
+void Event::decaySpadeEncounter(Sprites& sprites)
+{
+    if (!this->spadeEncounteredDecay) {
+        this->reInit(sprites);
+        switch (this->dialogue) {
+        case 0:
+            this->hideOpenAssets(sprites);
+            sprites.getSpadeCounter() = 0;
+            sprites.getEntityViewerCounter() = 26;
+            sprites.text.setString("");
             break;
         }
     }
