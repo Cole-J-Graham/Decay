@@ -98,7 +98,6 @@ void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& pl
     }
 }
 
-//User Input
 void World::userInput(Sprites& sprites)
 {
     //Get user input for keyboard inputs
@@ -123,13 +122,6 @@ void World::userInput(Sprites& sprites)
             sprites.getSettingsShown() = false;
         }
     }
-}
-
-void World::clearInput()
-{
-    //this->unicode = -1;
-    //playerInput = "";
-    //return;
 }
 
 //Display Functions
@@ -562,57 +554,9 @@ void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Sprites&
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Player Combat Buttons Functionality
-    if (sprites.combatRect[0].getGlobalBounds().contains(mousePosF)) { //If attack button is clicked...
-        if (combat.getTurnPlayer() == true) {
-            combat.setAttackCounterInc();
-            combat.getPlayerPickMove() = 0;
-        }
-    }
-    if (sprites.combatRect[1].getGlobalBounds().contains(mousePosF)) {
-        if (combat.getTurnPlayer() == true) {
-            combat.setAttackCounterInc();
-            combat.getPlayerPickMove() = 1;
-        }
-    }
-    if (sprites.combatRect[2].getGlobalBounds().contains(mousePosF)) {
-        if (combat.getTurnPlayer() == true) {
-            combat.setAttackCounterInc();
-            combat.getPlayerPickMove() = 2;
-        }
-    }
-    //Zin Combat Buttons Functionality
-    if (sprites.combatRect[3].getGlobalBounds().contains(mousePosF)) {
-        if (combat.getTurnZin() == true) {
-            combat.setZinAttackCounterInc();
-            combat.getZinPickMove() = 0;
-        }
-    }
-    if (sprites.combatRect[4].getGlobalBounds().contains(mousePosF)) {
-        if (combat.getTurnZin() == true) {
-            combat.setZinAttackCounterInc();
-            combat.getZinPickMove() = 1;
-        }
-    }
-    if (sprites.combatRect[5].getGlobalBounds().contains(mousePosF)) {
-        if (combat.getTurnZin() == true) {
-            combat.setZinAttackCounterInc();
-            combat.getZinPickMove() = 2;
-        }
-    }
-    //Thom Combat Buttons Functionality
-    if (sprites.combatRect[6].getGlobalBounds().contains(mousePosF)) {
-        if (combat.getTurnThom() == true) {
-            combat.getThomAttackCounter()++;
-            combat.getThomPickMove() = 0;
-        }
-    }
-    if (sprites.combatRect[7].getGlobalBounds().contains(mousePosF)) {
-        if (combat.getTurnThom() == true) {
-            combat.getThomAttackCounter()++;
-            combat.getThomPickMove() = 1;
-        }
-    }
-    else if (sprites.rect.getGlobalBounds().contains(mousePosF) && sprites.getShowAnsBoxesCounter() == -1) {
+    combat.pickMove(window, sprites);
+    
+    if (sprites.rect.getGlobalBounds().contains(mousePosF) && sprites.getShowAnsBoxesCounter() == -1) {
         //If dialogue box is clicked...
         sprites.soundClick.play();
         sprites.setDialogueCounterInc();

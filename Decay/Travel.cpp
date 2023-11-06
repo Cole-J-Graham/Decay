@@ -244,16 +244,16 @@ void Travel::forestMap(sf::RenderWindow& window, Sprites& sprites, Event& noteve
         this->forestBonfire(window, sprites, notevent, combat, player, animate);
         break;
     case 1:
-        this->forestEntrance(sprites, notevent, combat, player, animate);
+        this->forestEntrance(window, sprites, notevent, combat, player, animate);
         break;
     case 2:
-        this->forestDepths(sprites, notevent, combat, player, animate);
+        this->forestDepths(window, sprites, notevent, combat, player, animate);
         break;
     case 3:
-        this->forestAbyssal(sprites, notevent, combat, player, animate);
+        this->forestAbyssal(window, sprites, notevent, combat, player, animate);
         break;
     case 4:
-        this->forestAbyssalDepths(sprites, notevent, combat, player, animate);
+        this->forestAbyssalDepths(window, sprites, notevent, combat, player, animate);
         break;
     }
 }
@@ -272,7 +272,7 @@ void Travel::forestBonfire(sf::RenderWindow& window, Sprites& sprites, Event& no
     this->enterBonfire(window, sprites, notevent);
 }
 
-void Travel::forestEntrance(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
+void Travel::forestEntrance(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     switch (this->frame) {
@@ -292,7 +292,7 @@ void Travel::forestEntrance(Sprites& sprites, Event& notevent, Combat& combat, P
             this->frameInit = true;
         }
         combat.initDecayWalker(sprites);
-        combat.combatLoop(sprites, player, animate);
+        combat.combatLoop(window, sprites, player, animate);
         break;
     case 2:
         if (!this->frameInit) {
@@ -379,7 +379,7 @@ void Travel::forestEntrance(Sprites& sprites, Event& notevent, Combat& combat, P
     }
 }
 
-void Travel::forestDepths(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
+void Travel::forestDepths(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     switch (this->frame) {
@@ -423,7 +423,7 @@ void Travel::forestDepths(Sprites& sprites, Event& notevent, Combat& combat, Pla
             this->frameInit = true;
         }
         combat.initHostileTree(sprites);
-        combat.combatLoop(sprites, player, animate);
+        combat.combatLoop(window, sprites, player, animate);
         break;
     case 6:
         if (!this->frameInit) {
@@ -487,7 +487,7 @@ void Travel::forestDepths(Sprites& sprites, Event& notevent, Combat& combat, Pla
     }
 }
 
-void Travel::forestAbyssal(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
+void Travel::forestAbyssal(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     switch (this->frame) {
     case 0:
@@ -565,7 +565,7 @@ void Travel::forestAbyssal(Sprites& sprites, Event& notevent, Combat& combat, Pl
         notevent.lostNunEnc(sprites);
         if (notevent.getNunEnced()) {
             combat.initLostNun(sprites);
-            combat.combatLoop(sprites, player, animate);
+            combat.combatLoop(window, sprites, player, animate);
         }
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods12.jpeg");
@@ -595,7 +595,7 @@ void Travel::forestAbyssal(Sprites& sprites, Event& notevent, Combat& combat, Pl
     }
 }
 
-void Travel::forestAbyssalDepths(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
+void Travel::forestAbyssalDepths(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     switch (this->frame) {
     case 0:
@@ -620,7 +620,7 @@ void Travel::forestAbyssalDepths(Sprites& sprites, Event& notevent, Combat& comb
             this->frameInit = true;
         }
         combat.initDecapod(sprites);
-        combat.combatLoop(sprites, player, animate);
+        combat.combatLoop(window, sprites, player, animate);
         break;
     case 3:
         if (!this->frameInit) {
@@ -707,16 +707,16 @@ void Travel::castleMap(sf::RenderWindow& window, Sprites& sprites, Event& noteve
         this->castleBonfire(window, sprites, notevent, combat, player, animate);
         break;
     case 1:
-        this->castleHalls(sprites, notevent, combat, player, animate);
+        this->castleHalls(window, sprites, notevent, combat, player, animate);
         break;
     case 2:
-        this->castleDepths(sprites, notevent, combat, player, animate);
+        this->castleDepths(window, sprites, notevent, combat, player, animate);
         break;
     case 3:
-        this->castleChambers(sprites, notevent, combat, player, animate);
+        this->castleChambers(window, sprites, notevent, combat, player, animate);
         break;
     case 4:
-        this->castleLabyrinth(sprites, notevent, combat, player, animate);
+        this->castleLabyrinth(window, sprites, notevent, combat, player, animate);
         break;
     }
 }
@@ -731,7 +731,7 @@ void Travel::castleBonfire(sf::RenderWindow& window, Sprites& sprites, Event& no
     this->enterBonfire(window, sprites, notevent);
 }
 
-void Travel::castleHalls(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
+void Travel::castleHalls(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     switch (this->frame) {
@@ -834,7 +834,7 @@ void Travel::castleHalls(Sprites& sprites, Event& notevent, Combat& combat, Play
     }
 }
 
-void Travel::castleDepths(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
+void Travel::castleDepths(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     switch (this->frame) {
@@ -944,7 +944,7 @@ void Travel::castleDepths(Sprites& sprites, Event& notevent, Combat& combat, Pla
     }
 }
 
-void Travel::castleChambers(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
+void Travel::castleChambers(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     switch (this->frame) {
     case 0:
@@ -1045,7 +1045,7 @@ void Travel::castleChambers(Sprites& sprites, Event& notevent, Combat& combat, P
     }
 }
 
-void Travel::castleLabyrinth(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
+void Travel::castleLabyrinth(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     switch (this->frame) {
     case 0:
@@ -1145,7 +1145,7 @@ void Travel::castleLabyrinth(Sprites& sprites, Event& notevent, Combat& combat, 
         notevent.castleSiwardFinalEnc(sprites);
         if (notevent.getSiwardEncedFinal()) {
             combat.initSiward(sprites);
-            combat.combatLoop(sprites, player, animate);
+            combat.combatLoop(window, sprites, player, animate);
         }
         break;
     }
@@ -1159,16 +1159,16 @@ void Travel::decayMap(sf::RenderWindow& window, Sprites& sprites, Event& noteven
         this->decayBonfire(window, sprites, notevent, combat, player, animate);
         break;
     case 1:
-        this->decayChasms(sprites, notevent, combat, player, animate);
+        this->decayChasms(window, sprites, notevent, combat, player, animate);
         break;
     case 2:
-        this->decayOcean(sprites, notevent, combat, player, animate);
+        this->decayOcean(window, sprites, notevent, combat, player, animate);
         break;
     case 3:
-        this->decayForest(sprites, notevent, combat, player, animate);
+        this->decayForest(window, sprites, notevent, combat, player, animate);
         break;
     case 4:
-        this->decayGiants(sprites, notevent, combat, player, animate);
+        this->decayGiants(window, sprites, notevent, combat, player, animate);
         break;
     }
 }
@@ -1183,7 +1183,7 @@ void Travel::decayBonfire(sf::RenderWindow& window, Sprites& sprites, Event& not
     this->enterBonfire(window, sprites, notevent);
 }
 
-void Travel::decayChasms(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
+void Travel::decayChasms(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     switch (this->frame) {
@@ -1214,7 +1214,7 @@ void Travel::decayChasms(Sprites& sprites, Event& notevent, Combat& combat, Play
             this->frameInit = true;
         }
         combat.initLimbSplitter(sprites);
-        combat.combatLoop(sprites, player, animate);
+        combat.combatLoop(window, sprites, player, animate);
         break;
     case 4:
         if (!this->frameInit) {
@@ -1287,7 +1287,7 @@ void Travel::decayChasms(Sprites& sprites, Event& notevent, Combat& combat, Play
     }
 }
 
-void Travel::decayOcean(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
+void Travel::decayOcean(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     switch (this->frame) {
@@ -1389,7 +1389,7 @@ void Travel::decayOcean(Sprites& sprites, Event& notevent, Combat& combat, Playe
     }
 }
 
-void Travel::decayForest(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
+void Travel::decayForest(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     switch (this->frame) {
     case 0:
@@ -1490,7 +1490,7 @@ void Travel::decayForest(Sprites& sprites, Event& notevent, Combat& combat, Play
     }
 }
 
-void Travel::decayGiants(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
+void Travel::decayGiants(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate)
 {
     switch (this->frame) {
     case 0:

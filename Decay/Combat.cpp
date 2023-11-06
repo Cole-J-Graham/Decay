@@ -25,6 +25,11 @@ Combat::Combat()
 	this->zinMend = 5;
 	this->zinVengeance = 1;
 
+	//Move Values
+	this->valZero = 0;
+	this->valOne = 1;
+	this->valTwo = 2;
+
 	//Hostile Moves
 	this->hostileStrike = 0;
 
@@ -147,7 +152,7 @@ void Combat::updateMoves(Sprites& sprites, Player& player)
 }
 
 //Core Combat Functions
-void Combat::combatLoop(Sprites& sprites, Player& player, Animation& animate)
+void Combat::combatLoop(sf::RenderWindow& window, Sprites& sprites, Player& player, Animation& animate)
 {
 	if (!combatEnd) {
 		//Combat Animations
@@ -165,7 +170,7 @@ void Combat::combatLoop(Sprites& sprites, Player& player, Animation& animate)
 		}
 		//Players turn
 		if (!this->playerDead) {
-			this->playerTurn(sprites, animate);
+			this->playerTurn(window, sprites, animate);
 		}
 		//Zin's Turn
 		if (!this->zinDead) {
@@ -309,7 +314,7 @@ void Combat::playerDeath(Sprites& sprites)
 }
 
 //Combat Functions
-void Combat::playerTurn(Sprites& sprites, Animation& animate)
+void Combat::playerTurn(sf::RenderWindow& window, Sprites& sprites, Animation& animate)
 {
 	if (this->turnPlayer == true) {
 		switch (this->attackCounter) {
@@ -319,7 +324,7 @@ void Combat::playerTurn(Sprites& sprites, Animation& animate)
 		case 1:
 			//Player Attacks Hostile
 			if (this->playerAttack == false) {
-				this->playerSelectMove(sprites, animate);
+				this->playerSelectMove(window, sprites, animate);
 				this->playerAttack = true;
 			}
 			break;
@@ -488,7 +493,36 @@ void Combat::hostileTurn(Sprites& sprites, Animation& animate)
 }
 
 //Combat Pick Attacks
-void Combat::playerSelectMove(Sprites& sprites, Animation& animate)
+void Combat::pickMove(sf::RenderWindow& window, Sprites& sprites)
+{
+	if (this->turnPlayer) {
+		this->pickMoveFunc(window, sprites.combatRect[0], this->attackCounter, this->playerPickMove, this->valZero);
+		this->pickMoveFunc(window, sprites.combatRect[1], this->attackCounter, this->playerPickMove, this->valOne);
+		this->pickMoveFunc(window, sprites.combatRect[2], this->attackCounter, this->playerPickMove, this->valTwo);
+	}
+	if (this->getTurnZin()) {
+		this->pickMoveFunc(window, sprites.combatRect[3], this->zinAttackCounter, this->zinPickMove, this->valZero);
+		this->pickMoveFunc(window, sprites.combatRect[4], this->zinAttackCounter, this->zinPickMove, this->valOne);
+		this->pickMoveFunc(window, sprites.combatRect[5], this->zinAttackCounter, this->zinPickMove, this->valTwo);
+	}
+	if (this->getTurnThom()) {
+		this->pickMoveFunc(window, sprites.combatRect[6], this->thomAttackCounter, this->thomPickMove, this->valZero);
+		this->pickMoveFunc(window, sprites.combatRect[7], this->thomAttackCounter, this->thomPickMove, this->valOne);
+	}
+}
+
+void Combat::pickMoveFunc(sf::RenderWindow& window, sf::RectangleShape& inputRect, int& counter, int& moveChar, int& moveVal)
+{
+	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+	sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+	//Player Combat Buttons Functionality
+	if (inputRect.getGlobalBounds().contains(mousePosF)) { //If attack button is clicked...
+		counter++;
+		moveChar = moveVal;
+	}
+}
+
+void Combat::playerSelectMove(sf::RenderWindow& window, Sprites& sprites, Animation& animate)
 {
 	switch (this->playerPickMove) {
 	case 0:

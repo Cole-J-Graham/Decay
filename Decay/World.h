@@ -61,10 +61,7 @@ public:
 
 	//Core Functions
 	void bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate);
-
-	//User Input
 	void userInput(Sprites& sprites);
-	void clearInput();
 
 	//Display Functions
 	void Draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate);

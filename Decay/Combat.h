@@ -31,6 +31,12 @@ private:
 
 	//Thom Moves
 	int enraged;
+	bool thomEnraged;
+
+	//Move Values
+	int valZero;
+	int valOne;
+	int valTwo;
 
 	//Hostile Moves
 	int hostileStrike;
@@ -78,7 +84,6 @@ private:
 	bool turnHostile;
 	bool zinGuarded;
 	bool playerGuarded;
-	bool thomEnraged;
 
 	bool playerAttack;
 	bool zinAttack;
@@ -135,19 +140,21 @@ public:
 	void updateMoves(Sprites& sprites, Player& player);
 
 	//Core Combat Functions
-	void combatLoop(Sprites& sprites, Player& player, Animation& animate);
+	void combatLoop(sf::RenderWindow& window, Sprites& sprites, Player& player, Animation& animate);
 	void initCombat(Sprites& sprites, Player& player, Animation& animate);
 	void reInitCombat(Sprites& sprites);
 	void playerDeath(Sprites& sprites);
 
 	//Combat Functions
-	void playerTurn(Sprites& sprites, Animation& animate);
+	void playerTurn(sf::RenderWindow& window, Sprites& sprites, Animation& animate);
 	void zinTurn(Sprites& sprites, Animation& animate);
 	void thomTurn(Sprites& sprites);
 	void hostileTurn(Sprites& sprites, Animation& animate);
 
 	//Combat Pick Attacks
-	void playerSelectMove(Sprites& sprites, Animation& animate);
+	void pickMove(sf::RenderWindow& window, Sprites& sprites);
+	void pickMoveFunc(sf::RenderWindow& window, sf::RectangleShape& inputRect, int& counter, int& moveChar, int& moveVal);
+	void playerSelectMove(sf::RenderWindow& window, Sprites& sprites, Animation& animate);
 	void zinSelectMove(Sprites& sprites, Animation& animate);
 	void thomSelectMove(Sprites& sprites);
 
@@ -195,6 +202,11 @@ public:
 	int& getZinSmite() { return this->zinSmite; };
 	int& getZinMend() { return this->zinMend; };
 	int& getZinVengeance() { return this->zinVengeance; };
+
+	//Move Value Getters
+	int& getValZero() { return this->valZero; };
+	int& getValOne() { return this->valOne; };
+	int& getValTwo() { return this->valTwo; };
 
 	//Hostile Move Getters
 	int& getHostileSlash() { return this->hostileStrike; };
