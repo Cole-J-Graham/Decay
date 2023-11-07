@@ -563,16 +563,17 @@ void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Sprites&
         travel.setFrameInitFalse(); //Allow images to be loaded again
         travel.setIntroCounterDialogueInc();
         notevent.setDialogueInc();
-        if (combat.getAttackCounter() == 1) {
-            combat.getAttackCounter() = 2;
+        //Increase combat counters with dialogue
+        if (combat.getTurnPlayer()) {
+            combat.getAttackCounter()++;
         }
-        if (combat.getZinAttackCounter() == 1) {
-            combat.getZinAttackCounter() = 2;
+        if (combat.getTurnZin()) {
+            combat.getZinAttackCounter()++;
         }
-        if (sprites.getThomUnlocked() && combat.getThomAttackCounter() == 1) {
-            combat.getThomAttackCounter() = 2;
+        if (combat.getTurnThom()) {
+            combat.getThomAttackCounter()++;
         }
-        if (combat.getTurnHostile() == true) {
+        if (combat.getTurnHostile()) {
             sprites.getCombatCounter()++;
         }
     }

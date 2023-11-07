@@ -3,43 +3,15 @@
 #include"Sprites.h"
 #include"Player.h"
 #include"Animation.h"
+#include"Moves.h"
 
-class Combat
+class Combat : public Moves
 {
 private:
-	//Hp
-	int playerHp;
-	int playerHpMax;
-	int zinHp;
-	int zinHpMax;
-	int thomHp;
-	int thomHpMax;
-
-	//Hostile Stats
-	int hostileHp;
-	int hostileHpMax;
-
-	//Player Moves
-	int playerStrike;
-	int playerGuard;
-	int decayedBlade;
-
-	//Zin Moves
-	int zinSmite;
-	int zinMend;
-	int zinVengeance;
-
-	//Thom Moves
-	int enraged;
-	bool thomEnraged;
-
 	//Move Values
 	int valZero;
 	int valOne;
 	int valTwo;
-
-	//Hostile Moves
-	int hostileStrike;
 
 	//Attack Counters
 	int attackCounter;
@@ -82,8 +54,6 @@ private:
 	bool turnZin;
 	bool turnThom;
 	bool turnHostile;
-	bool zinGuarded;
-	bool playerGuarded;
 
 	bool playerAttack;
 	bool zinAttack;
@@ -103,30 +73,6 @@ private:
 
 	//Animation Control
 	bool comTextRemoved;
-	bool firstAttack;
-
-	//Init Strings
-	std::string playerTurnText;
-	std::string zinTurnText;
-
-	std::string hostileNameNoSpc;
-	std::string hostileName;
-	std::string hostileEncText;
-	std::string hostileAtkPlayerText;
-	std::string hostileAtkZinText;
-	std::string hostileAtkZinBlkText;
-	std::string hostileAtkPlayerBlkText;
-
-	std::string playerSlashAtkText;
-	std::string playerGuardAtkText;
-	std::string playerDecayAtkText;
-
-	std::string zinSmiteAtkText;
-	std::string zinMendAtkText;
-	std::string zinVengeanceAtkText;
-
-	std::string thomBarrierAtkText;
-	std::string thomEnragedAtkText;
 
 public:
 
@@ -148,15 +94,15 @@ public:
 	//Combat Functions
 	void playerTurn(sf::RenderWindow& window, Sprites& sprites, Animation& animate);
 	void zinTurn(Sprites& sprites, Animation& animate);
-	void thomTurn(Sprites& sprites);
+	void thomTurn(Sprites& sprites, Animation& animate);
 	void hostileTurn(Sprites& sprites, Animation& animate);
 
 	//Combat Pick Attacks
 	void pickMove(sf::RenderWindow& window, Sprites& sprites);
 	void pickMoveFunc(sf::RenderWindow& window, sf::RectangleShape& inputRect, int& counter, int& moveChar, int& moveVal);
-	void playerSelectMove(sf::RenderWindow& window, Sprites& sprites, Animation& animate);
+	void playerSelectMove(Sprites& sprites, Animation& animate);
 	void zinSelectMove(Sprites& sprites, Animation& animate);
-	void thomSelectMove(Sprites& sprites);
+	void thomSelectMove(Sprites& sprites, Animation& animate);
 
 	//Combat Init Forest Hostiles
 	void initWolf(Sprites& sprites);
@@ -182,34 +128,10 @@ public:
 	void initReclus(Sprites& sprites);
 	void initTendrilAlpha(Sprites& sprites);
 
-	//Hp Getters
-	int& getPlayerHp() { return this->playerHp; };
-	int& getPlayerHpMax() { return this->playerHpMax; };
-	int& getZinHp() { return this->zinHp; };
-	int& getZinHpMax() { return this->zinHpMax; };
-	int& getThomHp() { return this->thomHp; };
-	int& getThomHpMax() { return this->thomHpMax; };
-
-	//Hostile Getters
-	int& getHostileHp() { return this->hostileHp; };
-	int& getHostileHpMax() { return this->hostileHpMax; };
-
-	//Player Move Getters
-	int& getPlayerStrike() { return this->playerStrike; };
-	int& getPlayerGuard() { return this->playerGuard; };
-
-	//Zin Move Getters
-	int& getZinSmite() { return this->zinSmite; };
-	int& getZinMend() { return this->zinMend; };
-	int& getZinVengeance() { return this->zinVengeance; };
-
 	//Move Value Getters
 	int& getValZero() { return this->valZero; };
 	int& getValOne() { return this->valOne; };
 	int& getValTwo() { return this->valTwo; };
-
-	//Hostile Move Getters
-	int& getHostileSlash() { return this->hostileStrike; };
 
 	//Attack Counter Getters
 	int& getAttackCounter() { return this->attackCounter; };
@@ -232,7 +154,6 @@ public:
 	bool& getTurnZin() { return this->turnZin; };
 	bool& getTurnThom() { return this->turnThom; };
 	bool& getTurnHostile() { return this->turnHostile; };
-	bool& getZinGuarded() { return this->zinGuarded; };
 
 	bool& getPlayerAttack() { return this->playerAttack; };
 	bool& getZinAttack() { return this->zinAttack; };

@@ -3,35 +3,10 @@
 //Constructors & Destructors
 Combat::Combat()
 {
-	//Hp
-	this->playerHp = 50;
-	this->playerHpMax = 50;
-	this->zinHp = 35;
-	this->zinHpMax = 35;
-	this->thomHp = 30;
-	this->thomHpMax = 30;
-
-	//Hostile Stats
-	this->hostileHp = 50;
-	this->hostileHpMax = 50;
-
-	//Player Moves
-	this->playerStrike = 5;
-	this->playerGuard = 1;
-	this->decayedBlade = 10;
-
-	//Zin Moves
-	this->zinSmite = 5;
-	this->zinMend = 5;
-	this->zinVengeance = 1;
-
 	//Move Values
 	this->valZero = 0;
 	this->valOne = 1;
 	this->valTwo = 2;
-
-	//Hostile Moves
-	this->hostileStrike = 0;
 
 	//Attack Counters
 	this->attackCounter = 0;
@@ -72,8 +47,6 @@ Combat::Combat()
 	this->turnPlayer = true;
 	this->turnZin = false;
 	this->turnHostile = false;
-	this->zinGuarded = false;
-	this->thomEnraged = false;
 
 	this->playerAttack = false;
 	this->zinAttack = false;
@@ -92,31 +65,7 @@ Combat::Combat()
 	this->thomPickMove = 0;
 
 	//Animation Control
-	this->firstAttack = false;
 	this->comTextRemoved = true;
-
-	//Init Strings
-	this->playerTurnText = "You plan your next move...";
-	this->zinTurnText = "Zin plans her next move...";
-
-	this->hostileNameNoSpc = "Abomination";
-	this->hostileName = "Abomination";
-	this->hostileEncText = "A combatant ambushes you! Pick your next step carefully...";
-	this->hostileAtkPlayerText = "The hostile swings back! Click to continue...";
-	this->hostileAtkZinText = "The hostile swings at Zin! Click to continue...";
-	this->hostileAtkZinBlkText = "You block Zin from the strike! Click to continue...";
-	this->hostileAtkPlayerBlkText = "Thom's barrier casted around you protects you from the enemy!";
-
-	this->playerSlashAtkText = "You strike the combatant! Click to continue...";
-	this->playerGuardAtkText = "You plant yourself in between Zin and the enemy! Click to continue...";
-	this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the enemy!";
-
-	this->zinSmiteAtkText = "Zin smites the combatant! Click to continue...";
-	this->zinMendAtkText = "Zin heals the party! Click to continue...";
-	this->zinVengeanceAtkText = "Zin takes vengeance, brutally stirking the enemy! Click to continue...";
-
-	this->thomBarrierAtkText = "Thom uses decay from his body to manipulate a barrier around the player!";
-	this->thomEnragedAtkText = "Thom's form slowly melts as he allows the decay to take root in his body. Thom is now enraged!";
 }
 
 Combat::~Combat()
@@ -127,18 +76,18 @@ Combat::~Combat()
 //Core Stat Functions
 void Combat::updateStats(Sprites& sprites, Player& player)
 {
-	this->playerStrike = 5 + player.getStrength() + player.getSwordPower();
-	this->playerHp = this->playerHp + player.getVitality();
+	getPlayerStrike() = 5 + player.getStrength() + player.getSwordPower();
+	getPlayerHp() = getPlayerHpMax() + player.getVitality();
 	player.getDecayMax() = 25 + player.getFortitude();
-	this->playerHpMax = this->playerHp;
+	getPlayerHpMax() = getPlayerHp();
 	this->updateMoves(sprites, player);
 }
 
 void Combat::updateStatsZin(Player& player)
 {
-	this->zinSmite = 5 + player.getZinResolve();
-	this->zinHp = 35 + player.getZinResilience();
-	this->zinHpMax = this->zinHp;
+	getZinSmite() = 5 + player.getZinResolve();
+	getZinHp() = 35 + player.getZinResilience();
+	getZinHpMax() = getZinHp();
 }
 
 void Combat::updateMoves(Sprites& sprites, Player& player)
@@ -177,47 +126,47 @@ void Combat::combatLoop(sf::RenderWindow& window, Sprites& sprites, Player& play
 			this->zinTurn(sprites, animate);
 		}
 		if (!this->thomDead) {
-			this->thomTurn(sprites);
+			this->thomTurn(sprites, animate);
 		}
 		//Check if hostile is dead. If so, end combat
-		if (this->hostileHp <= 0) {
+		if (getHostileHp() <= 0) {
 			sprites.setCombatAssetsFalse();
 			player.combatReward();
-			sprites.text.setString("You have killed the " + this->hostileNameNoSpc + ". " + std::to_string(player.getExp()) + " Exp gained...");
+			sprites.text.setString("You have killed the " + getHostileNameNoSpc() + ". " + std::to_string(player.getExp()) + " Exp gained...");
 			combatTextTime.restart();//Start timer to remove text
 			this->comTextRemoved = false;//Remove text
 			sprites.getTipBoxCounter() = -1;
 			//Make entity viewer blank again
 			sprites.getEntityViewerCounter() = -1;
 			animate.getCombatAnimationLocation() = -1;
-			this->thomEnraged = false;
+			getThomEnraged() = false;
 			this->combatEnd = true;
 		}
 		//Hostiles turn
 		this->hostileTurn(sprites, animate);
 		//Check if player, Zin, or Thom has died
-		if (this->playerHp <= 0 && !this->playerDead) {
+		if (getPlayerHp() <= 0 && !this->playerDead) {
 			this->playerDead = true;
 			sprites.text.setString("You have been left unconscious...");
 		}
-		if (this->zinHp <= 0 && !this->zinDead) {
+		if (getZinHp() <= 0 && !this->zinDead) {
 			this->zinDead = true;
 			sprites.text.setString("Zin has been left unconscious...");
 		}
-		if (this->thomHp <= 0 && !this->thomDead) {
+		if (getThomHp() <= 0 && !this->thomDead) {
 			this->thomDead = true;
 			sprites.text.setString("Thom has been left unconscious...");
 		}
 		if (!sprites.getThomUnlocked()) {
 			//Check if both the player and Zin have died
-			if (this->playerHp <= 0 && this->zinHp <= 0) {
+			if (getPlayerHp() <= 0 && getZinHp() <= 0) {
 				this->playerDeath(sprites);
 				sprites.text.setString("Your party has died...");
 			}
 		}
 		else if (sprites.getThomUnlocked()) {
 			//Check if both the player, Zin and Thom have died
-			if (this->playerHp <= 0 && this->zinHp <= 0 && this->thomHp <= 0) {
+			if (getPlayerHp() <= 0 && getZinHp() <= 0 && getThomHp() <= 0) {
 				this->playerDeath(sprites);
 				sprites.text.setString("Your party has died...");
 			}
@@ -229,17 +178,17 @@ void Combat::initCombat(Sprites& sprites, Player& player, Animation& animate)
 {
 	sprites.soundCombatStart.play(); //Play combat Sfx
 	//this->updateStats(assets, player);
-	sprites.text.setString(this->hostileEncText);
-	sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(this->playerHp) + "/" + std::to_string(this->playerHpMax));
-	sprites.spriteText[1].setString("Zin            " + std::to_string(this->zinHp) + "/" + std::to_string(this->zinHpMax));
-	sprites.spriteText[2].setString(this->hostileName + std::to_string(this->hostileHp) + "/" + std::to_string(this->hostileHpMax));
+	sprites.text.setString(getHostileEncText());
+	sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(getPlayerHp()) + "/" + std::to_string(getPlayerHpMax()));
+	sprites.spriteText[1].setString("Zin            " + std::to_string(getZinHp()) + "/" + std::to_string(getZinHpMax()));
+	sprites.spriteText[2].setString(getHostileName() + std::to_string(getHostileHp()) + "/" + std::to_string(getHostileHpMax()));
 
 	sprites.getPlayerCounter()++; //Load Player sprite with counter
 	sprites.getZinCounter()++; //Load Zins sprite with counter
 	//Load Thom Sprite with counter if he is unlocked
 	if (sprites.getThomUnlocked()) {
 		sprites.getThomCounter()++;
-		sprites.spriteText[5].setString("Thom          " + std::to_string(this->thomHp) + "/" + std::to_string(this->thomHpMax));
+		sprites.spriteText[5].setString("Thom          " + std::to_string(getThomHp()) + "/" + std::to_string(getThomHpMax()));
 	}
 
 	sprites.setCombatAssetsTrue(); //Utilize all combat assets
@@ -249,7 +198,7 @@ void Combat::initCombat(Sprites& sprites, Player& player, Animation& animate)
 	sprites.setPlayerTurnAssetsTrue(); //Allow player turn
 
 	animate.getAnimEnd() = true;//Prevent animation attempt from running at start
-	this->firstAttack = false;
+	getFirstAttack() = false;
 }
 
 void Combat::reInitCombat(Sprites& sprites)
@@ -266,7 +215,7 @@ void Combat::reInitCombat(Sprites& sprites)
 		this->turnThom = false;
 		this->thomAttackCounter = 0;
 		this->thomAttack = false;
-		this->playerGuarded = false;
+		getPlayerGuarded() = false;
 		sprites.getThomTurnAssets() = false;
 	}
 
@@ -276,7 +225,7 @@ void Combat::reInitCombat(Sprites& sprites)
 		sprites.setPlayerTurnAssetsTrue();
 		this->turnPlayer = true;
 		this->attackCounter = 0;
-		this->zinGuarded = false;
+		getZinGuarded() = false;
 		this->playerAttack = false;
 		//Zin
 		sprites.setZinTurnAssetsFalse();
@@ -299,7 +248,7 @@ void Combat::reInitCombat(Sprites& sprites)
 		sprites.setPlayerTurnAssetsTrue();
 		this->turnPlayer = true;
 		this->attackCounter = 0;
-		this->zinGuarded = false;
+		getZinGuarded() = false;
 		this->playerAttack = false;
 		//Zin
 		sprites.setZinTurnAssetsFalse();
@@ -319,12 +268,12 @@ void Combat::playerTurn(sf::RenderWindow& window, Sprites& sprites, Animation& a
 	if (this->turnPlayer == true) {
 		switch (this->attackCounter) {
 		case 0:
-			sprites.text.setString(this->playerTurnText);
+			sprites.text.setString(getPlayerTurnText());
 			break;
 		case 1:
 			//Player Attacks Hostile
 			if (this->playerAttack == false) {
-				this->playerSelectMove(window, sprites, animate);
+				this->playerSelectMove(sprites, animate);
 				this->playerAttack = true;
 			}
 			break;
@@ -359,7 +308,7 @@ void Combat::zinTurn(Sprites& sprites, Animation& animate)
 	if (this->turnZin == true) {
 		switch (this->zinAttackCounter) {
 		case 0:
-			sprites.text.setString(this->zinTurnText);
+			sprites.text.setString(getZinTurnText());
 			sprites.setZinTurnAssetsTrue();
 			break;
 		case 1:
@@ -383,30 +332,30 @@ void Combat::zinTurn(Sprites& sprites, Animation& animate)
 	}
 }
 
-void Combat::thomTurn(Sprites& sprites)
+void Combat::thomTurn(Sprites& sprites, Animation& animate)
 {
 	if (this->turnThom == true) {
 		switch (this->thomAttackCounter) {
 		case 0:
-			if (!this->thomEnraged) {
+			if (!getThomEnraged()) {
 				sprites.text.setString("Thom prepares his next move");
 				sprites.setThomTurnAssetsTrue();
 			}
-			else if (this->thomEnraged) {
+			else if (getThomEnraged()) {
 				this->thomAttackCounter = 1;
 			}
 			break;
 		case 1:
 			//Thoms turn
-			if (!this->thomAttack && !this->thomEnraged) {
-				this->thomSelectMove(sprites);
+			if (!this->thomAttack && !getThomEnraged()) {
+				this->thomSelectMove(sprites, animate);
 				this->thomAttack = true;
 			}
-			else if (this->thomAttack == false && this->thomEnraged) {
+			else if (this->thomAttack == false && getThomEnraged()) {
 				sprites.text.setString("Thom still stands in a state of pure rage...");
-				this->enraged--;
-				if (this->enraged == 0) {
-					this->thomEnraged = false;
+				getEnraged()--;
+				if (getEnraged() == 0) {
+					getThomEnraged() = false;
 					sprites.getThomCounter() = 0;
 					sprites.text.setString("Thom snaps out of his rage!");
 				}
@@ -430,17 +379,17 @@ void Combat::hostileTurn(Sprites& sprites, Animation& animate)
 			if (this->playerDead && !this->hostileAttack) {
 				sprites.getCombatCounter() = 1;
 			}
-			if (!this->hostileAttack && !this->playerGuarded) {
-				this->playerHp -= this->hostileStrike;
+			if (!this->hostileAttack && !getPlayerGuarded()) {
+				getPlayerHp() -= getHostileStrike();
 				sprites.soundCom.play();
-				sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
-				sprites.text.setString(this->hostileAtkPlayerText);
+				sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(getPlayerHp()) + "/" + std::to_string(getPlayerHpMax()));
+				sprites.text.setString(getHostileAtkPlayerText());
 				animate.getCombatAnimationLocation() = 1;
 				animate.getAnimEnd() = false;//Play Attack Animation
 				this->hostileAttack = true;
 			}
-			else if (!this->hostileAttack && this->playerGuarded) {
-				sprites.text.setString(this->hostileAtkPlayerBlkText);
+			else if (!this->hostileAttack && getPlayerGuarded()) {
+				sprites.text.setString(getHostileAtkPlayerBlkText());
 				sprites.soundPlayerGuarded.play();
 				this->hostileAttack = true;
 			}
@@ -450,18 +399,18 @@ void Combat::hostileTurn(Sprites& sprites, Animation& animate)
 			if (this->zinDead && !this->hostileAttackZin) {
 				sprites.getCombatCounter() = 2;
 			}
-			if (!this->zinGuarded && !this->hostileAttackZin && !this->zinDead) {
-				this->zinHp -= this->hostileStrike;
+			if (!getZinGuarded() && !this->hostileAttackZin && !this->zinDead) {
+				getZinHp() -= getHostileStrike();
 				sprites.soundCom.play();
-				sprites.spriteText[1].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));
-				sprites.text.setString(this->hostileAtkZinText);
+				sprites.spriteText[1].setString("Zin            " + std::to_string(getZinHp()) + "/" + std::to_string(getZinHpMax()));
+				sprites.text.setString(getHostileAtkZinText());
 				animate.getCombatAnimationLocation() = 2;
 				animate.getAnimEnd() = false;//Play Attack Animation
 				this->hostileAttackZin = true;
 			}
-			else if (this->zinGuarded == true && !this->hostileAttackZin && !this->zinDead) {
+			else if (getZinGuarded() == true && !this->hostileAttackZin && !this->zinDead) {
 				sprites.soundGuarded.play();
-				sprites.text.setString(this->hostileAtkZinBlkText);
+				sprites.text.setString(getHostileAtkZinBlkText());
 				this->hostileAttackZin = true;
 			}
 			break;
@@ -475,9 +424,9 @@ void Combat::hostileTurn(Sprites& sprites, Animation& animate)
 			}
 			//Hostile Attacks Thom
 			if (!this->thomDead && !this->hostileAttackThom) {
-				this->thomHp -= this->hostileStrike;
+				getThomHp() -= getHostileStrike();
 				sprites.soundCom.play();
-				sprites.spriteText[5].setString("Thom          " + std::to_string(this->thomHp) + "/" + std::to_string(this->thomHpMax));
+				sprites.spriteText[5].setString("Thom          " + std::to_string(getThomHp()) + "/" + std::to_string(getThomHpMax()));
 				sprites.text.setString("The hostile strikes Thom!");
 				animate.getCombatAnimationLocation() = 3;
 				animate.getAnimEnd() = false;//Play Attack Animation
@@ -522,39 +471,17 @@ void Combat::pickMoveFunc(sf::RenderWindow& window, sf::RectangleShape& inputRec
 	}
 }
 
-void Combat::playerSelectMove(sf::RenderWindow& window, Sprites& sprites, Animation& animate)
+void Combat::playerSelectMove(Sprites& sprites, Animation& animate)
 {
 	switch (this->playerPickMove) {
 	case 0:
-		//Strike
-		sprites.soundSlash.play();
-		this->hostileHp -= this->playerStrike;
-		sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
-		sprites.setPlayerTurnAssetsFalse();
-		sprites.text.setString(this->playerSlashAtkText);
-		if (!this->firstAttack) {
-			animate.combatTimer.restart();
-			this->firstAttack = true;
-		}
-		animate.getCombatAnimationLocation() = 0;
-		animate.getAnimEnd() = false;//Play Attack Animation
+		Slash(sprites, animate);
 		break;
 	case 1:
-		//Guard Zin
-		sprites.soundGuard.play();
-		sprites.setPlayerTurnAssetsFalse();
-		this->zinGuarded = true;
-		sprites.text.setString(this->playerGuardAtkText);
+		Guard(sprites, animate);
 		break;
 	case 2:
-		//Decayed blade
-		sprites.soundDecay.play();
-		this->hostileHp -= this->decayedBlade;
-		sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
-		sprites.setPlayerTurnAssetsFalse();
-		sprites.text.setString(this->playerDecayAtkText);
-		animate.getCombatAnimationLocation() = 0;
-		animate.getAnimEnd() = false;//Play Attack Animation
+		DecayBlade(sprites, animate);
 		break;
 	}
 }
@@ -563,74 +490,26 @@ void Combat::zinSelectMove(Sprites& sprites, Animation& animate)
 {
 	switch (this->zinPickMove) {
 	case 0:
-		//Smite the hostile
-		sprites.soundSmite.play();
-		this->hostileHp -= this->zinSmite;
-		sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
-		sprites.setZinTurnAssetsFalse();
-		sprites.text.setString(this->zinSmiteAtkText);
-		animate.getCombatAnimationLocation() = 0;
-		animate.getAnimEnd() = false;//Play Attack Animation
+		Smite(sprites, animate);
 		break;
 	case 1:
-		//Mend party
-		sprites.soundMend.play();
-		if (this->playerHp < this->playerHpMax) {
-			this->playerHp += this->zinMend;
-			if (this->playerHp > this->playerHpMax) {
-				this->playerHp = this->playerHpMax;
-			}
-		}
-		if (this->zinHp < this->zinHpMax) {
-			this->zinHp += this->zinMend;
-			if (this->zinHp > this->zinHpMax) {
-				this->zinHp = this->zinHpMax;
-			}
-		}
-		if (this->thomHp < this->thomHpMax) {
-			this->thomHp += this->zinMend;
-			if (this->thomHp > this->thomHpMax) {
-				this->thomHp = this->thomHpMax;
-			}
-		}
-		sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
-		sprites.spriteText[1].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));
-		sprites.spriteText[5].setString("Thom          " + std::to_string(this->thomHp) + "/" + std::to_string(this->thomHpMax));
-		sprites.setZinTurnAssetsFalse();
-		sprites.text.setString(this->zinMendAtkText);
+		Mend(sprites, animate);
 		break;
 	case 2:
-		//Use Vengeance on the hostile
-		sprites.soundVengeance.play();
-		this->zinVengeance = this->playerHpMax - this->playerHp;
-		this->hostileHp -= this->zinVengeance;
-		sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
-		sprites.setZinTurnAssetsFalse();
-		sprites.text.setString(this->zinVengeanceAtkText);
+		Vengeance(sprites, animate);
 		break;
 	}
 	
 }
 
-void Combat::thomSelectMove(Sprites& sprites)
+void Combat::thomSelectMove(Sprites& sprites, Animation& animate)
 {
 	switch (this->thomPickMove) {
 	case 0:
-		//Thom places barrier around player
-		this->playerGuarded = true;
-		sprites.soundThomGuard.play();
-		sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
-		sprites.text.setString(this->thomBarrierAtkText);
-		sprites.setThomTurnAssetsFalse();
+		Barrier(sprites, animate);
 		break;
 	case 1:
-		//Thom enters rage mode
-		this->thomEnraged = true;
-		this->enraged = 3;
-		sprites.getThomCounter() = 1;
-		sprites.soundEnraged.play();
-		sprites.text.setString(this->thomEnragedAtkText);
-		sprites.setThomTurnAssetsFalse();
+		Enrage(sprites, animate);
 		break;
 	}
 }
@@ -651,25 +530,25 @@ void Combat::initWolf(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 25;
-		this->hostileHpMax = 25;
-		this->hostileStrike = 5;
+		getHostileHp() = 25;
+		getHostileHpMax() = 25;
+		getHostileStrike() = 5;
 
-		this->hostileNameNoSpc = "Wolf";
-		this->hostileName = "Wolf	    ";
-		this->hostileEncText = "A wolf leaps out of the bushes, ambushing you!";
-		this->hostileAtkPlayerText = "The wolf lunges forwards, biting you!";
-		this->hostileAtkZinText = "The wolf jumps towards Zin, biting her!";
-		this->hostileAtkZinBlkText = "The wolf leaps in the air towards Zin, however you block it just in time!";
+		getHostileNameNoSpc() = "Wolf";
+		getHostileName() = "Wolf	    ";
+		getHostileEncText() = "A wolf leaps out of the bushes, ambushing you!";
+		getHostileAtkPlayerText() = "The wolf lunges forwards, biting you!";
+		getHostileAtkZinText() = "The wolf jumps towards Zin, biting her!";
+		getHostileAtkZinBlkText() = "The wolf leaps in the air towards Zin, however you block it just in time!";
 
-		this->playerSlashAtkText = "You slash at the wolf, hitting it!";
-		this->playerGuardAtkText = "You watch the wolfs movements and prepare yourself to defend Zin...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the wolf!";
+		getPlayerSlashAtkText() = "You slash at the wolf, hitting it!";
+		getPlayerGuardAtkText() = "You watch the wolfs movements and prepare yourself to defend Zin...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, using the decay in your blood to strike the wolf!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, striking the wolf!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the wolf!";
-		this->initHostileWolf = true;
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, striking the wolf!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the wolf!";
+		initHostileWolf = true;
 	}
 }
 
@@ -688,24 +567,24 @@ void Combat::initDecayWalker(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 35;
-		this->hostileHpMax = 35;
-		this->hostileStrike = 2;
+		getHostileHp() = 35;
+		getHostileHpMax() = 35;
+		getHostileStrike() = 2;
 
-		this->hostileNameNoSpc = "Decay Walker";
-		this->hostileName = "Decay Walker ";
-		this->hostileEncText = "A horrific creature appears before you, threatening your life!";
-		this->hostileAtkPlayerText = "The walking pile of decay swings at you, striking you!";
-		this->hostileAtkZinText = "The walker jumps towards Zin, hitting her!";
-		this->hostileAtkZinBlkText = "The walker leaps towards Zin, however you deflect the attack just in time!";
+		getHostileNameNoSpc() = "Decay Walker";
+		getHostileName() = "Decay Walker ";
+		getHostileEncText() = "A horrific creature appears before you, threatening your life!";
+		getHostileAtkPlayerText() = "The walking pile of decay swings at you, striking you!";
+		getHostileAtkZinText() = "The walker jumps towards Zin, hitting her!";
+		getHostileAtkZinBlkText() = "The walker leaps towards Zin, however you deflect the attack just in time!";
 
-		this->playerSlashAtkText = "You slash at the vile creature, black ooze";
-		this->playerGuardAtkText = "You watch the walkers movements and prepare yourself to defend Zin...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the walker!";
+		getPlayerSlashAtkText() = "You slash at the vile creature, black ooze";
+		getPlayerGuardAtkText() = "You watch the walkers movements and prepare yourself to defend Zin...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, using the decay in your blood to strike the walker!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the unholy creature!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the walker!";
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the unholy creature!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the walker!";
 		this->initHostileWalker = true;
 	}
 }
@@ -725,24 +604,24 @@ void Combat::initHostileTree(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 65;
-		this->hostileHpMax = 65;
-		this->hostileStrike = 2;
+		getHostileHp() = 65;
+		getHostileHpMax() = 65;
+		getHostileStrike() = 2;
 
-		this->hostileNameNoSpc = "Tree Mimic";
-		this->hostileName = "Tree Mimic ";
-		this->hostileEncText = "A tree shifts into a horrifying creature, revealing itself and lunging at you!";
-		this->hostileAtkPlayerText = "The mimic strikes you with a spiked branch!";
-		this->hostileAtkZinText = "The mimic launches at Zin, striking her with a branch!";
-		this->hostileAtkZinBlkText = "The mimic rushes towards Zin, however you deflect its strike just in time!";
+		getHostileNameNoSpc() = "Tree Mimic";
+		getHostileName() = "Tree Mimic ";
+		getHostileEncText() = "A tree shifts into a horrifying creature, revealing itself and lunging at you!";
+		getHostileAtkPlayerText() = "The mimic strikes you with a spiked branch!";
+		getHostileAtkZinText() = "The mimic launches at Zin, striking her with a branch!";
+		getHostileAtkZinBlkText() = "The mimic rushes towards Zin, however you deflect its strike just in time!";
 
-		this->playerSlashAtkText = "You slash at the mimic, slowly chipping away at the wood holding its form.";
-		this->playerGuardAtkText = "You pay close attention to the mimic, preparing to defend Zin.";
-		this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the mimic!";
+		getPlayerSlashAtkText() = "You slash at the mimic, slowly chipping away at the wood holding its form.";
+		getPlayerGuardAtkText() = "You pay close attention to the mimic, preparing to defend Zin.";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, using the decay in your blood to strike the mimic!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the mimic!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the mimic!";
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the mimic!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the mimic!";
 		this->initHostileTreeMimic = true;
 	}
 }
@@ -762,24 +641,24 @@ void Combat::initDecayKnight(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 100;
-		this->hostileHpMax = 100;
-		this->hostileStrike = 15;
+		getHostileHp() = 100;
+		getHostileHpMax() = 100;
+		getHostileStrike() = 15;
 
-		this->hostileNameNoSpc = "Decay Knight";
-		this->hostileName = "Decay Knight ";
-		this->hostileEncText = "You're ambushed by a horrifying knight rotting from decay!";
-		this->hostileAtkPlayerText = "The knight lunges forwards with precision, striking you!";
-		this->hostileAtkZinText = "The knight swings his sword at Zin, striking her!";
-		this->hostileAtkZinBlkText = "The knight lunges his sword towards Zin, however you deflect it just on time!";
+		getHostileNameNoSpc() = "Decay Knight";
+		getHostileName() = "Decay Knight ";
+		getHostileEncText() = "You're ambushed by a horrifying knight rotting from decay!";
+		getHostileAtkPlayerText() = "The knight lunges forwards with precision, striking you!";
+		getHostileAtkZinText() = "The knight swings his sword at Zin, striking her!";
+		getHostileAtkZinBlkText() = "The knight lunges his sword towards Zin, however you deflect it just on time!";
 
-		this->playerSlashAtkText = "You slash at the knight, attempting to pierce his armor!";
-		this->playerGuardAtkText = "You watch the knights movements and prepare yourself to defend Zin...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the knight!";
+		getPlayerSlashAtkText() = "You slash at the knight, attempting to pierce his armor!";
+		getPlayerGuardAtkText() = "You watch the knights movements and prepare yourself to defend Zin...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, using the decay in your blood to strike the knight!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the knight!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the knight!";
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the knight!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the knight!";
 		this->initHostileWalker = true;
 	}
 }
@@ -795,24 +674,24 @@ void Combat::initLostNun(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 200;
-		this->hostileHpMax = 200;
-		this->hostileStrike = 1;
+		getHostileHp() = 200;
+		getHostileHpMax() = 200;
+		getHostileStrike() = 1;
 
-		this->hostileNameNoSpc = "Lost Nun";
-		this->hostileName = "Lost Nun ";
-		this->hostileEncText = "The woman steps forwards, revealing the sheer spread of her decay. She readies to attack you.";
-		this->hostileAtkPlayerText = "The nun launches forwards as she spews out rotting decay, brutally striking you!";
-		this->hostileAtkZinText = "The nun targets Zin, hitting her with horrifying amounts of molten decay!";
-		this->hostileAtkZinBlkText = "The nun targets Zin launching more decay at her, however you deflect it just on time!";
+		getHostileNameNoSpc() = "Lost Nun";
+		getHostileName() = "Lost Nun ";
+		getHostileEncText() = "The woman steps forwards, revealing the sheer spread of her decay. She readies to attack you.";
+		getHostileAtkPlayerText() = "The nun launches forwards as she spews out rotting decay, brutally striking you!";
+		getHostileAtkZinText() = "The nun targets Zin, hitting her with horrifying amounts of molten decay!";
+		getHostileAtkZinBlkText() = "The nun targets Zin launching more decay at her, however you deflect it just on time!";
 
-		this->playerSlashAtkText = "You slash at the nun, the woman screaming out in pain as you attack.";
-		this->playerGuardAtkText = "You watch the nuns movements preparing yourself to defend Zin at any cost...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the nun!";
+		getPlayerSlashAtkText() = "You slash at the nun, the woman screaming out in pain as you attack.";
+		getPlayerGuardAtkText() = "You watch the nuns movements preparing yourself to defend Zin at any cost...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, using the decay in your blood to strike the nun!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the nun!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the nun!";
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the nun!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the nun!";
 		this->initHostileLostNun = true;
 	}
 }
@@ -832,24 +711,24 @@ void Combat::initDecapod(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 1;
-		this->hostileHpMax = 75;
-		this->hostileStrike = 12;
+		getHostileHp() = 1;
+		getHostileHpMax() = 75;
+		getHostileStrike() = 12;
 
-		this->hostileNameNoSpc = "Abyssal Decapod";
-		this->hostileName = "Abyssal Decapod ";
-		this->hostileEncText = "The horrifying abomination stands before you as its face wriggles with tentacles...";
-		this->hostileAtkPlayerText = "The horrifying abomination grabs ahold of you and strikes you violently!";
-		this->hostileAtkZinText = "The creature spits acid directly at Zin, hitting her with it!";
-		this->hostileAtkZinBlkText = "The abomination attempts to spit at Zin with acid, however you block it with your sword just in time!";
+		getHostileNameNoSpc() = "Abyssal Decapod";
+		getHostileName() = "Abyssal Decapod ";
+		getHostileEncText() = "The horrifying abomination stands before you as its face wriggles with tentacles...";
+		getHostileAtkPlayerText() = "The horrifying abomination grabs ahold of you and strikes you violently!";
+		getHostileAtkZinText() = "The creature spits acid directly at Zin, hitting her with it!";
+		getHostileAtkZinBlkText() = "The abomination attempts to spit at Zin with acid, however you block it with your sword just in time!";
 
-		this->playerSlashAtkText = "You slash at the decapod, the creature screaming in pain!";
-		this->playerGuardAtkText = "You watch the decapods movements, preparing yourself to defend Zin from its attacks...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the decapod!";
+		getPlayerSlashAtkText() = "You slash at the decapod, the creature screaming in pain!";
+		getPlayerGuardAtkText() = "You watch the decapods movements, preparing yourself to defend Zin from its attacks...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, using the decay in your blood to strike the decapod!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the decapod!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the decapod!";
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the decapod!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the decapod!";
 		this->initHostileDecapod = true;
 	}
 }
@@ -869,24 +748,24 @@ void Combat::initHazeDemon(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 75;
-		this->hostileHpMax = 75;
-		this->hostileStrike = 12;
+		getHostileHp() = 75;
+		getHostileHpMax() = 75;
+		getHostileStrike() = 12;
 
-		this->hostileNameNoSpc = "Haze Demon";
-		this->hostileName = "Haze Demon ";
-		this->hostileEncText = "The horrifying abomination stands before you as it creatres a strange auora...";
-		this->hostileAtkPlayerText = "The horrifying abomination grabs ahold of you and strikes you violently!";
-		this->hostileAtkZinText = "The creature splices the air in front Zin, hitting her with the airwaves!";
-		this->hostileAtkZinBlkText = "The abomination attempts to split the air towards Zin, however you block it just in time!";
+		getHostileNameNoSpc() = "Haze Demon";
+		getHostileName() = "Haze Demon ";
+		getHostileEncText() = "The horrifying abomination stands before you as it creatres a strange auora...";
+		getHostileAtkPlayerText() = "The horrifying abomination grabs ahold of you and strikes you violently!";
+		getHostileAtkZinText() = "The creature splices the air in front Zin, hitting her with the airwaves!";
+		getHostileAtkZinBlkText() = "The abomination attempts to split the air towards Zin, however you block it just in time!";
 
-		this->playerSlashAtkText = "You slash at the demon, the unholy entity screaming in pain!";
-		this->playerGuardAtkText = "You watch the demons movements, preparing yourself to defend Zin from its attacks...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the demon!";
+		getPlayerSlashAtkText() = "You slash at the demon, the unholy entity screaming in pain!";
+		getPlayerGuardAtkText() = "You watch the demons movements, preparing yourself to defend Zin from its attacks...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, using the decay in your blood to strike the demon!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the demon!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the demon!";
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the demon!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the demon!";
 		this->initHostileDecapod = true;
 	}
 }
@@ -907,24 +786,24 @@ void Combat::initCourtJester(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 80;
-		this->hostileHpMax = 80;
-		this->hostileStrike = 20;
+		getHostileHp() = 80;
+		getHostileHpMax() = 80;
+		getHostileStrike() = 20;
 
-		this->hostileNameNoSpc = "Court Jester";
-		this->hostileName = "Court Jester ";
-		this->hostileEncText = "The jester stands with a horrifying grin...";
-		this->hostileAtkPlayerText = "The jester stabs you with a small dagger, brutally injuring you!";
-		this->hostileAtkZinText = "The jester sprints towards Zin, stabbing her with his knife!";
-		this->hostileAtkZinBlkText = "The jester runs towards Zin with a disgusting smile and a knife in his hand, however you block the knife just in time!";
+		getHostileNameNoSpc() = "Court Jester";
+		getHostileName() = "Court Jester ";
+		getHostileEncText() = "The jester stands with a horrifying grin...";
+		getHostileAtkPlayerText() = "The jester stabs you with a small dagger, brutally injuring you!";
+		getHostileAtkZinText() = "The jester sprints towards Zin, stabbing her with his knife!";
+		getHostileAtkZinBlkText() = "The jester runs towards Zin with a disgusting smile and a knife in his hand, however you block the knife just in time!";
 
-		this->playerSlashAtkText = "You slash at the jester, the clown smiling in pain!";
-		this->playerGuardAtkText = "You watch the jesters movements, preparing yourself to defend Zin from its attacks...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the jester, causing him to yell in pain!";
+		getPlayerSlashAtkText() = "You slash at the jester, the clown smiling in pain!";
+		getPlayerGuardAtkText() = "You watch the jesters movements, preparing yourself to defend Zin from its attacks...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, spraying your decayed blood over the jester, causing him to yell in pain!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the jester!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the jester!";
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the jester!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the jester!";
 		this->initHostileJester = true;
 	}
 }
@@ -944,24 +823,24 @@ void Combat::initWallMimic(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 80;
-		this->hostileHpMax = 80;
-		this->hostileStrike = 20;
+		getHostileHp() = 80;
+		getHostileHpMax() = 80;
+		getHostileStrike() = 20;
 
-		this->hostileNameNoSpc = "Wall Mimic";
-		this->hostileName = "Wall Mimic ";
-		this->hostileEncText = "The walls begin to shift as the face appears before you.";
-		this->hostileAtkPlayerText = "The walls shift as the mimic launches towards you, striking you!";
-		this->hostileAtkZinText = "The mimic targets Zin, striking her with extreme force!";
-		this->hostileAtkZinBlkText = "The mimic attempts to bite Zin, however you tackle her out of the way just in time!";
+		getHostileNameNoSpc() = "Wall Mimic";
+		getHostileName() = "Wall Mimic ";
+		getHostileEncText() = "The walls begin to shift as the face appears before you.";
+		getHostileAtkPlayerText() = "The walls shift as the mimic launches towards you, striking you!";
+		getHostileAtkZinText() = "The mimic targets Zin, striking her with extreme force!";
+		getHostileAtkZinBlkText() = "The mimic attempts to bite Zin, however you tackle her out of the way just in time!";
 
-		this->playerSlashAtkText = "You slash at the mimic, the walls echoing back with screams!";
-		this->playerGuardAtkText = "You watch the movements of the walls carefully, preparing yourself to defend Zin from its attacks...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the walls and ceiling striking the mimic!";
+		getPlayerSlashAtkText() = "You slash at the mimic, the walls echoing back with screams!";
+		getPlayerGuardAtkText() = "You watch the movements of the walls carefully, preparing yourself to defend Zin from its attacks...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, spraying your decayed blood over the walls and ceiling striking the mimic!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning that obliterates the ceiling and strikes the mimic!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the walls!";
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning that obliterates the ceiling and strikes the mimic!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the walls!";
 		this->initHostileWallMimic = true;
 	}
 }
@@ -981,24 +860,24 @@ void Combat::initLostKnight(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 100;
-		this->hostileHpMax = 100;
-		this->hostileStrike = 25;
+		getHostileHp() = 100;
+		getHostileHpMax() = 100;
+		getHostileStrike() = 25;
 
-		this->hostileNameNoSpc = "Lost Knight";
-		this->hostileName = "Lost Knight ";
-		this->hostileEncText = "The knight stands in protest, ready to fight to the death...";
-		this->hostileAtkPlayerText = "The knight stabs you with his sword!";
-		this->hostileAtkZinText = "The knight dashes towards Zin, slightly hesitanting due to her being a child. Despite this, he still strikes her!";
-		this->hostileAtkZinBlkText = "The knight dashes towards Zin slashing at her, however you block the blade just in time!";
+		getHostileNameNoSpc() = "Lost Knight";
+		getHostileName() = "Lost Knight ";
+		getHostileEncText() = "The knight stands in protest, ready to fight to the death...";
+		getHostileAtkPlayerText() = "The knight stabs you with his sword!";
+		getHostileAtkZinText() = "The knight dashes towards Zin, slightly hesitanting due to her being a child. Despite this, he still strikes her!";
+		getHostileAtkZinBlkText() = "The knight dashes towards Zin slashing at her, however you block the blade just in time!";
 
-		this->playerSlashAtkText = "You slash at the knight, the knight gritting his teeth in pain!";
-		this->playerGuardAtkText = "You watch the knights movements, preparing yourself to defend Zin from his attacks...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood into the knights helmet! He begins coughing and choking in pain!";
+		getPlayerSlashAtkText() = "You slash at the knight, the knight gritting his teeth in pain!";
+		getPlayerGuardAtkText() = "You watch the knights movements, preparing yourself to defend Zin from his attacks...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, spraying your decayed blood into the knights helmet! He begins coughing and choking in pain!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the knight!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the knight!";
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the knight!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the knight!";
 		this->initHostileLostKnight = true;
 	}
 }
@@ -1018,24 +897,24 @@ void Combat::initPhantom(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 120;
-		this->hostileHpMax = 120;
-		this->hostileStrike = 10;
+		getHostileHp() = 120;
+		getHostileHpMax() = 120;
+		getHostileStrike() = 10;
 
-		this->hostileNameNoSpc = "Phantom";
-		this->hostileName = "Phantom ";
-		this->hostileEncText = "The phantom phases into existence right before you, charging...";
-		this->hostileAtkPlayerText = "The phantom appears right before you, striking you before you can react!";
-		this->hostileAtkZinText = "The phantom vanishes before reappearing next to Zin, using the opprotunity to strike her!";
-		this->hostileAtkZinBlkText = "The phantom runs towards Zin with a disgusting smirk, however you block the attack just in time!";
+		getHostileNameNoSpc() = "Phantom";
+		getHostileName() = "Phantom ";
+		getHostileEncText() = "The phantom phases into existence right before you, charging...";
+		getHostileAtkPlayerText() = "The phantom appears right before you, striking you before you can react!";
+		getHostileAtkZinText() = "The phantom vanishes before reappearing next to Zin, using the opprotunity to strike her!";
+		getHostileAtkZinBlkText() = "The phantom runs towards Zin with a disgusting smirk, however you block the attack just in time!";
 
-		this->playerSlashAtkText = "You slash at the phantom, its physical form being caught by your blade!";
-		this->playerGuardAtkText = "You watch the phantoms movements, preparing yourself to defend Zin from its attacks...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the phantom!";
+		getPlayerSlashAtkText() = "You slash at the phantom, its physical form being caught by your blade!";
+		getPlayerGuardAtkText() = "You watch the phantoms movements, preparing yourself to defend Zin from its attacks...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, spraying your decayed blood over the phantom!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the phantom!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the phantom!";
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the phantom!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the phantom!";
 		this->initHostilePhantom = true;
 	}
 }
@@ -1055,24 +934,24 @@ void Combat::initSkinEater(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 65;
-		this->hostileHpMax = 65;
-		this->hostileStrike = 8;
+		getHostileHp() = 65;
+		getHostileHpMax() = 65;
+		getHostileStrike() = 8;
 
-		this->hostileNameNoSpc = "Skin Eater";
-		this->hostileName = "Skin Eater ";
-		this->hostileEncText = "The skin eater stands with a horrifying face, locking eyes with you...";
-		this->hostileAtkPlayerText = "The skin eater attempts to bite you but only grazes you!";
-		this->hostileAtkZinText = "The skin eater sprints towards Zin, lunging at her and striking her!";
-		this->hostileAtkZinBlkText = "The skin eater runs towards Zin, however you pull Zin out of the way just in time!";
+		getHostileNameNoSpc() = "Skin Eater";
+		getHostileName() = "Skin Eater ";
+		getHostileEncText() = "The skin eater stands with a horrifying face, locking eyes with you...";
+		getHostileAtkPlayerText() = "The skin eater attempts to bite you but only grazes you!";
+		getHostileAtkZinText() = "The skin eater sprints towards Zin, lunging at her and striking her!";
+		getHostileAtkZinBlkText() = "The skin eater runs towards Zin, however you pull Zin out of the way just in time!";
 
-		this->playerSlashAtkText = "You slash at the skin eater, the abomination screaming in pain!";
-		this->playerGuardAtkText = "You watch the skin eaters movements, preparing yourself to defend Zin from its attacks...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the skin eater, causing it to yell in pain!";
+		getPlayerSlashAtkText() = "You slash at the skin eater, the abomination screaming in pain!";
+		getPlayerGuardAtkText() = "You watch the skin eaters movements, preparing yourself to defend Zin from its attacks...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, spraying your decayed blood over the skin eater, causing it to yell in pain!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the skin eater!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the skin eater!";
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the skin eater!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the skin eater!";
 		this->initHostileEater = true;
 	}
 }
@@ -1088,24 +967,24 @@ void Combat::initSiward(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 500;
-		this->hostileHpMax = 1000;
-		this->hostileStrike = 40;
+		getHostileHp() = 500;
+		getHostileHpMax() = 1000;
+		getHostileStrike() = 40;
 
-		this->hostileNameNoSpc = "Siward";
-		this->hostileName = "Siward ";
-		this->hostileEncText = "Siward stands with decay dripping from the front of his helmet...";
-		this->hostileAtkPlayerText = "Siward slashes his sword at you with the precision of a true knight!";
-		this->hostileAtkZinText = "Siward slashes towards Zin, brutally striking her!";
-		this->hostileAtkZinBlkText = "Siward sends his sword towards Zin with great might, however you deflect it just in time!";
+		getHostileNameNoSpc() = "Siward";
+		getHostileName() = "Siward ";
+		getHostileEncText() = "Siward stands with decay dripping from the front of his helmet...";
+		getHostileAtkPlayerText() = "Siward slashes his sword at you with the precision of a true knight!";
+		getHostileAtkZinText() = "Siward slashes towards Zin, brutally striking her!";
+		getHostileAtkZinBlkText() = "Siward sends his sword towards Zin with great might, however you deflect it just in time!";
 
-		this->playerSlashAtkText = "You slash Siward, the knight gritting his teeth in pain!";
-		this->playerGuardAtkText = "You watch Siward's movements, preparing to defend Zin from his brutal strikes...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over Siward, though it seems to have little effect...";
+		getPlayerSlashAtkText() = "You slash Siward, the knight gritting his teeth in pain!";
+		getPlayerGuardAtkText() = "You watch Siward's movements, preparing to defend Zin from his brutal strikes...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, spraying your decayed blood over Siward, though it seems to have little effect...";
 
-		this->zinSmiteAtkText = "Zin places her hands together reluctantly and creates a bolt of lightning, smiting Siward!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into Siward!";
+		getZinSmiteAtkText() = "Zin places her hands together reluctantly and creates a bolt of lightning, smiting Siward!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into Siward!";
 		this->initHostileSiward = true;
 	}
 }
@@ -1126,24 +1005,24 @@ void Combat::initLimbSplitter(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 250;
-		this->hostileHpMax = 250;
-		this->hostileStrike = 40;
+		getHostileHp() = 250;
+		getHostileHpMax() = 250;
+		getHostileStrike() = 40;
 
-		this->hostileNameNoSpc = "Limb Splitter";
-		this->hostileName = "Limb Splitter ";
-		this->hostileEncText = "The limb splitter stares you down, waiting for its meal...";
-		this->hostileAtkPlayerText = "The limb splitter strikes you with one of its ligaments!";
-		this->hostileAtkZinText = "The limb splitter catches Zin off guard, striking her with one of its arms!";
-		this->hostileAtkZinBlkText = "The limb splitter attempts to impale Zin with one of its arms, however you tackle her out of the way just in time!";
+		getHostileNameNoSpc() = "Limb Splitter";
+		getHostileName() = "Limb Splitter ";
+		getHostileEncText() = "The limb splitter stares you down, waiting for its meal...";
+		getHostileAtkPlayerText() = "The limb splitter strikes you with one of its ligaments!";
+		getHostileAtkZinText() = "The limb splitter catches Zin off guard, striking her with one of its arms!";
+		getHostileAtkZinBlkText() = "The limb splitter attempts to impale Zin with one of its arms, however you tackle her out of the way just in time!";
 
-		this->playerSlashAtkText = "You slash at the limb splitter, the abomination screaming in pain!";
-		this->playerGuardAtkText = "You watch the limb splitters ligaments, preparing yourself to defend Zin from its attacks...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the limb splitter, causing it to screech in pain!";
+		getPlayerSlashAtkText() = "You slash at the limb splitter, the abomination screaming in pain!";
+		getPlayerGuardAtkText() = "You watch the limb splitters ligaments, preparing yourself to defend Zin from its attacks...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, spraying your decayed blood over the limb splitter, causing it to screech in pain!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the limb splitter!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the limb splitter!";
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the limb splitter!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the limb splitter!";
 		this->initHostileLimbSplitter = true;
 	}
 }
@@ -1163,24 +1042,24 @@ void Combat::initBurrower(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 250;
-		this->hostileHpMax = 250;
-		this->hostileStrike = 40;
+		getHostileHp() = 250;
+		getHostileHpMax() = 250;
+		getHostileStrike() = 40;
 
-		this->hostileNameNoSpc = "Burrower";
-		this->hostileName = "Burrower ";
-		this->hostileEncText = "The burrower quickly rushes towards you, ready to attack...";
-		this->hostileAtkPlayerText = "The burrower crashes up from the ground, striking you with its spiked body!";
-		this->hostileAtkZinText = "The burrower catches Zin off guard, striking with one of its spiked quills!";
-		this->hostileAtkZinBlkText = "The burrower bursts from the wall, attempting to consume Zin whole, however you tackle her out of the way just in time!";
+		getHostileNameNoSpc() = "Burrower";
+		getHostileName() = "Burrower ";
+		getHostileEncText() = "The burrower quickly rushes towards you, ready to attack...";
+		getHostileAtkPlayerText() = "The burrower crashes up from the ground, striking you with its spiked body!";
+		getHostileAtkZinText() = "The burrower catches Zin off guard, striking with one of its spiked quills!";
+		getHostileAtkZinBlkText() = "The burrower bursts from the wall, attempting to consume Zin whole, however you tackle her out of the way just in time!";
 
-		this->playerSlashAtkText = "You slash at the burrower, the abomination bleeding across the crimson floor!";
-		this->playerGuardAtkText = "You listen to the burrowers movements in the walls, preparing yourself to defend Zin from its attacks...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the burrower, causing it to scream out in pain!";
+		getPlayerSlashAtkText() = "You slash at the burrower, the abomination bleeding across the crimson floor!";
+		getPlayerGuardAtkText() = "You listen to the burrowers movements in the walls, preparing yourself to defend Zin from its attacks...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, spraying your decayed blood over the burrower, causing it to scream out in pain!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the burrower!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the burrower!";
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the burrower!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the burrower!";
 		this->initHostileBurrower = true;
 	}
 }
@@ -1200,24 +1079,24 @@ void Combat::initChatterMouth(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 265;
-		this->hostileHpMax = 265;
-		this->hostileStrike = 20;
+		getHostileHp() = 265;
+		getHostileHpMax() = 265;
+		getHostileStrike() = 20;
 
-		this->hostileNameNoSpc = "Chatter Mouth";
-		this->hostileName = "Chatter Mouth ";
-		this->hostileEncText = "The chatter mouth quickly rushes towards you, ready to attack...";
-		this->hostileAtkPlayerText = "The chatter mouth uses its wide body to swing around the limited cave space, smashing you into the wall!";
-		this->hostileAtkZinText = "The chatter mouths body strikes Zin as it swings it violently!";
-		this->hostileAtkZinBlkText = "The chatter mouth attempts to drag Zin into its serrated mouth, however you firmly grab ahold of Zin's arm and pull her out of its grasp!";
+		getHostileNameNoSpc() = "Chatter Mouth";
+		getHostileName() = "Chatter Mouth ";
+		getHostileEncText() = "The chatter mouth quickly rushes towards you, ready to attack...";
+		getHostileAtkPlayerText() = "The chatter mouth uses its wide body to swing around the limited cave space, smashing you into the wall!";
+		getHostileAtkZinText() = "The chatter mouths body strikes Zin as it swings it violently!";
+		getHostileAtkZinBlkText() = "The chatter mouth attempts to drag Zin into its serrated mouth, however you firmly grab ahold of Zin's arm and pull her out of its grasp!";
 
-		this->playerSlashAtkText = "You slash at the chatter mouth, the abomination bleeding across the crimson floor!";
-		this->playerGuardAtkText = "You watch the chatter mouths movements, preparing yourself to defend Zin from its attacks...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the chatter mouth, causing it to scream out in pain!";
+		getPlayerSlashAtkText() = "You slash at the chatter mouth, the abomination bleeding across the crimson floor!";
+		getPlayerGuardAtkText() = "You watch the chatter mouths movements, preparing yourself to defend Zin from its attacks...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, spraying your decayed blood over the chatter mouth, causing it to scream out in pain!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the chatter mouth!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the chatter mouth!";
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the chatter mouth!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the chatter mouth!";
 		this->initHostileChatterMouth = true;
 	}
 }
@@ -1237,24 +1116,24 @@ void Combat::initReclus(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 265;
-		this->hostileHpMax = 265;
-		this->hostileStrike = 20;
+		getHostileHp() = 265;
+		getHostileHpMax() = 265;
+		getHostileStrike() = 20;
 
-		this->hostileNameNoSpc = "Reclus";
-		this->hostileName = "Reclus ";
-		this->hostileEncText = "The reclus moves quickly rushing forwards ready to attack...";
-		this->hostileAtkPlayerText = "The reclus smashes you with its hand into the wall!";
-		this->hostileAtkZinText = "The reclus drags its hand across the floor, striking Zin!";
-		this->hostileAtkZinBlkText = "The reclus mouth attempts to drag Zin into its serrated mouth, however you firmly grab ahold of Zin's arm and pull her out of its grasp!";
+		getHostileNameNoSpc() = "Reclus";
+		getHostileName() = "Reclus ";
+		getHostileEncText() = "The reclus moves quickly rushing forwards ready to attack...";
+		getHostileAtkPlayerText() = "The reclus smashes you with its hand into the wall!";
+		getHostileAtkZinText() = "The reclus drags its hand across the floor, striking Zin!";
+		getHostileAtkZinBlkText() = "The reclus mouth attempts to drag Zin into its serrated mouth, however you firmly grab ahold of Zin's arm and pull her out of its grasp!";
 
-		this->playerSlashAtkText = "You slash at the reclus, the abomination bleeding across the crimson floor!";
-		this->playerGuardAtkText = "You watch the reclus carefully, preparing yourself to defend Zin from its attacks...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the reclus, causing it to scream out in pain!";
+		getPlayerSlashAtkText() = "You slash at the reclus, the abomination bleeding across the crimson floor!";
+		getPlayerGuardAtkText() = "You watch the reclus carefully, preparing yourself to defend Zin from its attacks...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, spraying your decayed blood over the reclus, causing it to scream out in pain!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the reclus!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the reclus!";
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the reclus!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the reclus!";
 		this->initHostileReclus = true;
 	}
 }
@@ -1274,24 +1153,24 @@ void Combat::initTendrilAlpha(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
-		this->hostileHp = 400;
-		this->hostileHpMax = 400;
-		this->hostileStrike = 25;
+		getHostileHp() = 400;
+		getHostileHpMax() = 400;
+		getHostileStrike() = 25;
 
-		this->hostileNameNoSpc = "Tendril Alpha";
-		this->hostileName = "Tendril Alpha ";
-		this->hostileEncText = "The abomination moves quickly rushing forwards ready to attack...";
-		this->hostileAtkPlayerText = "The abomination smashes one of its tendrils into you!";
-		this->hostileAtkZinText = "The abomination strikes Zin with one of its tendrils!";
-		this->hostileAtkZinBlkText = "The alpha attempts to swarm Zin with its tendrils, however you jump in between each tendril slicing them away!";
+		getHostileNameNoSpc() = "Tendril Alpha";
+		getHostileName() = "Tendril Alpha ";
+		getHostileEncText() = "The abomination moves quickly rushing forwards ready to attack...";
+		getHostileAtkPlayerText() = "The abomination smashes one of its tendrils into you!";
+		getHostileAtkZinText() = "The abomination strikes Zin with one of its tendrils!";
+		getHostileAtkZinBlkText() = "The alpha attempts to swarm Zin with its tendrils, however you jump in between each tendril slicing them away!";
 
-		this->playerSlashAtkText = "You slash at the alpha, its body squirming in pain!";
-		this->playerGuardAtkText = "You watch the abominations tendrils carefully, preparing yourself to defend Zin from its attacks...";
-		this->playerDecayAtkText = "You slash yourself open with your sword, spraying your decayed blood over the alpha, causing it to quiver!";
+		getPlayerSlashAtkText() = "You slash at the alpha, its body squirming in pain!";
+		getPlayerGuardAtkText() = "You watch the abominations tendrils carefully, preparing yourself to defend Zin from its attacks...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, spraying your decayed blood over the alpha, causing it to quiver!";
 
-		this->zinSmiteAtkText = "Zin places her hands together and creates a bolt of lightning, smiting the alpha!";
-		this->zinMendAtkText = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
-		this->zinVengeanceAtkText = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the alpha!";
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the alpha!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the alpha!";
 		this->initHostileTendrilAlpha = true;
 	}
 }
