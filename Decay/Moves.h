@@ -26,10 +26,10 @@ private:
 	int playerStrike;
 	int playerGuard;
 	int decayedBlade;
-	int heftyBlow;
+	int heftyBlowDmg;
 	int decaySynergyDmg;
 	int decaySynergyDef;
-	int ironWall;
+	int ironWallDef;
 
 	//Zin Moves
 	int zinSmite;
@@ -84,21 +84,21 @@ public:
 	~Moves();
 
 	//Player Moves
-	void Slash(Sprites& sprites, Animation& animate);
-	void Guard(Sprites& sprites, Animation& animate);
-	void DecayBlade(Sprites& sprites, Animation& animate);
-	void HeftyBlow(Sprites& sprites, Animation& animate);
-	void DecaySynergy(Sprites& sprites, Animation& animate);
-	void IronWall(Sprites& sprites, Animation& animte);
+	void slash(Sprites& sprites, Animation& animate);
+	void guard(Sprites& sprites, Animation& animate);
+	void decayBlade(Sprites& sprites, Animation& animate);
+	void heftyBlow(Sprites& sprites, Animation& animate);
+	void decaySynergy(Sprites& sprites, Animation& animate);
+	void ironWall(Sprites& sprites, Animation& animte);
 
 	//Zin Moves
-	void Smite(Sprites& sprites, Animation& animate);
-	void Mend(Sprites& sprites, Animation& animate);
-	void Vengeance(Sprites& sprites, Animation& animate);
+	void smite(Sprites& sprites, Animation& animate);
+	void mend(Sprites& sprites, Animation& animate);
+	void vengeance(Sprites& sprites, Animation& animate);
 
 	//Thom Moves
-	void Barrier(Sprites& sprites, Animation& animate);
-	void Enrage(Sprites& sprites, Animation& animate);
+	void barrier(Sprites& sprites, Animation& animate);
+	void enrage(Sprites& sprites, Animation& animate);
 
 	//Hostile Moves
 

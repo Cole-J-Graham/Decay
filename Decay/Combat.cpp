@@ -492,22 +492,22 @@ void Combat::playerSelectMove(Sprites& sprites, Animation& animate)
 {
 	switch (this->playerPickMove) {
 	case 0:
-		Slash(sprites, animate);
+		slash(sprites, animate);
 		break;
 	case 1:
-		Guard(sprites, animate);
+		guard(sprites, animate);
 		break;
 	case 2:
-		DecayBlade(sprites, animate);
+		decayBlade(sprites, animate);
 		break;
 	case 3:
-		HeftyBlow(sprites, animate);
+		heftyBlow(sprites, animate);
 		break;
 	case 4:
-		DecaySynergy(sprites, animate);
+		decaySynergy(sprites, animate);
 		break;
 	case 5:
-		IronWall(sprites, animate);
+		ironWall(sprites, animate);
 		break;
 	}
 }
@@ -516,13 +516,13 @@ void Combat::zinSelectMove(Sprites& sprites, Animation& animate)
 {
 	switch (this->zinPickMove) {
 	case 0:
-		Smite(sprites, animate);
+		smite(sprites, animate);
 		break;
 	case 1:
-		Mend(sprites, animate);
+		mend(sprites, animate);
 		break;
 	case 2:
-		Vengeance(sprites, animate);
+		vengeance(sprites, animate);
 		break;
 	}
 	
@@ -532,10 +532,10 @@ void Combat::thomSelectMove(Sprites& sprites, Animation& animate)
 {
 	switch (this->thomPickMove) {
 	case 0:
-		Barrier(sprites, animate);
+		barrier(sprites, animate);
 		break;
 	case 1:
-		Enrage(sprites, animate);
+		enrage(sprites, animate);
 		break;
 	}
 }

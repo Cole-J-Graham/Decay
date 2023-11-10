@@ -23,10 +23,10 @@ Moves::Moves()
 	this->playerStrike = 5;
 	this->playerGuard = 1;
 	this->decayedBlade = 10;
-	this->heftyBlow = 25;
+	this->heftyBlowDmg = 25;
 	this->decaySynergyDmg = 3;
 	this->decaySynergyDef = 10;
-	this->ironWall = 10;
+	this->ironWallDef = 10;
 
 	//Zin Moves
 	this->zinSmite = 5;
@@ -81,7 +81,7 @@ Moves::~Moves()
 }
 
 //Player Moves
-void Moves::Slash(Sprites& sprites, Animation& animate)
+void Moves::slash(Sprites& sprites, Animation& animate)
 {
 	sprites.soundSlash.play();
 	this->hostileHp -= this->playerStrike;
@@ -96,7 +96,7 @@ void Moves::Slash(Sprites& sprites, Animation& animate)
 	animate.getAnimEnd() = false;//Play Attack Animation
 }
 
-void Moves::Guard(Sprites& sprites, Animation& animate)
+void Moves::guard(Sprites& sprites, Animation& animate)
 {
 	sprites.soundGuard.play();
 	sprites.setPlayerTurnAssetsFalse();
@@ -104,7 +104,7 @@ void Moves::Guard(Sprites& sprites, Animation& animate)
 	sprites.text.setString(this->playerGuardAtkText);
 }
 
-void Moves::DecayBlade(Sprites& sprites, Animation& animate)
+void Moves::decayBlade(Sprites& sprites, Animation& animate)
 {
 	sprites.soundDecay.play();
 	this->hostileHp -= this->decayedBlade;
@@ -115,10 +115,10 @@ void Moves::DecayBlade(Sprites& sprites, Animation& animate)
 	animate.getAnimEnd() = false;//Play Attack Animation
 }
 
-void Moves::HeftyBlow(Sprites& sprites, Animation& animate)
+void Moves::heftyBlow(Sprites& sprites, Animation& animate)
 {
 	sprites.soundHefty.play();
-	this->hostileHp -= this->heftyBlow;
+	this->hostileHp -= this->heftyBlowDmg;
 	sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 	sprites.setPlayerTurnAssetsFalse();
 	sprites.text.setString(this->playerHeftyAtkText);
@@ -127,7 +127,7 @@ void Moves::HeftyBlow(Sprites& sprites, Animation& animate)
 	this->playerFatigue = true;
 }
 
-void Moves::DecaySynergy(Sprites& sprites, Animation& animate)
+void Moves::decaySynergy(Sprites& sprites, Animation& animate)
 {
 	sprites.soundSynergy.play();
 	this->hostileHp -= this->decaySynergyDmg;
@@ -140,11 +140,11 @@ void Moves::DecaySynergy(Sprites& sprites, Animation& animate)
 	animate.getAnimEnd() = false;//Play Attack Animation
 }
 
-void Moves::IronWall(Sprites& sprites, Animation& animte)
+void Moves::ironWall(Sprites& sprites, Animation& animte)
 {
-	this->playerDef += this->ironWall;
-	this->zinDef += this->ironWall;
-	this->thomDef += this->ironWall;
+	this->playerDef += this->ironWallDef;
+	this->zinDef += this->ironWallDef;
+	this->thomDef += this->ironWallDef;
 	sprites.text.setString(this->playerIronWallAtkText);
 	sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
 	sprites.spriteText[1].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));
@@ -153,7 +153,7 @@ void Moves::IronWall(Sprites& sprites, Animation& animte)
 }
 
 //Zin Moves
-void Moves::Smite(Sprites& sprites, Animation& animate)
+void Moves::smite(Sprites& sprites, Animation& animate)
 {
 	sprites.soundSmite.play();
 	this->hostileHp -= this->zinSmite;
@@ -164,7 +164,7 @@ void Moves::Smite(Sprites& sprites, Animation& animate)
 	animate.getAnimEnd() = false;//Play Attack Animation
 }
 
-void Moves::Mend(Sprites& sprites, Animation& animate)
+void Moves::mend(Sprites& sprites, Animation& animate)
 {
 	sprites.soundMend.play();
 	if (this->playerHp < this->playerHpMax) {
@@ -192,7 +192,7 @@ void Moves::Mend(Sprites& sprites, Animation& animate)
 	sprites.text.setString(this->zinMendAtkText);
 }
 
-void Moves::Vengeance(Sprites& sprites, Animation& animate)
+void Moves::vengeance(Sprites& sprites, Animation& animate)
 {
 	sprites.soundVengeance.play();
 	this->zinVengeance = this->playerHpMax - this->playerHp;
@@ -203,7 +203,7 @@ void Moves::Vengeance(Sprites& sprites, Animation& animate)
 }
 
 //Thom Moves
-void Moves::Barrier(Sprites& sprites, Animation& animate)
+void Moves::barrier(Sprites& sprites, Animation& animate)
 {
 	this->playerGuarded = true;
 	sprites.soundThomGuard.play();
@@ -212,7 +212,7 @@ void Moves::Barrier(Sprites& sprites, Animation& animate)
 	sprites.setThomTurnAssetsFalse();
 }
 
-void Moves::Enrage(Sprites& sprites, Animation& animate)
+void Moves::enrage(Sprites& sprites, Animation& animate)
 {
 	this->thomEnraged = true;
 	this->enraged = 3;
