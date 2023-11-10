@@ -51,7 +51,7 @@ Assets::Assets()
     this->rectStatsBoxY = 10;
     this->rectInventoryBoxX = 1700;
     this->rectInventoryBoxY = 10;
-
+        
     //Initialize Combat Assets
     this->combatAssets = false;
     this->eventAssets = false;
@@ -61,12 +61,35 @@ Assets::Assets()
     this->thomTurnAssets = false;
 
     //Combat Move Unlocks
-    this->combatPlayerMoves = 2;
+    this->combatPlayerMoves = 5;
     this->combatZinMoves = 2;
     this->combatThomMoves = 1;
 
     //Strings
     this->playerName = "player";
+
+    //ToolTip Strings
+    this->tipStrength = "STRENGTH:\nMeasures the players raw power.\n\nIncreases all attack moves damage.";
+    this->tipFortitude = "FORTITUDE:\nMeasures the players survivability against decay.\n\nHigher fortitude makes the player more \nresistant to the decay.";
+    this->tipVitality = "VITALITY:\nMeasures the players health.\n\nHigh vitality allows the player to take a beating\nin combat.";
+
+    this->tipResolve = "RESOLVE:\nMeasures Zin's spells raw power.\n\nIncreases the damage of her lightning \nspells specifically.";
+    this->tipPatience = "PATIENCE:\nMeasures Zin's healing capabilities.\n\nHigh patience makes her heal \nsignificantly more.";
+    this->tipResilience = "RESILIENCE:\nMeasures Zin's health.\n\nHigh resilience allows Zin to take more \nhits and survive.";
+
+    this->tipSlash = "SLASH:\nThe players basic attack for inflicting damage...";
+    this->tipGuard = "GUARD:\nUses the players turn to protect Zin from \nALL damage...";
+    this->tipDecay = "DECAYED BLADE:\nThe player slashes his own skin open to use the \ndecay in his blood as a weapon...\n\nInflicts extra damage due to decayed blood...";
+    this->tipHefty = "HEFTY BLOW:\nThe player utilizes his weapon to cause as much\ndamage as physically possible to the\nhostile...\n\nRequires a one turn cooldown after use.";
+    this->tipSynergy = "DECAYING SYNERGY:\nThe player turns his decay into a physical\nmaterial, using it to shield Zin\nand inflict damage on the enemy...\n\nGives Zin defense and attacks for decay DMG.";
+    this->tipIronWall = "IRON WALL:\nThe player uses all of his strength to defend the\nfellow members of his party.\n\nEntire party gains a specific amount of BLK.";
+
+    this->tipSmite = "SMITE:\nZin's basic attack, inflicts damage on the \nopponent...";
+    this->tipMend = "MEND:\nHeals the player and Zin...";
+    this->tipVengeance = "VENGEANCE:\nUse Zin's rage and sorrow to turn the players\nblood into sharpened blades that hurdle\ntowards the enemy...\n\nInflicts damage equal to the players current \nlost health...";
+
+    this->tipBarrier = "BARRIER:\nThom casts a barrier made of Decay,\nblocking some of the players damage.";
+    this->tipEnrage = "ENRAGE:\nThom enters a state of pure rage.\nThis lasts for three turns, boosting\nall party damage.\n\nThom is unable to use any other moves during\nhis state of rage.";
 
     //Load game assets
     this->loadSprites();
@@ -111,6 +134,8 @@ void Assets::loadSounds()
     bufferPlayerGuarded.loadFromFile("Assets/Sounds/playerguarded.wav");
     bufferThomGuard.loadFromFile("Assets/Sounds/thomatkguard.wav");
     bufferEnraged.loadFromFile("Assets/Sounds/enraged.wav");
+    bufferHefty.loadFromFile("Assets/Sounds/heftyBlow.wav");
+    bufferSynergy.loadFromFile("Assets/Sounds/decaySynergy.wav");
 }
 
 //Draw Fuctions
@@ -176,21 +201,17 @@ void Assets::drawMainWindow()
         spriteElements[1].setPosition(445.0f, 10000.0f);
     }
     else if (bonfireAssets == true) {
+        for (int i = 0; i < rectElements.size(); i++) {
+            rectElements[i].setSize(sf::Vector2f(100.0f, 25.0f));
+            rectElements[i].setOutlineColor(sf::Color::White);
+            rectElements[i].setOutlineThickness(1.0f);
+        }
         //Draw Map Button
         rectElements[2].setPosition(1.0f, 795.0f);
-        rectElements[2].setSize(sf::Vector2f(100.0f, 25.0f));
-        rectElements[2].setOutlineColor(sf::Color::White);
-        rectElements[2].setOutlineThickness(1.0f);
         //Draw Stats Button
         rectElements[0].setPosition(105.0f, 795.0f);
-        rectElements[0].setSize(sf::Vector2f(100.0f, 25.0f));
-        rectElements[0].setOutlineColor(sf::Color::White);
-        rectElements[0].setOutlineThickness(1.0f);
         //Draw Inventory Button
         rectElements[1].setPosition(209.0f, 795.0f);
-        rectElements[1].setSize(sf::Vector2f(100.0f, 25.0f));
-        rectElements[1].setOutlineColor(sf::Color::White);
-        rectElements[1].setOutlineThickness(1.0f);
         //Hide Back and Forward Buttons
         spriteElements[0].setPosition(1400.0f, 10000.0f);
         spriteElements[1].setPosition(445.0f, 10000.0f);
@@ -216,16 +237,14 @@ void Assets::drawText()
     locationText.setFillColor(sf::Color(sf::Color::White));
     locationText.setPosition(275.0f, 10.0f);
     //Menu Bar Text
-    textElements[2].setFont(font);
-    textElements[2].setCharacterSize(16);
+    for (int i = 0; i < textElements.size(); i++) {
+        textElements[i].setFont(font);
+        textElements[i].setCharacterSize(16);
+    }
     textElements[2].setPosition(1.0f, 797.0f);
     textElements[2].setString("Map");
-    textElements[0].setFont(font);
-    textElements[0].setCharacterSize(16);
     textElements[0].setPosition(105.0f, 797.0f);
     textElements[0].setString("Stats");
-    textElements[1].setFont(font);
-    textElements[1].setCharacterSize(16);
     textElements[1].setPosition(210.0f, 797.0f);
     textElements[1].setString("Inventory");
 }
@@ -1121,12 +1140,96 @@ void Assets::playerCombatAssets()
             combatText[2].setPosition(335.0f, 735.0f);
             combatText[2].setString("Decay");
             break;
+        case 3:
+            //Draw Player Slash Button
+            combatRect[0].setPosition(335.0f, 795.0f);
+            //Draw Player Slash Text
+            combatText[0].setPosition(335.0f, 795.0f);
+            combatText[0].setString("Slash");
+            //Draw Player Guard Button
+            combatRect[1].setPosition(335.0f, 765.0f);
+            //Draw Player Guard Text
+            combatText[1].setPosition(335.0f, 765.0f);
+            combatText[1].setString("Guard");
+            //Draw Player Decay Button
+            combatRect[2].setPosition(335.0f, 735.0f);
+            //Draw Player Decay Text
+            combatText[2].setPosition(335.0f, 735.0f);
+            combatText[2].setString("Decay");
+            //Draw Player Hefty Button
+            combatRect[3].setPosition(335.0f, 705.0f);
+            //Draw Player Hefty Text
+            combatText[3].setPosition(335.0f, 705.0f);
+            combatText[3].setString("Hefty Blow");
+            break;
+        case 4:
+            //Draw Player Slash Button
+            combatRect[0].setPosition(335.0f, 795.0f);
+            //Draw Player Slash Text
+            combatText[0].setPosition(335.0f, 795.0f);
+            combatText[0].setString("Slash");
+            //Draw Player Guard Button
+            combatRect[1].setPosition(335.0f, 765.0f);
+            //Draw Player Guard Text
+            combatText[1].setPosition(335.0f, 765.0f);
+            combatText[1].setString("Guard");
+            //Draw Player Decay Button
+            combatRect[2].setPosition(335.0f, 735.0f);
+            //Draw Player Decay Text
+            combatText[2].setPosition(335.0f, 735.0f);
+            combatText[2].setString("Decay");
+            //Draw Player Hefty Button
+            combatRect[3].setPosition(335.0f, 705.0f);
+            //Draw Player Hefty Text
+            combatText[3].setPosition(335.0f, 705.0f);
+            combatText[3].setString("Hefty Blow");
+            //Draw Player Synergy Button
+            combatRect[4].setPosition(335.0f, 675.0f);
+            //Draw Player Synergy Text
+            combatText[4].setPosition(335.0f, 675.0f);
+            combatText[4].setString("Synergy");
+            break;
+        case 5:
+            //Draw Player Slash Button
+            combatRect[0].setPosition(335.0f, 795.0f);
+            //Draw Player Slash Text
+            combatText[0].setPosition(335.0f, 795.0f);
+            combatText[0].setString("Slash");
+            //Draw Player Guard Button
+            combatRect[1].setPosition(335.0f, 765.0f);
+            //Draw Player Guard Text
+            combatText[1].setPosition(335.0f, 765.0f);
+            combatText[1].setString("Guard");
+            //Draw Player Decay Button
+            combatRect[2].setPosition(335.0f, 735.0f);
+            //Draw Player Decay Text
+            combatText[2].setPosition(335.0f, 735.0f);
+            combatText[2].setString("Decay");
+            //Draw Player Hefty Button
+            combatRect[3].setPosition(335.0f, 705.0f);
+            //Draw Player Hefty Text
+            combatText[3].setPosition(335.0f, 705.0f);
+            combatText[3].setString("Hefty Blow");
+            //Draw Player Synergy Button
+            combatRect[4].setPosition(335.0f, 675.0f);
+            //Draw Player Synergy Text
+            combatText[4].setPosition(335.0f, 675.0f);
+            combatText[4].setString("Synergy");
+            //Draw Player Iron Wall Button
+            combatRect[5].setPosition(335.0f, 645.0f);
+            //Draw Player Iron Wall Text
+            combatText[5].setPosition(335.0f, 645.0f);
+            combatText[5].setString("Iron wall");
+            break;
         }
     }
     else if (!this->playerTurnAssets) {
         combatRect[0].setPosition(10000.0f, 10000.0f);
         combatRect[1].setPosition(10000.0f, 10000.0f);
         combatRect[2].setPosition(10000.0f, 10000.0f);
+        combatRect[3].setPosition(10000.0f, 10000.0f);
+        combatRect[4].setPosition(10000.0f, 10000.0f);
+        combatRect[5].setPosition(10000.0f, 10000.0f);
     }
 }
 
@@ -1261,6 +1364,10 @@ void Assets::loadSFX()
     soundThomGuard.setBuffer(bufferThomGuard);
     //Load Enraged Sfx
     soundEnraged.setBuffer(bufferEnraged);
+    //Load Hefty Blow Sfx
+    soundHefty.setBuffer(bufferHefty);
+    //Load Synergy Sfx
+    soundSynergy.setBuffer(bufferSynergy);
    
     //Set Volume Levels
     blipmenu.setVolume(60);

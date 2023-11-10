@@ -634,7 +634,7 @@ void Sprites::greyOnHoverRect(sf::RenderWindow& window, std::vector<sf::Rectangl
 
     for (int i = 0; i < inputRect.size(); i++) {
         if (inputRect[i].getGlobalBounds().contains(mousePosF)) {
-            inputRect[i].setFillColor(sf::Color::Transparent);
+            inputRect[i].setFillColor(sf::Color::Black);
             inputText[i].setFillColor(sf::Color::White);
         }
         else {

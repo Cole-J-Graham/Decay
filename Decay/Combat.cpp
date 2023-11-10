@@ -7,6 +7,9 @@ Combat::Combat()
 	this->valZero = 0;
 	this->valOne = 1;
 	this->valTwo = 2;
+	this->valThree = 3;
+	this->valFour = 4;
+	this->valFive = 5;
 
 	//Attack Counters
 	this->attackCounter = 0;
@@ -140,6 +143,7 @@ void Combat::combatLoop(sf::RenderWindow& window, Sprites& sprites, Player& play
 			sprites.getEntityViewerCounter() = -1;
 			animate.getCombatAnimationLocation() = -1;
 			getThomEnraged() = false;
+			getPlayerFatigue() = false;
 			this->combatEnd = true;
 		}
 		//Hostiles turn
@@ -195,7 +199,6 @@ void Combat::initCombat(Sprites& sprites, Player& player, Animation& animate)
 	sprites.setInitMapFalse(); //Hide the map if its open
 	sprites.setInitStatsFalse(); //Hide stats if open
 	sprites.setInitInventoryFalse(); //Hide inventory if open
-	sprites.setPlayerTurnAssetsTrue(); //Allow player turn
 
 	animate.getAnimEnd() = true;//Prevent animation attempt from running at start
 	getFirstAttack() = false;
@@ -222,7 +225,6 @@ void Combat::reInitCombat(Sprites& sprites)
 	//Re init characters if both are alive
 	if (!this->playerDead && !this->zinDead) {
 		//Player
-		sprites.setPlayerTurnAssetsTrue();
 		this->turnPlayer = true;
 		this->attackCounter = 0;
 		getZinGuarded() = false;
@@ -245,7 +247,6 @@ void Combat::reInitCombat(Sprites& sprites)
 	}//Re init player if he is alive and zin is dead
 	else if (!this->playerDead && this->zinDead) {
 		//Player
-		sprites.setPlayerTurnAssetsTrue();
 		this->turnPlayer = true;
 		this->attackCounter = 0;
 		getZinGuarded() = false;
@@ -268,18 +269,31 @@ void Combat::playerTurn(sf::RenderWindow& window, Sprites& sprites, Animation& a
 	if (this->turnPlayer == true) {
 		switch (this->attackCounter) {
 		case 0:
-			sprites.text.setString(getPlayerTurnText());
+			if (!getPlayerFatigue()) {
+				//Check if the player is fatigued, if not continue turn as normal
+				sprites.setPlayerTurnAssetsTrue();
+				sprites.text.setString(getPlayerTurnText());
+			}
+			else if (getPlayerFatigue()) {
+				sprites.text.setString("You are forced to take a moment to breathe after your last attack...");
+			}
 			break;
 		case 1:
-			//Player Attacks Hostile
-			if (this->playerAttack == false) {
+			if (!this->playerAttack && !getPlayerFatigue()) {
 				this->playerSelectMove(sprites, animate);
+				this->playerAttack = true;
+			}
+			else if (getPlayerFatigue() && !this->playerAttack) {
+				getPlayerFatigue() = false;
+				sprites.getPlayerTurnAssets() = false;
+				this->attackCounter = 2;
 				this->playerAttack = true;
 			}
 			break;
 		case 2:
 			this->turnPlayer = false;
 			if (sprites.getThomUnlocked()) {
+				//Check who's alive and set it to their turn
 				if (!this->zinDead) {
 					this->turnZin = true;
 				}
@@ -448,6 +462,9 @@ void Combat::pickMove(sf::RenderWindow& window, Sprites& sprites)
 		this->pickMoveFunc(window, sprites.combatRect[0], this->attackCounter, this->playerPickMove, this->valZero);
 		this->pickMoveFunc(window, sprites.combatRect[1], this->attackCounter, this->playerPickMove, this->valOne);
 		this->pickMoveFunc(window, sprites.combatRect[2], this->attackCounter, this->playerPickMove, this->valTwo);
+		this->pickMoveFunc(window, sprites.combatRect[3], this->attackCounter, this->playerPickMove, this->valThree);
+		this->pickMoveFunc(window, sprites.combatRect[4], this->attackCounter, this->playerPickMove, this->valFour);
+		this->pickMoveFunc(window, sprites.combatRect[5], this->attackCounter, this->playerPickMove, this->valFive);
 	}
 	if (this->getTurnZin()) {
 		this->pickMoveFunc(window, sprites.combatRect[3], this->zinAttackCounter, this->zinPickMove, this->valZero);
@@ -482,6 +499,15 @@ void Combat::playerSelectMove(Sprites& sprites, Animation& animate)
 		break;
 	case 2:
 		DecayBlade(sprites, animate);
+		break;
+	case 3:
+		HeftyBlow(sprites, animate);
+		break;
+	case 4:
+		DecaySynergy(sprites, animate);
+		break;
+	case 5:
+		IronWall(sprites, animate);
 		break;
 	}
 }

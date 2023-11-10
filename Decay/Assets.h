@@ -75,6 +75,29 @@ private:
 
 	//Strings
 	std::string playerName;
+
+	//ToolTip Strings
+	std::string tipStrength;
+	std::string tipFortitude;
+	std::string tipVitality;
+
+	std::string tipResolve;
+	std::string tipPatience;
+	std::string tipResilience;
+
+	std::string tipSlash;
+	std::string tipGuard;
+	std::string tipDecay;
+	std::string tipHefty;
+	std::string tipSynergy;
+	std::string tipIronWall;
+
+	std::string tipSmite;
+	std::string tipMend;
+	std::string tipVengeance;
+
+	std::string tipBarrier;
+	std::string tipEnrage;
 	
 public:
 	//Constructors & Destructors
@@ -241,36 +264,44 @@ public:
 	//Combat Assets
 	sf::RectangleShape rectSlash;
 	sf::RectangleShape rectGuard;
+	sf::RectangleShape rectDecay;
+	sf::RectangleShape rectHefty;
+	sf::RectangleShape rectSynergy;
+	sf::RectangleShape rectIronWall;
+
+	sf::RectangleShape rectSmite;
 	sf::RectangleShape rectMend;
 	sf::RectangleShape rectVengeance;
-	sf::RectangleShape rectSmite;
-	sf::RectangleShape rectDecay;
+
 	sf::RectangleShape rectBarrier;
 	sf::RectangleShape rectEnraged;
 
-
 	std::vector<sf::RectangleShape> combatRect{ rectSlash, rectGuard, 
-		rectDecay, rectSmite, rectMend, rectVengeance, rectBarrier, rectEnraged };
+		rectDecay, rectHefty, rectSynergy, rectIronWall, rectSmite, rectMend, rectVengeance,
+		rectBarrier, rectEnraged };
 
 	//combatText Vect Objects
-	sf::Text attackText;
-	sf::Text smiteText;
+	sf::Text textSlash;
+	sf::Text textSmite;
 	sf::Text textGuard;
 	sf::Text textMend;
 	sf::Text textVengeance;
 	sf::Text textDecay;
 	sf::Text textBarrier;
 	sf::Text textEnraged;
+	sf::Text textHefty;
+	sf::Text textSynergy;
+	sf::Text textIronWall;
 
-	std::vector<sf::Text> combatText{ attackText, smiteText, 
-		textGuard, textMend, textVengeance, textDecay, textBarrier, textEnraged };
+	std::vector<sf::Text> combatText{ textSlash, textGuard, 
+		textHefty, textSynergy, textIronWall, textSmite, textMend, textVengeance, textDecay, textBarrier, textEnraged };
 
 	//Main Vectors
 	std::vector<sf::RectangleShape> rectElements {rectStats, rectInventory, 
-		buttonMap,};
+		buttonMap};
 
 	std::vector<sf::Text> textElements {rectStatsText, rectInventoryText, 
-		menuText, };
+		menuText};
 
 	std::vector<sf::Sprite> spriteElements{ button, buttonBack, spade,
 		zin, player, hostile, siward, thom };
@@ -430,6 +461,8 @@ public:
 	sf::Sound soundPlayerGuarded;
 	sf::Sound soundThomGuard;
 	sf::Sound soundEnraged;
+	sf::Sound soundHefty;
+	sf::Sound soundSynergy;
 	//Sound Buffers
 	sf::SoundBuffer buffer;
 	sf::SoundBuffer blipbuffer;
@@ -453,6 +486,8 @@ public:
 	sf::SoundBuffer bufferPlayerGuarded;
 	sf::SoundBuffer bufferThomGuard;
 	sf::SoundBuffer bufferEnraged;
+	sf::SoundBuffer bufferHefty;
+	sf::SoundBuffer bufferSynergy;
 
 	//Music
 	sf::Music music;
@@ -585,6 +620,29 @@ public:
 
 	//String Getters
 	std::string& getPlayerName() { return this->playerName; };
+
+	//ToolTip Getters
+	std::string& getTipStrength() { return this->tipStrength; };
+	std::string& getTipFortitude() { return this->tipFortitude; };
+	std::string& getTipVitality() { return this->tipVitality; };
+
+	std::string& getTipResolve() { return this->tipResolve; };
+	std::string& getTipPatience() { return this->tipPatience; };
+	std::string& getTipResilience() { return this->tipResilience; };
+
+	std::string& getTipSlash() { return this->tipSlash; };
+	std::string& getTipGuard() { return this->tipGuard; };
+	std::string& getTipDecay() { return this->tipDecay; };
+	std::string& getTipHefty() { return this->tipHefty; };
+	std::string& getTipSynergy() { return this->tipSynergy; };
+	std::string& getTipIronWall() { return this->tipIronWall; };
+
+	std::string& getTipSmite() { return this->tipSmite; };
+	std::string& getTipMend() { return this->tipMend; };
+	std::string& getTipVengeance() { return this->tipVengeance; };
+
+	std::string& getTipBarrier() { return this->tipBarrier; };
+	std::string& getTipEnrage() { return this->tipEnrage; };
 
 	//String Setters
 	void setPlayerName() { this->playerName; };

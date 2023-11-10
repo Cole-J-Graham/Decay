@@ -36,7 +36,7 @@ World::~World()
 }
 
 //Core Functions
-void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate)
+void World::BootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate)
 {
     //Load SFX
     sprites.loadSFX();
@@ -56,22 +56,22 @@ void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& pl
                 break;
             case sf::Event::MouseMoved:
                 //Mouse Hover Actions
-                this->printToolTip(window, sprites, notevent, combat, player);
+                this->PrintToolTip(window, sprites, notevent, combat, player);
                 break;
             case sf::Event::MouseButtonPressed:
                 //Get Mouse Click Input
-                this->travelButtons(window, sprites, travel, animate, player);
+                this->TravelButtons(window, sprites, travel, animate, player);
                 //If button in map is clicked, do something
                 if (!sprites.getPlayerDeath() && sprites.getInitMap()) {
-                    this->mapButtons(window, sprites, travel);
+                    this->MapButtons(window, sprites, travel);
                 }
                 //Map Menu Bar Functionality
-                this->statsFunctionality(window, combat, player, sprites); //Must be loaded before menuBar(window); to withhold functionality
-                this->menuBar(window, sprites);
+                this->StatsFunctionality(window, combat, player, sprites); //Must be loaded before menuBar(window); to withhold functionality
+                this->MenuBar(window, sprites);
                 //Dialogue Box Functionality
-                this->dialogueCombatBox(window, combat, sprites, travel, notevent);
+                this->DialogueCombatBox(window, combat, sprites, travel, notevent);
                 //Main Menu Functionality
-                this->mainMenuButtons(window, sprites, travel, animate);
+                this->MainMenuButtons(window, sprites, travel, animate);
                 if (stop) { //Make quit button return to main function to stop program from running
                     return;
                 }
@@ -87,7 +87,7 @@ void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& pl
                 sprites.setMovableStatsBoxFalse();
                 break;
             case sf::Event::KeyPressed:
-                this->userInput(sprites);
+                this->UserInput(sprites);
                 break;
             }
             //Main Travel Loop
@@ -98,7 +98,7 @@ void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& pl
     }
 }
 
-void World::userInput(Sprites& sprites)
+void World::UserInput(Sprites& sprites)
 {
     //Get user input for keyboard inputs
     sprites.font.loadFromFile("C:/Windows/Fonts/arial.ttf");
@@ -218,17 +218,17 @@ void World::Draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
             //Choose which map is selected
             switch (sprites.getMapCounter()) {
             case 0:
-                this->drawForestMap(window, sprites);
+                this->DrawForestMap(window, sprites);
                 break;
             case 1:
-                this->drawCastleMap(window, sprites);
+                this->DrawCastleMap(window, sprites);
                 break;
             case 2:
-                this->drawDecayMap(window, sprites);
+                this->DrawDecayMap(window, sprites);
                 break;
             }
             //Make Box Movable if clicked...
-            this->movableBox(window, sprites);
+            this->MovableBox(window, sprites);
         }
 
         if (sprites.getInitStats() == true) {
@@ -238,10 +238,10 @@ void World::Draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
             }
             window.draw(sprites.rectStatsBox);
             if (sprites.getPlayerStatsInit() == true) {
-                this->printPlayerStats(window, sprites, notevent, combat, player);
+                this->PrintPlayerStats(window, sprites, notevent, combat, player);
             }
             else if (sprites.getZinStatsInit() == true) {
-                this->printZinStats(window, sprites, notevent, combat, player);
+                this->PrintZinStats(window, sprites, notevent, combat, player);
             }
             window.draw(sprites.rectStatsSideMenu);
             window.draw(sprites.playerStatsBoxButtonText);
@@ -307,7 +307,7 @@ void World::DrawMapSelectorButtons(sf::RenderWindow& window, Sprites& sprites)
     }
 }
 
-void World::printPlayerStats(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player)
+void World::PrintPlayerStats(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player)
 {
     sprites.playerTextElements[4].setString("HP: " + std::to_string(combat.getPlayerHp()) + "/" +
         std::to_string(combat.getPlayerHpMax()) + "\nDECAY: " + std::to_string(player.getDecay()) + "/" +
@@ -327,7 +327,7 @@ void World::printPlayerStats(sf::RenderWindow& window, Sprites& sprites, Event& 
     }
 }
 
-void World::printZinStats(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player)
+void World::PrintZinStats(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player)
 {
     sprites.zinTextElements[4].setString("HP: " + std::to_string(combat.getZinHp()) + "/" + std::to_string(combat.getZinHpMax()) + "\n\n\nSP: " + std::to_string(player.getZinSp()) +
         "\nEXP: " + std::to_string(player.getZinExp()) + "/" + std::to_string(player.getZinExpNext()));
@@ -345,88 +345,45 @@ void World::printZinStats(sf::RenderWindow& window, Sprites& sprites, Event& not
     }
 }
 
-void World::printToolTip(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player)
+void World::PrintToolTipFunc(sf::RenderWindow& window, Sprites& sprites, sf::RectangleShape& inputRect, bool& boolSet, std::string& toolTip)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-    //Player Combat Buttons Functionality
+    if (boolSet == true) {
+        if (inputRect.getGlobalBounds().contains(mousePosF)) {
+            sprites.getTipBoxCounter() = 0;
+            sprites.tipBoxText.setString(toolTip);
+        }
+    }
+    else {
+        sprites.getTipBoxCounter() = -1;
+    }
+}
+
+void World::PrintToolTip(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player)
+{
+    //Print Player Move Tool Tips
+    this->PrintToolTipFunc(window, sprites, sprites.combatRect[0], sprites.getCombatAssets(), sprites.getTipSlash());
+    this->PrintToolTipFunc(window, sprites, sprites.combatRect[1], sprites.getCombatAssets(), sprites.getTipGuard());
+    this->PrintToolTipFunc(window, sprites, sprites.combatRect[2], sprites.getCombatAssets(), sprites.getTipDecay());
+
+    //Print Zin Stat Tool Tips
+    if (sprites.getZinStatsInit()) {
+        this->PrintToolTipFunc(window, sprites, sprites.zinStatElements[1], sprites.getZinStatsInit(), sprites.getTipResolve());
+        this->PrintToolTipFunc(window, sprites, sprites.zinStatElements[2], sprites.getZinStatsInit(), sprites.getTipPatience());
+        this->PrintToolTipFunc(window, sprites, sprites.zinStatElements[3], sprites.getZinStatsInit(), sprites.getTipResilience());
+    }
+
+    //Print Player Stat Tool Tips
     if (sprites.getPlayerStatsInit()) {
-        if (sprites.playerStatElements[1].getGlobalBounds().contains(mousePosF)) {
-            sprites.getTipBoxCounter() = 0;
-            sprites.tipBoxText.setString("STRENGTH:\nMeasures the players raw power.\n\nIncreases all attack moves damage.");
-        }
-        else if (sprites.playerStatElements[2].getGlobalBounds().contains(mousePosF)) {
-            sprites.getTipBoxCounter() = 0;
-            sprites.tipBoxText.setString("FORTITUDE:\nMeasures the players survivability against decay.\n\nHigher fortitude makes the player more \nresistant to the decay.");
-        }
-        else if (sprites.playerStatElements[3].getGlobalBounds().contains(mousePosF)) {
-            sprites.getTipBoxCounter() = 0;
-            sprites.tipBoxText.setString("VITALITY:\nMeasures the players health.\n\nHigh vitality allows the player to take a beating\nin combat.");
-        }
-        else {
-            sprites.getTipBoxCounter() = -1;
-        }
-    }
-    else if (sprites.getZinStatsInit()) {
-        if (sprites.zinStatElements[1].getGlobalBounds().contains(mousePosF)) {
-            sprites.getTipBoxCounter() = 0;
-            sprites.tipBoxText.setString("RESOLVE:\nMeasures Zin's spells raw power.\n\nIncreases the damage of her lightning \nspells specifically.");
-        }
-        else if (sprites.zinStatElements[2].getGlobalBounds().contains(mousePosF)) {
-            sprites.getTipBoxCounter() = 0;
-            sprites.tipBoxText.setString("PATIENCE:\nMeasures Zin's healing capabilities.\n\nHigh patience makes her heal \nsignificantly more.");
-        }
-        else if (sprites.zinStatElements[3].getGlobalBounds().contains(mousePosF)) {
-            sprites.getTipBoxCounter() = 0;
-            sprites.tipBoxText.setString("RESILIENCE:\nMeasures Zin's health.\n\nHigh resilience allows Zin to take more \nhits and survive.");
-        }
-        else {
-            sprites.getTipBoxCounter() = -1;
-        }
-    }
-    
-    if (sprites.getCombatAssets()) {
-        if (sprites.combatRect[0].getGlobalBounds().contains(mousePosF)) { //If attack button is clicked...
-            sprites.getTipBoxCounter() = 0;
-            sprites.tipBoxText.setString("SLASH:\nThe players basic attack for inflicting damage...");
-        }
-        else if (sprites.combatRect[1].getGlobalBounds().contains(mousePosF)) {
-            sprites.getTipBoxCounter() = 0;
-            sprites.tipBoxText.setString("GUARD:\nUses the players turn to protect Zin from \nALL damage...");
-        }
-        else if (sprites.combatRect[2].getGlobalBounds().contains(mousePosF)) {
-            sprites.getTipBoxCounter() = 0;
-            sprites.tipBoxText.setString("DECAYED BLADE:\nThe player slashes his own skin open to use the \ndecay in his blood as a weapon...\n\nInflicts extra damage due to decayed blood...");
-        }
-        //Zin Combat Buttons Functionality
-        else if (sprites.combatRect[3].getGlobalBounds().contains(mousePosF)) {
-            sprites.getTipBoxCounter() = 0;
-            sprites.tipBoxText.setString("SMITE:\nZin's basic attack, inflicts damage on the \nopponent...");
-        }
-        else if (sprites.combatRect[4].getGlobalBounds().contains(mousePosF)) {
-            sprites.getTipBoxCounter() = 0;
-            sprites.tipBoxText.setString("MEND:\nHeals the player and Zin...");
-        }
-        else if (sprites.combatRect[5].getGlobalBounds().contains(mousePosF)) {
-            sprites.getTipBoxCounter() = 0;
-            sprites.tipBoxText.setString("VENGEANCE:\nUse Zin's rage and sorrow to turn the players\nblood into sharpened blades that hurdle\ntowards the enemy...\n\nInflicts damage equal to the players current \nlost health...");
-        }
-        else if (sprites.combatRect[6].getGlobalBounds().contains(mousePosF)) {
-            sprites.getTipBoxCounter() = 0;
-            sprites.tipBoxText.setString("BARRIER:\nThom casts a barrier made of Decay,\nblocking some of the players damage.");
-        }
-        else if (sprites.combatRect[7].getGlobalBounds().contains(mousePosF)) {
-            sprites.getTipBoxCounter() = 0;
-            sprites.tipBoxText.setString("ENRAGE:\nThom enters a state of pure rage.\nThis lasts for three turns, boosting\nall party damage.\n\nThom is unable to use any other moves during\nhis state of rage.");
-        }
-        else {
-            sprites.getTipBoxCounter() = -1;
-        }
+        this->PrintToolTipFunc(window, sprites, sprites.playerStatElements[1], sprites.getPlayerStatsInit(), sprites.getTipStrength());
+        this->PrintToolTipFunc(window, sprites, sprites.playerStatElements[2], sprites.getPlayerStatsInit(), sprites.getTipFortitude());
+        this->PrintToolTipFunc(window, sprites, sprites.playerStatElements[3], sprites.getPlayerStatsInit(), sprites.getTipVitality());
     }
 }
 
 //Display Element Functionality
-void World::mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel, Animation& animate)
+void World::MainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel, Animation& animate)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -472,7 +429,7 @@ void World::mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Travel& 
    
 }
 
-void World::travelButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel, Animation& animate, Player& player)
+void World::TravelButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel, Animation& animate, Player& player)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -499,7 +456,7 @@ void World::travelButtons(sf::RenderWindow& window, Sprites& sprites, Travel& tr
     }
 }
 
-void World::menuBar(sf::RenderWindow& window, Sprites& sprites)
+void World::MenuBar(sf::RenderWindow& window, Sprites& sprites)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -521,7 +478,7 @@ void World::menuBar(sf::RenderWindow& window, Sprites& sprites)
         sprites.setInitMapFalse();
         sprites.setRectMapXVal();
         sprites.setRectMapYVal();
-        this->resetMapPosition(window, sprites);
+        this->ResetMapPosition(window, sprites);
         sprites.blipmenu.play();
         sprites.blipmenu.play();
     }
@@ -549,7 +506,7 @@ void World::menuBar(sf::RenderWindow& window, Sprites& sprites)
     }
 }
 
-void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Sprites& sprites, Travel& travel, Event& notevent)
+void World::DialogueCombatBox(sf::RenderWindow& window, Combat& combat, Sprites& sprites, Travel& travel, Event& notevent)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -594,7 +551,7 @@ void World::dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Sprites&
 
 }
 
-void World::movableBox(sf::RenderWindow& window, Sprites& sprites)
+void World::MovableBox(sf::RenderWindow& window, Sprites& sprites)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -602,12 +559,12 @@ void World::movableBox(sf::RenderWindow& window, Sprites& sprites)
     if (sprites.getMovable() == true) {
         sprites.getRectMapX() = mousePos.x - 365.0f;
         sprites.getRectMapY() = mousePos.y - 23.0f;
-        this->resetMapPosition(window, sprites);
+        this->ResetMapPosition(window, sprites);
     }
 }
 
 //Stat Functionality
-void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites)
+void World::StatsFunctionality(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites)
 {
     //Add Text
     player.statsText(sprites);
@@ -631,21 +588,21 @@ void World::statsFunctionality(sf::RenderWindow& window, Combat& combat, Player&
 
     if (sprites.getPlayerStatsInit()) {
         //Call functions for player functionality
-        this->levelUp(window, combat, player, sprites, sprites.playerStatElements[0], player.getLevel(), player.getSp(), player.getExp(), player.getExpNext());
-        this->statUp(window, combat, player, sprites, sprites.playerStatElements[1], player.getStrength(), player.getSp(), player.getExp(), player.getExpNext());
-        this->statUp(window, combat, player, sprites, sprites.playerStatElements[2], player.getFortitude(), player.getSp(), player.getExp(), player.getExpNext());
-        this->statUp(window, combat, player, sprites, sprites.playerStatElements[3], player.getVitality(), player.getSp(), player.getExp(), player.getExpNext());
+        this->LevelUp(window, combat, player, sprites, sprites.playerStatElements[0], player.getLevel(), player.getSp(), player.getExp(), player.getExpNext());
+        this->StatUp(window, combat, player, sprites, sprites.playerStatElements[1], player.getStrength(), player.getSp(), player.getExp(), player.getExpNext());
+        this->StatUp(window, combat, player, sprites, sprites.playerStatElements[2], player.getFortitude(), player.getSp(), player.getExp(), player.getExpNext());
+        this->StatUp(window, combat, player, sprites, sprites.playerStatElements[3], player.getVitality(), player.getSp(), player.getExp(), player.getExpNext());
     }
     else if (sprites.getZinStatsInit()) {
         //Call functions for Zin functionality
-        this->levelUp(window, combat, player, sprites, sprites.zinStatElements[0], player.getZinLevel(), player.getZinSp(), player.getZinExp(), player.getZinExpNext());
-        this->statUp(window, combat, player, sprites, sprites.zinStatElements[1], player.getZinResolve(), player.getZinSp(), player.getZinExp(), player.getZinExpNext());
-        this->statUp(window, combat, player, sprites, sprites.zinStatElements[2], player.getZinPatience(), player.getZinSp(), player.getZinExp(), player.getZinExpNext());
-        this->statUp(window, combat, player, sprites, sprites.zinStatElements[3], player.getZinResilience(), player.getZinSp(), player.getZinExp(), player.getZinExpNext());
+        this->LevelUp(window, combat, player, sprites, sprites.zinStatElements[0], player.getZinLevel(), player.getZinSp(), player.getZinExp(), player.getZinExpNext());
+        this->StatUp(window, combat, player, sprites, sprites.zinStatElements[1], player.getZinResolve(), player.getZinSp(), player.getZinExp(), player.getZinExpNext());
+        this->StatUp(window, combat, player, sprites, sprites.zinStatElements[2], player.getZinPatience(), player.getZinSp(), player.getZinExp(), player.getZinExpNext());
+        this->StatUp(window, combat, player, sprites, sprites.zinStatElements[3], player.getZinResilience(), player.getZinSp(), player.getZinExp(), player.getZinExpNext());
     }
 }
 
-void World::levelUp(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites, sf::RectangleShape& inputRect, int& lvl, int& sp, int& exp, int& expNext)
+void World::LevelUp(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites, sf::RectangleShape& inputRect, int& lvl, int& sp, int& exp, int& expNext)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -670,7 +627,7 @@ void World::levelUp(sf::RenderWindow& window, Combat& combat, Player& player, Sp
     }
 }
 
-void World::statUp(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites, sf::RectangleShape& inputRect, int& stat, int& sp, int& exp, int& expNext)
+void World::StatUp(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites, sf::RectangleShape& inputRect, int& stat, int& sp, int& exp, int& expNext)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -695,24 +652,24 @@ void World::statUp(sf::RenderWindow& window, Combat& combat, Player& player, Spr
 }
 
 //Map Button Functionality
-void World::mapButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel)
+void World::MapButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel)
 {
-    this->selectMapView(window, sprites, travel);
+    this->SelectMapView(window, sprites, travel);
     //Map Button Functionality (Switching between whch button on the map is selected to change areas...)
     switch (sprites.getMapCounter()) {
     case 0:
-        this->mapButtonsForest(window, sprites, travel);
+        this->MapButtonsForest(window, sprites, travel);
         break;
     case 1:
-        this->mapButtonsCastle(window, sprites, travel);
+        this->MapButtonsCastle(window, sprites, travel);
         break;
     case 2:
-        this->mapButtonsDecay(window, sprites, travel);
+        this->MapButtonsDecay(window, sprites, travel);
         break;
     }
 }
 
-void World::mapButtonsForest(sf::RenderWindow& window, Sprites& sprites, Travel& travel)
+void World::MapButtonsForest(sf::RenderWindow& window, Sprites& sprites, Travel& travel)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -754,7 +711,7 @@ void World::mapButtonsForest(sf::RenderWindow& window, Sprites& sprites, Travel&
     }
 }
 
-void World::mapButtonsCastle(sf::RenderWindow& window, Sprites& sprites, Travel& travel)
+void World::MapButtonsCastle(sf::RenderWindow& window, Sprites& sprites, Travel& travel)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -796,7 +753,7 @@ void World::mapButtonsCastle(sf::RenderWindow& window, Sprites& sprites, Travel&
     }
 }
 
-void World::mapButtonsDecay(sf::RenderWindow& window, Sprites& sprites, Travel& travel)
+void World::MapButtonsDecay(sf::RenderWindow& window, Sprites& sprites, Travel& travel)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -839,7 +796,7 @@ void World::mapButtonsDecay(sf::RenderWindow& window, Sprites& sprites, Travel& 
 }
 
 //Map Functions
-void World::resetMapPosition(sf::RenderWindow& window, Sprites& sprites)
+void World::ResetMapPosition(sf::RenderWindow& window, Sprites& sprites)
 {
     //Forest
     sprites.forestMapView.setPosition(sprites.getRectMapX(), sprites.getRectMapY());
@@ -946,7 +903,7 @@ void World::resetMapPosition(sf::RenderWindow& window, Sprites& sprites)
     sprites.mapDecayElementsText[4].setPosition(sprites.getRectMapX() + 25, sprites.getRectMapY() + 35);
 }
 
-void World::selectMapView(sf::RenderWindow& window, Sprites& sprites, Travel& travel)
+void World::SelectMapView(sf::RenderWindow& window, Sprites& sprites, Travel& travel)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -954,7 +911,7 @@ void World::selectMapView(sf::RenderWindow& window, Sprites& sprites, Travel& tr
     if (sprites.buttonViewMap[0].getGlobalBounds().contains(mousePosF)) {
         //Click to view forest from map selector buttons
         sprites.setMapCounterZero();
-        this->resetMapPosition(window, sprites);
+        this->ResetMapPosition(window, sprites);
 
         travel.getFrame() = 0;
         sprites.soundWalk.play();
@@ -966,7 +923,7 @@ void World::selectMapView(sf::RenderWindow& window, Sprites& sprites, Travel& tr
     else if (sprites.buttonViewMap[1].getGlobalBounds().contains(mousePosF)) {
         //Click to view castle from map selector buttons
         sprites.setMapCounterOne();
-        this->resetMapPosition(window, sprites);
+        this->ResetMapPosition(window, sprites);
 
         travel.getFrame() = 0;
         sprites.soundWalk.play();
@@ -977,7 +934,7 @@ void World::selectMapView(sf::RenderWindow& window, Sprites& sprites, Travel& tr
     else if (sprites.buttonViewMap[2].getGlobalBounds().contains(mousePosF)) {
         //Click to view decay from map selector buttons
         sprites.setMapCounterTwo();
-        this->resetMapPosition(window, sprites);
+        this->ResetMapPosition(window, sprites);
 
         travel.getFrame() = 0;
         sprites.soundWalk.play();
@@ -987,7 +944,7 @@ void World::selectMapView(sf::RenderWindow& window, Sprites& sprites, Travel& tr
     }
 }
 
-void World::drawForestMap(sf::RenderWindow& window, Sprites& sprites)
+void World::DrawForestMap(sf::RenderWindow& window, Sprites& sprites)
 {
     window.draw(sprites.forestMapView);
     window.draw(sprites.multiArrow);
@@ -1001,7 +958,7 @@ void World::drawForestMap(sf::RenderWindow& window, Sprites& sprites)
     }
 }
 
-void World::drawCastleMap(sf::RenderWindow& window, Sprites& sprites)
+void World::DrawCastleMap(sf::RenderWindow& window, Sprites& sprites)
 {
     //Draw Everything
     window.draw(sprites.spriteMapView);
@@ -1016,7 +973,7 @@ void World::drawCastleMap(sf::RenderWindow& window, Sprites& sprites)
     }
 }
 
-void World::drawDecayMap(sf::RenderWindow& window, Sprites& sprites)
+void World::DrawDecayMap(sf::RenderWindow& window, Sprites& sprites)
 {
     //Draw Everything
     window.draw(sprites.decayMapView);

@@ -12,6 +12,9 @@ private:
 	int valZero;
 	int valOne;
 	int valTwo;
+	int valThree;
+	int valFour;
+	int valFive;
 
 	//Attack Counters
 	int attackCounter;

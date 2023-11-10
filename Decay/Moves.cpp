@@ -6,12 +6,15 @@ Moves::Moves()
 	//Hp
 	this->playerHp = 50;
 	this->playerHpMax = 50;
+	this->playerDef = 0;
 
 	this->zinHp = 35;
 	this->zinHpMax = 35;
+	this->zinDef = 0;
 
 	this->thomHp = 30;
 	this->thomHpMax = 30;
+	this->thomDef = 0;
 
 	this->hostileHp = 50;
 	this->hostileHpMax = 50;
@@ -20,6 +23,10 @@ Moves::Moves()
 	this->playerStrike = 5;
 	this->playerGuard = 1;
 	this->decayedBlade = 10;
+	this->heftyBlow = 25;
+	this->decaySynergyDmg = 3;
+	this->decaySynergyDef = 10;
+	this->ironWall = 10;
 
 	//Zin Moves
 	this->zinSmite = 5;
@@ -32,9 +39,11 @@ Moves::Moves()
 	//Hostile Moves
 	this->hostileStrike = 0;
 
-	//Control Flow Bools
+	//Move Control Flow Bools
 	this->zinGuarded = false;
 	this->playerGuarded = false;
+
+	this->playerFatigue = false;
 
 	//Animation Control
 	this->firstAttack = false;
@@ -54,6 +63,9 @@ Moves::Moves()
 	this->playerSlashAtkText = "You strike the combatant! Click to continue...";
 	this->playerGuardAtkText = "You plant yourself in between Zin and the enemy! Click to continue...";
 	this->playerDecayAtkText = "You slash yourself open with your sword, using the decay in your blood to strike the enemy!";
+	this->playerHeftyAtkText = "You slash into them with all of your might, jabbing your dagger deep into their wound and twisting the blade!";
+	this->playerSynergyAtkText = "You materialize decay in front of yourself, watching it swirl. You quickly create a small barrier made of pure decay in front of Zin and splice the rest towards the enemy!";
+	this->playerIronWallAtkText = "You stand your ground and plant your feet, preparing to defend your entire party to the best of your abilities...";
 
 	this->zinSmiteAtkText = "Zin smites the combatant! Click to continue...";
 	this->zinMendAtkText = "Zin heals the party! Click to continue...";
@@ -101,6 +113,43 @@ void Moves::DecayBlade(Sprites& sprites, Animation& animate)
 	sprites.text.setString(this->playerDecayAtkText);
 	animate.getCombatAnimationLocation() = 0;
 	animate.getAnimEnd() = false;//Play Attack Animation
+}
+
+void Moves::HeftyBlow(Sprites& sprites, Animation& animate)
+{
+	sprites.soundHefty.play();
+	this->hostileHp -= this->heftyBlow;
+	sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
+	sprites.setPlayerTurnAssetsFalse();
+	sprites.text.setString(this->playerHeftyAtkText);
+	animate.getCombatAnimationLocation() = 0;
+	animate.getAnimEnd() = false;//Play Attack Animation
+	this->playerFatigue = true;
+}
+
+void Moves::DecaySynergy(Sprites& sprites, Animation& animate)
+{
+	sprites.soundSynergy.play();
+	this->hostileHp -= this->decaySynergyDmg;
+	this->zinDef += this->decaySynergyDef;
+	sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
+	sprites.spriteText[1].setString("Zin            " + std::to_string(zinHp + zinDef) + "/" + std::to_string(zinHpMax));
+	sprites.text.setString(this->playerSynergyAtkText);
+	sprites.setPlayerTurnAssetsFalse();
+	animate.getCombatAnimationLocation() = 0;
+	animate.getAnimEnd() = false;//Play Attack Animation
+}
+
+void Moves::IronWall(Sprites& sprites, Animation& animte)
+{
+	this->playerDef += this->ironWall;
+	this->zinDef += this->ironWall;
+	this->thomDef += this->ironWall;
+	sprites.text.setString(this->playerIronWallAtkText);
+	sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
+	sprites.spriteText[1].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));
+	sprites.spriteText[5].setString("Thom          " + std::to_string(this->thomHp) + "/" + std::to_string(this->thomHpMax));
+	sprites.setPlayerTurnAssetsFalse();
 }
 
 //Zin Moves

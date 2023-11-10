@@ -5,16 +5,19 @@
 
 class Moves
 {
-private:
+private:	
 	//Hp
 	int playerHp;
 	int playerHpMax;
+	int playerDef;
 
 	int zinHp;
 	int zinHpMax;
+	int zinDef;
 
 	int thomHp;
 	int thomHpMax;
+	int thomDef;
 
 	int hostileHp;
 	int hostileHpMax;
@@ -23,6 +26,10 @@ private:
 	int playerStrike;
 	int playerGuard;
 	int decayedBlade;
+	int heftyBlow;
+	int decaySynergyDmg;
+	int decaySynergyDef;
+	int ironWall;
 
 	//Zin Moves
 	int zinSmite;
@@ -39,6 +46,8 @@ private:
 	//Move Control Flow Bools
 	bool zinGuarded;
 	bool playerGuarded;
+
+	bool playerFatigue;
 
 	//Animation Control
 	bool firstAttack;
@@ -58,6 +67,9 @@ private:
 	std::string playerSlashAtkText;
 	std::string playerGuardAtkText;
 	std::string playerDecayAtkText;
+	std::string playerHeftyAtkText;
+	std::string playerSynergyAtkText;
+	std::string playerIronWallAtkText;
 
 	std::string zinSmiteAtkText;
 	std::string zinMendAtkText;
@@ -75,6 +87,9 @@ public:
 	void Slash(Sprites& sprites, Animation& animate);
 	void Guard(Sprites& sprites, Animation& animate);
 	void DecayBlade(Sprites& sprites, Animation& animate);
+	void HeftyBlow(Sprites& sprites, Animation& animate);
+	void DecaySynergy(Sprites& sprites, Animation& animate);
+	void IronWall(Sprites& sprites, Animation& animte);
 
 	//Zin Moves
 	void Smite(Sprites& sprites, Animation& animate);
@@ -93,6 +108,7 @@ public:
 	int& getPlayerHpMax() { return this->playerHpMax; };
 	int& getZinHp() { return this->zinHp; };
 	int& getZinHpMax() { return this->zinHpMax; };
+	int& getZinDef() { return this->zinDef; };
 	int& getThomHp() { return this->thomHp; };
 	int& getThomHpMax() { return this->thomHpMax; };
 
@@ -120,6 +136,8 @@ public:
 	//Move Control Flow Bool Getters
 	bool& getZinGuarded() { return this->zinGuarded; };
 	bool& getPlayerGuarded() { return this->playerGuarded; };
+
+	bool& getPlayerFatigue() { return this->playerFatigue; };
 
 	//Animation Flow Getters
 	bool& getFirstAttack() { return this->firstAttack; };

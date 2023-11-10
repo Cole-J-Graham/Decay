@@ -13,7 +13,7 @@ int main()
 {
     while (!world.getStop())
     {
-        world.bootUp(sprites, notevent, combat, player, travel, animate);
+        world.BootUp(sprites, notevent, combat, player, travel, animate);
     }
 
     return 0;
