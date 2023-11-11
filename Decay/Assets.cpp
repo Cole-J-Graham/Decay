@@ -62,7 +62,7 @@ Assets::Assets()
 
     //Combat Move Unlocks
     this->combatPlayerMoves = 5;
-    this->combatZinMoves = 2;
+    this->combatZinMoves = 5;
     this->combatThomMoves = 1;
 
     //Strings
@@ -87,6 +87,9 @@ Assets::Assets()
     this->tipSmite = "SMITE:\nZin's basic attack, inflicts damage on the \nopponent...";
     this->tipMend = "MEND:\nHeals the player and Zin...";
     this->tipVengeance = "VENGEANCE:\nUse Zin's rage and sorrow to turn the players\nblood into sharpened blades that hurdle\ntowards the enemy...\n\nInflicts damage equal to the players current \nlost health...";
+    this->tipBlaze = "HELLISH BLAZE:\nZin casts a horrifying blaze of fire,\nengulfing the enemy in a pit of flames...\n\nRequires two turns to cooldown after use.";
+    this->tipHeal = "FOCUSED HEAL:\nZin concentrates a healing spell around\nyou, mending you greatly.";
+    this->tipFlames = "CRIMSON FLAMES:\nZin absorbs both of your rage and uses\nit to engulf you both in flames...\n\nGreatly increases attack DMG for\nthe rest of combat.";
 
     this->tipBarrier = "BARRIER:\nThom casts a barrier made of Decay,\nblocking some of the players damage.";
     this->tipEnrage = "ENRAGE:\nThom enters a state of pure rage.\nThis lasts for three turns, boosting\nall party damage.\n\nThom is unable to use any other moves during\nhis state of rage.";
@@ -136,6 +139,8 @@ void Assets::loadSounds()
     bufferEnraged.loadFromFile("Assets/Sounds/enraged.wav");
     bufferHefty.loadFromFile("Assets/Sounds/heftyBlow.wav");
     bufferSynergy.loadFromFile("Assets/Sounds/decaySynergy.wav");
+    bufferBlaze.loadFromFile("Assets/Sounds/hellBlaze.wav");
+    bufferFlames.loadFromFile("Assets/Sounds/crimsonFlames.wav");
 }
 
 //Draw Fuctions
@@ -1238,50 +1243,95 @@ void Assets::zinCombatAssets()
     if (this->zinTurnAssets) {
         switch (this->combatZinMoves) {
         case 0:
-            //Draw Player Slash Button
-            combatRect[3].setPosition(335.0f, 795.0f);
-            //Draw Player Slash Text
-            combatText[3].setPosition(335.0f, 795.0f);
-            combatText[3].setString("Smite");
+            combatRect[6].setPosition(335.0f, 795.0f);
+            combatText[6].setPosition(335.0f, 795.0f);
+            combatText[6].setString("Smite");
             break;
         case 1:
-            //Draw Player Slash Button
-            combatRect[3].setPosition(335.0f, 795.0f);
-            //Draw Player Slash Text
-            combatText[3].setPosition(335.0f, 795.0f);
-            combatText[3].setString("Smite");
-            //Draw Player Guard Button
-            combatRect[4].setPosition(335.0f, 765.0f);
-            //Draw Player Guard Text
-            combatText[4].setPosition(335.0f, 765.0f);
-            combatText[4].setString("Mend");
+            combatRect[6].setPosition(335.0f, 795.0f);
+            combatText[6].setPosition(335.0f, 795.0f);
+            combatText[6].setString("Smite");
+            combatRect[7].setPosition(335.0f, 765.0f);
+            combatText[7].setPosition(335.0f, 765.0f);
+            combatText[7].setString("Mend");
             break;
         case 2:
-            //Draw Player Slash Button
-            combatRect[3].setPosition(335.0f, 795.0f);
-            //Draw Player Slash Text
-            combatText[3].setPosition(335.0f, 795.0f);
-            combatText[3].setString("Smite");
-            //Draw Player Guard Button
-            combatRect[4].setPosition(335.0f, 765.0f);
-            //Draw Player Guard Text
-            combatText[4].setPosition(335.0f, 765.0f);
-            combatText[4].setString("Mend");
-            //Draw Player Decay Button
-            combatRect[5].setPosition(335.0f, 735.0f);
-            //Draw Player Decay Text
-            combatText[5].setPosition(335.0f, 735.0f);
-            combatText[5].setString("Vengeance");
+            combatRect[6].setPosition(335.0f, 795.0f);
+            combatText[6].setPosition(335.0f, 795.0f);
+            combatText[6].setString("Smite");
+            combatRect[7].setPosition(335.0f, 765.0f);
+            combatText[7].setPosition(335.0f, 765.0f);
+            combatText[7].setString("Mend");
+            combatRect[8].setPosition(335.0f, 735.0f);
+            combatText[8].setPosition(335.0f, 735.0f);
+            combatText[8].setString("Vengeance");
+            break;
+        case 3:
+            combatRect[6].setPosition(335.0f, 795.0f);
+            combatText[6].setPosition(335.0f, 795.0f);
+            combatText[6].setString("Smite");
+            combatRect[7].setPosition(335.0f, 765.0f);
+            combatText[7].setPosition(335.0f, 765.0f);
+            combatText[7].setString("Mend");
+            combatRect[8].setPosition(335.0f, 735.0f);
+            combatText[8].setPosition(335.0f, 735.0f);
+            combatText[8].setString("Vengeance");
+            combatRect[9].setPosition(335.0f, 705.0f);
+            combatText[9].setPosition(335.0f, 705.0f);
+            combatText[9].setString("Hell Blaze");
+            break;
+        case 4:
+            combatRect[6].setPosition(335.0f, 795.0f);
+            combatText[6].setPosition(335.0f, 795.0f);
+            combatText[6].setString("Smite");
+            combatRect[7].setPosition(335.0f, 765.0f);
+            combatText[7].setPosition(335.0f, 765.0f);
+            combatText[7].setString("Mend");
+            combatRect[8].setPosition(335.0f, 735.0f);
+            combatText[8].setPosition(335.0f, 735.0f);
+            combatText[8].setString("Vengeance");
+            combatRect[9].setPosition(335.0f, 705.0f);
+            combatText[9].setPosition(335.0f, 705.0f);
+            combatText[9].setString("Hell Blaze");
+            combatRect[10].setPosition(335.0f, 675.0f);
+            combatText[10].setPosition(335.0f, 675.0f);
+            combatText[10].setString("Focus");
+            break;
+        case 5:
+            combatRect[6].setPosition(335.0f, 795.0f);
+            combatText[6].setPosition(335.0f, 795.0f);
+            combatText[6].setString("Smite");
+            combatRect[7].setPosition(335.0f, 765.0f);
+            combatText[7].setPosition(335.0f, 765.0f);
+            combatText[7].setString("Mend");
+            combatRect[8].setPosition(335.0f, 735.0f);
+            combatText[8].setPosition(335.0f, 735.0f);
+            combatText[8].setString("Vengeance");
+            combatRect[9].setPosition(335.0f, 705.0f);
+            combatText[9].setPosition(335.0f, 705.0f);
+            combatText[9].setString("Hell Blaze");
+            combatRect[10].setPosition(335.0f, 675.0f);
+            combatText[10].setPosition(335.0f, 675.0f);
+            combatText[10].setString("Focus");
+            combatRect[11].setPosition(335.0f, 645.0f);
+            combatText[11].setPosition(335.0f, 645.0f);
+            combatText[11].setString("Flames");
             break;
         }
     }
-    else if (!this->playerTurnAssets) {
-        combatRect[3].setPosition(10000.0f, 10000.0f);
-        combatRect[4].setPosition(10000.0f, 10000.0f);
-        combatRect[5].setPosition(10000.0f, 10000.0f);
-        combatText[3].setPosition(10000.0f, 10000.0f);
-        combatText[4].setPosition(10000.0f, 10000.0f);
-        combatText[5].setPosition(10000.0f, 10000.0f);
+    else if (!this->zinTurnAssets) {
+        combatRect[6].setPosition(10000.0f, 10000.0f);
+        combatRect[7].setPosition(10000.0f, 10000.0f);
+        combatRect[8].setPosition(10000.0f, 10000.0f);
+        combatRect[9].setPosition(10000.0f, 10000.0f);
+        combatRect[10].setPosition(10000.0f, 10000.0f);
+        combatRect[11].setPosition(10000.0f, 10000.0f);
+        combatText[6].setPosition(10000.0f, 10000.0f);
+        combatText[7].setPosition(10000.0f, 10000.0f);
+        combatText[8].setPosition(10000.0f, 10000.0f);
+        combatText[9].setPosition(10000.0f, 10000.0f);
+        combatText[10].setPosition(10000.0f, 10000.0f);
+        combatText[11].setPosition(10000.0f, 10000.0f);
     }
 }
 
@@ -1291,30 +1341,30 @@ void Assets::thomCombatAssets()
         switch (this->combatThomMoves) {
         case 0:
             //Draw Thom Barrier Button
-            combatRect[6].setPosition(335.0f, 795.0f);
+            combatRect[12].setPosition(335.0f, 795.0f);
             //Draw Player Slash Text
-            combatText[6].setPosition(335.0f, 795.0f);
-            combatText[6].setString("Barrier");
+            combatText[12].setPosition(335.0f, 795.0f);
+            combatText[12].setString("Barrier");
             break;
         case 1:
             //Draw Thom Barrier Button
-            combatRect[6].setPosition(335.0f, 795.0f);
+            combatRect[12].setPosition(335.0f, 795.0f);
             //Draw Player Slash Text
-            combatText[6].setPosition(335.0f, 795.0f);
-            combatText[6].setString("Barrier");
+            combatText[12].setPosition(335.0f, 795.0f);
+            combatText[12].setString("Barrier");
             //Draw Thom Barrier Button
-            combatRect[7].setPosition(335.0f, 765.0f);
+            combatRect[13].setPosition(335.0f, 765.0f);
             //Draw Player Slash Text
-            combatText[7].setPosition(335.0f, 765.0f);
-            combatText[7].setString("Enrage");
+            combatText[13].setPosition(335.0f, 765.0f);
+            combatText[13].setString("Enrage");
             break;
         }
     }
     else if (!this->thomTurnAssets) {
-        combatRect[6].setPosition(10000.0f, 10000.0f);
-        combatText[6].setPosition(10000.0f, 10000.0f);
-        combatRect[7].setPosition(10000.0f, 10000.0f);
-        combatText[7].setPosition(10000.0f, 10000.0f);
+        combatRect[12].setPosition(10000.0f, 10000.0f);
+        combatText[12].setPosition(10000.0f, 10000.0f);
+        combatRect[13].setPosition(10000.0f, 10000.0f);
+        combatText[13].setPosition(10000.0f, 10000.0f);
     }
 }
 
@@ -1368,6 +1418,10 @@ void Assets::loadSFX()
     soundHefty.setBuffer(bufferHefty);
     //Load Synergy Sfx
     soundSynergy.setBuffer(bufferSynergy);
+    //Sound Blaze Sfx
+    soundBlaze.setBuffer(bufferBlaze);
+    //Sound Flames Sfx
+    soundFlames.setBuffer(bufferFlames);
    
     //Set Volume Levels
     blipmenu.setVolume(60);

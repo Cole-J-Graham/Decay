@@ -7,10 +7,12 @@ Moves::Moves()
 	this->playerHp = 50;
 	this->playerHpMax = 50;
 	this->playerDef = 0;
+	this->playerAtk = 0;
 
 	this->zinHp = 35;
 	this->zinHpMax = 35;
 	this->zinDef = 0;
+	this->zinAtk = 0;
 
 	this->thomHp = 30;
 	this->thomHpMax = 30;
@@ -32,8 +34,12 @@ Moves::Moves()
 	this->zinSmite = 5;
 	this->zinMend = 5;
 	this->zinVengeance = 1;
+	this->zinBlaze = 45;
+	this->zinFocus = 40;
+	this->zinCrimson = 25;
 
 	//Thom Moves
+	this->enragedAtk = 15;
 	this->thomEnraged = false;
 
 	//Hostile Moves
@@ -44,6 +50,7 @@ Moves::Moves()
 	this->playerGuarded = false;
 
 	this->playerFatigue = false;
+	this->zinFatigue = false;
 
 	//Animation Control
 	this->firstAttack = false;
@@ -70,6 +77,9 @@ Moves::Moves()
 	this->zinSmiteAtkText = "Zin smites the combatant! Click to continue...";
 	this->zinMendAtkText = "Zin heals the party! Click to continue...";
 	this->zinVengeanceAtkText = "Zin takes vengeance, brutally striking the enemy! Click to continue...";
+	this->zinBlazeAtkText = "Zin braces herself and slowly rises her hands in the air whilst looking at the enemy, summoning a raging fire straight from the pits of hell... All you can hear is the foes screams...";
+	this->zinFocusAtkText = "Zin creates a green auroa around you that begins to mend your wounds greatly!";
+	this->zinCrimsonAtkText = "Zin clenches her fists together and absorbs every ounce of rage from both herself and you. Suddenly, crimson flames engulf both your and Zin's bodies. You both feel much stronger... ";
 
 	this->thomBarrierAtkText = "Thom uses decay from his body to manipulate a barrier around the player!";
 	this->thomEnragedAtkText = "Thom's form slowly melts as he allows the decay to take root in his body. Thom is now enraged!";
@@ -84,7 +94,7 @@ Moves::~Moves()
 void Moves::slash(Sprites& sprites, Animation& animate)
 {
 	sprites.soundSlash.play();
-	this->hostileHp -= this->playerStrike;
+	this->hostileHp -= this->playerStrike + playerAtk;
 	sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 	sprites.setPlayerTurnAssetsFalse();
 	sprites.text.setString(this->playerSlashAtkText);
@@ -107,7 +117,7 @@ void Moves::guard(Sprites& sprites, Animation& animate)
 void Moves::decayBlade(Sprites& sprites, Animation& animate)
 {
 	sprites.soundDecay.play();
-	this->hostileHp -= this->decayedBlade;
+	this->hostileHp -= this->decayedBlade + playerAtk;
 	sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 	sprites.setPlayerTurnAssetsFalse();
 	sprites.text.setString(this->playerDecayAtkText);
@@ -118,7 +128,7 @@ void Moves::decayBlade(Sprites& sprites, Animation& animate)
 void Moves::heftyBlow(Sprites& sprites, Animation& animate)
 {
 	sprites.soundHefty.play();
-	this->hostileHp -= this->heftyBlowDmg;
+	this->hostileHp -= this->heftyBlowDmg + playerAtk;
 	sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 	sprites.setPlayerTurnAssetsFalse();
 	sprites.text.setString(this->playerHeftyAtkText);
@@ -130,7 +140,7 @@ void Moves::heftyBlow(Sprites& sprites, Animation& animate)
 void Moves::decaySynergy(Sprites& sprites, Animation& animate)
 {
 	sprites.soundSynergy.play();
-	this->hostileHp -= this->decaySynergyDmg;
+	this->hostileHp -= this->decaySynergyDmg += playerAtk;
 	this->zinDef += this->decaySynergyDef;
 	sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 	sprites.spriteText[1].setString("Zin            " + std::to_string(zinHp + zinDef) + "/" + std::to_string(zinHpMax));
@@ -156,7 +166,7 @@ void Moves::ironWall(Sprites& sprites, Animation& animte)
 void Moves::smite(Sprites& sprites, Animation& animate)
 {
 	sprites.soundSmite.play();
-	this->hostileHp -= this->zinSmite;
+	this->hostileHp -= this->zinSmite + zinAtk;
 	sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 	sprites.setZinTurnAssetsFalse();
 	sprites.text.setString(this->zinSmiteAtkText);
@@ -195,11 +205,44 @@ void Moves::mend(Sprites& sprites, Animation& animate)
 void Moves::vengeance(Sprites& sprites, Animation& animate)
 {
 	sprites.soundVengeance.play();
-	this->zinVengeance = this->playerHpMax - this->playerHp;
+	this->zinVengeance = this->playerHpMax - this->playerHp + zinAtk;
 	this->hostileHp -= this->zinVengeance;
 	sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 	sprites.setZinTurnAssetsFalse();
 	sprites.text.setString(this->zinVengeanceAtkText);
+}
+
+void Moves::hellBlaze(Sprites& sprites, Animation& animate)
+{
+	sprites.soundBlaze.play();
+	this->hostileHp -= this->zinBlaze + zinAtk;
+	sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
+	sprites.setZinTurnAssetsFalse();
+	sprites.text.setString(this->zinBlazeAtkText);
+	this->zinFatigue = true;
+}
+
+void Moves::focusHeal(Sprites& sprites, Animation& animate)
+{
+	sprites.soundMend.play();
+	if (this->playerHp < this->playerHpMax) {
+		this->playerHp += this->zinFocus;
+		if (this->playerHp > this->playerHpMax) {
+			this->playerHp = this->playerHpMax;
+		}
+	}
+	sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
+	sprites.setZinTurnAssetsFalse();
+	sprites.text.setString(this->zinFocusAtkText);
+}
+
+void Moves::crimsonFlames(Sprites& sprites, Animation& animate)
+{
+	sprites.soundFlames.play();
+	this->playerAtk += zinCrimson;
+	this->zinAtk += zinCrimson;
+	sprites.setZinTurnAssetsFalse();
+	sprites.text.setString(this->zinCrimsonAtkText);
 }
 
 //Thom Moves
@@ -216,6 +259,8 @@ void Moves::enrage(Sprites& sprites, Animation& animate)
 {
 	this->thomEnraged = true;
 	this->enraged = 3;
+	this->playerAtk += enragedAtk;
+	this->zinAtk += enragedAtk;
 	sprites.getThomCounter() = 1;
 	sprites.soundEnraged.play();
 	sprites.text.setString(this->thomEnragedAtkText);

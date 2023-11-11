@@ -10,10 +10,12 @@ private:
 	int playerHp;
 	int playerHpMax;
 	int playerDef;
+	int playerAtk;
 
 	int zinHp;
 	int zinHpMax;
 	int zinDef;
+	int zinAtk;
 
 	int thomHp;
 	int thomHpMax;
@@ -35,8 +37,12 @@ private:
 	int zinSmite;
 	int zinMend;
 	int zinVengeance;
+	int zinBlaze;
+	int zinFocus;
+	int zinCrimson;
 
 	//Thom Moves
+	int enragedAtk;
 	int enraged;
 	bool thomEnraged;
 
@@ -48,6 +54,8 @@ private:
 	bool playerGuarded;
 
 	bool playerFatigue;
+	int fatigued;
+	bool zinFatigue;
 
 	//Animation Control
 	bool firstAttack;
@@ -74,6 +82,9 @@ private:
 	std::string zinSmiteAtkText;
 	std::string zinMendAtkText;
 	std::string zinVengeanceAtkText;
+	std::string zinBlazeAtkText;
+	std::string zinFocusAtkText;
+	std::string zinCrimsonAtkText;
 
 	std::string thomBarrierAtkText;
 	std::string thomEnragedAtkText;
@@ -95,6 +106,9 @@ public:
 	void smite(Sprites& sprites, Animation& animate);
 	void mend(Sprites& sprites, Animation& animate);
 	void vengeance(Sprites& sprites, Animation& animate);
+	void hellBlaze(Sprites& sprites, Animation& animate);
+	void focusHeal(Sprites& sprites, Animation& animate);
+	void crimsonFlames(Sprites& sprites, Animation& animate);
 
 	//Thom Moves
 	void barrier(Sprites& sprites, Animation& animate);
@@ -138,6 +152,8 @@ public:
 	bool& getPlayerGuarded() { return this->playerGuarded; };
 
 	bool& getPlayerFatigue() { return this->playerFatigue; };
+	bool& getZinFatigue() { return this->zinFatigue; };
+	int& getFatigued() { return this->fatigued; };
 
 	//Animation Flow Getters
 	bool& getFirstAttack() { return this->firstAttack; };

@@ -95,6 +95,9 @@ private:
 	std::string tipSmite;
 	std::string tipMend;
 	std::string tipVengeance;
+	std::string tipBlaze;
+	std::string tipHeal;
+	std::string tipFlames;
 
 	std::string tipBarrier;
 	std::string tipEnrage;
@@ -272,29 +275,40 @@ public:
 	sf::RectangleShape rectSmite;
 	sf::RectangleShape rectMend;
 	sf::RectangleShape rectVengeance;
+	sf::RectangleShape rectBlaze;
+	sf::RectangleShape rectFocus;
+	sf::RectangleShape rectFlames;
 
 	sf::RectangleShape rectBarrier;
 	sf::RectangleShape rectEnraged;
 
 	std::vector<sf::RectangleShape> combatRect{ rectSlash, rectGuard, 
-		rectDecay, rectHefty, rectSynergy, rectIronWall, rectSmite, rectMend, rectVengeance,
-		rectBarrier, rectEnraged };
+		rectDecay, rectHefty, rectSynergy, rectIronWall, rectSmite, rectMend, 
+		rectVengeance, rectBlaze, rectFocus, rectFlames, rectBarrier, 
+		rectEnraged };
 
 	//combatText Vect Objects
 	sf::Text textSlash;
-	sf::Text textSmite;
 	sf::Text textGuard;
-	sf::Text textMend;
-	sf::Text textVengeance;
 	sf::Text textDecay;
-	sf::Text textBarrier;
-	sf::Text textEnraged;
 	sf::Text textHefty;
 	sf::Text textSynergy;
 	sf::Text textIronWall;
 
-	std::vector<sf::Text> combatText{ textSlash, textGuard, 
-		textHefty, textSynergy, textIronWall, textSmite, textMend, textVengeance, textDecay, textBarrier, textEnraged };
+	sf::Text textSmite;
+	sf::Text textMend;
+	sf::Text textVengeance;
+	sf::Text textBlaze;
+	sf::Text textFocus;
+	sf::Text textFlames;
+
+	sf::Text textBarrier;
+	sf::Text textEnraged;
+
+	std::vector<sf::Text> combatText{ textSlash, textGuard, textDecay,
+		textHefty, textSynergy, textIronWall, textSmite, textMend,
+		textVengeance, textBlaze, textFocus, textFlames, textBarrier, 
+		textEnraged };
 
 	//Main Vectors
 	std::vector<sf::RectangleShape> rectElements {rectStats, rectInventory, 
@@ -463,6 +477,8 @@ public:
 	sf::Sound soundEnraged;
 	sf::Sound soundHefty;
 	sf::Sound soundSynergy;
+	sf::Sound soundBlaze;
+	sf::Sound soundFlames;
 	//Sound Buffers
 	sf::SoundBuffer buffer;
 	sf::SoundBuffer blipbuffer;
@@ -488,6 +504,8 @@ public:
 	sf::SoundBuffer bufferEnraged;
 	sf::SoundBuffer bufferHefty;
 	sf::SoundBuffer bufferSynergy;
+	sf::SoundBuffer bufferBlaze;
+	sf::SoundBuffer bufferFlames;
 
 	//Music
 	sf::Music music;
@@ -640,6 +658,9 @@ public:
 	std::string& getTipSmite() { return this->tipSmite; };
 	std::string& getTipMend() { return this->tipMend; };
 	std::string& getTipVengeance() { return this->tipVengeance; };
+	std::string& getTipBlaze() { return this->tipBlaze; };
+	std::string& getTipHeal() { return this->tipHeal; };
+	std::string& getTipFlames() { return this->tipFlames; };
 
 	std::string& getTipBarrier() { return this->tipBarrier; };
 	std::string& getTipEnrage() { return this->tipEnrage; };

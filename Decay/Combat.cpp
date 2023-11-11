@@ -16,9 +16,6 @@ Combat::Combat()
 	this->zinAttackCounter = 0;
 	this->thomAttackCounter = 0;
 
-	//Move Unlock Bools
-	this->unlockedGuard = false;
-
 	//Core Bool
 	this->initCombatOnce = false;
 	this->reInitCombatOnce = false;
@@ -83,7 +80,6 @@ void Combat::updateStats(Sprites& sprites, Player& player)
 	getPlayerHp() = getPlayerHpMax() + player.getVitality();
 	player.getDecayMax() = 25 + player.getFortitude();
 	getPlayerHpMax() = getPlayerHp();
-	this->updateMoves(sprites, player);
 }
 
 void Combat::updateStatsZin(Player& player)
@@ -93,13 +89,62 @@ void Combat::updateStatsZin(Player& player)
 	getZinHpMax() = getZinHp();
 }
 
-void Combat::updateMoves(Sprites& sprites, Player& player)
+void Combat::unlockMoves(Sprites& sprites, Player& player)
 {
-	if (player.getLevel() >= 15 && unlockedGuard == false) {
+	switch (player.getLevel()) {
+	case 5:
 		//Unlock Guard
 		sprites.setCombatPlayerMovesInc();
 		sprites.text.setString("Move 'Guard' learned!");
-		this->unlockedGuard = true;
+		break;
+	case 15:
+		//Unlock Decayed Blade
+		sprites.setCombatPlayerMovesInc();
+		sprites.text.setString("Move 'Decayed Blade' learned!");
+		break;
+	case 20:
+		//Unlock Hefty blow
+		sprites.setCombatPlayerMovesInc();
+		sprites.text.setString("Move 'Hefty Blow' learned!");
+		break;
+	case 30:
+		//Unlock Decaying Synergy
+		sprites.setCombatPlayerMovesInc();
+		sprites.text.setString("Move 'Decaying Synergy' learned!");
+		break;
+	case 40:
+		//Unlock Iron Wall
+		sprites.setCombatPlayerMovesInc();
+		sprites.text.setString("Move 'Iron Wall' learned!");
+		break;
+	}
+
+	switch (player.getZinLevel()) {
+	case 5:
+		//Unlock Mend
+		sprites.setCombatZinMovesInc();
+		sprites.text.setString("Move 'Mend' learned!");
+		break;
+	case 10:
+		//Unlock Vengeance
+		sprites.setCombatZinMovesInc();
+		sprites.text.setString("Move 'Vengeance' learned!");
+		break;
+	case 15:
+		//Unlock Hellish Blaze
+		sprites.setCombatZinMovesInc();
+		sprites.text.setString("Move 'Hellish Blaze' learned!");
+		break;
+	case 25:
+		//Unlock Focused Healing
+		sprites.setCombatZinMovesInc();
+		sprites.text.setString("Move 'Focused Healing' learned!");
+		break;
+	case 35:
+		//Unlock Crimson Flames
+		sprites.setCombatZinMovesInc();
+		sprites.text.setString("Move 'Crimson Flames' learned!");
+		break;
 	}
 }
 
@@ -322,13 +367,29 @@ void Combat::zinTurn(Sprites& sprites, Animation& animate)
 	if (this->turnZin == true) {
 		switch (this->zinAttackCounter) {
 		case 0:
-			sprites.text.setString(getZinTurnText());
-			sprites.setZinTurnAssetsTrue();
+			if (!getZinFatigue()) {
+				//Check if Zin is fatigued, if not continue turn as normal
+				sprites.text.setString(getZinTurnText());
+				sprites.setZinTurnAssetsTrue();
+			}
+			else if (getZinFatigue()) {
+				sprites.text.setString("Zin can hardly stand after her last attack... She takes a moment to rest...");
+			}
 			break;
 		case 1:
 			//Zin Attacks Hostile
 			if (this->zinAttack == false) {
 				this->zinSelectMove(sprites, animate);
+				this->zinAttack = true;
+			}
+			else if (getZinFatigue() && !this->zinAttack) {
+				getFatigued()--;
+				if (getFatigued() == 0) {
+					getZinFatigue() = false;
+					sprites.getZinTurnAssets() = false;
+					sprites.text.setString("Zin finally catches her breath, ready to fight once more...");
+				}
+				this->zinAttackCounter = 2;
 				this->zinAttack = true;
 			}
 			break;
@@ -467,13 +528,16 @@ void Combat::pickMove(sf::RenderWindow& window, Sprites& sprites)
 		this->pickMoveFunc(window, sprites.combatRect[5], this->attackCounter, this->playerPickMove, this->valFive);
 	}
 	if (this->getTurnZin()) {
-		this->pickMoveFunc(window, sprites.combatRect[3], this->zinAttackCounter, this->zinPickMove, this->valZero);
-		this->pickMoveFunc(window, sprites.combatRect[4], this->zinAttackCounter, this->zinPickMove, this->valOne);
-		this->pickMoveFunc(window, sprites.combatRect[5], this->zinAttackCounter, this->zinPickMove, this->valTwo);
+		this->pickMoveFunc(window, sprites.combatRect[6], this->zinAttackCounter, this->zinPickMove, this->valZero);
+		this->pickMoveFunc(window, sprites.combatRect[7], this->zinAttackCounter, this->zinPickMove, this->valOne);
+		this->pickMoveFunc(window, sprites.combatRect[8], this->zinAttackCounter, this->zinPickMove, this->valTwo);
+		this->pickMoveFunc(window, sprites.combatRect[9], this->zinAttackCounter, this->zinPickMove, this->valThree);
+		this->pickMoveFunc(window, sprites.combatRect[10], this->zinAttackCounter, this->zinPickMove, this->valFour);
+		this->pickMoveFunc(window, sprites.combatRect[11], this->zinAttackCounter, this->zinPickMove, this->valFive);
 	}
 	if (this->getTurnThom()) {
-		this->pickMoveFunc(window, sprites.combatRect[6], this->thomAttackCounter, this->thomPickMove, this->valZero);
-		this->pickMoveFunc(window, sprites.combatRect[7], this->thomAttackCounter, this->thomPickMove, this->valOne);
+		this->pickMoveFunc(window, sprites.combatRect[12], this->thomAttackCounter, this->thomPickMove, this->valZero);
+		this->pickMoveFunc(window, sprites.combatRect[13], this->thomAttackCounter, this->thomPickMove, this->valOne);
 	}
 }
 
@@ -523,6 +587,15 @@ void Combat::zinSelectMove(Sprites& sprites, Animation& animate)
 		break;
 	case 2:
 		vengeance(sprites, animate);
+		break;
+	case 3:
+		hellBlaze(sprites, animate);
+		break;
+	case 4:
+		focusHeal(sprites, animate);
+		break;
+	case 5:
+		crimsonFlames(sprites, animate);
 		break;
 	}
 	

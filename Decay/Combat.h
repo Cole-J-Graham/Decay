@@ -21,9 +21,6 @@ private:
 	int zinAttackCounter;
 	int thomAttackCounter;
 
-	//Move Unlocks
-	bool unlockedGuard;
-
 	//Core Bool
 	bool initCombatOnce;
 	bool reInitCombatOnce;
@@ -86,7 +83,7 @@ public:
 	//Core Stat Functions
 	void updateStats(Sprites& sprites, Player& player);
 	void updateStatsZin(Player& player);
-	void updateMoves(Sprites& sprites, Player& player);
+	void unlockMoves(Sprites& sprites, Player& player);
 
 	//Core Combat Functions
 	void combatLoop(sf::RenderWindow& window, Sprites& sprites, Player& player, Animation& animate);
@@ -143,9 +140,6 @@ public:
 
 	void setAttackCounterInc() { this->attackCounter++; };
 	void setZinAttackCounterInc() { this->zinAttackCounter++; };
-
-	//Move Unlock Bools
-	bool& getUnlockedGuard() { this->unlockedGuard; };
 
 	//Core Bool Getters
 	bool& getInitCombatOnce() { return this->initCombatOnce; };

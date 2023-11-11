@@ -362,10 +362,22 @@ void World::printToolTipFunc(sf::RenderWindow& window, Sprites& sprites, sf::Rec
 
 void World::printToolTip(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player)
 {
-    //Print Player Move Tool Tips
-    this->printToolTipFunc(window, sprites, sprites.combatRect[0], sprites.getCombatAssets(), sprites.getTipSlash());
-    this->printToolTipFunc(window, sprites, sprites.combatRect[1], sprites.getCombatAssets(), sprites.getTipGuard());
-    this->printToolTipFunc(window, sprites, sprites.combatRect[2], sprites.getCombatAssets(), sprites.getTipDecay());
+    //Print Move Tool Tips
+    if (sprites.getCombatAssets()) {
+        this->printToolTipFunc(window, sprites, sprites.combatRect[0], sprites.getCombatAssets(), sprites.getTipSlash());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[1], sprites.getCombatAssets(), sprites.getTipGuard());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[2], sprites.getCombatAssets(), sprites.getTipDecay());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[3], sprites.getCombatAssets(), sprites.getTipHefty());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[4], sprites.getCombatAssets(), sprites.getTipSynergy());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[5], sprites.getCombatAssets(), sprites.getTipIronWall());
+
+        this->printToolTipFunc(window, sprites, sprites.combatRect[6], sprites.getCombatAssets(), sprites.getTipSmite());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[7], sprites.getCombatAssets(), sprites.getTipMend());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[8], sprites.getCombatAssets(), sprites.getTipVengeance());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[9], sprites.getCombatAssets(), sprites.getTipBlaze());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[10], sprites.getCombatAssets(), sprites.getTipHeal());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[11], sprites.getCombatAssets(), sprites.getTipFlames());
+    }
 
     //Print Zin Stat Tool Tips
     if (sprites.getZinStatsInit()) {
@@ -641,6 +653,7 @@ void World::statUp(sf::RenderWindow& window, Combat& combat, Player& player, Spr
                 player.statsText(sprites);
                 sprites.text.setString("Stat improved...");
                 combat.updateStats(sprites, player);
+                combat.unlockMoves(sprites, player);
                 sprites.statSound.play();
             }
             else if (sp <= 0) {
