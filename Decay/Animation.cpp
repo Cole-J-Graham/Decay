@@ -41,7 +41,7 @@ Animation::Animation()
 	anvil3.loadFromFile("Assets/Game_Resources/anvil3.png");
 	anvil4.loadFromFile("Assets/Game_Resources/anvil4.png");
 	anvil5.loadFromFile("Assets/Game_Resources/anvil5.png");
-	anvilSprite.setScale(1.6f, 1.6f);
+	anvilSprite.setScale(1.8f, 1.8f);
 
 	hitBlank.loadFromFile("Assets/Game_Resources/hitanimateblank.png");
 	hit1.loadFromFile("Assets/Game_Resources/hitanimation1.png");
@@ -251,19 +251,8 @@ void Animation::animateDecayWarn()
 
 void Animation::animateAnvil(Assets& assets)
 {
-	//Set Position Based Off Current Bonfire
-	switch (assets.getMapCounter()) {
-	case 0:
-		anvilSprite.setPosition(975, 400);
-		break;
-	case 1:
-		anvilSprite.setPosition(450, 705);
-		break;
-	case 2:
-		anvilSprite.setPosition(1350, 150);
-		break;
-	}
-
+	anvilSprite.setPosition(1475, 675);
+	
 	//Animate Anvil Icon
 	this->animateTimer();
 	switch (this->animationFrame) {
@@ -287,18 +276,7 @@ void Animation::animateAnvil(Assets& assets)
 
 void Animation::animateHeal(Assets& assets)
 {
-	//Set Position Based Off Current Bonfire
-	switch (assets.getMapCounter()) {
-	case 0:
-		healSprite.setPosition(650, 400);
-		break;
-	case 1:
-		healSprite.setPosition(650, 450);
-		break;
-	case 2:
-		healSprite.setPosition(700, 200);
-		break;
-	}
+	healSprite.setPosition(1475, 750);
 
 	//Animate Heal Icon
 	this->animateTimer();

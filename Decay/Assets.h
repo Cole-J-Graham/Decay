@@ -416,9 +416,11 @@ public:
 
 	//Detection
 	sf::RectangleShape bonfireHealDetectionRect;
+	sf::RectangleShape bonfireHealBorder;
 	sf::Text bonfireHealDetectionText;
 
 	sf::RectangleShape bonfireSmithDetectionRect;
+	sf::RectangleShape bonfireSmithBorder;
 	sf::Text bonfireSmithDetectionText;
 
 	//User Input (Answer Boxes Rects)

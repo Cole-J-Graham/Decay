@@ -176,11 +176,17 @@ void World::draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
         if (travel.getBonfireInit() == true) {
             sprites.bonfireHealDetectionText.setPosition(mousePos.x - 5.0f, mousePos.y + 15.0f);
             sprites.bonfireSmithDetectionText.setPosition(mousePos.x - 5.0f, mousePos.y + 15.0f);
+            //Animate Icons
+            window.draw(animate.healSprite);
+            window.draw(animate.anvilSprite);
             //Healing
             window.draw(sprites.bonfireHealDetectionRect);
-            window.draw(sprites.bonfireHealDetectionText);
+            window.draw(sprites.bonfireHealBorder);
             //Smithing
             window.draw(sprites.bonfireSmithDetectionRect);
+            window.draw(sprites.bonfireSmithBorder);
+            //Text
+            window.draw(sprites.bonfireHealDetectionText);
             window.draw(sprites.bonfireSmithDetectionText);
         }
 
@@ -207,8 +213,6 @@ void World::draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
         window.draw(animate.zinSprite);
         window.draw(animate.notSprite);
         window.draw(animate.decayWarn);
-        window.draw(animate.healSprite);
-        window.draw(animate.anvilSprite);
         window.draw(animate.hitSprite);
         
 

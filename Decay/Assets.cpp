@@ -979,74 +979,38 @@ void Assets::drawDecayMapButtons()
 //Detection Functions
 void Assets::bonfireHealDetection()
 {
-    switch (this->mapCounter) {
-    case 0:
-        //Forest Bonfire Heal Detection
-        bonfireHealDetectionRect.setFillColor(sf::Color::Transparent);
-        bonfireHealDetectionRect.setSize(sf::Vector2f(300, 250));
-        bonfireHealDetectionRect.setPosition(650, 450);
+    //Forest Bonfire Heal Detection
+    bonfireHealDetectionRect.setFillColor(sf::Color::Transparent);
+    bonfireHealDetectionRect.setSize(sf::Vector2f(58, 58));
+    bonfireHealDetectionRect.setPosition(1475, 750);
 
-        bonfireHealDetectionText.setFont(font);
-        bonfireHealDetectionText.setCharacterSize(18);
-        bonfireHealDetectionText.setFillColor(sf::Color::White);
-        break;
-    case 1:
-        //Castle Bonfire Heal Detection
-        bonfireHealDetectionRect.setFillColor(sf::Color::Transparent);
-        bonfireHealDetectionRect.setSize(sf::Vector2f(250, 250));
-        bonfireHealDetectionRect.setPosition(650, 500);
+    bonfireHealBorder.setSize(sf::Vector2f(60, 65));
+    bonfireHealBorder.setPosition(1475, 750);
+    bonfireHealBorder.setFillColor(sf::Color::Transparent);
+    bonfireHealBorder.setOutlineColor(sf::Color::White);
+    bonfireHealBorder.setOutlineThickness(1.0f);
 
-        bonfireHealDetectionText.setFont(font);
-        bonfireHealDetectionText.setCharacterSize(18);
-        bonfireHealDetectionText.setFillColor(sf::Color::White);
-        break;
-    case 2:
-        //Decay Bonfire Heal Detection
-        bonfireHealDetectionRect.setFillColor(sf::Color::Transparent);
-        bonfireHealDetectionRect.setSize(sf::Vector2f(200, 200));
-        bonfireHealDetectionRect.setPosition(700, 250);
-
-        bonfireHealDetectionText.setFont(font);
-        bonfireHealDetectionText.setCharacterSize(18);
-        bonfireHealDetectionText.setFillColor(sf::Color::White);
-        break;
-    }
+    bonfireHealDetectionText.setFont(font);
+    bonfireHealDetectionText.setCharacterSize(18);
+    bonfireHealDetectionText.setFillColor(sf::Color::White);
 }
 
 void Assets::bonfireSmithDetection()
 {
-    switch (this->mapCounter) {
-    case 0:
-        //Forest Bonfire Smith Detection
-        bonfireSmithDetectionRect.setFillColor(sf::Color::Transparent);
-        bonfireSmithDetectionRect.setSize(sf::Vector2f(150, 150));
-        bonfireSmithDetectionRect.setPosition(975, 450);
+    //Forest Bonfire Smith Detection
+    bonfireSmithDetectionRect.setFillColor(sf::Color::Transparent);
+    bonfireSmithDetectionRect.setSize(sf::Vector2f(58, 58));
+    bonfireSmithDetectionRect.setPosition(1475, 675);
 
-        bonfireSmithDetectionText.setFont(font);
-        bonfireSmithDetectionText.setCharacterSize(18);
-        bonfireSmithDetectionText.setFillColor(sf::Color::White);
-        break;
-    case 1:
-        //Castle Bonfire Smith Detection
-        bonfireSmithDetectionRect.setFillColor(sf::Color::Transparent);
-        bonfireSmithDetectionRect.setSize(sf::Vector2f(600, 60));
-        bonfireSmithDetectionRect.setPosition(450, 755);
+    bonfireSmithBorder.setSize(sf::Vector2f(58, 58));
+    bonfireSmithBorder.setPosition(1475, 675);
+    bonfireSmithBorder.setFillColor(sf::Color::Transparent);
+    bonfireSmithBorder.setOutlineColor(sf::Color::White);
+    bonfireSmithBorder.setOutlineThickness(1.0f);
 
-        bonfireSmithDetectionText.setFont(font);
-        bonfireSmithDetectionText.setCharacterSize(18);
-        bonfireSmithDetectionText.setFillColor(sf::Color::White);
-        break;
-    case 2:
-        //Decay Bonfire Smith Detection
-        bonfireSmithDetectionRect.setFillColor(sf::Color::Transparent);
-        bonfireSmithDetectionRect.setSize(sf::Vector2f(100, 100));
-        bonfireSmithDetectionRect.setPosition(1350, 200);
-
-        bonfireSmithDetectionText.setFont(font);
-        bonfireSmithDetectionText.setCharacterSize(18);
-        bonfireSmithDetectionText.setFillColor(sf::Color::White);
-        break;
-    }
+    bonfireSmithDetectionText.setFont(font);
+    bonfireSmithDetectionText.setCharacterSize(18);
+    bonfireSmithDetectionText.setFillColor(sf::Color::White);
 }
 
 //Draw Sprite Boxes
