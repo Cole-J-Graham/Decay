@@ -2,6 +2,7 @@
 
 Animation::Animation()
 {
+	this->animation = -1;
 	this->animationFrame = -1;
 	this->combatAnimationFrame = -1;
 	this->combatAnimationLocation = -1;
@@ -42,6 +43,7 @@ Animation::Animation()
 	anvil5.loadFromFile("Assets/Game_Resources/anvil5.png");
 	anvilSprite.setScale(1.6f, 1.6f);
 
+	hitBlank.loadFromFile("Assets/Game_Resources/hitanimateblank.png");
 	hit1.loadFromFile("Assets/Game_Resources/hitanimation1.png");
 	hit2.loadFromFile("Assets/Game_Resources/hitanimation2.png");
 	hit3.loadFromFile("Assets/Game_Resources/hitanimation3.png");
@@ -67,6 +69,18 @@ Animation::~Animation()
 }
 
 //Core Animation Functions
+void Animation::pickAnimation(Assets& assets)
+{
+	switch (this->animation) {
+	case 0:
+		animateSlash(assets);
+		break;
+	case 1:
+		animateSmite(assets);
+		break;
+	}
+}
+
 void Animation::animateTimer()
 {
 	elapsed = timer.getElapsedTime();
@@ -307,7 +321,8 @@ void Animation::animateHeal(Assets& assets)
 	}
 }
 
-void Animation::animateAttack(Assets& assets)
+//Combat Animation Functions
+void Animation::animateSlash(Assets& assets)
 {
 	//Set Animation Position
 	switch (this->combatAnimationLocation) {
@@ -352,6 +367,57 @@ void Animation::animateAttack(Assets& assets)
 		break;
 	case 4:
 		hitSprite.setTexture(hit6);
+		hitSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
+		this->animEnd = true;
+		break;
+	}
+}
+
+void Animation::animateSmite(Assets& assets)
+{
+	//Set Animation Position
+	switch (this->combatAnimationLocation) {
+	case -1:
+		hitSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
+		break;
+	case 0:
+		//Hostile Sprite Location
+		hitSprite.setPosition(sf::Vector2f(1650.0f, 300.0f));
+		break;
+	case 1:
+		//Player Sprite Location
+		hitSprite.setPosition(sf::Vector2f(50.0f, 100.0f));
+		break;
+	case 2:
+		//Zin Sprite Location
+		hitSprite.setPosition(sf::Vector2f(50.0f, 300.0f));
+		break;
+	case 3:
+		//Thom Sprite Location
+		hitSprite.setPosition(sf::Vector2f(50.0f, 500.0f));
+		break;
+	}
+
+	//Animate Hit Animation
+	this->animateCombatTimer();
+	switch (this->combatAnimationFrame) {
+	case -1:
+		hitSprite.setTexture(hit1);
+		break;
+	case 0:
+		hitSprite.setTexture(hitBlank);
+		break;
+	case 1:
+		hitSprite.setTexture(hit1);
+		break;
+	case 2:
+		hitSprite.setTexture(hit1);
+		break;
+	case 3:
+		hitSprite.setTexture(hitBlank);
+		break;
+	case 4:
+		hitSprite.setTexture(hitBlank);
 		hitSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
 		this->animEnd = true;
 		break;

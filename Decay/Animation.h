@@ -10,6 +10,7 @@
 class Animation
 {
 private:
+	int animation;
 	int animationFrame;
 	int combatAnimationFrame;
 	int combatAnimationLocation;
@@ -49,6 +50,7 @@ public:
 	sf::Texture anvil4;
 	sf::Texture anvil5;
 
+	sf::Texture hitBlank;
 	sf::Texture hit1;
 	sf::Texture hit2;
 	sf::Texture hit3;
@@ -82,6 +84,7 @@ public:
 	sf::Time menuElapsedFast;
 
 	//Core Animation Functions
+	void pickAnimation(Assets& assets);
 	void animateTimer();
 	void animateCombatTimer();
 	void animateMenuTimer();
@@ -92,13 +95,17 @@ public:
 	void animateDecayWarn();
 	void animateAnvil(Assets& assets);
 	void animateHeal(Assets& assets);
-	void animateAttack(Assets& assets);
 	void animateMenu(Assets& assets);
+
+	//Combat Animation Functions
+	void animateSlash(Assets& assets);
+	void animateSmite(Assets& assets);
 
 	//Draw Animation Functions
 	void drawAnimations(Assets& assets);
 
 	//Getters
+	int& getAnimation() { return this->animation; };
 	int& getAnimationFrame() { return this->animationFrame; };
 	int& getCombatAnimationFrame() { return this->combatAnimationFrame; };
 	int& getCombatAnimationLocation() { return this->combatAnimationLocation; };

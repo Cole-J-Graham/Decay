@@ -154,7 +154,7 @@ void Combat::combatLoop(sf::RenderWindow& window, Sprites& sprites, Player& play
 	if (!combatEnd) {
 		//Combat Animations
 		if (!animate.getAnimEnd()) {
-			animate.animateAttack(sprites);
+			animate.pickAnimation(sprites);
 		}
 		//Begin combat loop initialization
 		if (initCombatOnce == false) {
@@ -460,6 +460,7 @@ void Combat::hostileTurn(Sprites& sprites, Animation& animate)
 				sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(getPlayerHp()) + "/" + std::to_string(getPlayerHpMax()));
 				sprites.text.setString(getHostileAtkPlayerText());
 				animate.getCombatAnimationLocation() = 1;
+				animate.getAnimation() = 0;
 				animate.getAnimEnd() = false;//Play Attack Animation
 				this->hostileAttack = true;
 			}
@@ -480,6 +481,7 @@ void Combat::hostileTurn(Sprites& sprites, Animation& animate)
 				sprites.spriteText[1].setString("Zin            " + std::to_string(getZinHp()) + "/" + std::to_string(getZinHpMax()));
 				sprites.text.setString(getHostileAtkZinText());
 				animate.getCombatAnimationLocation() = 2;
+				animate.getAnimation() = 0;
 				animate.getAnimEnd() = false;//Play Attack Animation
 				this->hostileAttackZin = true;
 			}
@@ -504,6 +506,7 @@ void Combat::hostileTurn(Sprites& sprites, Animation& animate)
 				sprites.spriteText[5].setString("Thom          " + std::to_string(getThomHp()) + "/" + std::to_string(getThomHpMax()));
 				sprites.text.setString("The hostile strikes Thom!");
 				animate.getCombatAnimationLocation() = 3;
+				animate.getAnimation() = 0;
 				animate.getAnimEnd() = false;//Play Attack Animation
 				this->hostileAttackThom = true;
 			}

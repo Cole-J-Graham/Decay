@@ -103,7 +103,9 @@ void Moves::slash(Sprites& sprites, Animation& animate)
 		this->firstAttack = true;
 	}
 	animate.getCombatAnimationLocation() = 0;
+	animate.getAnimation() = 0;
 	animate.getAnimEnd() = false;//Play Attack Animation
+	sprites.getTipBoxCounter() = -1;
 }
 
 void Moves::guard(Sprites& sprites, Animation& animate)
@@ -112,6 +114,7 @@ void Moves::guard(Sprites& sprites, Animation& animate)
 	sprites.setPlayerTurnAssetsFalse();
 	this->zinGuarded = true;
 	sprites.text.setString(this->playerGuardAtkText);
+	sprites.getTipBoxCounter() = -1;
 }
 
 void Moves::decayBlade(Sprites& sprites, Animation& animate)
@@ -122,7 +125,9 @@ void Moves::decayBlade(Sprites& sprites, Animation& animate)
 	sprites.setPlayerTurnAssetsFalse();
 	sprites.text.setString(this->playerDecayAtkText);
 	animate.getCombatAnimationLocation() = 0;
+	animate.getAnimation() = 0;
 	animate.getAnimEnd() = false;//Play Attack Animation
+	sprites.getTipBoxCounter() = -1;
 }
 
 void Moves::heftyBlow(Sprites& sprites, Animation& animate)
@@ -133,8 +138,10 @@ void Moves::heftyBlow(Sprites& sprites, Animation& animate)
 	sprites.setPlayerTurnAssetsFalse();
 	sprites.text.setString(this->playerHeftyAtkText);
 	animate.getCombatAnimationLocation() = 0;
+	animate.getAnimation() = 0;
 	animate.getAnimEnd() = false;//Play Attack Animation
 	this->playerFatigue = true;
+	sprites.getTipBoxCounter() = -1;
 }
 
 void Moves::decaySynergy(Sprites& sprites, Animation& animate)
@@ -148,6 +155,7 @@ void Moves::decaySynergy(Sprites& sprites, Animation& animate)
 	sprites.setPlayerTurnAssetsFalse();
 	animate.getCombatAnimationLocation() = 0;
 	animate.getAnimEnd() = false;//Play Attack Animation
+	sprites.getTipBoxCounter() = -1;
 }
 
 void Moves::ironWall(Sprites& sprites, Animation& animte)
@@ -160,6 +168,7 @@ void Moves::ironWall(Sprites& sprites, Animation& animte)
 	sprites.spriteText[1].setString("Zin            " + std::to_string(zinHp) + "/" + std::to_string(zinHpMax));
 	sprites.spriteText[5].setString("Thom          " + std::to_string(this->thomHp) + "/" + std::to_string(this->thomHpMax));
 	sprites.setPlayerTurnAssetsFalse();
+	sprites.getTipBoxCounter() = -1;
 }
 
 //Zin Moves
@@ -170,6 +179,10 @@ void Moves::smite(Sprites& sprites, Animation& animate)
 	sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 	sprites.setZinTurnAssetsFalse();
 	sprites.text.setString(this->zinSmiteAtkText);
+	animate.getCombatAnimationLocation() = 0;
+	animate.getAnimEnd() = false;//Play Attack Animation
+	sprites.getTipBoxCounter() = -1;
+	animate.getAnimation() = 1;
 	animate.getCombatAnimationLocation() = 0;
 	animate.getAnimEnd() = false;//Play Attack Animation
 }
@@ -200,6 +213,7 @@ void Moves::mend(Sprites& sprites, Animation& animate)
 	sprites.spriteText[5].setString("Thom          " + std::to_string(this->thomHp) + "/" + std::to_string(this->thomHpMax));
 	sprites.setZinTurnAssetsFalse();
 	sprites.text.setString(this->zinMendAtkText);
+	sprites.getTipBoxCounter() = -1;
 }
 
 void Moves::vengeance(Sprites& sprites, Animation& animate)
@@ -210,6 +224,7 @@ void Moves::vengeance(Sprites& sprites, Animation& animate)
 	sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 	sprites.setZinTurnAssetsFalse();
 	sprites.text.setString(this->zinVengeanceAtkText);
+	sprites.getTipBoxCounter() = -1;
 }
 
 void Moves::hellBlaze(Sprites& sprites, Animation& animate)
@@ -220,6 +235,7 @@ void Moves::hellBlaze(Sprites& sprites, Animation& animate)
 	sprites.setZinTurnAssetsFalse();
 	sprites.text.setString(this->zinBlazeAtkText);
 	this->zinFatigue = true;
+	sprites.getTipBoxCounter() = -1;
 }
 
 void Moves::focusHeal(Sprites& sprites, Animation& animate)
@@ -234,6 +250,7 @@ void Moves::focusHeal(Sprites& sprites, Animation& animate)
 	sprites.spriteText[0].setString(sprites.getPlayerName() + "     " + std::to_string(playerHp) + "/" + std::to_string(playerHpMax));
 	sprites.setZinTurnAssetsFalse();
 	sprites.text.setString(this->zinFocusAtkText);
+	sprites.getTipBoxCounter() = -1;
 }
 
 void Moves::crimsonFlames(Sprites& sprites, Animation& animate)
@@ -243,6 +260,7 @@ void Moves::crimsonFlames(Sprites& sprites, Animation& animate)
 	this->zinAtk += zinCrimson;
 	sprites.setZinTurnAssetsFalse();
 	sprites.text.setString(this->zinCrimsonAtkText);
+	sprites.getTipBoxCounter() = -1;
 }
 
 //Thom Moves
@@ -253,6 +271,7 @@ void Moves::barrier(Sprites& sprites, Animation& animate)
 	sprites.spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 	sprites.text.setString(this->thomBarrierAtkText);
 	sprites.setThomTurnAssetsFalse();
+	sprites.getTipBoxCounter() = -1;
 }
 
 void Moves::enrage(Sprites& sprites, Animation& animate)
@@ -265,4 +284,5 @@ void Moves::enrage(Sprites& sprites, Animation& animate)
 	sprites.soundEnraged.play();
 	sprites.text.setString(this->thomEnragedAtkText);
 	sprites.setThomTurnAssetsFalse();
+	sprites.getTipBoxCounter() = -1;
 }

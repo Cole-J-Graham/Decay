@@ -68,7 +68,7 @@ public:
 	void drawMapSelectorButtons(sf::RenderWindow& window, Sprites& sprites);
 	void printPlayerStats(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player);
 	void printZinStats(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player);
-	void printToolTipFunc(sf::RenderWindow& window, Sprites& sprites, sf::RectangleShape& inputRect, bool& boolSet, std::string& toolTip);
+	void printToolTipFunc(sf::RenderWindow& window, Sprites& sprites, sf::RectangleShape& inputRect, std::string& toolTip);
 	void printToolTip(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player);
 
 	//Display Element Functionality

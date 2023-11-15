@@ -76,6 +76,9 @@ void Sprites::loadSprites()
     spadeTextureAngry.loadFromFile("Assets/Sprites/spadeAngry.png");
     spadeTextureHappy.loadFromFile("Assets/Sprites/spadeSmug.png");
     spadeTextureSmug.loadFromFile("Assets/Sprites/spadeHappy.png");
+    spadeTextureConfused.loadFromFile("Assets/Sprites/spadeConfused.png");
+    spadeTextureStare.loadFromFile("Assets/Sprites/spadeStare.png");
+    spadeTextureStareExtra.loadFromFile("Assets/Sprites/spadeStareExtra.png");
 
     //Load Hostile Sprites
     hostileTextureWalker.loadFromFile("Assets/HostileSprites/decaywalkersprite.jpeg");
@@ -598,6 +601,24 @@ void Sprites::spadeSprite()
     case 3:
         //Smug Spade
         spriteElements[2].setTexture(spadeTextureSmug);
+        spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        break;
+    case 4:
+        //Confused Spade
+        spriteElements[2].setTexture(spadeTextureConfused);
+        spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        break;
+    case 5:
+        //Staring Spade
+        spriteElements[2].setTexture(spadeTextureStare);
+        spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        break;
+    case 6:
+        //Extra Staring Spade
+        spriteElements[2].setTexture(spadeTextureStareExtra);
         spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
         spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
         break;

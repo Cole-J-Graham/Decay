@@ -61,6 +61,9 @@ public:
 	sf::Texture spadeTextureAngry;
 	sf::Texture spadeTextureHappy;
 	sf::Texture spadeTextureSmug;
+	sf::Texture spadeTextureConfused;
+	sf::Texture spadeTextureStare;
+	sf::Texture spadeTextureStareExtra;
 	//Hostile Sprite Textures
 	sf::Texture hostileTextureWolf;
 	sf::Texture hostileTextureWalker;

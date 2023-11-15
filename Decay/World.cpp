@@ -345,18 +345,13 @@ void World::printZinStats(sf::RenderWindow& window, Sprites& sprites, Event& not
     }
 }
 
-void World::printToolTipFunc(sf::RenderWindow& window, Sprites& sprites, sf::RectangleShape& inputRect, bool& boolSet, std::string& toolTip)
+void World::printToolTipFunc(sf::RenderWindow& window, Sprites& sprites, sf::RectangleShape& inputRect, std::string& toolTip)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-    if (boolSet == true) {
-        if (inputRect.getGlobalBounds().contains(mousePosF)) {
-            sprites.getTipBoxCounter() = 0;
-            sprites.tipBoxText.setString(toolTip);
-        }
-    }
-    else {
-        sprites.getTipBoxCounter() = -1;
+    if (inputRect.getGlobalBounds().contains(mousePosF)) {
+        sprites.getTipBoxCounter() = 0;
+        sprites.tipBoxText.setString(toolTip);
     }
 }
 
@@ -364,33 +359,33 @@ void World::printToolTip(sf::RenderWindow& window, Sprites& sprites, Event& note
 {
     //Print Move Tool Tips
     if (sprites.getCombatAssets()) {
-        this->printToolTipFunc(window, sprites, sprites.combatRect[0], sprites.getCombatAssets(), sprites.getTipSlash());
-        this->printToolTipFunc(window, sprites, sprites.combatRect[1], sprites.getCombatAssets(), sprites.getTipGuard());
-        this->printToolTipFunc(window, sprites, sprites.combatRect[2], sprites.getCombatAssets(), sprites.getTipDecay());
-        this->printToolTipFunc(window, sprites, sprites.combatRect[3], sprites.getCombatAssets(), sprites.getTipHefty());
-        this->printToolTipFunc(window, sprites, sprites.combatRect[4], sprites.getCombatAssets(), sprites.getTipSynergy());
-        this->printToolTipFunc(window, sprites, sprites.combatRect[5], sprites.getCombatAssets(), sprites.getTipIronWall());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[0], sprites.getTipSlash());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[1], sprites.getTipGuard());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[2], sprites.getTipDecay());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[3], sprites.getTipHefty());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[4], sprites.getTipSynergy());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[5], sprites.getTipIronWall());
 
-        this->printToolTipFunc(window, sprites, sprites.combatRect[6], sprites.getCombatAssets(), sprites.getTipSmite());
-        this->printToolTipFunc(window, sprites, sprites.combatRect[7], sprites.getCombatAssets(), sprites.getTipMend());
-        this->printToolTipFunc(window, sprites, sprites.combatRect[8], sprites.getCombatAssets(), sprites.getTipVengeance());
-        this->printToolTipFunc(window, sprites, sprites.combatRect[9], sprites.getCombatAssets(), sprites.getTipBlaze());
-        this->printToolTipFunc(window, sprites, sprites.combatRect[10], sprites.getCombatAssets(), sprites.getTipHeal());
-        this->printToolTipFunc(window, sprites, sprites.combatRect[11], sprites.getCombatAssets(), sprites.getTipFlames());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[6], sprites.getTipSmite());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[7], sprites.getTipMend());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[8], sprites.getTipVengeance());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[9], sprites.getTipBlaze());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[10], sprites.getTipHeal());
+        this->printToolTipFunc(window, sprites, sprites.combatRect[11], sprites.getTipFlames());
     }
 
     //Print Zin Stat Tool Tips
     if (sprites.getZinStatsInit()) {
-        this->printToolTipFunc(window, sprites, sprites.zinStatElements[1], sprites.getZinStatsInit(), sprites.getTipResolve());
-        this->printToolTipFunc(window, sprites, sprites.zinStatElements[2], sprites.getZinStatsInit(), sprites.getTipPatience());
-        this->printToolTipFunc(window, sprites, sprites.zinStatElements[3], sprites.getZinStatsInit(), sprites.getTipResilience());
+        this->printToolTipFunc(window, sprites, sprites.zinStatElements[1], sprites.getTipResolve());
+        this->printToolTipFunc(window, sprites, sprites.zinStatElements[2], sprites.getTipPatience());
+        this->printToolTipFunc(window, sprites, sprites.zinStatElements[3], sprites.getTipResilience());
     }
 
     //Print Player Stat Tool Tips
     if (sprites.getPlayerStatsInit()) {
-        this->printToolTipFunc(window, sprites, sprites.playerStatElements[1], sprites.getPlayerStatsInit(), sprites.getTipStrength());
-        this->printToolTipFunc(window, sprites, sprites.playerStatElements[2], sprites.getPlayerStatsInit(), sprites.getTipFortitude());
-        this->printToolTipFunc(window, sprites, sprites.playerStatElements[3], sprites.getPlayerStatsInit(), sprites.getTipVitality());
+        this->printToolTipFunc(window, sprites, sprites.playerStatElements[1], sprites.getTipStrength());
+        this->printToolTipFunc(window, sprites, sprites.playerStatElements[2], sprites.getTipFortitude());
+        this->printToolTipFunc(window, sprites, sprites.playerStatElements[3], sprites.getTipVitality());
     }
 }
 
