@@ -1456,6 +1456,11 @@ void Travel::decayForest(sf::RenderWindow& window, Sprites& sprites, Event& note
         }
         break;
     case 10:
+        notevent.decaySpadeEncPoison(sprites);
+        if (notevent.getSpadeEnced()) {
+            combat.initSpade(sprites);
+            combat.combatLoop(window, sprites, player, animate);
+        }
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest11.jpeg");
             this->frameInit = true;

@@ -48,6 +48,7 @@ private:
 	bool initHostileChatterMouth;
 	bool initHostileReclus;
 	bool initHostileTendrilAlpha;
+	bool initHostileSpade;
 
 	//Combat Control Flow Bool
 	bool turnPlayer;
@@ -127,6 +128,7 @@ public:
 	void initChatterMouth(Sprites& sprites);
 	void initReclus(Sprites& sprites);
 	void initTendrilAlpha(Sprites& sprites);
+	void initSpade(Sprites& sprites);
 
 	//Move Value Getters
 	int& getValZero() { return this->valZero; };

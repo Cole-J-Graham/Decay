@@ -979,7 +979,7 @@ void Event::castleSpadeEncPoison(Sprites& sprites)
                 sprites.text.setString("*Zin looks as though she's about to retort, however she pauses herself before speaking and seems to regather her thoughts...* 'Yeah, no, that's actually a fair point. Let's just get moving...'");
                 break;
             case 1:
-                sprites.text.setString("*Zin looks to be relieved but still understandably troubled by the situation...* 'Well, you're damn right about that. You're always pulling some freaky shit out of your sleeve.'");
+                sprites.text.setString("*Zin looks momentarily puzzled before nodding her head* 'Yeah, that's honestly pretty fair. In any case, let's jsut keep moving...'");
                 break;
             }
             break;
@@ -1099,6 +1099,7 @@ void Event::castleSiwardFinalEnc(Sprites& sprites)
             sprites.text.setString("*Siward loses all control of his body as he rips the sword back out from his chest. The gaping hole leaks its last crimson drop of blood before quickly being replaced by a darkness blacker then the abyss itself. It's do or die.*");
             break;
         case 3:
+            sprites.getEventAssets() = false;
             this->reInitialize = true;//Reset dialogue counter for other events
             this->siwardEncedFinal = true;
             break;
@@ -1182,6 +1183,7 @@ void Event::decaySpadeEnc(Sprites& sprites)
             break;
         case 10:
             sprites.text.setString("");
+            sprites.getEventAssets() = false;
             this->reInitialize = true;//Reset dialogue counter for other events
             this->spadeEncedDecay = true;
             break;
@@ -1195,6 +1197,80 @@ void Event::decaySpadeEncPoison(Sprites& sprites)
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
+            this->hideOpenAssets(sprites);
+            //sprites.getSpadeCounter() = 0; //Normal Look
+            sprites.getEntityViewerCounter() = 27;
+            sprites.text.setString("*You notice a familiar jester sitting close in the distance next to a tree... It's Spade. You quickly prepare yourself to defend Zin if necessary, however it seems the jester is occupied with... digging in the dirt?*'");
+            break;
+        case 1:
+            sprites.getSpadeCounter() = 5; //Insane Stare
+            sprites.text.setString("*Suddenly, she notices you. You feel uneasy as she stares at you, not a word coming out of her mouth...*");
+            break;
+        case 2:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'What are you doing?'");
+            sprites.answerBoxText[1].setString("2. 'Damn, bitch! Fuck you looking crazy for?!'");
+            break;
+        case 3:
+            sprites.getSpadeCounter() = 6; //Extra Insane Stare
+            sprites.getShowAnsBoxesCounter() = -1;
+            sprites.text.setString("*She doesn't reply, instead she simply stares at you even harder. It almost looks like her eyes are about to pop out of her head...*\n\n*You notice the hole in the ground she was digging has a half eaten worm sticking out of it. She was eating crimson insects.*");
+            break;
+        case 4:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. *Attempt to leave*");
+            sprites.answerBoxText[1].setString("2. 'If we go, will you leave us be?'");
+            break;
+        case 5:
+            sprites.getSpadeCounter() = 2; //Happy
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("*She suddenly changes entirely, following you as a smile appears on her face.* 'Hey hey hey, where are you going so fast? It's been a minute since I've seen you!'");
+                break;
+            case 1:
+                sprites.text.setString("*A smile slowly appears across her face as she stares at you* 'Hey pal, why would you leave so quickly? It's been a minute since we've seen each other!'");
+                break;
+            }
+            break;
+        case 6:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'What is wrong with you?'");
+            sprites.answerBoxText[1].setString("2. 'Were you eating bugs?'");
+            break;
+        case 7:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.getSpadeCounter() = 6; //Extra Insane Stare
+                sprites.text.setString("*She replies very bluntly, clearly bothered by your question.* 'Nothing.'");
+                break;
+            case 1:
+                sprites.getSpadeCounter() = 6; //Extra Insane Stare
+                sprites.text.setString("*She replies very bluntly, clearly bothered by your question.* 'No.'");
+                break;
+            }
+            break;
+        case 8:
+            sprites.getZinCounter() = 2; //Zin gets concerned and appears
+            sprites.text.setString("'You're clearly just tempting me by standing there, you know that? The meat on your bones. Don't even get me started with the kid. Though she doesn't have nearly as much.'");
+            break;
+        case 9:
+            sprites.getZinCounter() = 5; //Zin gets scared
+            sprites.text.setString("*Before you can reply back, the jester continues to ramble...*\n\n'I never enjoyed it in the beginning. The smell, the taste... Rotting flesh is fucking disgusting. Well, it was... But soon enough the aroma began to dance into my nose. By god...'");
+            break;
+        case 10:
+            sprites.text.setString("*She continues to look you up and down as she steps towards you both...* 'I'm just wondering which one of you will taste better...'\n\n*Zin is clearly frightened, stepping behind you as she speaks up.* 'I knew she was nuts but she's fucking lost it! What do we do, what do we do?!'\n\n*The jester begins to slowly transform into a horrifying creature. Once a shadow of herself, she now stands taller and shrouded in melting decay.*");
+            break;
+        case 11:
+            sprites.getZinCounter() = 0; //Zin gets her confidence back
+            sprites.text.setString("*You take a step forwards, planting your feet in the floor and pulling your weapon in front.* 'Nothing we haven't taken on before, Zin. Just another fucking monster.'\n\n*Your words seem to bring confidence into Zin as she steps forwards closer to you, preparing her spells. It's do or die...*");
+            break;
+        case 12:
+            sprites.getEventAssets() = false;
+            sprites.text.setString("");
+            this->reInitialize = true;//Reset dialogue counter for other events
+            this->spadeEncedDecayPoison = true;
             break;
         }
     }

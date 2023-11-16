@@ -42,6 +42,7 @@ Combat::Combat()
 	this->initHostileChatterMouth = false;
 	this->initHostileReclus = false;
 	this->initHostileTendrilAlpha = false;
+	this->initHostileSpade = false;
 
 	//Combat Control Flow Bool
 	this->turnPlayer = true;
@@ -1274,5 +1275,38 @@ void Combat::initTendrilAlpha(Sprites& sprites)
 		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
 		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the alpha!";
 		this->initHostileTendrilAlpha = true;
+	}
+}
+
+void Combat::initSpade(Sprites& sprites)
+{
+	if (!this->initHostileSpade) {
+		//Allow combat to start
+		this->combatEnd = false;
+		//Set tendril alpha sprite
+		sprites.getSpadeCounter() = 6;//Hostile insane sprite
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		getHostileHp() = 750;
+		getHostileHpMax() = 750;
+		getHostileStrike() = 40;
+
+		getHostileNameNoSpc() = "Spade";
+		getHostileName() = "Spade ";
+		getHostileEncText() = "Spade steps forwards, a horrifying look in her eyes as she's practically inhuman...";
+		getHostileAtkPlayerText() = "Spade slams you with a horrifying decaying tentacle!";
+		getHostileAtkZinText() = "Spade strikes Zin with one of her decaying tendrils!";
+		getHostileAtkZinBlkText() = "Spade attempts to slice Zin in half with a crude sharpened bone, however you deflect it just in time!";
+
+		getPlayerSlashAtkText() = "You slash at Spade, her cackling back in bliss!";
+		getPlayerGuardAtkText() = "You watch Spades movements, preparing yourself to protect Zin at all costs...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, spraying your decayed blood over Spade as she slowly locks eyes with you!";
+
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting Spade!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into Spade!";
+		this->initHostileSpade = true;
 	}
 }

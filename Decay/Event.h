@@ -97,6 +97,7 @@ public:
 
 	//Event Availability Bools
 	bool& getSiwardEncedFinal() { return this->siwardEncedFinal; };
+	bool& getSpadeEnced() { return this->spadeEncedDecayPoison; };
 	bool& getNunEnced() { return this->nunEnced; };
 
 	//Counter Getters

@@ -585,49 +585,55 @@ void Sprites::spadeSprite()
         spriteElements[2].setTexture(spadeTexture);
         spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
         spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteElements[2].setScale(0.050f, 0.050f);
         break;
     case 1:
         //Angry Spade
         spriteElements[2].setTexture(spadeTextureAngry);
         spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
         spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteElements[2].setScale(0.050f, 0.050f);
         break;
     case 2:
         //Happy Spade
         spriteElements[2].setTexture(spadeTextureHappy);
         spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
         spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteElements[2].setScale(0.050f, 0.050f);
         break;
     case 3:
         //Smug Spade
         spriteElements[2].setTexture(spadeTextureSmug);
         spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
         spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteElements[2].setScale(0.050f, 0.050f);
         break;
     case 4:
         //Confused Spade
         spriteElements[2].setTexture(spadeTextureConfused);
         spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
         spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteElements[2].setScale(0.150f, 0.150f);
         break;
     case 5:
         //Staring Spade
         spriteElements[2].setTexture(spadeTextureStare);
         spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
         spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteElements[2].setScale(0.150f, 0.150f);
         break;
     case 6:
         //Extra Staring Spade
         spriteElements[2].setTexture(spadeTextureStareExtra);
         spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
         spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteElements[2].setScale(0.150f, 0.150f);
         break;
     }
 
     //Sprite Options, ect
     spadeTexture.setSmooth(true);
     spadeTexture.setRepeated(false);
-    spriteElements[2].setScale(0.050f, 0.050f);
 }
 
 //Display Functions
