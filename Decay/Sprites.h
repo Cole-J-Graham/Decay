@@ -9,6 +9,7 @@ private:
 	int entityViewerCounter;
 	int siwardCounter;
 	int spadeCounter;
+	int riCounter;
 
 public:
 	//Constructors and Destructors
@@ -32,6 +33,7 @@ public:
 	void thomSprite(Assets& assets);
 	void siwardSprite();
 	void spadeSprite();
+	void riSprite();
 
 	//Display Functions
 	void greyOnHover(sf::RenderWindow& window);
@@ -64,6 +66,10 @@ public:
 	sf::Texture spadeTextureConfused;
 	sf::Texture spadeTextureStare;
 	sf::Texture spadeTextureStareExtra;
+	//Ri Textures
+	sf::Texture riTexture;
+	sf::Texture riTextureAngry;
+	sf::Texture riTextureHappy;
 	//Hostile Sprite Textures
 	sf::Texture hostileTextureWolf;
 	sf::Texture hostileTextureWalker;

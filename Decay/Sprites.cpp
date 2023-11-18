@@ -8,6 +8,7 @@ Sprites::Sprites()
     this->entityViewerCounter = -1;
     this->siwardCounter = -1;
     this->spadeCounter = -1;
+    this->riCounter = -1;
 
     //Load Objects
     this->loadSprites();
@@ -45,6 +46,7 @@ void Sprites::drawObjects(Assets& assets)
     this->hostileSprite(assets);
     this->siwardSprite();
     this->spadeSprite();
+    this->riSprite();
     this->drawEntityViewer();
 }
 
@@ -79,6 +81,11 @@ void Sprites::loadSprites()
     spadeTextureConfused.loadFromFile("Assets/Sprites/spadeConfused.png");
     spadeTextureStare.loadFromFile("Assets/Sprites/spadeStare.png");
     spadeTextureStareExtra.loadFromFile("Assets/Sprites/spadeStareExtra.png");
+
+    //Load Ri Sprites
+    riTexture.loadFromFile("Assets/Sprites/riNormal.png");
+    riTextureAngry.loadFromFile("Assets/Sprites/riAngry.png");
+    riTextureHappy.loadFromFile("Assets/Sprites/riHappy.png");
 
     //Load Hostile Sprites
     hostileTextureWalker.loadFromFile("Assets/HostileSprites/decaywalkersprite.jpeg");
@@ -585,14 +592,12 @@ void Sprites::spadeSprite()
         spriteElements[2].setTexture(spadeTexture);
         spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
         spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
-        spriteElements[2].setScale(0.050f, 0.050f);
         break;
     case 1:
         //Angry Spade
         spriteElements[2].setTexture(spadeTextureAngry);
         spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
         spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
-        spriteElements[2].setScale(0.050f, 0.050f);
         break;
     case 2:
         //Happy Spade
@@ -606,34 +611,65 @@ void Sprites::spadeSprite()
         spriteElements[2].setTexture(spadeTextureSmug);
         spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
         spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
-        spriteElements[2].setScale(0.050f, 0.050f);
         break;
     case 4:
         //Confused Spade
         spriteElements[2].setTexture(spadeTextureConfused);
         spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
         spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
-        spriteElements[2].setScale(0.150f, 0.150f);
         break;
     case 5:
         //Staring Spade
         spriteElements[2].setTexture(spadeTextureStare);
         spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
         spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
-        spriteElements[2].setScale(0.150f, 0.150f);
         break;
     case 6:
         //Extra Staring Spade
         spriteElements[2].setTexture(spadeTextureStareExtra);
         spriteElements[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
         spriteRect[3].setPosition(sf::Vector2f(1650.0f, 300.0f));
-        spriteElements[2].setScale(0.150f, 0.150f);
         break;
     }
 
     //Sprite Options, ect
+    spriteElements[2].setScale(0.150f, 0.150f);
     spadeTexture.setSmooth(true);
     spadeTexture.setRepeated(false);
+}
+
+void Sprites::riSprite() 
+{
+    //Pick Ri Sprite Emotion
+    switch (this->riCounter) {
+    case -1:
+        spriteElements[8].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        spriteRect[6].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        break;
+    case 0:
+        //Normal Ri
+        spriteElements[8].setTexture(riTexture);
+        spriteElements[8].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[6].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        break;
+    case 1:
+        //Angry Ri
+        spriteElements[8].setTexture(riTextureAngry);
+        spriteElements[8].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[6].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        break;
+    case 2:
+        //Happy Ri
+        spriteElements[8].setTexture(riTextureHappy);
+        spriteElements[8].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[6].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        break;
+    }
+
+    //Sprite Options, ect
+    spriteElements[8].setScale(0.150f, 0.150f);
+    riTexture.setSmooth(true);
+    riTexture.setRepeated(false);
 }
 
 //Display Functions

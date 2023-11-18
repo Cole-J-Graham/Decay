@@ -171,6 +171,8 @@ public:
 	sf::Sprite spade;
 	sf::Sprite zin;
 	sf::Sprite thom;
+	sf::Sprite ri;
+
 	sf::Sprite box;
 	sf::Sprite map;
 	sf::Sprite button;
@@ -318,7 +320,7 @@ public:
 		menuText};
 
 	std::vector<sf::Sprite> spriteElements{ button, buttonBack, spade,
-		zin, player, hostile, siward, thom };
+		zin, player, hostile, siward, thom, ri };
 
 	//Stats Menu Vectors
 	std::vector<sf::RectangleShape> playerStatElements {rectStatsPointsBox, rectStrengthPointsBox,
@@ -440,9 +442,10 @@ public:
 	sf::RectangleShape boxSpade;
 	sf::RectangleShape boxSiward;
 	sf::RectangleShape boxThom;
+	sf::RectangleShape boxRi;
 
 	std::vector<sf::RectangleShape> spriteRect{ boxPlayer, boxZin, boxHostile,
-		 boxSpade, boxSiward, boxThom };
+		 boxSpade, boxSiward, boxThom, boxRi };
 
 	sf::Text textPlayer;
 	sf::Text textZin;
@@ -450,9 +453,10 @@ public:
 	sf::Text textSpade;
 	sf::Text textSiward;
 	sf::Text textThom;
+	sf::Text textRi;
 
 	std::vector<sf::Text> spriteText{ textPlayer, textZin, textHostile,
-		textSpade, textSiward, textThom };
+		textSpade, textSiward, textThom, textRi };
 
 	//Sounds
 	sf::Sound sound;
