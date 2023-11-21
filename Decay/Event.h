@@ -26,6 +26,8 @@ private:
 	bool spadeEncedDecay;
 	bool spadeEncedDecayPoison;
 
+	bool riEncedForest;
+
 	bool treeEnced;
 	bool obeliskEnced;
 
@@ -64,6 +66,7 @@ public:
 
 	//Forest Entrance Events
 	void forestSiwardEnc(Sprites& sprites);
+	void riEnc(Sprites& sprites);
 
 	//Forest Depths Events
 	void forestDepthsSpadeEnc(Sprites& sprites);

@@ -105,6 +105,7 @@ public:
 	sf::Texture spadeEntityCastle;
 	sf::Texture spadeEntityCrimson;
 	sf::Texture spadeEntityCrimsonPoison;
+	sf::Texture riEntityForest;
 	//Viewer Files Random Events
 	sf::Texture treeEntity;
 	sf::Texture obeliskEntity;
@@ -131,6 +132,7 @@ public:
 	//Sprite Integer Selection Getters
 	int& getSiwardCounter() { return this->siwardCounter; };
 	int& getSpadeCounter() { return this->spadeCounter; };
+	int& getRiCounter() { return this->riCounter; };
 	int& getSpriteViewerCounter() { return this->spriteViewerCounter; };
 	int& getEntityViewerCounter() { return this->entityViewerCounter; };
 

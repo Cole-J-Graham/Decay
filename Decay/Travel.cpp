@@ -319,6 +319,7 @@ void Travel::forestEntrance(sf::RenderWindow& window, Sprites& sprites, Event& n
         }
         break;
     case 6:
+        notevent.riEnc(sprites);
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest7.jpeg");
             animate.getDecayWarning() = true;

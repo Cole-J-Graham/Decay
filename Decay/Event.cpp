@@ -21,6 +21,8 @@ Event::Event()
     this->spadeEncedDecay = false;
     this->spadeEncedDecayPoison = false;
 
+    this->riEncedForest = false;
+
     this->treeEnced = false;
     this->obeliskEnced = false;
 
@@ -294,6 +296,126 @@ void Event::forestSiwardEnc(Sprites& sprites)
             sprites.getEntityViewerCounter() = -1;
             this->reInitialize = true;//Reset dialogue counter for other events
             this->siwardEncedForest = true;
+            break;
+        }
+    }
+}
+
+void Event::riEnc(Sprites& sprites)
+{
+    if (!this->riEncedForest) {
+        this->reInit(sprites);
+        switch (this->dialogue) {
+        case 0:
+            this->hideOpenAssets(sprites);
+            sprites.getEntityViewerCounter() = 28; //Make Ri entity visible
+            sprites.getRiCounter() = 0;
+            sprites.text.setString("*You suddenly notice what looks to be a little girl further in view. It looks as though she's searching for something quite intensely...*\n\n*Upon waling closer, you notice the child seems to be holding a sword almost the size of her. You wonder how it's even possible, though your pondering is cut short as she notices you...*");
+            break;
+        case 1:
+            sprites.text.setString("'Hey, mister! Have you seen any demons around here?'");
+            break;
+        case 2:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'Can't say that I have. Mind telling me how you're holding that thing?'");
+            sprites.answerBoxText[1].setString("2. *Ignore her question and keep ogling at the sword* 'Is that sword some kind of magic? Does it weigh nothing?'");
+            break;
+        case 3:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("'You haven't? Awe... darn. Oh! To answer your question the sword isn't heavy at all! Well, not to me anyways.'\n\n*Zin is clearly distraught just as much as yourself. You can tell she's prepared to cast smite incase of some sort of trick. A tad bit paranoid, are we?");
+                break;
+            case 1:
+                sprites.text.setString("'Oh, I can assure you, this thing is like BEYOND heavy! But it's easy to carry for me! Anywho, any demons?'\n\n*Zin is clearly distraught as well. You can tell she's prepared to cast smite incase of some sort of trick. A tad bit paranoid, are we?*");
+                break;
+            }
+            break;
+        case 4:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'Why exactly are you hunting for demons?'");
+            sprites.answerBoxText[1].setString("2. 'Are you gonna clobber a demon with that thing you call a sword?'");
+            break;
+        case 5:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("'Well, I just don't like them running around rampant, you know? So I kill em. Like I just hate demons. Usually takes one smack with this thing. Just need to find em.'");
+                break;
+            case 1:
+                sprites.text.setString("'That's the plan! As soon as it stops hiding from me!'");
+                break;
+            }
+            break;
+        case 6:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'So, are you hunting like a specific demon? Or just demons in general?'");
+            sprites.answerBoxText[1].setString("2. 'Are you just hunting aimlessly?'");
+            break;
+        case 7:
+            sprites.getShowAnsBoxesCounter() = -1;
+            sprites.text.setString("'Well, normally I just wander around looking for them but I saw one just right over there!' *She points off in the distance in a clearing of trees.*\n\n'But it ran when it saw me! So now I'm hunting him!'");
+            break;
+        case 8:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. *Glare at her sword* 'I think I'd run too...'");
+            sprites.answerBoxText[1].setString("2. 'Him?'");
+            break;
+        case 9:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.getRiCounter() = 2;
+                sprites.text.setString("*The girl smiles back at you hauntingly...* 'Good!'");
+                break;
+            case 1:
+                sprites.getRiCounter() = 2;
+                sprites.text.setString("'Yeah! It looked like a dude! I think... I usually don't think that far!'");
+                break;
+            }
+            break;
+        case 10:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'Where are your parents?'");
+            sprites.answerBoxText[1].setString("2. 'Are you insane?'");
+            break;
+        case 11:
+            sprites.getShowAnsBoxesCounter() = -1;
+            sprites.text.setString("'You ask more questions than a guard does to a street urchin!'");
+            break;
+        case 12:
+            sprites.text.setString("*You glare back at her before replying...* 'Well, I used to be a guard. Head of the guard, actually.'");
+            break;
+        case 13:
+            sprites.getEntityViewerCounter() = -1;
+            sprites.getRiCounter() = -1;
+            sprites.text.setString("*The little girl begins to wander off further into the woods after you finish your sentence.* 'Cool! Never asked. I'm gonna go kill more demons now! Bye guard guy!'\n\n*You stand there motionless in shock from the entire interaction, slowly waving her off... 'What a strange child', you think to yourself.*");
+            break;
+        case 14:
+            sprites.getZinCounter() = 2;
+            sprites.text.setString("*Zin finally speaks up after being silent the entire interaction.* 'Did you just get talked down to by a child?'");
+            break;
+        case 15:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'Absolutely did.'");
+            sprites.answerBoxText[1].setString("2. 'What else was I supposed to do? Yell at her?'");
+            break;
+        case 16:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("'Thought so. Let's get moving.'");
+                break;
+            case 1:
+                sprites.text.setString("'Actually, you make a good point... In any case, let's get moving.'");
+                break;
+            }
+            break;
+        case 17:
+            sprites.getZinCounter() = -1;
+            sprites.text.setString("");
+            sprites.getEventAssets() = false;
+            this->riEncedForest = true;
             break;
         }
     }

@@ -120,6 +120,7 @@ void Sprites::loadEntities()
     spadeEntityCastle.loadFromFile("Assets/Entities/spadeEntityCastle.jpg");
     spadeEntityCrimson.loadFromFile("Assets/Entities/spadeEntityCrimson.jpeg");
     spadeEntityCrimsonPoison.loadFromFile("Assets/Entities/spadeEntityCrimsonPoison.jpeg");
+    riEntityForest.loadFromFile("Assets/Entities/riEntityForest.png");
     //Load Entity Viewer Files Random Events
     treeEntity.loadFromFile("Assets/Entities/entityTree.jpeg");
     obeliskEntity.loadFromFile("Assets/Entities/obeliskEntity.jpeg");
@@ -250,6 +251,9 @@ void Sprites::drawEntityViewer()
         break;
     case 27:
         entitySprite.setTexture(spadeEntityCrimsonPoison);
+        break;
+    case 28:
+        entitySprite.setTexture(riEntityForest);
         break;
     }
     //Select whether or not the sprite is visible
