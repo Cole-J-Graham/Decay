@@ -10,6 +10,7 @@ private:
 	int siwardCounter;
 	int spadeCounter;
 	int riCounter;
+	int grifCounter;
 
 public:
 	//Constructors and Destructors
@@ -34,6 +35,7 @@ public:
 	void siwardSprite();
 	void spadeSprite();
 	void riSprite();
+	void grifSprite();
 
 	//Display Functions
 	void greyOnHover(sf::RenderWindow& window);
@@ -70,6 +72,8 @@ public:
 	sf::Texture riTexture;
 	sf::Texture riTextureAngry;
 	sf::Texture riTextureHappy;
+	//Grif Textures
+	sf::Texture grifTexture;
 	//Hostile Sprite Textures
 	sf::Texture hostileTextureWolf;
 	sf::Texture hostileTextureWalker;
@@ -106,6 +110,7 @@ public:
 	sf::Texture spadeEntityCrimson;
 	sf::Texture spadeEntityCrimsonPoison;
 	sf::Texture riEntityForest;
+	sf::Texture grifEntityCastle;
 	//Viewer Files Random Events
 	sf::Texture treeEntity;
 	sf::Texture obeliskEntity;
@@ -133,6 +138,8 @@ public:
 	int& getSiwardCounter() { return this->siwardCounter; };
 	int& getSpadeCounter() { return this->spadeCounter; };
 	int& getRiCounter() { return this->riCounter; };
+	int& getGrifCounter() { return this->grifCounter; };
+
 	int& getSpriteViewerCounter() { return this->spriteViewerCounter; };
 	int& getEntityViewerCounter() { return this->entityViewerCounter; };
 

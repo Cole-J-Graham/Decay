@@ -9,6 +9,7 @@ Sprites::Sprites()
     this->siwardCounter = -1;
     this->spadeCounter = -1;
     this->riCounter = -1;
+    this->grifCounter = -1;
 
     //Load Objects
     this->loadSprites();
@@ -87,6 +88,9 @@ void Sprites::loadSprites()
     riTextureAngry.loadFromFile("Assets/Sprites/riAngry.png");
     riTextureHappy.loadFromFile("Assets/Sprites/riHappy.png");
 
+    //Load Grif Sprites
+    grifTexture.loadFromFile("Assets/Sprites/grifOrig.png");
+
     //Load Hostile Sprites
     hostileTextureWalker.loadFromFile("Assets/HostileSprites/decaywalkersprite.jpeg");
     hostileTextureWolf.loadFromFile("Assets/HostileSprites/wolfsprite.png");
@@ -121,6 +125,7 @@ void Sprites::loadEntities()
     spadeEntityCrimson.loadFromFile("Assets/Entities/spadeEntityCrimson.jpeg");
     spadeEntityCrimsonPoison.loadFromFile("Assets/Entities/spadeEntityCrimsonPoison.jpeg");
     riEntityForest.loadFromFile("Assets/Entities/riEntityForest.png");
+    grifEntityCastle.loadFromFile("Assets/Entities/grifCastleEntity.png");
     //Load Entity Viewer Files Random Events
     treeEntity.loadFromFile("Assets/Entities/entityTree.jpeg");
     obeliskEntity.loadFromFile("Assets/Entities/obeliskEntity.jpeg");
@@ -254,6 +259,9 @@ void Sprites::drawEntityViewer()
         break;
     case 28:
         entitySprite.setTexture(riEntityForest);
+        break;
+    case 29:
+        entitySprite.setTexture(grifEntityCastle);
         break;
     }
     //Select whether or not the sprite is visible
@@ -674,6 +682,28 @@ void Sprites::riSprite()
     spriteElements[8].setScale(0.150f, 0.150f);
     riTexture.setSmooth(true);
     riTexture.setRepeated(false);
+}
+
+void Sprites::grifSprite()
+{
+    //Pick Grif Sprite Emotion
+    switch (this->grifCounter) {
+    case -1:
+        spriteElements[9].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        spriteRect[7].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        break;
+    case 0:
+        //Normal Grif
+        spriteElements[9].setTexture(grifTexture);
+        spriteElements[9].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[7].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        break;
+    }
+
+    //Sprite Options, ect
+    spriteElements[9].setScale(0.150f, 0.150f);
+    grifTexture.setSmooth(true);
+    grifTexture.setRepeated(false);
 }
 
 //Display Functions

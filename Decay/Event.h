@@ -28,6 +28,8 @@ private:
 
 	bool riEncedForest;
 
+	bool grifEncounteredCastle;
+
 	bool treeEnced;
 	bool obeliskEnced;
 
@@ -86,6 +88,9 @@ public:
 
 	//Castle Depth Events
 	void castleSiwardEnc(Sprites& sprites);
+
+	//Castle Chambers Events
+	void castleGrifEnc(Sprites& sprites);
 
 	//Castle Labyrinth Events
 	void castleSiwardFinalEnc(Sprites& sprites);

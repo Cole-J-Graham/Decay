@@ -23,6 +23,8 @@ Event::Event()
 
     this->riEncedForest = false;
 
+    this->grifEncounteredCastle = false;
+
     this->treeEnced = false;
     this->obeliskEnced = false;
 
@@ -310,7 +312,7 @@ void Event::riEnc(Sprites& sprites)
             this->hideOpenAssets(sprites);
             sprites.getEntityViewerCounter() = 28; //Make Ri entity visible
             sprites.getRiCounter() = 0;
-            sprites.text.setString("*You suddenly notice what looks to be a little girl further in view. It looks as though she's searching for something quite intensely...*\n\n*Upon waling closer, you notice the child seems to be holding a sword almost the size of her. You wonder how it's even possible, though your pondering is cut short as she notices you...*");
+            sprites.text.setString("*You suddenly notice what looks to be a little girl further in view. It looks as though she's searching for something quite intensely...*\n\n*Upon walking closer, you notice the child seems to be holding a sword almost the size of her. You wonder how it's even possible, though your pondering is cut short as she notices you...*");
             break;
         case 1:
             sprites.text.setString("'Hey, mister! Have you seen any demons around here?'");
@@ -324,7 +326,7 @@ void Event::riEnc(Sprites& sprites)
             sprites.getShowAnsBoxesCounter() = -1;
             switch (this->choiceCounter) {
             case 0:
-                sprites.text.setString("'You haven't? Awe... darn. Oh! To answer your question the sword isn't heavy at all! Well, not to me anyways.'\n\n*Zin is clearly distraught just as much as yourself. You can tell she's prepared to cast smite incase of some sort of trick. A tad bit paranoid, are we?");
+                sprites.text.setString("'You haven't? Awe... darn. Oh! To answer your question the sword isn't heavy at all! Well, not to me anyways.'\n\n*Zin is clearly distraught just as much as yourself. You can tell she's prepared to cast smite incase of some sort of trick. A tad bit paranoid, are we?*");
                 break;
             case 1:
                 sprites.text.setString("'Oh, I can assure you, this thing is like BEYOND heavy! But it's easy to carry for me! Anywho, any demons?'\n\n*Zin is clearly distraught as well. You can tell she's prepared to cast smite incase of some sort of trick. A tad bit paranoid, are we?*");
@@ -1193,6 +1195,28 @@ void Event::castleSiwardEnc(Sprites& sprites)
             sprites.getSiwardCounter() = -1;
             this->reInitialize = true;//Reset dialogue counter for other events
             this->siwardEncedCastle = true;
+            break;
+        }
+    }
+}
+
+//Castle Chambers Events
+void Event::castleGrifEnc(Sprites& sprites)
+{
+    if (!this->grifEncounteredCastle) {
+        this->reInit(sprites);
+        switch (this->dialogue) {
+        case 0:
+            this->hideOpenAssets(sprites);
+            sprites.getGrifCounter() = 0;
+            sprites.getEntityViewerCounter() = 29;
+            sprites.text.setString("*You notice what looks to be a battered skeleton approaching you. You ready yourself in a fighting stance until the skeleton puts his arms up in a defensive pose. It looks like the skeleton is out of breath from running...?*\n\n'Stop! Don't you dare! Let me- breathe a moment...'\n\n*You take a step back feeling quite confused. Every undead you've seen up to this point had no capabilities of speaking. But somehow, this one talks?'");
+            break;
+        case 2:
+            sprites.text.setString("*The skeleton continues speaking while in a defensive posture...* 'Look, I know this looks bad but I swear I'm human! Or well, used to be. Been a while but whatever... Spare the details, I'm, not your foe.'\n\n*Zin turns to you with the a look of death in her eyes before she speaks.* 'Let's kill it.'");
+            break;
+        case 3:
+            sprites.text.setString("*Zin begins to raise her hands as she prepares a smite attack. The skeleton becomes visibly afraid as he panics to talk you both down.* 'Woah woah woah, little lady! Let's all just relax here, stop stop STOP STOP STOP STOP PLEASE STOP- OH SHIT!'");
             break;
         }
     }
