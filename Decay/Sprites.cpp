@@ -48,6 +48,7 @@ void Sprites::drawObjects(Assets& assets)
     this->siwardSprite();
     this->spadeSprite();
     this->riSprite();
+    this->grifSprite();
     this->drawEntityViewer();
 }
 
@@ -89,7 +90,7 @@ void Sprites::loadSprites()
     riTextureHappy.loadFromFile("Assets/Sprites/riHappy.png");
 
     //Load Grif Sprites
-    grifTexture.loadFromFile("Assets/Sprites/grifOrig.png");
+    grifTexture.loadFromFile("Assets/Sprites/grifNormal.png");
 
     //Load Hostile Sprites
     hostileTextureWalker.loadFromFile("Assets/HostileSprites/decaywalkersprite.jpeg");
@@ -701,7 +702,7 @@ void Sprites::grifSprite()
     }
 
     //Sprite Options, ect
-    spriteElements[9].setScale(0.150f, 0.150f);
+    spriteElements[9].setScale(0.120f, 0.120f);
     grifTexture.setSmooth(true);
     grifTexture.setRepeated(false);
 }

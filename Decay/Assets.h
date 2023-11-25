@@ -456,9 +456,10 @@ public:
 	sf::Text textSiward;
 	sf::Text textThom;
 	sf::Text textRi;
+	sf::Text textGrif;
 
 	std::vector<sf::Text> spriteText{ textPlayer, textZin, textHostile,
-		textSpade, textSiward, textThom, textRi };
+		textSpade, textSiward, textThom, textRi, textGrif };
 
 	//Sounds
 	sf::Sound sound;

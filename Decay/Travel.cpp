@@ -968,6 +968,7 @@ void Travel::castleChambers(sf::RenderWindow& window, Sprites& sprites, Event& n
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers3.jpeg");
             this->frameInit = true;
         }
+        notevent.castleGrifEnc(sprites);
         break;
     case 3:
         if (!this->frameInit) {

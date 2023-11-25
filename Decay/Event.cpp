@@ -1212,10 +1212,10 @@ void Event::castleGrifEnc(Sprites& sprites)
             sprites.getEntityViewerCounter() = 29;
             sprites.text.setString("*You notice what looks to be a battered skeleton approaching you. You ready yourself in a fighting stance until the skeleton puts his arms up in a defensive pose. It looks like the skeleton is out of breath from running...?*\n\n'Stop! Don't you dare! Let me- breathe a moment...'\n\n*You take a step back feeling quite confused. Every undead you've seen up to this point had no capabilities of speaking. But somehow, this one talks?'");
             break;
-        case 2:
+        case 1:
             sprites.text.setString("*The skeleton continues speaking while in a defensive posture...* 'Look, I know this looks bad but I swear I'm human! Or well, used to be. Been a while but whatever... Spare the details, I'm, not your foe.'\n\n*Zin turns to you with the a look of death in her eyes before she speaks.* 'Let's kill it.'");
             break;
-        case 3:
+        case 2:
             sprites.text.setString("*Zin begins to raise her hands as she prepares a smite attack. The skeleton becomes visibly afraid as he panics to talk you both down.* 'Woah woah woah, little lady! Let's all just relax here, stop stop STOP STOP STOP STOP PLEASE STOP- OH SHIT!'");
             break;
         }
