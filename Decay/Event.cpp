@@ -1213,10 +1213,79 @@ void Event::castleGrifEnc(Sprites& sprites)
             sprites.text.setString("*You notice what looks to be a battered skeleton approaching you. You ready yourself in a fighting stance until the skeleton puts his arms up in a defensive pose. It looks like the skeleton is out of breath from running...?*\n\n'Stop! Don't you dare! Let me- breathe a moment...'\n\n*You take a step back feeling quite confused. Every undead you've seen up to this point had no capabilities of speaking. But somehow, this one talks?'");
             break;
         case 1:
-            sprites.text.setString("*The skeleton continues speaking while in a defensive posture...* 'Look, I know this looks bad but I swear I'm human! Or well, used to be. Been a while but whatever... Spare the details, I'm, not your foe.'\n\n*Zin turns to you with the a look of death in her eyes before she speaks.* 'Let's kill it.'");
+            sprites.text.setString("*The skeleton continues speaking while in a defensive posture...* 'Look, I know this looks bad but I swear I'm human! My name is Grif! Or well, used to be. Been a while but whatever... Spare the details, I'm, not your foe.'\n\n*Zin turns to you with the a look of no mercy in her eyes before she speaks.* 'Let's kill it.'");
             break;
         case 2:
-            sprites.text.setString("*Zin begins to raise her hands as she prepares a smite attack. The skeleton becomes visibly afraid as he panics to talk you both down.* 'Woah woah woah, little lady! Let's all just relax here, stop stop STOP STOP STOP STOP PLEASE STOP- OH SHIT!'");
+            sprites.getZinCounter() = 3;
+            sprites.getGrifCounter() = 2;
+            sprites.text.setString("*Zin begins to raise her hands as she prepares a smite attack. The skeleton becomes visibly afraid as he panics to talk you both down.*\n\n'Woah woah woah, little lady! Let's all just relax here! Stop stop STOP STOP STOP STOP PLEASE STOP- OH SHIT!'\n\n*A burst of lightning crashes into the ground nearly hitting the skeleton as he barely avoids the blast!*\n\n*The skeleton looks back at you both looking angry yet terrified.* 'WHY?'");
+            break;
+        case 3:
+            sprites.text.setString("*Zin steps closer to him, her bloodlust for the undead becoming even more apparent.* 'Because you're an undead. A demon. You shouldn't even know how to speak.'\n\n*You step forwards and place yor arm in between the skeleton and Zin before speaking.* 'Hold on there, tiger. Before you go smiting him into the floor let's hear what he has to say. Your name was Grif, right?'");
+            break;
+        case 4:
+            sprites.getZinCounter() = 0;
+            sprites.getGrifCounter() = 0;
+            sprites.text.setString("*The skeleton seems more relieved now.* 'Thank God you have some sense. Like I said, I'm not even an undead! Or well, I used to not be. I got cursed, blah blah blah, flesh rotted off. You know?'\n\n*You stare back without a word as the skeleton continues to ramble...*\n\n'Everyone calls me a demon but I'm not! I'm just a store owner! Well, before the place burnt down... Man this shit sucks. If that wasn't bad enough this strange little girl has been hunting me down for DAYS now!'");
+            break;
+        case 5:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'Who? Zin?'");
+            sprites.answerBoxText[1].setString("2. 'A little girl?'");
+            break;
+        case 6:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("'No no no, not her. I mean it's strange that this is the SECOND child trying to kill me but whatever. The kid I'm talking about is like this tall I think?' *He places his hand out in front of him to try and visualize the height.*\n\n*The skeleton then continues rambling about details...* 'She carries around a massive ass sword the size of another human being. Practically a chunk of metal?'");
+                break;
+            case 1:
+                sprites.text.setString("'Yeah, she's INSANE! She carries around a massive chunk of iron that I would hardly even call a sword and smashes creatures into bits with it. I saw her kill a haze demon with one strike!'\n\n'The second I saw that, I immediately ran away from those woods and ended up in here. Though... I can't help but get the feeling she's still near.'");
+                break;
+            }
+            break;
+        case 7:
+            sprites.text.setString("*You recall Ri and figure he's talking about her.* 'I mean, she's nice. To some extent... But I could definitely see why she'd try to kill you due to your uh... current form?'\n\n*Grif looks back loking almost offended.* 'Current form? Look, man. You don't gotta make it sound so terrible.'\n\n*You look back at him with a shrug...* 'Just calling it how it is.' *Grif looks slightly saddened now...*");
+            break;
+        case 8:
+            sprites.getGrifCounter() = -1;
+            sprites.text.setString("*Suddenly, you hear what sounds like scuffling across the floor getting closer... It could be anything. Grif jumps as the sound startles him.*\n\n'Well, that's my queue to leave. See ya!' *Grif runs off into the corridors without a second thought to get away from the sound near him.*");
+            break;
+        case 9:
+            sprites.text.setString("*Ri suddenly appears around the corner as she rapidly looks around... However she quickly locks onto the both of you the second she notices your presence.* 'Oh, hey guys! I didn't expect to see you both so soon!'\n\n'Did you guys happen to see an undead anywhere nearby? I've been hunting them as you know I like to do.'");
+            break;
+        case 10:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. *Point in the direction Grif went...* 'Yeah, he just ran away from you off over that way.'");
+            sprites.answerBoxText[1].setString("2. *Lie to protect Grif.* 'Honestly, couldn't tell you. Don't think so.'");
+            break;
+        case 11:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("'Oh, okay! Thanks you two, I'll see you both around!'");
+                break;
+            case 1:
+                sprites.text.setString("'Hmmm, well alright! I'm gonna keep looking around then! Thanks, bye!'");
+                break;
+            }
+            break;
+        case 12:
+            sprites.text.setString("*She walks off with her massive sword dragging against the ground and the look of bloodlust in her eyes. Something is seriously wrong with that child...*\n\n*Zin turns to you looking concerned.* 'Why did we let that undead live?'");
+            break;
+        case 13:
+            sprites.text.setString("'Well, Zin, undead can't talk. So as far as I'm aware, he had to be telling the truth.'");
+            break;
+        case 14:
+            sprites.text.setString("'I guess maybe you're right... Let's just keep going, I am not a fan of inside of here.'");
+            break;
+        case 15:
+            sprites.text.setString("");
+            sprites.getEventAssets() = false;
+            sprites.getEntityViewerCounter() = -1;
+            sprites.getZinCounter() = -1;
+            this->reInitialize = true;//Reset dialogue counter for other events
+            this->grifEncounteredCastle = true;
             break;
         }
     }

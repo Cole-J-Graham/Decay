@@ -74,6 +74,8 @@ public:
 	sf::Texture riTextureHappy;
 	//Grif Textures
 	sf::Texture grifTexture;
+	sf::Texture grifTextureAngry;
+	sf::Texture grifTextureConcerned;
 	//Hostile Sprite Textures
 	sf::Texture hostileTextureWolf;
 	sf::Texture hostileTextureWalker;
