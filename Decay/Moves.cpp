@@ -115,6 +115,9 @@ void Moves::guard(Sprites& sprites, Animation& animate)
 	this->zinGuarded = true;
 	sprites.text.setString(this->playerGuardAtkText);
 	sprites.getTipBoxCounter() = -1;
+	animate.getCombatAnimationLocation() = 2;
+	animate.getAnimation() = 2;
+	animate.getAnimEnd() = false;//Play Attack Animation
 }
 
 void Moves::decayBlade(Sprites& sprites, Animation& animate)
@@ -272,6 +275,9 @@ void Moves::barrier(Sprites& sprites, Animation& animate)
 	sprites.text.setString(this->thomBarrierAtkText);
 	sprites.setThomTurnAssetsFalse();
 	sprites.getTipBoxCounter() = -1;
+	animate.getCombatAnimationLocation() = 1;
+	animate.getAnimation() = 2;
+	animate.getAnimEnd() = false;//Play Attack Animation
 }
 
 void Moves::enrage(Sprites& sprites, Animation& animate)

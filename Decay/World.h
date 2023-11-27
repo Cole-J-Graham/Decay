@@ -3,8 +3,6 @@
 
 #include<iostream>
 #include<SFML/Window.hpp>
-#include<SFML/Graphics.hpp>
-#include<SFML/Graphics/Text.hpp>
 #include<sstream>
 #include<string>
 #include<SFML/Audio.hpp>

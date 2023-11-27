@@ -349,8 +349,7 @@ void Combat::playerTurn(sf::RenderWindow& window, Sprites& sprites, Animation& a
 				else if (this->zinDead && this->thomDead) {
 					this->turnHostile = true;
 				}
-			}
-			else if (!sprites.getThomUnlocked()) {
+			} else if (!sprites.getThomUnlocked()) {
 				if (!this->zinDead) {
 					this->turnZin = true;
 				}
@@ -395,11 +394,13 @@ void Combat::zinTurn(Sprites& sprites, Animation& animate)
 			}
 			break;
 		case 2:
-			if (sprites.getThomUnlocked()) {
+			if (this->thomDead) {
+				this->turnHostile = true;
+			}
+			if (sprites.getThomUnlocked() && !this->thomDead) {
 				this->turnZin = false;
 				this->turnThom = true;
-			}
-			else if (!sprites.getThomUnlocked()) {
+			} else if (!sprites.getThomUnlocked()) {
 				this->turnZin = false;
 				this->turnHostile = true;
 			}
@@ -468,6 +469,9 @@ void Combat::hostileTurn(Sprites& sprites, Animation& animate)
 			else if (!this->hostileAttack && getPlayerGuarded()) {
 				sprites.text.setString(getHostileAtkPlayerBlkText());
 				sprites.soundPlayerGuarded.play();
+				animate.getCombatAnimationLocation() = 2;
+				animate.getAnimation() = 3;
+				animate.getAnimEnd() = false;//Play Attack Animation
 				this->hostileAttack = true;
 			}
 			break;
@@ -489,6 +493,9 @@ void Combat::hostileTurn(Sprites& sprites, Animation& animate)
 			else if (getZinGuarded() == true && !this->hostileAttackZin && !this->zinDead) {
 				sprites.soundGuarded.play();
 				sprites.text.setString(getHostileAtkZinBlkText());
+				animate.getCombatAnimationLocation() = 2;
+				animate.getAnimation() = 3;
+				animate.getAnimEnd() = false;//Play Attack Animation
 				this->hostileAttackZin = true;
 			}
 			break;

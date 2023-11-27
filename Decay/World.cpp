@@ -46,6 +46,7 @@ void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& pl
     // run the program as long as the window is open
     while (window.isOpen()) {
         //std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
+        std::cout << combat.getZinAttackCounter() << "\n";
         clock.restart();
         // check all the window's events that were triggered since the last iteration of the loop
         while (window.pollEvent(event)) {
@@ -214,6 +215,8 @@ void World::draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
         window.draw(animate.notSprite);
         window.draw(animate.decayWarn);
         window.draw(animate.hitSprite);
+        window.draw(animate.guardSprite);
+        window.draw(animate.guardBrkSprite);
         
 
         if (sprites.getInitMap() == true) {
@@ -504,6 +507,7 @@ void World::menuBar(sf::RenderWindow& window, Sprites& sprites)
         sprites.setInitStatsFalse();
         sprites.setPlayerStatsInitFalse();
         sprites.setZinStatsInitFalse();
+        sprites.getTipBoxCounter() = -1;
         sprites.blipmenu.play();
     }
     //Inventory Menu Bar Functionality

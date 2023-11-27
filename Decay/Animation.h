@@ -58,6 +58,18 @@ public:
 	sf::Texture hit5;
 	sf::Texture hit6;
 
+	sf::Texture guard1;
+	sf::Texture guard2;
+	sf::Texture guard3;
+	sf::Texture guard4;
+	sf::Texture guard5;
+
+	sf::Texture guardBrk1;
+	sf::Texture guardBrk2;
+	sf::Texture guardBrk3;
+	sf::Texture guardBrk4;
+	sf::Texture guardBrk5;
+
 	sf::Texture menu1;
 	sf::Texture menu2;
 	sf::Texture menu3;
@@ -65,12 +77,13 @@ public:
 	sf::Texture menu5;
 	sf::Texture menu6;
 
-
 	sf::Sprite zinSprite;
 	sf::Sprite notSprite;
 	sf::Sprite healSprite;
 	sf::Sprite anvilSprite;
 	sf::Sprite hitSprite;
+	sf::Sprite guardSprite;
+	sf::Sprite guardBrkSprite;
 	sf::Sprite menuSprite;
 
 	sf::Clock timer;
@@ -99,6 +112,8 @@ public:
 
 	//Combat Animation Functions
 	void animateSlash(Assets& assets);
+	void animateGuard(Assets& assets);
+	void animateGuardBrk(Assets& assets);
 	void animateSmite(Assets& assets);
 
 	//Draw Animation Functions

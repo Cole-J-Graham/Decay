@@ -52,6 +52,20 @@ Animation::Animation()
 	hit6.loadFromFile("Assets/Game_Resources/hitanimation6.png");
 	hitSprite.setScale(0.24f, 0.24f);
 
+	guard1.loadFromFile("Assets/Game_Resources/guard1.png");
+	guard2.loadFromFile("Assets/Game_Resources/guard2.png");
+	guard3.loadFromFile("Assets/Game_Resources/guard3.png");
+	guard4.loadFromFile("Assets/Game_Resources/guard4.png");
+	guard5.loadFromFile("Assets/Game_Resources/guard5.png");
+	guardSprite.setScale(1.0f, 1.0f);
+
+	guardBrk1.loadFromFile("Assets/Game_Resources/shield1.png");
+	guardBrk2.loadFromFile("Assets/Game_Resources/shield2.png");
+	guardBrk3.loadFromFile("Assets/Game_Resources/shield3.png");
+	guardBrk4.loadFromFile("Assets/Game_Resources/shield4.png");
+	guardBrk5.loadFromFile("Assets/Game_Resources/shield5.png");
+	guardBrkSprite.setScale(1.0f, 1.0f);
+
 	menu1.loadFromFile("Assets/Game_Resources/decay menu1.png");
 	menu2.loadFromFile("Assets/Game_Resources/decay menu2.png");
 	menu3.loadFromFile("Assets/Game_Resources/decay menu3.png");
@@ -77,6 +91,12 @@ void Animation::pickAnimation(Assets& assets)
 		break;
 	case 1:
 		animateSmite(assets);
+		break;
+	case 2:
+		animateGuard(assets);
+		break;
+	case 3:
+		animateGuardBrk(assets);
 		break;
 	}
 }
@@ -346,6 +366,108 @@ void Animation::animateSlash(Assets& assets)
 	case 4:
 		hitSprite.setTexture(hit6);
 		hitSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
+		this->animEnd = true;
+		break;
+	}
+}
+
+void Animation::animateGuard(Assets& assets)
+{
+	//Set Animation Position
+	switch (this->combatAnimationLocation) {
+	case -1:
+		guardSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
+		break;
+	case 0:
+		//Hostile Sprite Location
+		guardSprite.setPosition(sf::Vector2f(1650.0f, 300.0f));
+		break;
+	case 1:
+		//Player Sprite Location
+		guardSprite.setPosition(sf::Vector2f(50.0f, 100.0f));
+		break;
+	case 2:
+		//Zin Sprite Location
+		guardSprite.setPosition(sf::Vector2f(50.0f, 300.0f));
+		break;
+	case 3:
+		//Thom Sprite Location
+		guardSprite.setPosition(sf::Vector2f(50.0f, 500.0f));
+		break;
+	}
+
+	//Animate Hit Animation
+	this->animateCombatTimer();
+	switch (this->combatAnimationFrame) {
+	case -1:
+		guardSprite.setTexture(guard1);
+		break;
+	case 0:
+		guardSprite.setTexture(guard2);
+		break;
+	case 1:
+		guardSprite.setTexture(guard3);
+		break;
+	case 2:
+		guardSprite.setTexture(guard4);
+		break;
+	case 3:
+		guardSprite.setTexture(guard5);
+		break;
+	case 4:
+		guardSprite.setTexture(hitBlank);
+		guardSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
+		this->animEnd = true;
+		break;
+	}
+}
+
+void Animation::animateGuardBrk(Assets& assets)
+{
+	//Set Animation Position
+	switch (this->combatAnimationLocation) {
+	case -1:
+		guardBrkSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
+		break;
+	case 0:
+		//Hostile Sprite Location
+		guardBrkSprite.setPosition(sf::Vector2f(1650.0f, 300.0f));
+		break;
+	case 1:
+		//Player Sprite Location
+		guardBrkSprite.setPosition(sf::Vector2f(50.0f, 100.0f));
+		break;
+	case 2:
+		//Zin Sprite Location
+		guardBrkSprite.setPosition(sf::Vector2f(50.0f, 300.0f));
+		break;
+	case 3:
+		//Thom Sprite Location
+		guardBrkSprite.setPosition(sf::Vector2f(50.0f, 500.0f));
+		break;
+	}
+
+	//Animate Hit Animation
+	this->animateCombatTimer();
+	switch (this->combatAnimationFrame) {
+	case -1:
+		guardBrkSprite.setTexture(guardBrk1);
+		break;
+	case 0:
+		guardBrkSprite.setTexture(guardBrk2);
+		break;
+	case 1:
+		guardBrkSprite.setTexture(guardBrk3);
+		break;
+	case 2:
+		guardBrkSprite.setTexture(guardBrk4);
+		break;
+	case 3:
+		guardBrkSprite.setTexture(guardBrk5);
+		break;
+	case 4:
+		guardBrkSprite.setTexture(hitBlank);
+		guardBrkSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
 		this->animEnd = true;
 		break;
 	}
