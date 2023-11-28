@@ -46,7 +46,6 @@ void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& pl
     // run the program as long as the window is open
     while (window.isOpen()) {
         //std::cout << clock.getElapsedTime().asMicroseconds() << "\n";
-        std::cout << combat.getZinAttackCounter() << "\n";
         clock.restart();
         // check all the window's events that were triggered since the last iteration of the loop
         while (window.pollEvent(event)) {

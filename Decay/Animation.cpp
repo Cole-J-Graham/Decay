@@ -367,6 +367,7 @@ void Animation::animateSlash(Assets& assets)
 		hitSprite.setTexture(hit6);
 		hitSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
 		this->animEnd = true;
+		this->combatAnimationFrame = -1;
 		break;
 	}
 }
@@ -418,6 +419,7 @@ void Animation::animateGuard(Assets& assets)
 		guardSprite.setTexture(hitBlank);
 		guardSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
 		this->animEnd = true;
+		this->combatAnimationFrame = -1;
 		break;
 	}
 }
@@ -469,6 +471,7 @@ void Animation::animateGuardBrk(Assets& assets)
 		guardBrkSprite.setTexture(hitBlank);
 		guardBrkSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
 		this->animEnd = true;
+		this->combatAnimationFrame = -1;
 		break;
 	}
 }

@@ -469,7 +469,7 @@ void Combat::hostileTurn(Sprites& sprites, Animation& animate)
 			else if (!this->hostileAttack && getPlayerGuarded()) {
 				sprites.text.setString(getHostileAtkPlayerBlkText());
 				sprites.soundPlayerGuarded.play();
-				animate.getCombatAnimationLocation() = 2;
+				animate.getCombatAnimationLocation() = 1;
 				animate.getAnimation() = 3;
 				animate.getAnimEnd() = false;//Play Attack Animation
 				this->hostileAttack = true;
