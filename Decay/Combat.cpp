@@ -271,6 +271,7 @@ void Combat::reInitCombat(Sprites& sprites)
 	//Re init characters if both are alive
 	if (!this->playerDead && !this->zinDead) {
 		//Player
+		sprites.setPlayerTurnAssetsTrue();
 		this->turnPlayer = true;
 		this->attackCounter = 0;
 		getZinGuarded() = false;
@@ -1315,5 +1316,38 @@ void Combat::initSpade(Sprites& sprites)
 		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
 		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into Spade!";
 		this->initHostileSpade = true;
+	}
+}
+
+void Combat::initRotBeast(Sprites& sprites)
+{
+	if (!this->initHostileTendrilAlpha) {
+		//Make entity viewer visible
+		sprites.getSpriteViewerCounter() = 0;
+		//Allow combat to start
+		this->combatEnd = false;
+		//Allow new combat to start
+		this->initCombatOnce = false;
+		this->reInitCombatOnce = false;
+		//Set parameters for hostile
+		getHostileHp() = 1500;
+		getHostileHpMax() = 1500;
+		getHostileStrike() = 50;
+
+		getHostileNameNoSpc() = "The Rot Beast";
+		getHostileName() = "The Rot Beast ";
+		getHostileEncText() = "The horrifying beast moves quickly rushing forwards ready to attack...";
+		getHostileAtkPlayerText() = "The beast smashes you with one of its oversized arms!";
+		getHostileAtkZinText() = "The abomination strikes Zin with a powerful blast of decay!";
+		getHostileAtkZinBlkText() = "The rotting beast attempts to smash Zin with its arm, however you tackle Zin out of the way moments before death!";
+
+		getPlayerSlashAtkText() = "You slash at the beast, a horrifying bellow coming from it!";
+		getPlayerGuardAtkText() = "You watch the beast carefully, preparing yourself to defend Zin from its attacks...";
+		getPlayerDecayAtkText() = "You slash yourself open with your sword, spraying your decayed blood over the rotting beast, causing it to quiver!";
+
+		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the beast!";
+		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
+		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the beast!";
+		this->initHostileTendrilAlpha = true;
 	}
 }

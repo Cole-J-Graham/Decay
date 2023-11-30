@@ -30,6 +30,9 @@ Event::Event()
 
     this->nunEnced = false;
 
+    this->rotBeastEnced = false;
+    this->playerDeathEnced = false;
+
     //Event Control Flow Bools
     this->spadePoison = false;
 
@@ -1486,6 +1489,81 @@ void Event::decaySpadeEncPoison(Sprites& sprites)
             sprites.text.setString("");
             this->reInitialize = true;//Reset dialogue counter for other events
             this->spadeEncedDecayPoison = true;
+            break;
+        }
+    }
+}
+
+//Final Events
+void Event::rotBeastEnc(Sprites& sprites)
+{
+    if (!this->rotBeastEnced) {
+        this->reInit(sprites);
+        switch (this->dialogue) {
+        case 0:
+            this->hideOpenAssets(sprites);
+            sprites.getEntityViewerCounter() = 30;
+            sprites.getHostileCounter() = 18;
+            sprites.text.setString("*As you and Zin step forwards through the treacherous crimson terrain, it comes into view. The Rot Beast. A horrifying abomination standing so tall that it seems impossible for a living organism.*\n\n*You feel a fear within yourself rising by the second, however you choke those fears down as you step forwards.*");
+            break;
+        case 1:
+            sprites.getZinCounter() = 0;
+            sprites.text.setString("'So that's what we've been hunting this whole time?'");
+            break;
+        case 2:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'It is.'");
+            sprites.answerBoxText[1].setString("2. 'Unfortunately...'");
+            break;
+        case 3:
+            sprites.getShowAnsBoxesCounter() = -1;
+            sprites.text.setString("*Zin looks to you, her determination seeming shaken.*\n\n'Can I be honest with you? I know we've faced a lot of shit, but this time around... I'm scared. Should we turn back? Does this fear mean we'll die?'");
+            break;
+        case 4:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'If not for fear, we would simply charge to our deaths like fools. Though this time around, we must be the fools. Millions have died to this thing. It's time to avenge them.'");
+            sprites.answerBoxText[1].setString("2. 'To have fear facing such a monstrosity merely means you're human. Choke down the fear and allow us to end this suffering...'");
+            break;
+        case 5:
+            sprites.getShowAnsBoxesCounter() = -1;
+            sprites.text.setString("*Zin takes a deep breath as she stands next to you. The only sound filling the air being the loud slow steps of the abomination walking towards the two of you.*\n\nThe beast only knows those that run, though oddly, it has finally encountered two souls that stand before it without trembling. The creature feels a fear slowly growing within it. It sees these two as a threat to its life. For once in its life, it is no longer the predator...");
+            break;
+        case 6:
+            sprites.text.setString("*Yourself and Zin step forwards, killing all fear and zoning into yet another fight your lives. One last push...*");
+            break;
+        case 7:
+            sprites.getZinCounter() = -1;
+            sprites.text.setString("");
+            sprites.getEventAssets() = false;
+            this->reInitialize = true;//Reset dialogue counter for other events
+            this->rotBeastEnced = true;
+            break;
+        }
+    }
+}
+
+void Event::playerDeathEnding(Sprites& sprites)
+{
+    if (!this->playerDeathEnced) {
+        this->reInit(sprites);
+        switch (this->dialogue) {
+        case 0:
+            this->hideOpenAssets(sprites);
+            sprites.getPlayerCounter() = 4;
+            sprites.text.setString("*You slam against the floor from the last blow, feeling that something is most certainly wrong. You've been hit with many attacks throughout your life, but this felt very different.*\n\n*You instinctively try to stand, only to immediately collapse back onto the floor.*");
+            break;
+        case 1:
+            sprites.getZinCounter() = 5;
+            sprites.text.setString("*Zin turns in shock as she notices how grievously wounded that last attack has left you.* 'What's broken?!'");
+            break;
+        case 2:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'My legs? Or my arms?'");
+            sprites.answerBoxText[1].setString("2. 'Everything I think?'");
+            break;
+        case 3:
+            sprites.getShowAnsBoxesCounter() = -1;
+            sprites.text.setString("*You try to speak only for the words attempting to come from your tongue failing you. Only blood pours from your mouth, blackness slowly taking over as you watch Zin rush to your aid.*");
             break;
         }
     }

@@ -58,6 +58,9 @@ void Sprites::loadSprites()
     //Player Sprites
     playerTexture.loadFromFile("Assets/Sprites/player.png");
     playerTextureRage.loadFromFile("Assets/Sprites/playerRage.png");
+    playerTextureWounded.loadFromFile("Assets/Sprites/playerWounded.png");
+    playerTextureBadWounded.loadFromFile("Assets/Sprites/playerBadlyWounded.png");
+    playerTextureDying.loadFromFile("Assets/Sprites/playerDying.png");
 
     //Zin Sprites
     zinTexture.loadFromFile("Assets/Sprites/zinSprite.png");
@@ -112,6 +115,7 @@ void Sprites::loadSprites()
     hostileTextureChatterMouth.loadFromFile("Assets/HostileSprites/chatterMouthSprite.png");
     hostileTextureReclus.loadFromFile("Assets/HostileSprites/reclusSprite.png");
     hostileTextureAlphaEntity.loadFromFile("Assets/HostileSprites/tendrilAlphaSprite.png");
+    hostileTextureBeastOfRot.loadFromFile("Assets/HostileSprites/beastOfRotSprite.png");
 }
 
 void Sprites::loadEntities()
@@ -151,6 +155,7 @@ void Sprites::loadEntities()
     chatterMouthEntity.loadFromFile("Assets/Entities/chatterMouthEntity.jpeg");
     reclusEntity.loadFromFile("Assets/Entities/reclusEntity.jpeg");
     tendrilAlphaEntity.loadFromFile("Assets/Entities/tendrilAlphaEntity.jpeg");
+    hostileTextureBeastOfRotEntity.loadFromFile("Assets/Entities/beastOfRotEntity.png");
 }
 
 //Entity Functions
@@ -265,6 +270,9 @@ void Sprites::drawEntityViewer()
         break;
     case 29:
         entitySprite.setTexture(grifEntityCastle);
+        break;
+    case 30:
+        entitySprite.setTexture(hostileTextureBeastOfRotEntity);
         break;
     }
     //Select whether or not the sprite is visible
@@ -436,6 +444,14 @@ void Sprites::hostileSprite(Assets& assets)
         spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
         spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
         break;
+    case 18:
+        //Hostile Rot Beast
+        hostileTextureBeastOfRot.setRepeated(false);
+        spriteElements[5].setTexture(hostileTextureBeastOfRot);
+        spriteElements[5].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[2].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
+        break;
     }
 }
 
@@ -449,7 +465,7 @@ void Sprites::playerSprite(Assets& assets)
         spriteText[0].setPosition(10000.0f, 10000.0f);
         break;
     case 0:
-        //PLayer Normal
+        //Player Normal
         spriteElements[4].setTexture(playerTexture);
         spriteElements[4].setPosition(sf::Vector2f(50.0f, 100.0f));
         spriteRect[0].setPosition(50.0f, 100.0f);
@@ -458,6 +474,27 @@ void Sprites::playerSprite(Assets& assets)
     case 1:
         //Player Rage
         spriteElements[4].setTexture(playerTextureRage);
+        spriteElements[4].setPosition(sf::Vector2f(50.0f, 100.0f));
+        spriteRect[0].setPosition(50.0f, 100.0f);
+        spriteText[0].setPosition(50.0f, 253.0f);
+        break;
+    case 2:
+        //Player Wounded
+        spriteElements[4].setTexture(playerTextureWounded);
+        spriteElements[4].setPosition(sf::Vector2f(50.0f, 100.0f));
+        spriteRect[0].setPosition(50.0f, 100.0f);
+        spriteText[0].setPosition(50.0f, 253.0f);
+        break;
+    case 3:
+        //Player Badly Wounded
+        spriteElements[4].setTexture(playerTextureBadWounded);
+        spriteElements[4].setPosition(sf::Vector2f(50.0f, 100.0f));
+        spriteRect[0].setPosition(50.0f, 100.0f);
+        spriteText[0].setPosition(50.0f, 253.0f);
+        break;
+    case 4:
+        //Player Dying
+        spriteElements[4].setTexture(playerTextureDying);
         spriteElements[4].setPosition(sf::Vector2f(50.0f, 100.0f));
         spriteRect[0].setPosition(50.0f, 100.0f);
         spriteText[0].setPosition(50.0f, 253.0f);

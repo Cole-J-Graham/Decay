@@ -35,6 +35,9 @@ private:
 
 	bool nunEnced;
 
+	bool rotBeastEnced;
+	bool playerDeathEnced;
+
 	//Event Control Flow Bools
 	bool spadePoison;
 
@@ -99,6 +102,9 @@ public:
 	void decaySpadeEnc(Sprites& sprites);
 	void decaySpadeEncPoison(Sprites& sprites);
 
+	//Final Events
+	void rotBeastEnc(Sprites& sprites);
+	void playerDeathEnding(Sprites& sprites);
 
 	//Control Flow Getters
 	bool& getReInitialize() { return this->reInitialize; };
@@ -107,6 +113,7 @@ public:
 	bool& getSiwardEncedFinal() { return this->siwardEncedFinal; };
 	bool& getSpadeEnced() { return this->spadeEncedDecayPoison; };
 	bool& getNunEnced() { return this->nunEnced; };
+	bool& getRotBeastEnced() { return this->rotBeastEnced; };
 
 	//Counter Getters
 	int& getZinTalkCounter() { return this->zinTalkCounter; };

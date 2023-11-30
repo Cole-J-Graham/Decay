@@ -46,6 +46,9 @@ public:
 	//Sprite Textures
 	sf::Texture playerTexture;
 	sf::Texture playerTextureRage;
+	sf::Texture playerTextureWounded;
+	sf::Texture playerTextureBadWounded;
+	sf::Texture playerTextureDying;
 	//Zin Textures
 	sf::Texture zinTexture;
 	sf::Texture zinTextureHappy;
@@ -94,6 +97,7 @@ public:
 	sf::Texture hostileTextureChatterMouth;
 	sf::Texture hostileTextureReclus;
 	sf::Texture hostileTextureAlphaEntity;
+	sf::Texture hostileTextureBeastOfRot;
 
 	//Entity Viewer Objects
 	sf::Text entityBoxText;
@@ -135,6 +139,7 @@ public:
 	sf::Texture chatterMouthEntity;
 	sf::Texture reclusEntity;
 	sf::Texture tendrilAlphaEntity;
+	sf::Texture hostileTextureBeastOfRotEntity;
 
 	//Sprite Integer Selection Getters
 	int& getSiwardCounter() { return this->siwardCounter; };

@@ -1594,6 +1594,11 @@ void Travel::decayGiants(sf::RenderWindow& window, Sprites& sprites, Event& note
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants15.jpeg");
             this->frameInit = true;
         }
+        notevent.rotBeastEnc(sprites);
+        if (notevent.getRotBeastEnced()) {
+            combat.initRotBeast(sprites);
+            combat.combatLoop(window, sprites, player, animate);
+        }
         break;
     }
 }

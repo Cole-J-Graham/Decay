@@ -129,6 +129,7 @@ public:
 	void initReclus(Sprites& sprites);
 	void initTendrilAlpha(Sprites& sprites);
 	void initSpade(Sprites& sprites);
+	void initRotBeast(Sprites& sprites);
 
 	//Move Value Getters
 	int& getValZero() { return this->valZero; };
