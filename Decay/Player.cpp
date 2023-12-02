@@ -5,13 +5,13 @@ Player::Player()
 {
 	//Core Modifiers
 	this->decay = 0;
-	this->decayMax = 25;
+	this->decayMax = 50;
 
 	//Leveling
-	this->level = 0;
-	this->exp = 1000;
+	this->level = 1;
+	this->exp = 0;
 	this->expNext = 100;
-	this->sp = 5;
+	this->sp = 0;
 
 	//Attributes
 	this->strength = 0;
@@ -19,9 +19,9 @@ Player::Player()
 	this->vitality = 0;
 
 	//Zin Leveling
-	this->zinLevel = 0;
+	this->zinLevel = 1;
 	this->zinSp = 0;
-	this->zinExp = 1000;
+	this->zinExp = 0;
 	this->zinExpNext = 50;
 
 	//Zin Attributes

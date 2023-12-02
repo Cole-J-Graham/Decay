@@ -16,7 +16,6 @@ private:
 	int combatAnimationLocation;
 	int menuAnimationFrame;
 
-	bool zinTalkNot;
 	bool decayWarning;
 	bool menuCycleSlow;
 	bool menuCycleFast;
@@ -32,11 +31,6 @@ public:
 
 	sf::Texture zin1;
 	sf::Texture zin2;
-
-	sf::Texture not1;
-	sf::Texture not2;
-	sf::Texture not3;
-	sf::Texture not4;
 
 	sf::Texture heal1;
 	sf::Texture heal2;
@@ -78,7 +72,6 @@ public:
 	sf::Texture menu6;
 
 	sf::Sprite zinSprite;
-	sf::Sprite notSprite;
 	sf::Sprite healSprite;
 	sf::Sprite anvilSprite;
 	sf::Sprite hitSprite;
@@ -104,7 +97,6 @@ public:
 
 	//Animation Functions
 	void animateZin();
-	void animateNotification();
 	void animateDecayWarn();
 	void animateAnvil(Assets& assets);
 	void animateHeal(Assets& assets);
@@ -125,7 +117,6 @@ public:
 	int& getCombatAnimationFrame() { return this->combatAnimationFrame; };
 	int& getCombatAnimationLocation() { return this->combatAnimationLocation; };
 
-	bool& getZinTalkNot() { return this->zinTalkNot; };
 	bool& getDecayWarning() { return this->decayWarning; };
 	bool& getAnimEnd() { return this->animEnd; };
 

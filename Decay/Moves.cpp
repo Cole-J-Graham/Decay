@@ -163,6 +163,7 @@ void Moves::decaySynergy(Sprites& sprites, Animation& animate)
 
 void Moves::ironWall(Sprites& sprites, Animation& animte)
 {
+	sprites.soundIronWall.play();
 	this->playerDef += this->ironWallDef;
 	this->zinDef += this->ironWallDef;
 	this->thomDef += this->ironWallDef;

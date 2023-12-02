@@ -30,14 +30,13 @@ Event::Event()
 
     this->nunEnced = false;
 
-    this->rotBeastEnced = false;
     this->playerDeathEnced = false;
+    this->rotBeastEnced = false;
 
     //Event Control Flow Bools
     this->spadePoison = false;
 
     //Counters
-    this->zinTalkCounter = -1;
     this->choiceCounter = -1;
 
     //Dialogue Counter
@@ -152,82 +151,6 @@ void Event::smithingSharpenBlade(sf::RenderWindow& window, Sprites& sprites, Pla
             combat.getComTextRemoved() = false;
             combat.combatTextTime.restart();//Reset text
         }
-    }
-}
-
-//Bonfire Text Events
-void Event::zinEvents(sf::RenderWindow& window, Sprites& sprites, Animation& animate)
-{
-    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-    if (sprites.rectMap.getGlobalBounds().contains(mousePosF) && sprites.getInitMap()) {
-        //Catch the input if you click on the map instead of Zin's sprite
-    }
-    else if (sprites.spriteElements[3].getGlobalBounds().contains(mousePosF)) {
-        //Zin Conversations at Bonfire
-        this->zinTalkCounter = 0;
-    }
-
-    switch (this->zinTalkCounter) {
-    case -1:
-        animate.getZinTalkNot() = true;
-        break;
-    case 0:
-        this->zinInitialTalk(sprites, animate);
-        break;
-    case 1:
-        break;
-    }
-}
-
-//Zin Events
-void Event::zinInitialTalk(Sprites& sprites, Animation& animate)
-{
-    switch (this->dialogue) {
-    case 0:
-        sprites.getZinCounter() = 0; //Set correct frame for zins sprite to appear
-        sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
-        sprites.answerBoxText[0].setString("1. 'So, what was it you wanted to talk about?'");
-        sprites.answerBoxText[1].setString("2. 'What's your name, kid?'");
-        animate.getZinTalkNot() = false;
-        break;
-    case 1:
-        sprites.getZinCounter() = 0; //Set correct frame for zins sprite to appear
-        sprites.getShowAnsBoxesCounter() = -1;
-        switch (this->choiceCounter) {
-        case 0:
-            sprites.text.setString("'Well... Uhhh... Are you a monster like those others?'\n\n*You look down at your skin, slowly rotting.*");
-            break;
-        case 1:
-            sprites.text.setString("'I'm Zin... When did you get the decay?'\n\n*You look down at your skin, slowly rotting.*");
-            break;
-        }
-        break;
-    case 2:
-        sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
-        sprites.answerBoxText[0].setString("1. 'The decay has been rotting away at me for the past year. I caught it during my time as a knight at the castle...'");
-        sprites.answerBoxText[1].setString("2. 'Look, I'm gonna be honest with you, I probably don't have a lot of time left, kid...'");
-        break;
-    case 3:
-        sprites.getShowAnsBoxesCounter() = -1;
-        sprites.text.setString("*Without another word, Zin reaches her hand out and places it on your shoulder, a bright light coming from her hand.\n\nIt burns quite badly, however you notice the decay slowly receding from your body...*");
-        break;
-    case 4:
-        sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
-        sprites.answerBoxText[0].setString("1. 'You have the power to cleanse the decay?!'");
-        sprites.answerBoxText[1].setString("2. 'You CAN help the decay?!'");
-        break;
-    case 5:
-        sprites.getShowAnsBoxesCounter() = -1;
-        sprites.text.setString("'Sorry for lying to you earlier. My dad told me to never tell someone I can cleanse it unless I trust them.'");
-        break;
-    case 6:
-        sprites.text.setString("Your mind comes to a dire realization. Despite your armor and sword being lost, you must still carry out your duties as a knight.\n\nShe must be protected at all costs as she is one of the last bastions of preserving life in this horrible world...");
-        break;
-    case 7:
-        sprites.text.setString("");
-        this->reInitialize = true;
-        break;
     }
 }
 
@@ -1497,7 +1420,7 @@ void Event::decaySpadeEncPoison(Sprites& sprites)
 //Final Events
 void Event::rotBeastEnc(Sprites& sprites)
 {
-    if (!this->rotBeastEnced) {
+    if (this->rotBeastEnced) {
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
@@ -1526,10 +1449,10 @@ void Event::rotBeastEnc(Sprites& sprites)
             break;
         case 5:
             sprites.getShowAnsBoxesCounter() = -1;
-            sprites.text.setString("*Zin takes a deep breath as she stands next to you. The only sound filling the air being the loud slow steps of the abomination walking towards the two of you.*\n\nThe beast only knows those that run, though oddly, it has finally encountered two souls that stand before it without trembling. The creature feels a fear slowly growing within it. It sees these two as a threat to its life. For once in its life, it is no longer the predator...");
+            sprites.text.setString("*Zin takes a deep breath as she stands next to you. The only sound filling the air being the loud slow steps of the abomination walking towards the two of you.*\n\n*The beast only knows those that run, though oddly, it has finally encountered two souls that stand before it without trembling.*\n\n*The creature feels a fear slowly growing within it. It sees these two as a threat to its life. For once in its life, it is no longer the predator...*");
             break;
         case 6:
-            sprites.text.setString("*Yourself and Zin step forwards, killing all fear and zoning into yet another fight your lives. One last push...*");
+            sprites.text.setString("*Yourself and Zin step forwards, killing all fear and zoning into yet another fight for your lives. One last push...*");
             break;
         case 7:
             sprites.getZinCounter() = -1;
@@ -1564,6 +1487,54 @@ void Event::playerDeathEnding(Sprites& sprites)
         case 3:
             sprites.getShowAnsBoxesCounter() = -1;
             sprites.text.setString("*You try to speak only for the words attempting to come from your tongue failing you. Only blood pours from your mouth, blackness slowly taking over as you watch Zin rush to your aid.*");
+            break;
+        case 4:
+            sprites.text.setString("*Zin starts rushing to look over your wounds while casting mend on you again and again, only for it to have little to no effect. The wounds she finds on your body are so severe it's questionable how you're even still alive.*\n\n'You've got to tell me what to do! How do I stop the bleeding?! How can I save you?!'");
+            break;
+        case 5:
+            sprites.getZinCounter() = 4;
+            sprites.text.setString("*You watch as the rot beast slowly begins lifting its leg to stomp Zin and yourself into a pulp as you lay on the ground.*\n\n*Zin speaks up again as she begins to sob...* 'WHAT DO I DO?!'");
+            break;
+        case 6:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. *Try to shove her out of the way*");
+            sprites.answerBoxText[1].setString("2. *Attempt to point at the beasts imminent attack*");
+            break;
+        case 7:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("*You shove her out of the way from the massive hand of the beast, nothing but darkness now covering your view as she feel an immense pressure and then... Nothing. Nothing at all...*");
+                break;
+            case 1:
+                sprites.text.setString("*You slowly point upwards towards the massive hand of the beast quickly approching, Zin instinctively dodging out of the way as you feel an immense pressure... And then nothing at all...*");
+                break;
+            }
+            break;
+        case 8:
+            sprites.text.setString("*Zin watches as it raises its hand back from the ground, your lifeless body reduced to a puddle on the crimson floor. Zin looks around in disbelief as her tears hit the floor, blending into the red...*\n\n*The more she looks around, the more she realizes just how much blood is covering this battlefield you two created...*");
+            break;
+        case 9:
+            sprites.text.setString("*Zin stands as she continues to sob, a mixture of rage and sadness culminating within her as she knows you have fallen for good.*\n\n'Fuck you! You piece of shit animal! Fuck you!' *Zin screams out as all of the blood from the battlefield including yours slowly lifts into a large coagulated ball.*\n\n*Suddenly, the entire ball shifts into a massive blade of blood in almost an instance, slicing straight through the abomination! The Rot Beast falls to the ground, half of its body toppling off of the other.*");
+            break;
+        case 10:
+            sprites.text.setString("*The crimson slowly loses its vibrance as the root of the decay now lies on the floor dead. Zin collapses to her knees, covered in blood as she sobs, mourning your death. The worlds balance will be restored, though it costed your life.*\n\n*You died for the sake of others. As a knight should...*");
+            break;
+        }
+    }
+}
+
+void Event::rotBeastDeathEnding(Sprites& sprites)
+{
+    if (!this->rotBeastDeathEnced) {
+        this->reInit(sprites);
+        switch (this->dialogue) {
+        case 0:
+            this->hideOpenAssets(sprites);
+            sprites.text.setString("*The beast slowly falls to the floor, the last blow rendering it unable to move. Yourself and Zin stand above the beast as the ground slowly becomes a dimmer shade of red.*");
+            break;
+        case 1:
+            sprites.text.setString("*You both have succeeded in taking down this horrible beast plaguing the lands... Perhaps humanity may be able to live on now...*");
             break;
         }
     }

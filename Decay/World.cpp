@@ -79,7 +79,6 @@ void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& pl
                 if (sprites.getBonfireAssets() == true) {
                     notevent.healCharacters(window, sprites, combat);
                     notevent.smithingSharpenBlade(window, sprites, player, combat);
-                    notevent.zinEvents(window, sprites, animate);
                 }
                 break;
             case sf::Event::MouseButtonReleased:
@@ -211,7 +210,6 @@ void World::draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
         animate.drawAnimations(sprites);
         animate.animateDecayWarn();
         window.draw(animate.zinSprite);
-        window.draw(animate.notSprite);
         window.draw(animate.decayWarn);
         window.draw(animate.hitSprite);
         window.draw(animate.guardSprite);

@@ -35,14 +35,14 @@ private:
 
 	bool nunEnced;
 
-	bool rotBeastEnced;
 	bool playerDeathEnced;
+	bool rotBeastDeathEnced;
+	bool rotBeastEnced;
 
 	//Event Control Flow Bools
 	bool spadePoison;
 
 	//Counters
-	int zinTalkCounter;
 	int choiceCounter;
 
 	int dialogue;
@@ -62,12 +62,6 @@ public:
 	void healCharacters(sf::RenderWindow& window, Sprites& sprites, Combat& combat);
 	void smithingText(sf::RenderWindow& window, Sprites& sprites);
 	void smithingSharpenBlade(sf::RenderWindow& window, Sprites& sprites, Player& player, Combat& combat);
-
-	//Bonfire Text Events
-	void zinEvents(sf::RenderWindow& window, Sprites& sprites, Animation& animate);
-
-	//Zin Events
-	void zinInitialTalk(Sprites& sprites, Animation& animate);
 
 	//Forest Entrance Events
 	void forestSiwardEnc(Sprites& sprites);
@@ -101,6 +95,7 @@ public:
 	//Decay Forest Events
 	void decaySpadeEnc(Sprites& sprites);
 	void decaySpadeEncPoison(Sprites& sprites);
+	void rotBeastDeathEnding(Sprites& sprites);
 
 	//Final Events
 	void rotBeastEnc(Sprites& sprites);
@@ -116,7 +111,6 @@ public:
 	bool& getRotBeastEnced() { return this->rotBeastEnced; };
 
 	//Counter Getters
-	int& getZinTalkCounter() { return this->zinTalkCounter; };
 	int& getChoiceCounter() { return this->choiceCounter; };
 
 	int& getDialogue() { return this->dialogue; };

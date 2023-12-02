@@ -23,8 +23,8 @@ private:
 
 	//Sprite Bool
 	bool initialDrawIn;
-	bool initMapTexture;
 	bool initForestMapTexture;
+	bool initCastleMapTexture;
 	bool initDecayMapTexture;
 	bool initMap;
 	bool initStats;
@@ -488,6 +488,7 @@ public:
 	sf::Sound soundSynergy;
 	sf::Sound soundBlaze;
 	sf::Sound soundFlames;
+	sf::Sound soundIronWall;
 	//Sound Buffers
 	sf::SoundBuffer buffer;
 	sf::SoundBuffer blipbuffer;
@@ -515,6 +516,7 @@ public:
 	sf::SoundBuffer bufferSynergy;
 	sf::SoundBuffer bufferBlaze;
 	sf::SoundBuffer bufferFlames;
+	sf::SoundBuffer bufferIronWall;
 
 	//Music
 	sf::Music music;
@@ -536,8 +538,8 @@ public:
 
 	//Sprite Bool Getters
 	bool& getInitialDrawIn() { return this->initialDrawIn; };
-	bool& getInitMapTexture() { return this->initMapTexture; };
 	bool& getInitForestMapTexture() { return this->initForestMapTexture; };
+	bool& getInitCastleMapTexture() { return this->initCastleMapTexture; };
 	bool& getInitDecayMapTexture() { return this->initDecayMapTexture; };
 	bool& getInitMap() { return this->initMap; };
 	bool& getInitStats() { return this->initStats; };
@@ -549,7 +551,6 @@ public:
 
 	//Sprite Bool Setters
 	void setInitialDrawInTrue()  { this->initialDrawIn = true; };
-	void setInitMapTextureTrue() { this->initMapTexture = true; };
 	void setInitForestMapTextureTrue() { this->initForestMapTexture = true; };
 	void setInitDecayMapTextureTrue() { this->initDecayMapTexture = true; };
 	void setInitMapTrue() { this->initMap = true; };

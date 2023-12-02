@@ -3,7 +3,7 @@
 //Constructors & Destructors
 Assets::Assets()
 {
-    this->thomUnlocked = true;
+    this->thomUnlocked = false;
     this->dialogueCounter = 0;
     this->combatCounter = 0;
     this->playerCounter = -1;
@@ -16,7 +16,7 @@ Assets::Assets()
 
     //Sprite Bool
     this->initialDrawIn = false;
-    this->initMapTexture = false;
+    this->initCastleMapTexture = false;
     this->initForestMapTexture = false;
     this->initDecayMapTexture = false;
     this->initMap = false;
@@ -32,10 +32,10 @@ Assets::Assets()
     this->settingsShown = false;
 
     //Map Button Control Flow
-    this->areaUnlocked = 2;
-    this->forestAreaUnlocked = 4;
-    this->castleAreaUnlocked = 4;
-    this->decayAreaUnlocked = 4;
+    this->areaUnlocked = 0;
+    this->forestAreaUnlocked = 1;
+    this->castleAreaUnlocked = 1;
+    this->decayAreaUnlocked = 1;
 
     this->startFrame = true;
     this->endFrame = false;
@@ -61,8 +61,8 @@ Assets::Assets()
     this->thomTurnAssets = false;
 
     //Combat Move Unlocks
-    this->combatPlayerMoves = 5;
-    this->combatZinMoves = 5;
+    this->combatPlayerMoves = 0;
+    this->combatZinMoves = 0;
     this->combatThomMoves = 1;
 
     //Strings
@@ -141,6 +141,7 @@ void Assets::loadSounds()
     bufferSynergy.loadFromFile("Assets/Sounds/decaySynergy.wav");
     bufferBlaze.loadFromFile("Assets/Sounds/hellBlaze.wav");
     bufferFlames.loadFromFile("Assets/Sounds/crimsonFlames.wav");
+    bufferIronWall.loadFromFile("Assets/Sounds/ironWall.wav");
 }
 
 //Draw Fuctions
@@ -786,7 +787,7 @@ void Assets::drawForestMapButtons()
 
 void Assets::drawCastleMapButtons()
 {
-    if (this->initMapTexture == false) {
+    if (this->initCastleMapTexture == false) {
         //Load Movable Arrow
         multiArrowTexture.loadFromFile("Assets/Game_Resources/multiarrow.png");
         multiArrow.setTexture(multiArrowTexture);
@@ -876,7 +877,7 @@ void Assets::drawCastleMapButtons()
             mapCastleElementsText[4].setString("Labyrinth");
             break;
         }
-        this->initMapTexture = true;
+        this->initCastleMapTexture = true;
     }
 }
 
@@ -1386,6 +1387,8 @@ void Assets::loadSFX()
     soundBlaze.setBuffer(bufferBlaze);
     //Sound Flames Sfx
     soundFlames.setBuffer(bufferFlames);
+    //Sound Iron Wall Sfx
+    soundIronWall.setBuffer(bufferIronWall);
    
     //Set Volume Levels
     blipmenu.setVolume(60);

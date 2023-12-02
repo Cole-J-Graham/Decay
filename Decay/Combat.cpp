@@ -207,19 +207,10 @@ void Combat::combatLoop(sf::RenderWindow& window, Sprites& sprites, Player& play
 			this->thomDead = true;
 			sprites.text.setString("Thom has been left unconscious...");
 		}
-		if (!sprites.getThomUnlocked()) {
-			//Check if both the player and Zin have died
-			if (getPlayerHp() <= 0 && getZinHp() <= 0) {
-				this->playerDeath(sprites);
-				sprites.text.setString("Your party has died...");
-			}
-		}
-		else if (sprites.getThomUnlocked()) {
-			//Check if both the player, Zin and Thom have died
-			if (getPlayerHp() <= 0 && getZinHp() <= 0 && getThomHp() <= 0) {
-				this->playerDeath(sprites);
-				sprites.text.setString("Your party has died...");
-			}
+		//Check if both the player and Zin have died
+		if (getPlayerHp() <= 0 && getZinHp() <= 0) {
+			this->playerDeath(sprites);
+			sprites.text.setString("Your party has died...");
 		}
 	}
 }
@@ -509,7 +500,7 @@ void Combat::hostileTurn(Sprites& sprites, Animation& animate)
 				sprites.getCombatCounter() = 3;
 			}
 			//Hostile Attacks Thom
-			if (!this->thomDead && !this->hostileAttackThom) {
+			if (!this->thomDead && !this->hostileAttackThom && sprites.getThomUnlocked()) {
 				getThomHp() -= getHostileStrike();
 				sprites.soundCom.play();
 				sprites.spriteText[5].setString("Thom          " + std::to_string(getThomHp()) + "/" + std::to_string(getThomHpMax()));

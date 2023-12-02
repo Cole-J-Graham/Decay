@@ -11,7 +11,6 @@ Animation::Animation()
 	this->menuCycleSlow = true;
 	this->menuCycleFast = false;
 
-	this->zinTalkNot = true;
 	this->decayWarning = false;
 
 	this->animEnd = true;
@@ -22,12 +21,6 @@ Animation::Animation()
 	zin2.loadFromFile("Assets/Sprites/zinspriteannoyed.png");
 	zinSprite.setPosition(50.0f, 345.0f);
 	zinSprite.setScale(0.0504f, 0.0504f);
-
-	not1.loadFromFile("Assets/Game_Resources/alert1.png");
-	not2.loadFromFile("Assets/Game_Resources/alert2.png");
-	not3.loadFromFile("Assets/Game_Resources/alert3.png");
-	not4.loadFromFile("Assets/Game_Resources/alert4.png");
-	notSprite.setScale(3.0f, 3.0f);
 
 	heal1.loadFromFile("Assets/Game_Resources/heal1.png");
 	heal2.loadFromFile("Assets/Game_Resources/heal2.png");
@@ -213,25 +206,6 @@ void Animation::animateZin()
 		break;
 	case 1:
 		zinSprite.setTexture(zin2);
-		break;
-	}
-}
-
-void Animation::animateNotification()
-{
-	this->animateTimer();
-	switch (this->animationFrame) {
-	case 0:
-		notSprite.setTexture(not1);
-		break;
-	case 1:
-		notSprite.setTexture(not2);
-		break;
-	case 2:
-		notSprite.setTexture(not3);
-		break;
-	case 3:
-		notSprite.setTexture(not4);
 		break;
 	}
 }
@@ -556,13 +530,6 @@ void Animation::animateMenu(Assets& assets)
 //Draw Animation Functions
 void Animation::drawAnimations(Assets& assets)
 {
-	if (this->zinTalkNot == true) {
-		notSprite.setPosition(50.0f, 240.0f);
-	}
-	else if (this->zinTalkNot == false) {
-		notSprite.setPosition(10000.0f, 10000.0f);
-	}
-
 	if (assets.getBonfireAssets()) {
 		this->animateAnvil(assets);
 		this->animateHeal(assets);

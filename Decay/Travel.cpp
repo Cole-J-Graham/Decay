@@ -55,7 +55,6 @@ void Travel::newArea(Sprites& sprites, Animation& animate)
     sprites.getEndFrame() = false; //Ensure that the forward arrow is allowed
     sprites.getStartFrame() = true; //Ensure that the back arrow is gone
     this->bonfireInit = false; //Uninit bonfire
-    animate.getZinTalkNot() = false; //Unint bonfire zin notification
     sprites.soundCampfire.stop(); //Stop the ambience from playing
     this->soundPlay = true; //Reset bonfire sounds
     sprites.setBonfireAssetsFalse();
@@ -205,6 +204,7 @@ void Travel::introBeginning(sf::RenderWindow& window, Sprites& sprites, Event& n
         break;
     case 13:
         sprites.getZinCounter() = 0;
+        sprites.getShowAnsBoxesCounter() = -1;
         sprites.text.setString("'I knew I thought I recognized you. Now it makes sense, you must have gotten infected while helping around the medical ward, huh?' *As she talks you notice her shivering...*");
         break;
     case 14:
@@ -264,10 +264,6 @@ void Travel::forestBonfire(sf::RenderWindow& window, Sprites& sprites, Event& no
     if (!this->frameInit) {
         sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestbonfire.jpeg");
         this->frameInit = true;
-    }
-    //Play notification animation if zin is willing to talk
-    if (this->bonfireInit) {
-        animate.animateNotification();
     }
     this->enterBonfire(window, sprites, notevent);
 }
@@ -376,6 +372,8 @@ void Travel::forestEntrance(sf::RenderWindow& window, Sprites& sprites, Event& n
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest15.jpeg");
             this->frameInit = true;
         }
+        sprites.getForestAreaUnlocked() = 2;
+        sprites.getInitForestMapTexture() = false;
         break;
     }
 }
@@ -484,6 +482,8 @@ void Travel::forestDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths15.jpeg");
             this->frameInit = true;
         }
+        sprites.getForestAreaUnlocked() = 3;
+        sprites.getInitForestMapTexture() = false;
         break;
     }
 }
@@ -592,6 +592,8 @@ void Travel::forestAbyssal(sf::RenderWindow& window, Sprites& sprites, Event& no
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods15.jpeg");
             this->frameInit = true;
         }
+        sprites.getForestAreaUnlocked() = 4;
+        sprites.getInitForestMapTexture() = false;
         break;
     }
 }
@@ -696,6 +698,7 @@ void Travel::forestAbyssalDepths(sf::RenderWindow& window, Sprites& sprites, Eve
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths15.jpeg");
             this->frameInit = true;
         }
+        sprites.getAreaUnlocked() = 1;
         break;
     }
 }
@@ -831,6 +834,8 @@ void Travel::castleHalls(sf::RenderWindow& window, Sprites& sprites, Event& note
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castle15.jpeg");
             this->frameInit = true;
         }
+        sprites.getCastleAreaUnlocked() = 2;
+        sprites.getInitCastleMapTexture() = false;
         break;
     }
 }
@@ -941,6 +946,8 @@ void Travel::castleDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths15.jpeg");
             this->frameInit = true;
         }
+        sprites.getCastleAreaUnlocked() = 3;
+        sprites.getInitCastleMapTexture() = false;
         break;
     }
 }
@@ -1043,6 +1050,8 @@ void Travel::castleChambers(sf::RenderWindow& window, Sprites& sprites, Event& n
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers15.jpeg");
             this->frameInit = true;
         }
+        sprites.getCastleAreaUnlocked() = 4;
+        sprites.getInitCastleMapTexture() = false;
         break;
     }
 }
@@ -1149,6 +1158,7 @@ void Travel::castleLabyrinth(sf::RenderWindow& window, Sprites& sprites, Event& 
             combat.initSiward(sprites);
             combat.combatLoop(window, sprites, player, animate);
         }
+        sprites.getAreaUnlocked() = 2;
         break;
     }
 }
@@ -1285,6 +1295,8 @@ void Travel::decayChasms(sf::RenderWindow& window, Sprites& sprites, Event& note
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimson15.jpeg");
             this->frameInit = true;
         }
+        sprites.getDecayAreaUnlocked() = 2;
+        sprites.getInitDecayMapTexture() = false;
         break;
     }
 }
@@ -1387,6 +1399,8 @@ void Travel::decayOcean(sf::RenderWindow& window, Sprites& sprites, Event& notev
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayocean15.jpeg");
             this->frameInit = true;
         }
+        sprites.getDecayAreaUnlocked() = 3;
+        sprites.getInitDecayMapTexture() = false;
         break;
     }
 }
@@ -1493,6 +1507,8 @@ void Travel::decayForest(sf::RenderWindow& window, Sprites& sprites, Event& note
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest15.jpeg");
             this->frameInit = true;
         }
+        sprites.getDecayAreaUnlocked() = 4;
+        sprites.getInitDecayMapTexture() = false;
         break;
     }
 }
@@ -1598,6 +1614,14 @@ void Travel::decayGiants(sf::RenderWindow& window, Sprites& sprites, Event& note
         if (notevent.getRotBeastEnced()) {
             combat.initRotBeast(sprites);
             combat.combatLoop(window, sprites, player, animate);
+        }
+        break;
+    case 15:
+        if (sprites.getThomUnlocked()) {
+            notevent.rotBeastDeathEnding(sprites);
+        }
+        else if (!sprites.getThomUnlocked()) {
+            notevent.playerDeathEnding(sprites);
         }
         break;
     }
