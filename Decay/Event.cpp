@@ -343,6 +343,7 @@ void Event::riEnc(Sprites& sprites)
             sprites.getZinCounter() = -1;
             sprites.text.setString("");
             sprites.getEventAssets() = false;
+            this->reInitialize = true;//Reset dialogue counter for other events
             this->riEncedForest = true;
             break;
         }

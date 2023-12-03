@@ -71,7 +71,7 @@ void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& pl
                 //Dialogue Box Functionality
                 this->dialogueCombatBox(window, combat, sprites, travel, notevent);
                 //Main Menu Functionality
-                this->mainMenuButtons(window, sprites, travel, animate);
+                this->mainMenuButtons(window, sprites, notevent, combat, player, travel, animate);
                 if (stop) { //Make quit button return to main function to stop program from running
                     return;
                 }
@@ -394,7 +394,7 @@ void World::printToolTip(sf::RenderWindow& window, Sprites& sprites, Event& note
 }
 
 //Display Element Functionality
-void World::mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel, Animation& animate)
+void World::mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -402,7 +402,6 @@ void World::mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Travel& 
     if (sprites.menuScreenElements[1].getGlobalBounds().contains(mousePosF)) {
         //Loading Game Button Funcionality (Not implemented yet...)
         sprites.soundClick.play();
-        std::cout << "Loading a save hypothetically speaking lmao...";
     }
     else if (sprites.menuScreenElements[2].getGlobalBounds().contains(mousePosF)) {
         //Quit Game Button Functionality
@@ -433,8 +432,7 @@ void World::mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Travel& 
     }//Settings specific functionality
     else if (sprites.getIntroFinished()) {
         if (sprites.menuScreenElements[5].getGlobalBounds().contains(mousePosF)) {
-            //Saving Game Button Funcionality (Not implemented yet...)
-            std::cout << "Saving game hypothetically speaking...";
+            //Saving Game Button Funcionality 
         }
     }
    

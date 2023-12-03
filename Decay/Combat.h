@@ -76,7 +76,6 @@ private:
 	bool comTextRemoved;
 
 public:
-
 	//Constructors & Destructors
 	Combat();
 	~Combat();

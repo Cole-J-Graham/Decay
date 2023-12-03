@@ -23,6 +23,7 @@ private:
 	bool animEnd;
 
 public:
+
 	Animation();
 	~Animation();
 

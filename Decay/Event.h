@@ -48,7 +48,6 @@ private:
 	int dialogue;
 
 public:
-
 	//Constructors & Destructors
 	Event();
 	~Event();

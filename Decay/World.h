@@ -15,6 +15,7 @@
 class World
 {
 private:
+
 	sf::RenderWindow window;
 	sf::Image image;
 	sf::Clock clock;
@@ -70,7 +71,8 @@ public:
 	void printToolTip(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player);
 
 	//Display Element Functionality
-	void mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel, Animation& animate);
+	void mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Event& notevent, 
+		Combat& combat, Player& player, Travel& travel, Animation& animate);
 	void travelButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel, Animation& animate, Player& player);
 	void menuBar(sf::RenderWindow& window, Sprites& sprites);
 	void dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Sprites& sprites, Travel& travel, Event& notevent);
