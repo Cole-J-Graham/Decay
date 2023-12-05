@@ -79,6 +79,8 @@ public:
 	sf::Texture grifTexture;
 	sf::Texture grifTextureAngry;
 	sf::Texture grifTextureConcerned;
+	sf::Texture grifTextureWounded;
+	sf::Texture grifTextureDead;
 	//Hostile Sprite Textures
 	sf::Texture hostileTextureWolf;
 	sf::Texture hostileTextureWalker;

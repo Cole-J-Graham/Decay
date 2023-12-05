@@ -96,6 +96,8 @@ void Sprites::loadSprites()
     grifTexture.loadFromFile("Assets/Sprites/grifNormal.png");
     grifTextureAngry.loadFromFile("Assets/Sprites/grifAngry.png");
     grifTextureConcerned.loadFromFile("Assets/Sprites/grifConcerned.png");
+    grifTextureWounded.loadFromFile("Assets/Sprites/grifWounded.png");
+    grifTextureDead.loadFromFile("Assets/Sprites/grifDead.png");
 
     //Load Hostile Sprites
     hostileTextureWalker.loadFromFile("Assets/HostileSprites/decaywalkersprite.jpeg");
@@ -747,6 +749,18 @@ void Sprites::grifSprite()
     case 2:
         //Concerned Grif
         spriteElements[9].setTexture(grifTextureConcerned);
+        spriteElements[9].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[7].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        break;
+    case 3:
+        //Wounded Grif
+        spriteElements[9].setTexture(grifTextureWounded);
+        spriteElements[9].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        spriteRect[7].setPosition(sf::Vector2f(1650.0f, 300.0f));
+        break;
+    case 4:
+        //Dead Grif
+        spriteElements[9].setTexture(grifTextureDead);
         spriteElements[9].setPosition(sf::Vector2f(1650.0f, 300.0f));
         spriteRect[7].setPosition(sf::Vector2f(1650.0f, 300.0f));
         break;

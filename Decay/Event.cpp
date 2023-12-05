@@ -1418,6 +1418,116 @@ void Event::decaySpadeEncPoison(Sprites& sprites)
     }
 }
 
+//Decay Ocean Events
+void Event::decayGrifEnc(Sprites& sprites)
+{
+    if (!this->grifEncounteredOcean) {
+        this->reInit(sprites);
+        switch (this->dialogue) {
+        case 0:
+            this->hideOpenAssets(sprites);
+            sprites.getGrifCounter() = 3;
+            sprites.text.setString("*You notice a familiar skeleton in the distance on the shoreline of the ocean begin to approach you. It's grif.*\n\n*He looks distraught, as if he's been through complete and utter hell.*");
+            break;
+        case 1:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'You look like shit.'");
+            sprites.answerBoxText[1].setString("2. 'What happened to you?'");
+            break;
+        case 2:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("*The skeleton looks back to you, somehow giving you a dreadful expression despite lacking a face...* 'You have no idea, man.'");
+                break;
+            case 1:
+                sprites.text.setString("*The skeleton looks back to you, somehow giving you a dreadful expression despite lacking a face...* 'Oh my fucking God, where do I begin?'");
+                break;
+            }
+            break;
+        case 3:
+            sprites.text.setString("*Grif begins to ramble about his experiences since you last saw him...*\n\n'That small demon child just kept HUNTING my ass, so I kept running deeper and deeper into that castle and now I'm HERE?!'\n\n'Dude, this place is HORRIBLE. Like what the fuck is all the shit living around here? I've almost died like seventy different times!'");
+            break;
+        case 4:
+            sprites.getZinCounter() = 2;
+            sprites.text.setString("*Zin buds into the conversation seeming concerned...* 'Are you seriously going through this place just to try and get away from a little girl?'");
+            break;
+        case 5:
+            sprites.text.setString("*Grif starts yelling back.* 'YOU ACT LIKE SHE ISN'T THE MOST HORRIFYING THING HERE. HAVE YOU SEEN THAT SWORD?'");
+            break;
+        case 6:
+            sprites.text.setString("'I mean, I'm trying to get your point, I really am, but I mean she was nice to us sooo... Maybe you're just not likable. Ever thought of that?'");
+            break;
+        case 7:
+            sprites.text.setString("'Dude, she just thinks I'm a demon and CANNOT get over that shit. Pretty sure she's close too which scares the hell out of me, man.'");
+            break;
+        case 8:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'So, what's your plan?'");
+            sprites.answerBoxText[1].setString("2. 'You're not gonna fight her, are you?'");
+            break;
+        case 9:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("'I don't have one. Hence why I'm sitting here talking to you praying my luck changes. I mean I guess my plan so far has been running buuut-'\n\n*Grif's words are cut off by an audible grinding sound against the floor nearing...*\n\n'Cant catch a fucking BREAK!'");
+                break;
+            case 1:
+                sprites.text.setString("'Are you fucking kidding me? Look at me. I'm all fucked off just from the shit around here, I'd last TWO SECONDS against that kid!'\n\nShe sliced a limb splitter in half with ONE SWING!' *Grif's words are cut off by an audible grinding sound against the floor nearing...*\n\n'Cant catch a fucking BREAK!'");
+                break;
+            }
+            break;
+        case 10:
+            sprites.text.setString("*Grif sprints out of the area as quickly as he possibly can, tripping at least four times and breaking more parts of his skull attempting to escape.*");
+            break;
+        case 11:
+            sprites.getGrifCounter() = 4;
+            sprites.text.setString("*Suddenly, a massive sword hurls across the area smashing straight into the back of Grif, instantly pulverizing him into bone fragments as he lets out one last shout!*\n\n'FUCK!'");
+            break;
+        case 12:
+            sprites.getGrifCounter() = -1;
+            sprites.getRiCounter() = 1;
+            sprites.text.setString("*She stares with a stone cold expression at where the skeleton used to stand.* 'Another disgusting demon pulverized...'");
+            break;
+        case 13:
+            sprites.getRiCounter() = 2;
+            sprites.text.setString("*She suddenly changes her demeanor entirely once seeing you both.* 'Oh, hey you two! Good to see you both!'");
+            break;
+        case 14:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'Did you have to fucking kill him?'");
+            sprites.answerBoxText[1].setString("2. 'Hello.'");
+            break;
+        case 15:
+            sprites.getShowAnsBoxesCounter() = -1;
+            sprites.text.setString("'I mean he was a filthy demon, was he not?'");
+            break;
+        case 16:
+            sprites.getShowAnsBoxesCounter() = 0; //Set dialogue options to appear
+            sprites.answerBoxText[0].setString("1. 'I mean I thought he was alright...'");
+            sprites.answerBoxText[1].setString("2. 'Yeah, fuck that dude.'");
+            break;
+        case 17:
+            sprites.getShowAnsBoxesCounter() = -1;
+            switch (this->choiceCounter) {
+            case 0:
+                sprites.text.setString("'Well, that's your fault for liking demons, bro. I'm gonna head out and find more now. Bye!' *She waves as she wanders off once more, yourself and zin looking quite confused.*\n\n*You both continue forwards after watching such a strange exchange...*");
+                break;
+            case 1:
+                sprites.text.setString("'Yeah, exatly, now you get it. I'm gonna go kill more demons now. See ya!' *She waves as she wanders off once more, yourself and zin looking quite confused.*\n\n*You both continue forwards after watching such a strange exchange...*");
+                break;
+            }
+            break;
+        case 18:
+            sprites.getEventAssets() = false;
+            sprites.text.setString("");
+            this->reInitialize = true;//Reset dialogue counter for other events
+            this->grifEncounteredOcean = true;
+            break;
+        }
+    }
+}
+
 //Final Events
 void Event::rotBeastEnc(Sprites& sprites)
 {

@@ -22,6 +22,11 @@ private:
 
 	bool animEnd;
 
+	float notePosX;
+	float notePosY;
+
+	std::string animateString;
+
 public:
 
 	Animation();
@@ -98,7 +103,7 @@ public:
 
 	//Animation Functions
 	void animateZin();
-	void animateDecayWarn();
+	void animateNote();
 	void animateAnvil(Assets& assets);
 	void animateHeal(Assets& assets);
 	void animateMenu(Assets& assets);
@@ -116,7 +121,11 @@ public:
 	int& getAnimation() { return this->animation; };
 	int& getAnimationFrame() { return this->animationFrame; };
 	int& getCombatAnimationFrame() { return this->combatAnimationFrame; };
-	int& getCombatAnimationLocation() { return this->combatAnimationLocation; };
+	int& getCombatAnimationLocation() { return this->combatAnimationLocation;};
+
+	float& getNotePosX() { return this->notePosX; };
+	float& getNotePosY() { return this->notePosY; };
+	std::string& getAnimateString() { return this->animateString; };
 
 	bool& getDecayWarning() { return this->decayWarning; };
 	bool& getAnimEnd() { return this->animEnd; };

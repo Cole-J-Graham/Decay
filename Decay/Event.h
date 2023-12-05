@@ -29,6 +29,7 @@ private:
 	bool riEncedForest;
 
 	bool grifEncounteredCastle;
+	bool grifEncounteredOcean;
 
 	bool treeEnced;
 	bool obeliskEnced;
@@ -96,17 +97,44 @@ public:
 	void decaySpadeEncPoison(Sprites& sprites);
 	void rotBeastDeathEnding(Sprites& sprites);
 
+	//Decay Ocean Events
+	void decayGrifEnc(Sprites& sprites);
+
 	//Final Events
 	void rotBeastEnc(Sprites& sprites);
 	void playerDeathEnding(Sprites& sprites);
 
 	//Control Flow Getters
 	bool& getReInitialize() { return this->reInitialize; };
+	bool& getSfxUsed() { return this->sfxUsed; };
+	bool& getItemGained() { return this->itemGained; };
 
 	//Event Availability Bools
+	bool& getThomEnced() { return this->thomEnced; };
+
+	bool& getSiwardEncedForest() { return this->siwardEncedForest; };
+	bool& getSiwardEncedCastle() { return this->siwardEncedCastle; };
 	bool& getSiwardEncedFinal() { return this->siwardEncedFinal; };
+
+	bool& getSpadeEncedForest() { return this->spadeEncedForest; };
+	bool& getSpadeEncedAbyssalForest() { return this->spadeEncedAbyssalForest; };
+	bool& getSpadeEncedCastle() { return this->spadeEncedCastle; };
+	bool& getSpadeEncedCastlePoison() { return this->spadeEncedCastlePoison; };
+	bool& getSpadeEncedDecay() { return this->spadeEncedDecay; };
+	bool& getSpadeEncedDecayPoison() { return this->spadeEncedDecayPoison; };
 	bool& getSpadeEnced() { return this->spadeEncedDecayPoison; };
+
+	bool& getRiEncedForest() { return this->riEncedForest; };
+
+	bool& getGrifEncounteredCastle() { return this->grifEncounteredCastle; };
+	bool& getGrifEncounteredOcean() { return this->grifEncounteredOcean; };
+
+	bool& getTreeEnced() { return this->treeEnced; };
+	bool& getObeliskEnced() { return this->obeliskEnced; };
 	bool& getNunEnced() { return this->nunEnced; };
+
+	bool& getPlayerDeathEnced() { return this->playerDeathEnced; };
+	bool& getRotBeastDeathEnced() { return this->rotBeastDeathEnced; };
 	bool& getRotBeastEnced() { return this->rotBeastEnced; };
 
 	//Counter Getters

@@ -3,6 +3,7 @@
 
 #include<iostream>
 #include<SFML/Window.hpp>
+#include<fstream>
 #include<sstream>
 #include<string>
 #include<SFML/Audio.hpp>
@@ -15,7 +16,6 @@
 class World
 {
 private:
-
 	sf::RenderWindow window;
 	sf::Image image;
 	sf::Clock clock;
@@ -31,6 +31,7 @@ private:
 	//Core
 	std::string input;
 	std::string targetHpView;
+
 	int unicode;
 	int random;
 	int test;
@@ -61,6 +62,8 @@ public:
 	//Core Functions
 	void bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate);
 	void userInput(Sprites& sprites);
+	void saveGame(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate);
+	void loadGame(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate);
 
 	//Display Functions
 	void draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate);

@@ -134,6 +134,9 @@ public:
 	int& getValZero() { return this->valZero; };
 	int& getValOne() { return this->valOne; };
 	int& getValTwo() { return this->valTwo; };
+	int& getValThree() { return this->valThree; };
+	int& getValFour() { return this->valFour; };
+	int& getValFive() { return this->valFive; };
 
 	//Attack Counter Getters
 	int& getAttackCounter() { return this->attackCounter; };
@@ -154,10 +157,37 @@ public:
 	bool& getTurnThom() { return this->turnThom; };
 	bool& getTurnHostile() { return this->turnHostile; };
 
+	bool& getInitHostileWolf() { return this->initHostileWolf; };
+	bool& getInitHostileWalker() { return this->initHostileWalker; };
+	bool& getInitHostileKnight() { return this->initHostileKnight; };
+	bool& getInitHostileTreeMimic() { return this->initHostileTreeMimic; };
+	bool& getInitHostileLostNun() { return this->initHostileLostNun; };
+	bool& getInitHostileDecapod() { return this->initHostileDecapod; };
+
+	bool& getInitHostileJester() { return this->initHostileJester; };
+	bool& getInitHostileWallMimic() { return this->initHostileWallMimic; };
+	bool& getInitHostileLostKnight() { return this->initHostileLostKnight; };
+	bool& getInitHostilePhantom() { return this->initHostilePhantom; };
+	bool& getInitHostileEater() { return this->initHostileEater; };
+	bool& getInitHostileSiward() { return this->initHostileSiward; };
+
+	bool& getInitHostileLimbSplitter() { return this->initHostileLimbSplitter; };
+	bool& getInitHostileBurrower() { return this->initHostileBurrower; };
+	bool& getInitHostileChatterMouth() { return this->initHostileChatterMouth; };
+	bool& getInitHostileReclus() { return this->initHostileReclus; };
+	bool& getInitHostileTendrilAlpha() { return this->initHostileTendrilAlpha; };
+	bool& getInitHostileSpade() { return this->initHostileSpade; };
+
 	bool& getPlayerAttack() { return this->playerAttack; };
 	bool& getZinAttack() { return this->zinAttack; };
+	bool& getThomAttack() { return this->thomAttack; };
 	bool& getHostileAttack() { return this->hostileAttack; };
 	bool& getHostileAttackZin() { return this->hostileAttackZin; };
+	bool& getHostileAttackThom() { return this->hostileAttackThom; };
+
+	bool& getPlayerDead() { return this->playerDead; };
+	bool& getZinDead() { return this->zinDead; };
+	bool& getThomDead() { return this->thomDead; };
 
 	//Move Selector Getters
 	int& getPlayerPickMove() { return this->playerPickMove; };

@@ -15,6 +15,12 @@ Animation::Animation()
 
 	this->animEnd = true;
 	
+
+	this->notePosX = 0;
+	this->notePosY = 0;
+
+	this->animateString = "";
+	
 	decayWarn.setPosition(10000, 10000);
 
 	zin1.loadFromFile("Assets/Sprites/zinsprite.png");
@@ -210,9 +216,9 @@ void Animation::animateZin()
 	}
 }
 
-void Animation::animateDecayWarn()
+void Animation::animateNote()
 {
-	decayWarn.setString("+1 Decay...");
+	decayWarn.setString(animateString);
 	decayWarn.setFont(font);
 	decayWarn.setCharacterSize(16);
 
@@ -220,19 +226,19 @@ void Animation::animateDecayWarn()
 	if (this->decayWarning) {
 		switch (this->animationFrame) {
 		case -1:
-			decayWarn.setPosition(1500, 43);
+			decayWarn.setPosition(notePosX, notePosY);
 			decayWarn.setFillColor(sf::Color(255, 255, 255));
 			break;
 		case 0:
-			decayWarn.setPosition(1500, 42);
+			decayWarn.setPosition(notePosX, notePosY - 1);
 			decayWarn.setFillColor(sf::Color(190, 190, 190));
 			break;
 		case 1:
-			decayWarn.setPosition(1500, 41);
+			decayWarn.setPosition(notePosX, notePosY - 2);
 			decayWarn.setFillColor(sf::Color(145, 145, 145));
 			break;
 		case 2:
-			decayWarn.setPosition(1500, 40);
+			decayWarn.setPosition(notePosX, notePosY - 3);
 			decayWarn.setFillColor(sf::Color(65, 65, 65));
 			break;
 		case 3:

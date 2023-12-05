@@ -123,6 +123,130 @@ void World::userInput(Sprites& sprites)
     }
 }
 
+void World::saveGame(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate)
+{
+    std::ofstream saveData;
+    saveData.open("example.txt");
+    if (saveData.is_open()) {
+        saveData << " " <<  sprites.getSpriteViewerCounter() << " " <<  sprites.getEntityViewerCounter() << " " <<  sprites.getSiwardCounter()
+            << " " <<  sprites.getSpadeCounter() << " " <<  sprites.getRiCounter() << " " <<  sprites.getGrifCounter() << " " <<  sprites.getPlayerCounter()
+            << " " <<  sprites.getZinCounter() << " " <<  sprites.getThomCounter() << " " <<  sprites.getHostileCounter() << " " <<  sprites.getCombatCounter()
+            << " " <<  sprites.getDialogueCounter() << " " <<  sprites.getInitialDrawIn() << " " <<  sprites.getInitForestMapTexture()
+            << " " <<  sprites.getInitCastleMapTexture() << " " <<  sprites.getInitDecayMapTexture() << " " <<  sprites.getInitMap()
+            << " " <<  sprites.getInitStats() << " " <<  sprites.getInitInventory() << " " <<  sprites.getPlusboxes() << " " <<  sprites.getEndFrame()
+            << " " <<  sprites.getStartFrame() << " " <<  sprites.getThomUnlocked() << " " <<  sprites.getPlayerStatsInit() << " " <<  sprites.getZinStatsInit()
+            << " " <<  sprites.getBootClicked() << " " <<  sprites.getIntroFinished() << " " <<  sprites.getSettingsShown() << " " <<  sprites.getAreaUnlocked()
+            << " " <<  sprites.getForestAreaUnlocked() << " " <<  sprites.getCastleAreaUnlocked() << " " <<  sprites.getDecayAreaUnlocked()
+            << " " <<  sprites.getMapCounter() << " " <<  sprites.getShowAnsBoxesCounter() << " " <<  sprites.getTipBoxCounter()
+            << " " <<  sprites.getMovable() << " " <<  sprites.getMovableStatsBox() << " " <<  sprites.getRectMapX() << " " <<  sprites.getRectMapY()
+            << " " <<  sprites.getRectStatsBoxX() << " " <<  sprites.getRectStatsBoxY() << " " <<  sprites.getRectInventoryBoxX()
+            << " " <<  sprites.getRectInventoryBoxY() << " " <<  sprites.getCombatAssets() << " " <<  sprites.getEventAssets()
+            << " " <<  sprites.getBonfireAssets() << " " <<  sprites.getPlayerTurnAssets() << " " <<  sprites.getZinTurnAssets()
+            << " " <<  sprites.getThomTurnAssets() << " " <<  sprites.getPlayerDeath() << " " <<  sprites.getCombatPlayerMoves()
+            << " " <<  sprites.getCombatZinMoves() << " " <<  sprites.getCombatThomMoves() << " " <<  notevent.getReInitialize()
+            << " " <<  notevent.getSfxUsed() << " " <<  notevent.getItemGained() << " " <<  notevent.getThomEnced() << " " <<  notevent.getSiwardEncedForest()
+            << " " <<  notevent.getSiwardEncedCastle() << " " <<  notevent.getSiwardEncedFinal() << " " <<  notevent.getSpadeEncedForest()
+            << " " <<  notevent.getSpadeEncedAbyssalForest() << " " <<  notevent.getSpadeEncedCastle() << " " <<  notevent.getSpadeEncedCastlePoison()
+            << " " <<  notevent.getSpadeEncedDecay() << " " <<  notevent.getSpadeEncedDecayPoison() << " " <<  notevent.getSpadeEnced()
+            << " " <<  notevent.getRiEncedForest() << " " <<  notevent.getRotBeastEnced() << " " <<  notevent.getGrifEncounteredCastle()
+            << " " <<  notevent.getTreeEnced() << " " <<  notevent.getObeliskEnced() << " " <<  notevent.getNunEnced() << " " <<  notevent.getPlayerDeathEnced()
+            << " " <<  notevent.getRotBeastDeathEnced() << " " <<  notevent.getRotBeastEnced() << " " <<  notevent.getChoiceCounter() << " " << notevent.getGrifEncounteredOcean()
+            << " " <<  notevent.getDialogue() << " " <<  notevent.getSpadePoison() << " " <<  combat.getValZero() << " " <<  combat.getValOne()
+            << " " <<  combat.getValTwo() << " " <<  combat.getValThree() << " " <<  combat.getValFour() << " " <<  combat.getValFive()
+            << " " <<  combat.getAttackCounter() << " " <<  combat.getZinAttackCounter() << " " <<  combat.getThomAttackCounter()
+            << " " <<  combat.getInitCombatOnce() << " " <<  combat.getReInitCombatOnce() << " " <<  combat.getCombatEnd()
+            << " " <<  combat.getTurnPlayer() << " " <<  combat.getTurnZin() << " " <<  combat.getTurnThom() << " " <<  combat.getTurnHostile()
+            << " " <<  combat.getInitHostileWolf() << " " <<  combat.getInitHostileWalker() << " " <<  combat.getInitHostileKnight()
+            << " " <<  combat.getInitHostileTreeMimic() << " " <<  combat.getInitHostileLostNun() << " " <<  combat.getInitHostileDecapod()
+            << " " <<  combat.getInitHostileJester() << " " <<  combat.getInitHostileWallMimic() << " " <<  combat.getInitHostileLostKnight()
+            << " " <<  combat.getInitHostilePhantom() << " " <<  combat.getInitHostileEater() << " " <<  combat.getInitHostileSiward()
+            << " " <<  combat.getInitHostileLimbSplitter() << " " <<  combat.getInitHostileBurrower() << " " <<  combat.getInitHostileChatterMouth()
+            << " " <<  combat.getInitHostileReclus() << " " <<  combat.getInitHostileTendrilAlpha() << " " <<  combat.getInitHostileSpade()
+            << " " <<  combat.getPlayerAttack() << " " <<  combat.getZinAttack() << " " <<  combat.getThomAttack() << " " <<  combat.getHostileAttack()
+            << " " <<  combat.getHostileAttackZin() << " " <<  combat.getHostileAttackThom() << " " <<  combat.getPlayerDead()
+            << " " <<  combat.getZinDead() << " " <<  combat.getThomDead() << " " <<  combat.getPlayerPickMove() << " " <<  combat.getZinPickMove()
+            << " " <<  combat.getThomPickMove() << " " <<  combat.getComTextRemoved() << " " <<  player.getDecay() << " " <<  player.getDecayMax()
+            << " " <<  player.getLevel() << " " <<  player.getExp() << " " <<  player.getExpNext() << " " <<  player.getSp() << " " <<  player.getStrength()
+            << " " <<  player.getFortitude() << " " <<  player.getVitality() << " " <<  player.getZinLevel() << " " <<  player.getZinSp()
+            << " " <<  player.getZinExp() << " " <<  player.getZinExpNext() << " " <<  player.getZinResolve() << " " <<  player.getZinPatience()
+            << " " <<  player.getZinResilience() << " " <<  player.getSwordPower() << " " <<  player.getGold() << " " <<  player.getSmithingStones()
+            << " " <<  player.getBasicSword() << " " <<  player.getIncease() << " " <<  travel.getFrame() << " " <<  travel.getTravel()
+            << " " <<  travel.getBonfireInit() << " " <<  travel.getIntroCounterDialogue() << " " <<  travel.getIntroCounter()
+            << " " <<  travel.getForestCounter() << " " <<  travel.getCastleCounter() << " " <<  travel.getDecayCounter()
+            << " " <<  travel.getFrameInit();
+        saveData.close();
+    }
+    
+
+    animate.getNotePosX() = 215;
+    animate.getNotePosY() = 145;
+    animate.getAnimateString() = "Game Saved...";
+    animate.getDecayWarning() = true;
+}
+
+void World::loadGame(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate)
+{
+    std::ifstream loadData;
+    loadData.open("example.txt");
+
+    if (loadData.is_open()) {
+        std::cout << "File loading...";
+        loadData >> sprites.getSpriteViewerCounter() >> sprites.getEntityViewerCounter() >> sprites.getSiwardCounter()
+            >> sprites.getSpadeCounter() >> sprites.getRiCounter() >> sprites.getGrifCounter() >> sprites.getPlayerCounter()
+            >> sprites.getZinCounter() >> sprites.getThomCounter() >> sprites.getHostileCounter() >> sprites.getCombatCounter()
+            >> sprites.getDialogueCounter() >> sprites.getInitialDrawIn() >> sprites.getInitForestMapTexture()
+            >> sprites.getInitCastleMapTexture() >> sprites.getInitDecayMapTexture() >> sprites.getInitMap()
+            >> sprites.getInitStats() >> sprites.getInitInventory() >> sprites.getPlusboxes() >> sprites.getEndFrame()
+            >> sprites.getStartFrame() >> sprites.getThomUnlocked() >> sprites.getPlayerStatsInit() >> sprites.getZinStatsInit()
+            >> sprites.getBootClicked() >> sprites.getIntroFinished() >> sprites.getSettingsShown() >> sprites.getAreaUnlocked()
+            >> sprites.getForestAreaUnlocked() >> sprites.getCastleAreaUnlocked() >> sprites.getDecayAreaUnlocked()
+            >> sprites.getMapCounter() >> sprites.getShowAnsBoxesCounter() >> sprites.getTipBoxCounter()
+            >> sprites.getMovable() >> sprites.getMovableStatsBox() >> sprites.getRectMapX() >> sprites.getRectMapY()
+            >> sprites.getRectStatsBoxX() >> sprites.getRectStatsBoxY() >> sprites.getRectInventoryBoxX()
+            >> sprites.getRectInventoryBoxY() >> sprites.getCombatAssets() >> sprites.getEventAssets()
+            >> sprites.getBonfireAssets() >> sprites.getPlayerTurnAssets() >> sprites.getZinTurnAssets()
+            >> sprites.getThomTurnAssets() >> sprites.getPlayerDeath() >> sprites.getCombatPlayerMoves()
+            >> sprites.getCombatZinMoves() >> sprites.getCombatThomMoves() >> notevent.getReInitialize()
+            >> notevent.getSfxUsed() >> notevent.getItemGained() >> notevent.getThomEnced() >> notevent.getSiwardEncedForest()
+            >> notevent.getSiwardEncedCastle() >> notevent.getSiwardEncedFinal() >> notevent.getSpadeEncedForest()
+            >> notevent.getSpadeEncedAbyssalForest() >> notevent.getSpadeEncedCastle() >> notevent.getSpadeEncedCastlePoison()
+            >> notevent.getSpadeEncedDecay() >> notevent.getSpadeEncedDecayPoison() >> notevent.getSpadeEnced()
+            >> notevent.getRiEncedForest() >> notevent.getRotBeastEnced() >> notevent.getGrifEncounteredCastle()
+            >> notevent.getTreeEnced() >> notevent.getObeliskEnced() >> notevent.getNunEnced() >> notevent.getPlayerDeathEnced()
+            >> notevent.getRotBeastDeathEnced() >> notevent.getRotBeastEnced() >> notevent.getChoiceCounter() >> notevent.getGrifEncounteredOcean()
+            >> notevent.getDialogue() >> notevent.getSpadePoison() >> combat.getValZero() >> combat.getValOne()
+            >> combat.getValTwo() >> combat.getValThree() >> combat.getValFour() >> combat.getValFive()
+            >> combat.getAttackCounter() >> combat.getZinAttackCounter() >> combat.getThomAttackCounter()
+            >> combat.getInitCombatOnce() >> combat.getReInitCombatOnce() >> combat.getCombatEnd()
+            >> combat.getTurnPlayer() >> combat.getTurnZin() >> combat.getTurnThom() >> combat.getTurnHostile()
+            >> combat.getInitHostileWolf() >> combat.getInitHostileWalker() >> combat.getInitHostileKnight()
+            >> combat.getInitHostileTreeMimic() >> combat.getInitHostileLostNun() >> combat.getInitHostileDecapod()
+            >> combat.getInitHostileJester() >> combat.getInitHostileWallMimic() >> combat.getInitHostileLostKnight()
+            >> combat.getInitHostilePhantom() >> combat.getInitHostileEater() >> combat.getInitHostileSiward()
+            >> combat.getInitHostileLimbSplitter() >> combat.getInitHostileBurrower() >> combat.getInitHostileChatterMouth()
+            >> combat.getInitHostileReclus() >> combat.getInitHostileTendrilAlpha() >> combat.getInitHostileSpade()
+            >> combat.getPlayerAttack() >> combat.getZinAttack() >> combat.getThomAttack() >> combat.getHostileAttack()
+            >> combat.getHostileAttackZin() >> combat.getHostileAttackThom() >> combat.getPlayerDead()
+            >> combat.getZinDead() >> combat.getThomDead() >> combat.getPlayerPickMove() >> combat.getZinPickMove()
+            >> combat.getThomPickMove() >> combat.getComTextRemoved() >> player.getDecay() >> player.getDecayMax()
+            >> player.getLevel() >> player.getExp() >> player.getExpNext() >> player.getSp() >> player.getStrength()
+            >> player.getFortitude() >> player.getVitality() >> player.getZinLevel() >> player.getZinSp()
+            >> player.getZinExp() >> player.getZinExpNext() >> player.getZinResolve() >> player.getZinPatience()
+            >> player.getZinResilience() >> player.getSwordPower() >> player.getGold() >> player.getSmithingStones()
+            >> player.getBasicSword() >> player.getIncease() >> travel.getFrame() >> travel.getTravel()
+            >> travel.getBonfireInit() >> travel.getIntroCounterDialogue() >> travel.getIntroCounter()
+            >> travel.getForestCounter() >> travel.getCastleCounter() >> travel.getDecayCounter()
+            >> travel.getFrameInit();
+        loadData.close();
+    }
+    
+
+    animate.getNotePosX() = 215;
+    animate.getNotePosY() = 145;
+    animate.getAnimateString() = "Game Loaded...";
+    animate.getDecayWarning() = true;
+}
+
 //Display Functions
 void World::draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate)
 {
@@ -207,8 +331,8 @@ void World::draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
         window.draw(sprites.tipBoxText);
 
         //Draw Animations
+        animate.animateNote();
         animate.drawAnimations(sprites);
-        animate.animateDecayWarn();
         window.draw(animate.zinSprite);
         window.draw(animate.decayWarn);
         window.draw(animate.hitSprite);
@@ -400,7 +524,8 @@ void World::mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Event& n
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Shared Functionality between both main menu and settings menu
     if (sprites.menuScreenElements[1].getGlobalBounds().contains(mousePosF)) {
-        //Loading Game Button Funcionality (Not implemented yet...)
+        //Loading Game Button Funcionality
+        this->loadGame(sprites, notevent, combat, player, travel, animate);
         sprites.soundClick.play();
     }
     else if (sprites.menuScreenElements[2].getGlobalBounds().contains(mousePosF)) {
@@ -433,6 +558,7 @@ void World::mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Event& n
     else if (sprites.getIntroFinished()) {
         if (sprites.menuScreenElements[5].getGlobalBounds().contains(mousePosF)) {
             //Saving Game Button Funcionality 
+            this->saveGame(sprites, notevent, combat, player, travel, animate);
         }
     }
    
@@ -450,8 +576,12 @@ void World::travelButtons(sf::RenderWindow& window, Sprites& sprites, Travel& tr
         sprites.blipsound.play();
         //Decay Increases Every Move
         player.getDecay()++;
+        animate.getAnimateString() = "Decay +1";
+        animate.getNotePosX() = 1500;
+        animate.getNotePosY() = 43;
         animate.getDecayWarning() = true;
         animate.getAnimationFrame() = -1;
+        animate.animateNote();
     }
     else if (sprites.spriteElements[1].getGlobalBounds().contains(mousePosF))
     {
@@ -460,6 +590,9 @@ void World::travelButtons(sf::RenderWindow& window, Sprites& sprites, Travel& tr
         sprites.blipsound.play();
         //Decay Increases Every Move
         player.getDecay()++;
+        animate.getAnimateString() = "Decay +1";
+        animate.getNotePosX() = 1500;
+        animate.getNotePosY() = 43;
         animate.getDecayWarning() = true;
         animate.getAnimationFrame() = -1;
     }
