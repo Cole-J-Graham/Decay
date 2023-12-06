@@ -128,7 +128,7 @@ void World::saveGame(Sprites& sprites, Event& notevent, Combat& combat, Player& 
     std::ofstream saveData;
     saveData.open("example.txt");
     if (saveData.is_open()) {
-        saveData << " " <<  sprites.getSpriteViewerCounter() << " " <<  sprites.getEntityViewerCounter() << " " <<  sprites.getSiwardCounter()
+        saveData << sprites.getSpriteViewerCounter() << " " <<  sprites.getEntityViewerCounter() << " " <<  sprites.getSiwardCounter()
             << " " <<  sprites.getSpadeCounter() << " " <<  sprites.getRiCounter() << " " <<  sprites.getGrifCounter() << " " <<  sprites.getPlayerCounter()
             << " " <<  sprites.getZinCounter() << " " <<  sprites.getThomCounter() << " " <<  sprites.getHostileCounter() << " " <<  sprites.getCombatCounter()
             << " " <<  sprites.getDialogueCounter() << " " <<  sprites.getInitialDrawIn() << " " <<  sprites.getInitForestMapTexture()
@@ -170,10 +170,11 @@ void World::saveGame(Sprites& sprites, Event& notevent, Combat& combat, Player& 
             << " " <<  player.getFortitude() << " " <<  player.getVitality() << " " <<  player.getZinLevel() << " " <<  player.getZinSp()
             << " " <<  player.getZinExp() << " " <<  player.getZinExpNext() << " " <<  player.getZinResolve() << " " <<  player.getZinPatience()
             << " " <<  player.getZinResilience() << " " <<  player.getSwordPower() << " " <<  player.getGold() << " " <<  player.getSmithingStones()
-            << " " <<  player.getBasicSword() << " " <<  player.getIncease() << " " <<  travel.getFrame() << " " <<  travel.getTravel()
+            << " " <<  player.getIncease() << " " <<  travel.getFrame() << " " <<  travel.getTravel()
             << " " <<  travel.getBonfireInit() << " " <<  travel.getIntroCounterDialogue() << " " <<  travel.getIntroCounter()
             << " " <<  travel.getForestCounter() << " " <<  travel.getCastleCounter() << " " <<  travel.getDecayCounter()
-            << " " <<  travel.getFrameInit();
+            << " " <<  travel.getFrameInit() << " " << this->unicode << " " << this->random << " " << this->test << " " << this->stop << " " << this->keyPress << " " << this->initialized
+            << " " << this->comInitialized << " " << this->bonfire << " " << this->mainMenu << " " << this->statsmenu << " " << this->buttonClick << " " << this->xCord << " " << this->yCord;
         saveData.close();
     }
     
@@ -233,10 +234,12 @@ void World::loadGame(Sprites& sprites, Event& notevent, Combat& combat, Player& 
             >> player.getFortitude() >> player.getVitality() >> player.getZinLevel() >> player.getZinSp()
             >> player.getZinExp() >> player.getZinExpNext() >> player.getZinResolve() >> player.getZinPatience()
             >> player.getZinResilience() >> player.getSwordPower() >> player.getGold() >> player.getSmithingStones()
-            >> player.getBasicSword() >> player.getIncease() >> travel.getFrame() >> travel.getTravel()
+            >> player.getIncease() >> travel.getFrame() >> travel.getTravel()
             >> travel.getBonfireInit() >> travel.getIntroCounterDialogue() >> travel.getIntroCounter()
             >> travel.getForestCounter() >> travel.getCastleCounter() >> travel.getDecayCounter()
-            >> travel.getFrameInit();
+            >> travel.getFrameInit() >> this->unicode >> this->random >> this->test >> this->stop >> this->keyPress >> this->initialized
+            >> this->comInitialized >> this->bonfire >> this->mainMenu >> this->statsmenu >> this->buttonClick >> this->xCord >> this->yCord;
+        travel.getFrameInit() = false;
         loadData.close();
     }
     
@@ -523,12 +526,7 @@ void World::mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Event& n
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     //Shared Functionality between both main menu and settings menu
-    if (sprites.menuScreenElements[1].getGlobalBounds().contains(mousePosF)) {
-        //Loading Game Button Funcionality
-        this->loadGame(sprites, notevent, combat, player, travel, animate);
-        sprites.soundClick.play();
-    }
-    else if (sprites.menuScreenElements[2].getGlobalBounds().contains(mousePosF)) {
+    if (sprites.menuScreenElements[2].getGlobalBounds().contains(mousePosF)) {
         //Quit Game Button Functionality
         sprites.soundClick.play();
         stop = true;
@@ -556,7 +554,11 @@ void World::mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Event& n
         }
     }//Settings specific functionality
     else if (sprites.getIntroFinished()) {
-        if (sprites.menuScreenElements[5].getGlobalBounds().contains(mousePosF)) {
+        if (sprites.menuScreenElements[1].getGlobalBounds().contains(mousePosF)) {
+            //Loading Game Button Funcionality
+            this->loadGame(sprites, notevent, combat, player, travel, animate);
+            sprites.soundClick.play();
+        } else if (sprites.menuScreenElements[5].getGlobalBounds().contains(mousePosF)) {
             //Saving Game Button Funcionality 
             this->saveGame(sprites, notevent, combat, player, travel, animate);
         }

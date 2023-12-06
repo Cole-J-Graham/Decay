@@ -283,19 +283,19 @@ void Assets::drawMainMenu()
 
         //Choose which elements are currently visible on the screen for choosing whether to skip intro or not
         if (this->bootClicked == false) {
+            menuScreenElements[1].setPosition(10000.0f, 10000.0f);
             menuScreenElements[3].setPosition(10000.0f, 10000.0f);
             menuScreenElements[4].setPosition(10000.0f, 10000.0f);
             menuScreenElements[5].setPosition(10000.0f, 10000.0f);
+            menuScreenElementsText[1].setPosition(10000.0f, 10000.0f);
             menuScreenElementsText[3].setPosition(10000.0f, 10000.0f);
             menuScreenElementsText[4].setPosition(10000.0f, 10000.0f);
             menuScreenElementsText[5].setPosition(10000.0f, 10000.0f);
 
             menuScreenElements[0].setPosition(10.0f, 100.0f);
-            menuScreenElements[1].setPosition(10.0f, 125.0f);
-            menuScreenElements[2].setPosition(10.0f, 150.0f);
+            menuScreenElements[2].setPosition(10.0f, 125.0f);
             menuScreenElementsText[0].setPosition(10.0f, 100.0f);
-            menuScreenElementsText[1].setPosition(10.0f, 125.0f);
-            menuScreenElementsText[2].setPosition(10.0f, 150.0f);
+            menuScreenElementsText[2].setPosition(10.0f, 125.0f);
         }
         else if (this->bootClicked == true) {
             //Hide menu buttons
