@@ -41,7 +41,7 @@ void World::bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& pl
     //Load SFX
     sprites.loadSFX();
     //create the window
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Console Chat", sf::Style::Fullscreen  );
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Decay", sf::Style::Fullscreen  );
     window.setFramerateLimit(144);
     // run the program as long as the window is open
     while (window.isOpen()) {
@@ -597,6 +597,10 @@ void World::travelButtons(sf::RenderWindow& window, Sprites& sprites, Travel& tr
         animate.getNotePosY() = 43;
         animate.getDecayWarning() = true;
         animate.getAnimationFrame() = -1;
+        //Sound && Music resetting
+        sprites.getTrackPlayed() = false;
+        sprites.getAmbTrackPlayed() = false;
+        travel.getReplayMusic() = false;
     }
 }
 
@@ -760,6 +764,7 @@ void World::levelUp(sf::RenderWindow& window, Combat& combat, Player& player, Sp
                 sp++;
                 exp -= expNext;
                 player.statsText(sprites);
+                combat.unlockMoves(sprites, player);
                 sprites.playerTextElements[0].setString("LEVEL " + std::to_string(lvl));
                 sprites.text.setString("Level up achieved. Level " + std::to_string(lvl) + " reached. One SP point acquired...");
                 sprites.statSound.play();
@@ -786,7 +791,6 @@ void World::statUp(sf::RenderWindow& window, Combat& combat, Player& player, Spr
                 player.statsText(sprites);
                 sprites.text.setString("Stat improved...");
                 combat.updateStats(sprites, player);
-                combat.unlockMoves(sprites, player);
                 sprites.statSound.play();
             }
             else if (sp <= 0) {

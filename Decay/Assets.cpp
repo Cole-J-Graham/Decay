@@ -65,6 +65,10 @@ Assets::Assets()
     this->combatZinMoves = 0;
     this->combatThomMoves = 1;
 
+    //Music
+    this->trackPlayed = false;
+    this->ambPlayed = false;
+
     //Strings
     this->playerName = "player";
 
@@ -97,6 +101,7 @@ Assets::Assets()
     //Load game assets
     this->loadSprites();
     this->loadSounds();
+    //this->loadMapImages(); (DEBUG)
 }
 
 Assets::~Assets()
@@ -116,8 +121,10 @@ void Assets::loadSprites()
 
 void Assets::loadSounds()
 {
+    //Load Sfx
     bufferClick.loadFromFile("Assets/Sounds/click.wav");
-    //bufferCampfire.loadFromFile("Assets/Sounds/campfire.wav");
+    bonfire.openFromFile("Assets/Sounds/campfire.wav");
+    forestAmbience.openFromFile("Assets/Sounds/forestAmbience.wav");
     bufferDecay.loadFromFile("Assets/Sounds/decayblade.wav");
     bufferVengeance.loadFromFile("Assets/Sounds/vengeance.wav");
     bufferSlash.loadFromFile("Assets/Sounds/slash.wav");
@@ -142,6 +149,219 @@ void Assets::loadSounds()
     bufferBlaze.loadFromFile("Assets/Sounds/hellBlaze.wav");
     bufferFlames.loadFromFile("Assets/Sounds/crimsonFlames.wav");
     bufferIronWall.loadFromFile("Assets/Sounds/ironWall.wav");
+
+    //Load Music
+    track1.openFromFile("Assets/Music/track1.wav");
+    track2.openFromFile("Assets/Music/track2.wav");
+    track3.openFromFile("Assets/Music/track3.wav");
+    track4.openFromFile("Assets/Music/track4.wav");
+    track5.openFromFile("Assets/Music/agony.wav");
+    track6.openFromFile("Assets/Music/ANocturneForAll.wav");
+    track7.openFromFile("Assets/Music/Communication.wav");
+    track8.openFromFile("Assets/Music/Helplessness.wav");
+    track9.openFromFile("Assets/Music/incision.wav");
+    track10.openFromFile("Assets/Music/MyBurdenIsLight.wav");
+    track11.openFromFile("Assets/Music/OrfordSentinel.wav");
+    track12.openFromFile("Assets/Music/Tugrul.wav");
+    track13.openFromFile("Assets/Music/StoneBeacon.wav");
+}
+
+void Assets::loadMapImages()
+{
+    //Forest Wallpapers
+    forestEntrance1.loadFromFile("Assets/Wallpapers/Forest/forest1.jpeg");
+    forestEntrance2.loadFromFile("Assets/Wallpapers/Forest/forest2.jpeg");
+    forestEntrance3.loadFromFile("Assets/Wallpapers/Forest/forest3.jpeg");
+    forestEntrance4.loadFromFile("Assets/Wallpapers/Forest/forest4.jpeg");
+    forestEntrance5.loadFromFile("Assets/Wallpapers/Forest/forest5.jpeg");
+    forestEntrance6.loadFromFile("Assets/Wallpapers/Forest/forest6.jpeg");
+    forestEntrance7.loadFromFile("Assets/Wallpapers/Forest/forest7.jpeg");
+    forestEntrance8.loadFromFile("Assets/Wallpapers/Forest/forest8.jpeg");
+    forestEntrance9.loadFromFile("Assets/Wallpapers/Forest/forest9.jpeg");
+    forestEntrance10.loadFromFile("Assets/Wallpapers/Forest/forest10.jpeg");
+    forestEntrance11.loadFromFile("Assets/Wallpapers/Forest/forest11.jpeg");
+    forestEntrance12.loadFromFile("Assets/Wallpapers/Forest/forest12.jpeg");
+    forestEntrance13.loadFromFile("Assets/Wallpapers/Forest/forest13.jpeg");
+    forestEntrance14.loadFromFile("Assets/Wallpapers/Forest/forest14.jpeg");
+    forestEntrance15.loadFromFile("Assets/Wallpapers/Forest/forest15.jpeg");
+
+    forestDepths1.loadFromFile("Assets/Wallpapers/Forest/forestdepths1.jpeg");
+    forestDepths2.loadFromFile("Assets/Wallpapers/Forest/forestdepths2.jpeg");
+    forestDepths3.loadFromFile("Assets/Wallpapers/Forest/forestdepths3.jpeg");
+    forestDepths4.loadFromFile("Assets/Wallpapers/Forest/forestdepths4.jpeg");
+    forestDepths5.loadFromFile("Assets/Wallpapers/Forest/forestdepths5.jpeg");
+    forestDepths6.loadFromFile("Assets/Wallpapers/Forest/forestdepths6.jpeg");
+    forestDepths7.loadFromFile("Assets/Wallpapers/Forest/forestdepths7.jpeg");
+    forestDepths8.loadFromFile("Assets/Wallpapers/Forest/forestdepths8.jpeg");
+    forestDepths9.loadFromFile("Assets/Wallpapers/Forest/forestdepths9.jpeg");
+    forestDepths10.loadFromFile("Assets/Wallpapers/Forest/forestdepths10.jpeg");
+    forestDepths11.loadFromFile("Assets/Wallpapers/Forest/forestdepths11.jpeg");
+    forestDepths12.loadFromFile("Assets/Wallpapers/Forest/forestdepths12.jpeg");
+    forestDepths13.loadFromFile("Assets/Wallpapers/Forest/forestdepths13.jpeg");
+    forestDepths14.loadFromFile("Assets/Wallpapers/Forest/forestdepths14.jpeg");
+    forestDepths15.loadFromFile("Assets/Wallpapers/Forest/forestdepths15.jpeg");
+
+    forestAbyssal1.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods1.jpeg");
+    forestAbyssal2.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods2.jpeg");
+    forestAbyssal3.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods3.jpeg");
+    forestAbyssal4.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods4.jpeg");
+    forestAbyssal5.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods5.jpeg");
+    forestAbyssal6.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods6.jpeg");
+    forestAbyssal7.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods7.jpeg");
+    forestAbyssal8.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods8.jpeg");
+    forestAbyssal9.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods9.jpeg");
+    forestAbyssal10.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods10.jpeg");
+    forestAbyssal11.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods11.jpeg");
+    forestAbyssal12.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods12.jpeg");
+    forestAbyssal13.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods13.jpeg");
+    forestAbyssal14.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods14.jpeg");
+    forestAbyssal15.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods15.jpeg");
+
+    forestAbyssalDepth1.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths1.jpeg");
+    forestAbyssalDepth2.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths2.jpeg");
+    forestAbyssalDepth3.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths3.jpeg");
+    forestAbyssalDepth4.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths4.jpeg");
+    forestAbyssalDepth5.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths5.jpeg");
+    forestAbyssalDepth6.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths6.jpeg");
+    forestAbyssalDepth7.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths7.jpeg");
+    forestAbyssalDepth8.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths8.jpeg");
+    forestAbyssalDepth9.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths9.jpeg");
+    forestAbyssalDepth10.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths10.jpeg");
+    forestAbyssalDepth11.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths11.jpeg");
+    forestAbyssalDepth12.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths12.jpeg");
+    forestAbyssalDepth13.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths13.jpeg");
+    forestAbyssalDepth14.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths14.jpeg");
+    forestAbyssalDepth15.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths15.jpeg");
+
+    //Castle Wallpapers
+    castleHalls1.loadFromFile("Assets/Wallpapers/Castle/castle1.jpeg");
+    castleHalls2.loadFromFile("Assets/Wallpapers/Castle/castle2.jpeg");
+    castleHalls3.loadFromFile("Assets/Wallpapers/Castle/castle3.jpeg");
+    castleHalls4.loadFromFile("Assets/Wallpapers/Castle/castle4.jpeg");
+    castleHalls5.loadFromFile("Assets/Wallpapers/Castle/castle5.jpeg");
+    castleHalls6.loadFromFile("Assets/Wallpapers/Castle/castle6.jpeg");
+    castleHalls7.loadFromFile("Assets/Wallpapers/Castle/castle7.jpeg");
+    castleHalls8.loadFromFile("Assets/Wallpapers/Castle/castle8.jpeg");
+    castleHalls9.loadFromFile("Assets/Wallpapers/Castle/castle9.jpeg");
+    castleHalls10.loadFromFile("Assets/Wallpapers/Castle/castle10.jpeg");
+    castleHalls11.loadFromFile("Assets/Wallpapers/Castle/castle11.jpeg");
+    castleHalls12.loadFromFile("Assets/Wallpapers/Castle/castle12.jpeg");
+    castleHalls13.loadFromFile("Assets/Wallpapers/Castle/castle13.jpeg");
+    castleHalls14.loadFromFile("Assets/Wallpapers/Castle/castle14.jpeg");
+    castleHalls15.loadFromFile("Assets/Wallpapers/Castle/castle15.jpeg");
+
+    castleDepths1.loadFromFile("Assets/Wallpapers/Castle/castleDepths1.jpeg");
+    castleDepths2.loadFromFile("Assets/Wallpapers/Castle/castleDepths2.jpeg");
+    castleDepths3.loadFromFile("Assets/Wallpapers/Castle/castleDepths3.jpeg");
+    castleDepths4.loadFromFile("Assets/Wallpapers/Castle/castleDepths4.jpeg");
+    castleDepths5.loadFromFile("Assets/Wallpapers/Castle/castleDepths5.jpeg");
+    castleDepths6.loadFromFile("Assets/Wallpapers/Castle/castleDepths6.jpeg");
+    castleDepths7.loadFromFile("Assets/Wallpapers/Castle/castleDepths7.jpeg");
+    castleDepths8.loadFromFile("Assets/Wallpapers/Castle/castleDepths8.jpeg");
+    castleDepths9.loadFromFile("Assets/Wallpapers/Castle/castleDepths9.jpeg");
+    castleDepths10.loadFromFile("Assets/Wallpapers/Castle/castleDepths10.jpeg");
+    castleDepths11.loadFromFile("Assets/Wallpapers/Castle/castleDepths11.jpeg");
+    castleDepths12.loadFromFile("Assets/Wallpapers/Castle/castleDepths12.jpeg");
+    castleDepths13.loadFromFile("Assets/Wallpapers/Castle/castleDepths13.jpeg");
+    castleDepths14.loadFromFile("Assets/Wallpapers/Castle/castleDepths14.jpeg");
+    castleDepths15.loadFromFile("Assets/Wallpapers/Castle/castleDepths15.jpeg");
+
+    castleChambers1.loadFromFile("Assets/Wallpapers/Castle/castlechambers1.jpeg");
+    castleChambers2.loadFromFile("Assets/Wallpapers/Castle/castlechambers2.jpeg");
+    castleChambers3.loadFromFile("Assets/Wallpapers/Castle/castlechambers3.jpeg");
+    castleChambers4.loadFromFile("Assets/Wallpapers/Castle/castlechambers4.jpeg");
+    castleChambers5.loadFromFile("Assets/Wallpapers/Castle/castlechambers5.jpeg");
+    castleChambers6.loadFromFile("Assets/Wallpapers/Castle/castlechambers6.jpeg");
+    castleChambers7.loadFromFile("Assets/Wallpapers/Castle/castlechambers7.jpeg");
+    castleChambers8.loadFromFile("Assets/Wallpapers/Castle/castlechambers8.jpeg");
+    castleChambers9.loadFromFile("Assets/Wallpapers/Castle/castlechambers9.jpeg");
+    castleChambers10.loadFromFile("Assets/Wallpapers/Castle/castlechambers10.jpeg");
+    castleChambers11.loadFromFile("Assets/Wallpapers/Castle/castlechambers11.jpeg");
+    castleChambers12.loadFromFile("Assets/Wallpapers/Castle/castlechambers12.jpeg");
+    castleChambers13.loadFromFile("Assets/Wallpapers/Castle/castlechambers13.jpeg");
+    castleChambers14.loadFromFile("Assets/Wallpapers/Castle/castlechambers14.jpeg");
+    castleChambers15.loadFromFile("Assets/Wallpapers/Castle/castlechambers15.jpeg");
+
+    castleLab1.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth1.jpeg");
+    castleLab2.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth2.jpeg");
+    castleLab3.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth3.jpeg");
+    castleLab4.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth4.jpeg");
+    castleLab5.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth5.jpeg");
+    castleLab6.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth6.jpeg");
+    castleLab7.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth7.jpeg");
+    castleLab8.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth8.jpeg");
+    castleLab9.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth9.jpeg");
+    castleLab10.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth10.jpeg");
+    castleLab11.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth11.jpeg");
+    castleLab12.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth12.jpeg");
+    castleLab13.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth13.jpeg");
+    castleLab14.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth14.jpeg");
+    castleLab15.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth15.jpeg");
+
+    //Decay Wallpapers
+    decayChasms1.loadFromFile("Assets/Wallpapers/Decay/crimson1.jpeg");
+    decayChasms2.loadFromFile("Assets/Wallpapers/Decay/crimson2.jpeg");
+    decayChasms3.loadFromFile("Assets/Wallpapers/Decay/crimson3.jpeg");
+    decayChasms4.loadFromFile("Assets/Wallpapers/Decay/crimson4.jpeg");
+    decayChasms5.loadFromFile("Assets/Wallpapers/Decay/crimson5.jpeg");
+    decayChasms6.loadFromFile("Assets/Wallpapers/Decay/crimson6.jpeg");
+    decayChasms7.loadFromFile("Assets/Wallpapers/Decay/crimson7.jpeg");
+    decayChasms8.loadFromFile("Assets/Wallpapers/Decay/crimson8.jpeg");
+    decayChasms9.loadFromFile("Assets/Wallpapers/Decay/crimson9.jpeg");
+    decayChasms10.loadFromFile("Assets/Wallpapers/Decay/crimson10.jpeg");
+    decayChasms11.loadFromFile("Assets/Wallpapers/Decay/crimson11.jpeg");
+    decayChasms12.loadFromFile("Assets/Wallpapers/Decay/crimson12.jpeg");
+    decayChasms13.loadFromFile("Assets/Wallpapers/Decay/crimson13.jpeg");
+    decayChasms14.loadFromFile("Assets/Wallpapers/Decay/crimson14.jpeg");
+    decayChasms15.loadFromFile("Assets/Wallpapers/Decay/crimson15.jpeg");
+
+    decayOcean1.loadFromFile("Assets/Wallpapers/Decay/decayocean1.jpeg");
+    decayOcean2.loadFromFile("Assets/Wallpapers/Decay/decayocean2.jpeg");
+    decayOcean3.loadFromFile("Assets/Wallpapers/Decay/decayocean3.jpeg");
+    decayOcean4.loadFromFile("Assets/Wallpapers/Decay/decayocean4.jpeg");
+    decayOcean5.loadFromFile("Assets/Wallpapers/Decay/decayocean5.jpeg");
+    decayOcean6.loadFromFile("Assets/Wallpapers/Decay/decayocean6.jpeg");
+    decayOcean7.loadFromFile("Assets/Wallpapers/Decay/decayocean7.jpeg");
+    decayOcean8.loadFromFile("Assets/Wallpapers/Decay/decayocean8.jpeg");
+    decayOcean9.loadFromFile("Assets/Wallpapers/Decay/decayocean9.jpeg");
+    decayOcean10.loadFromFile("Assets/Wallpapers/Decay/decayocean10.jpeg");
+    decayOcean11.loadFromFile("Assets/Wallpapers/Decay/decayocean11.jpeg");
+    decayOcean12.loadFromFile("Assets/Wallpapers/Decay/decayocean12.jpeg");
+    decayOcean13.loadFromFile("Assets/Wallpapers/Decay/decayocean13.jpeg");
+    decayOcean14.loadFromFile("Assets/Wallpapers/Decay/decayocean14.jpeg");
+    decayOcean15.loadFromFile("Assets/Wallpapers/Decay/decayocean15.jpeg");
+
+    decayForest1.loadFromFile("Assets/Wallpapers/Decay/crimsonforest1.jpeg");
+    decayForest2.loadFromFile("Assets/Wallpapers/Decay/crimsonforest2.jpeg");
+    decayForest3.loadFromFile("Assets/Wallpapers/Decay/crimsonforest3.jpeg");
+    decayForest4.loadFromFile("Assets/Wallpapers/Decay/crimsonforest4.jpeg");
+    decayForest5.loadFromFile("Assets/Wallpapers/Decay/crimsonforest5.jpeg");
+    decayForest6.loadFromFile("Assets/Wallpapers/Decay/crimsonforest6.jpeg");
+    decayForest7.loadFromFile("Assets/Wallpapers/Decay/crimsonforest7.jpeg");
+    decayForest8.loadFromFile("Assets/Wallpapers/Decay/crimsonforest8.jpeg");
+    decayForest9.loadFromFile("Assets/Wallpapers/Decay/crimsonforest9.jpeg");
+    decayForest10.loadFromFile("Assets/Wallpapers/Decay/crimsonforest10.jpeg");
+    decayForest11.loadFromFile("Assets/Wallpapers/Decay/crimsonforest11.jpeg");
+    decayForest12.loadFromFile("Assets/Wallpapers/Decay/crimsonforest12.jpeg");
+    decayForest13.loadFromFile("Assets/Wallpapers/Decay/crimsonforest13.jpeg");
+    decayForest14.loadFromFile("Assets/Wallpapers/Decay/crimsonforest14.jpeg");
+    decayForest15.loadFromFile("Assets/Wallpapers/Decay/crimsonforest15.jpeg");
+
+    decayGiants1.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants1.jpeg");
+    decayGiants2.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants2.jpeg");
+    decayGiants3.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants3.jpeg");
+    decayGiants4.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants4.jpeg");
+    decayGiants5.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants5.jpeg");
+    decayGiants6.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants6.jpeg");
+    decayGiants7.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants7.jpeg");
+    decayGiants8.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants8.jpeg");
+    decayGiants9.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants9.jpeg");
+    decayGiants10.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants10.jpeg");
+    decayGiants11.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants11.jpeg");
+    decayGiants12.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants12.jpeg");
+    decayGiants13.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants13.jpeg");
+    decayGiants14.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants14.jpeg");
+    decayGiants15.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants15.jpeg");
 }
 
 //Draw Fuctions
@@ -1392,4 +1612,20 @@ void Assets::loadSFX()
    
     //Set Volume Levels
     blipmenu.setVolume(60);
+}
+
+void Assets::playTrack(sf::Music& track)
+{
+    if (!this->trackPlayed) {
+        track.play();
+        this->trackPlayed = true;
+    }
+}
+
+void Assets::playAmbience(sf::Music& track)
+{
+    if (!this->ambPlayed) {
+        track.play();
+        this->ambPlayed = true;
+    }
 }

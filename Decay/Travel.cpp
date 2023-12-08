@@ -23,6 +23,7 @@ Travel::Travel()
 
     //Sound Bools
     this->soundPlay = true;
+    this->replayMusic = false;
 }
 
 Travel::~Travel()
@@ -55,9 +56,10 @@ void Travel::newArea(Sprites& sprites, Animation& animate)
     sprites.getEndFrame() = false; //Ensure that the forward arrow is allowed
     sprites.getStartFrame() = true; //Ensure that the back arrow is gone
     this->bonfireInit = false; //Uninit bonfire
-    sprites.soundCampfire.stop(); //Stop the ambience from playing
+    sprites.bonfire.stop(); //Stop the ambience from playing
     this->soundPlay = true; //Reset bonfire sounds
     sprites.setBonfireAssetsFalse();
+    animate.getDecayWarning() = true;
 }
 
 void Travel::enterBonfire(sf::RenderWindow& window, Sprites& sprites, Event& notevent)
@@ -79,7 +81,7 @@ void Travel::enterBonfire(sf::RenderWindow& window, Sprites& sprites, Event& not
     sprites.map.setTexture(sprites.mapTexture);
     sprites.map.setPosition(440.0f, -200.0f);
     if (this->soundPlay) {
-        sprites.soundCampfire.play();
+        sprites.bonfire.play();
         this->soundPlay = false;
     }
 }
@@ -102,6 +104,7 @@ void Travel::introBeginning(sf::RenderWindow& window, Sprites& sprites, Event& n
         sprites.locationText.setString("");
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Intro/intro1.jpeg");
+            sprites.track6.play();
             this->frameInit = true;
         }
         sprites.text.setString("There once was a kingdom plentiful and prosperous. The citizens had very little to worry of and days were filled with joy. Though, not all good things last forever.");
@@ -231,6 +234,7 @@ void Travel::introBeginning(sf::RenderWindow& window, Sprites& sprites, Event& n
         sprites.text.setString("");
         sprites.getIntroFinished() = true;
         sprites.getEventAssets() = false;
+        sprites.track6.stop();
         break;
     }
 }
@@ -275,102 +279,59 @@ void Travel::forestEntrance(sf::RenderWindow& window, Sprites& sprites, Event& n
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Forest Entrance");
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest1.jpeg");
-            animate.getDecayWarning() = true;
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestEntrance1);
+        sprites.playTrack(sprites.track2);
+        sprites.playAmbience(sprites.forestAmbience);
         break;
     case 1:
+        sprites.map.setTexture(sprites.forestEntrance2);
         sprites.getStartFrame() = false;//Allow back arrow to re appear
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest2.jpeg");
-            this->frameInit = true;
-        }
         combat.initDecayWalker(sprites);
         combat.combatLoop(window, sprites, player, animate);
+        this->stopComTrack(combat, sprites.track9, sprites.track2);
         break;
     case 2:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest3.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestEntrance3);
         break;
     case 3:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest4.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestEntrance4);
         break;
     case 4:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest5.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestEntrance5);
         break;
     case 5:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest6.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestEntrance6);
         break;
     case 6:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest7.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestEntrance7);
         notevent.riEnc(sprites);
         break;
     case 7:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest8.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestEntrance8);
         break;
     case 8:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest9.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestEntrance9);
         break;
     case 9:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest10.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestEntrance10);
         break;
     case 10:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest11.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestEntrance11);
         notevent.forestSiwardEnc(sprites);
         break;
     case 11:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest12.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestEntrance12);
         break;
     case 12:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest13.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestEntrance13);
         break;
     case 13:
+        sprites.map.setTexture(sprites.forestEntrance14);
         sprites.getEndFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest14.jpeg");
-            this->frameInit = true;
-        }
         break;
     case 14:
+        sprites.map.setTexture(sprites.forestEntrance15);
         sprites.getEndFrame() = true;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forest15.jpeg");
-            this->frameInit = true;
-        }
         sprites.getForestAreaUnlocked() = 2;
         sprites.getInitForestMapTexture() = false;
         break;
@@ -384,103 +345,57 @@ void Travel::forestDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Forest Depths");
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths1.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestDepths1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths2.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestDepths2);
         break;
     case 2:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths3.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestDepths3);
         break;
     case 3:
         notevent.treeEnc(sprites, player);
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths4.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestDepths4);
         break;
     case 4:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths5.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestDepths5);
         break;
     case 5:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths6.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestDepths6);
         combat.initHostileTree(sprites);
         combat.combatLoop(window, sprites, player, animate);
         break;
     case 6:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths7.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestDepths7);
         break;
     case 7:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths8.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestDepths8);
         break;
     case 8:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths9.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestDepths9);
         break;
     case 9:
-        notevent.getReInitialize() = true;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths10.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestDepths10);
         break;
     case 10:
         notevent.forestDepthsSpadeEnc(sprites);
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths11.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestDepths11);
         break;
     case 11:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths12.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestDepths12);
         notevent.forestDepthsSpadeEnc(sprites);
         break;
     case 12:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths13.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestDepths13);
         break;
     case 13:
         sprites.getEndFrame() = false; //Ensure that the back arrow is gone
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths14.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestDepths14);
         break;
     case 14:
         sprites.getEndFrame() = true; //Ensure that the back arrow is gone
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestdepths15.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestDepths15);
         sprites.getForestAreaUnlocked() = 3;
         sprites.getInitForestMapTexture() = false;
         break;
@@ -493,73 +408,40 @@ void Travel::forestAbyssal(sf::RenderWindow& window, Sprites& sprites, Event& no
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Abyssal Forest");
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods1.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssal1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods2.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssal2);
         break;
     case 2:
         notevent.forestAbyssalSpadeEnc(sprites, player);
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods3.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssal3);
         break;
     case 3:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods4.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssal4);
         break;
     case 4:
         notevent.obeliskEnc(sprites, player);
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods5.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssal5);
         break;
     case 5:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods6.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssal6);
         break;
     case 6:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods7.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssal7);
         break;
     case 7:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods8.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssal8);
         break;
     case 8:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods9.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssal9);
         break;
     case 9:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods10.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssal10);
         break;
     case 10:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods11.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssal11);
         break;
     case 11:
         notevent.lostNunEnc(sprites);
@@ -567,30 +449,18 @@ void Travel::forestAbyssal(sf::RenderWindow& window, Sprites& sprites, Event& no
             combat.initLostNun(sprites);
             combat.combatLoop(window, sprites, player, animate);
         }
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods12.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssal12);
         break;
     case 12:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods13.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssal13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods14.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssal14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssalwoods15.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssal15);
         sprites.getForestAreaUnlocked() = 4;
         sprites.getInitForestMapTexture() = false;
         break;
@@ -603,100 +473,55 @@ void Travel::forestAbyssalDepths(sf::RenderWindow& window, Sprites& sprites, Eve
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Abyssal Forest Depths");
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths1.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssalDepth1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths2.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssalDepth2);
         notevent.forestAbyssalSpadeEnc(sprites, player);
         break;
     case 2:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths3.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssalDepth3);
         combat.initDecapod(sprites);
         combat.combatLoop(window, sprites, player, animate);
         break;
     case 3:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths4.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssalDepth4);
         break;
     case 4:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths5.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssalDepth5);
         break;
     case 5:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths6.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssalDepth6);
         break;
     case 6:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths7.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssalDepth7);
         break;
     case 7:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths8.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssalDepth8);
         break;
     case 8:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths9.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssalDepth9);
         break;
     case 9:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths10.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssalDepth10);
         break;
     case 10:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths11.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssalDepth11);
         break;
     case 11:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths12.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssalDepth12);
         break;
     case 12:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths13.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssalDepth13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths14.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssalDepth14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/abyssaldepths15.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.forestAbyssalDepth15);
         sprites.getAreaUnlocked() = 1;
         break;
     }
@@ -742,97 +567,52 @@ void Travel::castleHalls(sf::RenderWindow& window, Sprites& sprites, Event& note
         //Draw Map Sprite
         this->newArea(sprites, animate);
         sprites.locationText.setString("Castle Entrance");
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castle1.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleHalls1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castle2.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleHalls2);
         break;
     case 2:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castle3.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleHalls3);
         break;
     case 3:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castle4.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleHalls4);
         break;
     case 4:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castle5.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleHalls5);
         break;
     case 5:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castle6.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleHalls6);
         break;
     case 6:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castle7.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleHalls7);
         break;
     case 7:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castle8.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleHalls8);
         break;
     case 8:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castle9.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleHalls9);
         break;
     case 9:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castle10.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleHalls10);
         break;
     case 10:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castle11.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleHalls11);
         break;
     case 11:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castle12.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleHalls12);
         break;
     case 12:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castle13.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleHalls13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castle14.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleHalls14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castle15.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleHalls15);
         sprites.getCastleAreaUnlocked() = 2;
         sprites.getInitCastleMapTexture() = false;
         break;
@@ -846,10 +626,7 @@ void Travel::castleDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Castle Depths");
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths1.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleDepths1);
         //Initialize Spade and Sprite
         if (notevent.getSpadePoison()) {
             notevent.castleSpadeEncPoison(sprites);
@@ -860,91 +637,49 @@ void Travel::castleDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
         break;
     case 1:
         sprites.getStartFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths2.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleDepths2);
         break;
     case 2:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths3.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleDepths3);
         break;
     case 3:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths4.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleDepths4);
         break;
     case 4:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths5.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleDepths5);
         break;
     case 5:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths6.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleDepths6);
         break;
     case 6:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths7.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleDepths7);
         break;
     case 7:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths8.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleDepths8);
         break;
     case 8:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths9.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleDepths9);
         break;
     case 9:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths10.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleDepths10);
         break;
     case 10:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths11.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleDepths11);
         notevent.castleSiwardEnc(sprites);
         break;
     case 11:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths12.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleDepths12);
         break;
     case 12:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths13.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleDepths13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths14.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleDepths14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleDepths15.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleDepths15);
         sprites.getCastleAreaUnlocked() = 3;
         sprites.getInitCastleMapTexture() = false;
         break;
@@ -957,98 +692,53 @@ void Travel::castleChambers(sf::RenderWindow& window, Sprites& sprites, Event& n
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Castle Chambers");
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers1.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleChambers1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers2.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleChambers2);
         break;
     case 2:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers3.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleChambers3);
         notevent.castleGrifEnc(sprites);
         break;
     case 3:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers4.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleChambers4);
         break;
     case 4:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers5.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleChambers5);
         break;
     case 5:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers6.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleChambers6);
         break;
     case 6:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers7.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleChambers7);
         break;
     case 7:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers8.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleChambers8);
         break;
     case 8:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers9.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleChambers9);
         break;
     case 9:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers10.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleChambers10);
         break;
     case 10:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers11.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleChambers11);
         break;
     case 11:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers12.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleChambers12);
         break;
     case 12:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers13.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleChambers13);
         break;
         sprites.getEndFrame() = false;
     case 13:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers14.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleChambers14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlechambers15.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleChambers15);
         sprites.getCastleAreaUnlocked() = 4;
         sprites.getInitCastleMapTexture() = false;
         break;
@@ -1061,97 +751,52 @@ void Travel::castleLabyrinth(sf::RenderWindow& window, Sprites& sprites, Event& 
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Castle Labyrinth");
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth1.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleLab1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth2.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleLab2);
         break;
     case 2:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth3.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleLab3);
         break;
     case 3:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth4.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleLab4);
         break;
     case 4:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth5.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleLab5);
         break;
     case 5:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth6.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleLab6);
         break;
     case 6:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth7.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleLab7);
         break;
     case 7:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth8.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleLab8);
         break;
     case 8:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth9.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleLab9);
         break;
     case 9:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth10.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleLab10);
         break;
     case 10:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth11.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleLab11);
         break;
     case 11:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth12.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleLab12);
         break;
     case 12:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth13.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleLab13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth14.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleLab14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castlelabyrinth15.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.castleLab15);
         notevent.castleSiwardFinalEnc(sprites);
         if (notevent.getSiwardEncedFinal()) {
             combat.initSiward(sprites);
@@ -1201,99 +846,54 @@ void Travel::decayChasms(sf::RenderWindow& window, Sprites& sprites, Event& note
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Decay Chasms");
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimson1.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayChasms1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimson2.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayChasms2);
         break;
     case 2:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimson3.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayChasms3);
         break;
     case 3:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimson4.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayChasms4);
         combat.initLimbSplitter(sprites);
         combat.combatLoop(window, sprites, player, animate);
         break;
     case 4:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimson5.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayChasms5);
         break;
     case 5:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimson6.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayChasms6);
         break;
     case 6:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimson7.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayChasms7);
         break;
     case 7:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimson8.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayChasms8);
         break;
     case 8:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimson9.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayChasms9);
         break;
     case 9:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimson10.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayChasms10);
         break;
     case 10:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimson11.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayChasms11);
         break;
     case 11:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimson12.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayChasms12);
         break;
     case 12:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimson13.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayChasms13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimson14.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayChasms14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimson15.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayChasms15);
         sprites.getDecayAreaUnlocked() = 2;
         sprites.getInitDecayMapTexture() = false;
         break;
@@ -1307,97 +907,52 @@ void Travel::decayOcean(sf::RenderWindow& window, Sprites& sprites, Event& notev
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Decay Ocean");
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayocean1.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayOcean1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayocean2.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayOcean2);
         break;
     case 2:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayocean3.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayOcean3);
         break;
     case 3:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayocean4.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayOcean4);
         break;
     case 4:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayocean5.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayOcean5);
         break;
     case 5:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayocean6.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayOcean6);
         break;
     case 6:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayocean7.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayOcean7);
         break;
     case 7:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayocean8.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayOcean8);
         break;
     case 8:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayocean9.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayOcean9);
         break;
     case 9:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayocean10.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayOcean10);
         break;
     case 10:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayocean11.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayOcean11);
         break;
     case 11:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayocean12.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayOcean12);
         break;
     case 12:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayocean13.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayOcean13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayocean14.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayOcean14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayocean15.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayOcean15);
         sprites.getDecayAreaUnlocked() = 3;
         sprites.getInitDecayMapTexture() = false;
         break;
@@ -1410,102 +965,57 @@ void Travel::decayForest(sf::RenderWindow& window, Sprites& sprites, Event& note
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Decay Ocean");
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest1.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayForest1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest2.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayForest2);
         break;
     case 2:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest3.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayForest3);
         break;
     case 3:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest4.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayForest4);
         break;
     case 4:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest5.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayForest5);
         break;
     case 5:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest6.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayForest6);
         break;
     case 6:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest7.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayForest7);
         break;
     case 7:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest8.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayForest8);
         break;
     case 8:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest9.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayForest9);
         break;
     case 9:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest10.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayForest10);
         break;
     case 10:
+        sprites.map.setTexture(sprites.decayForest11);
         notevent.decaySpadeEncPoison(sprites);
         if (notevent.getSpadeEnced()) {
             combat.initSpade(sprites);
             combat.combatLoop(window, sprites, player, animate);
         }
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest11.jpeg");
-            this->frameInit = true;
-        }
         break;
     case 11:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest12.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayForest12);
         break;
     case 12:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest13.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayForest13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest14.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayForest14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonforest15.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayForest15);
         sprites.getDecayAreaUnlocked() = 4;
         sprites.getInitDecayMapTexture() = false;
         break;
@@ -1518,97 +1028,52 @@ void Travel::decayGiants(sf::RenderWindow& window, Sprites& sprites, Event& note
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Decay Ocean");
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants1.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayGiants1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants2.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayGiants2);
         break;
     case 2:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants3.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayGiants3);
         break;
     case 3:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants4.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayGiants4);
         break;
     case 4:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants5.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayGiants5);
         break;
     case 5:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants6.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayGiants6);
         break;
     case 6:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants7.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayGiants7);
         break;
     case 7:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants8.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayGiants8);
         break;
     case 8:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants9.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayGiants9);
         break;
     case 9:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants10.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayGiants10);
         break;
     case 10:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants11.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayGiants11);
         break;
     case 11:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants12.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayGiants12);
         break;
     case 12:
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants13.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayGiants13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants14.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayGiants14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        if (!this->frameInit) {
-            sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/crimsonGiants15.jpeg");
-            this->frameInit = true;
-        }
+        sprites.map.setTexture(sprites.decayGiants15);
         notevent.rotBeastEnc(sprites);
         if (notevent.getRotBeastEnced()) {
             combat.initRotBeast(sprites);

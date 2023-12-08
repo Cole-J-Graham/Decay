@@ -184,12 +184,12 @@ void Combat::combatLoop(sf::RenderWindow& window, Sprites& sprites, Player& play
 			sprites.text.setString("You have killed the " + getHostileNameNoSpc() + ". " + std::to_string(player.getExp()) + " Exp gained...");
 			combatTextTime.restart();//Start timer to remove text
 			this->comTextRemoved = false;//Remove text
-			sprites.getTipBoxCounter() = -1;
 			//Make entity viewer blank again
 			sprites.getEntityViewerCounter() = -1;
 			animate.getCombatAnimationLocation() = -1;
 			getThomEnraged() = false;
 			getPlayerFatigue() = false;
+			sprites.getTipBoxCounter() = -1;
 			this->combatEnd = true;
 		}
 		//Hostiles turn
@@ -620,6 +620,8 @@ void Combat::thomSelectMove(Sprites& sprites, Animation& animate)
 void Combat::initWolf(Sprites& sprites)
 {
 	if (!this->initHostileWolf) {
+		sprites.track2.pause();
+		sprites.track9.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make wolf entity visible
@@ -657,6 +659,8 @@ void Combat::initWolf(Sprites& sprites)
 void Combat::initDecayWalker(Sprites& sprites)
 {
 	if (!this->initHostileWalker) {
+		sprites.track2.pause();
+		sprites.track9.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make decay walker entity visible
@@ -694,6 +698,8 @@ void Combat::initDecayWalker(Sprites& sprites)
 void Combat::initHostileTree(Sprites& sprites)
 {
 	if (!this->initHostileTreeMimic) {
+		sprites.track2.pause();
+		sprites.track9.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make tree mimic entity visible
@@ -731,6 +737,8 @@ void Combat::initHostileTree(Sprites& sprites)
 void Combat::initDecayKnight(Sprites& sprites)
 {
 	if (!this->initHostileKnight) {
+		sprites.track2.pause();
+		sprites.track9.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make tree mimic entity visible
@@ -768,6 +776,8 @@ void Combat::initDecayKnight(Sprites& sprites)
 void Combat::initLostNun(Sprites& sprites)
 {
 	if (!this->initHostileLostNun) {
+		sprites.track2.pause();
+		sprites.track9.play();
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set nun sprite
@@ -801,6 +811,8 @@ void Combat::initLostNun(Sprites& sprites)
 void Combat::initDecapod(Sprites& sprites)
 {
 	if (!this->initHostileDecapod) {
+		sprites.track2.pause();
+		sprites.track9.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make decapod entity visible
@@ -838,6 +850,8 @@ void Combat::initDecapod(Sprites& sprites)
 void Combat::initHazeDemon(Sprites& sprites)
 {
 	if (!this->initHostileDecapod) {
+		sprites.track2.pause();
+		sprites.track9.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make decapod entity visible

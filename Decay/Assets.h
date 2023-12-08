@@ -73,6 +73,10 @@ private:
 	int combatZinMoves;
 	int combatThomMoves;
 
+	//Music
+	bool trackPlayed;
+	bool ambPlayed;
+
 	//Strings
 	std::string playerName;
 
@@ -110,6 +114,7 @@ public:
 	//Core Functions
 	void loadSprites();
 	void loadSounds();
+	void loadMapImages();
 
 	//Draw Functions
 	void drawObjects();
@@ -141,6 +146,8 @@ public:
 
 	//Sound Functions
 	void loadSFX();
+	void playTrack(sf::Music& track);
+	void playAmbience(sf::Music& track);
 
 	//Combat Asset Functions
 	void initCombatAssets();
@@ -154,7 +161,6 @@ public:
 	//Textures
 	sf::Texture combatTexture;
 	sf::Texture boxTexture;
-	sf::Texture mapTexture;
 	sf::Texture buttonTexture;
 	sf::Texture arrowTextureRight;
 	sf::Texture arrowTextureLeft;
@@ -519,7 +525,218 @@ public:
 	sf::SoundBuffer bufferIronWall;
 
 	//Music
-	sf::Music music;
+	sf::Music bonfire;
+	sf::Music forestAmbience;
+	
+	sf::Music track1;
+	sf::Music track2;
+	sf::Music track3;
+	sf::Music track4;
+	sf::Music track5;
+	sf::Music track6;
+	sf::Music track7;
+	sf::Music track8;
+	sf::Music track9;
+	sf::Music track10;
+	sf::Music track11;
+	sf::Music track12;
+	sf::Music track13;
+
+	//Forest Wallpapers
+	sf::Texture mapTexture;
+	sf::Texture forestEntrance1;
+	sf::Texture forestEntrance2;
+	sf::Texture forestEntrance3;
+	sf::Texture forestEntrance4;
+	sf::Texture forestEntrance5;
+	sf::Texture forestEntrance6;
+	sf::Texture forestEntrance7;
+	sf::Texture forestEntrance8;
+	sf::Texture forestEntrance9;
+	sf::Texture forestEntrance10;
+	sf::Texture forestEntrance11;
+	sf::Texture forestEntrance12;
+	sf::Texture forestEntrance13;
+	sf::Texture forestEntrance14;
+	sf::Texture forestEntrance15;
+
+	sf::Texture forestDepths1;
+	sf::Texture forestDepths2;
+	sf::Texture forestDepths3;
+	sf::Texture forestDepths4;
+	sf::Texture forestDepths5;
+	sf::Texture forestDepths6;
+	sf::Texture forestDepths7;
+	sf::Texture forestDepths8;
+	sf::Texture forestDepths9;
+	sf::Texture forestDepths10;
+	sf::Texture forestDepths11;
+	sf::Texture forestDepths12;
+	sf::Texture forestDepths13;
+	sf::Texture forestDepths14;
+	sf::Texture forestDepths15;
+
+	sf::Texture forestAbyssal1;
+	sf::Texture forestAbyssal2;
+	sf::Texture forestAbyssal3;
+	sf::Texture forestAbyssal4;
+	sf::Texture forestAbyssal5;
+	sf::Texture forestAbyssal6;
+	sf::Texture forestAbyssal7;
+	sf::Texture forestAbyssal8;
+	sf::Texture forestAbyssal9;
+	sf::Texture forestAbyssal10;
+	sf::Texture forestAbyssal11;
+	sf::Texture forestAbyssal12;
+	sf::Texture forestAbyssal13;
+	sf::Texture forestAbyssal14;
+	sf::Texture forestAbyssal15;
+
+	sf::Texture forestAbyssalDepth1;
+	sf::Texture forestAbyssalDepth2;
+	sf::Texture forestAbyssalDepth3;
+	sf::Texture forestAbyssalDepth4;
+	sf::Texture forestAbyssalDepth5;
+	sf::Texture forestAbyssalDepth6;
+	sf::Texture forestAbyssalDepth7;
+	sf::Texture forestAbyssalDepth8;
+	sf::Texture forestAbyssalDepth9;
+	sf::Texture forestAbyssalDepth10;
+	sf::Texture forestAbyssalDepth11;
+	sf::Texture forestAbyssalDepth12;
+	sf::Texture forestAbyssalDepth13;
+	sf::Texture forestAbyssalDepth14;
+	sf::Texture forestAbyssalDepth15;
+
+	//Castle Wallpapers
+	sf::Texture castleHalls1;
+	sf::Texture castleHalls2;
+	sf::Texture castleHalls3;
+	sf::Texture castleHalls4;
+	sf::Texture castleHalls5;
+	sf::Texture castleHalls6;
+	sf::Texture castleHalls7;
+	sf::Texture castleHalls8;
+	sf::Texture castleHalls9;
+	sf::Texture castleHalls10;
+	sf::Texture castleHalls11;
+	sf::Texture castleHalls12;
+	sf::Texture castleHalls13;
+	sf::Texture castleHalls14;
+	sf::Texture castleHalls15;
+
+	sf::Texture castleDepths1;
+	sf::Texture castleDepths2;
+	sf::Texture castleDepths3;
+	sf::Texture castleDepths4;
+	sf::Texture castleDepths5;
+	sf::Texture castleDepths6;
+	sf::Texture castleDepths7;
+	sf::Texture castleDepths8;
+	sf::Texture castleDepths9;
+	sf::Texture castleDepths10;
+	sf::Texture castleDepths11;
+	sf::Texture castleDepths12;
+	sf::Texture castleDepths13;
+	sf::Texture castleDepths14;
+	sf::Texture castleDepths15;
+
+	sf::Texture castleChambers1;
+	sf::Texture castleChambers2;
+	sf::Texture castleChambers3;
+	sf::Texture castleChambers4;
+	sf::Texture castleChambers5;
+	sf::Texture castleChambers6;
+	sf::Texture castleChambers7;
+	sf::Texture castleChambers8;
+	sf::Texture castleChambers9;
+	sf::Texture castleChambers10;
+	sf::Texture castleChambers11;
+	sf::Texture castleChambers12;
+	sf::Texture castleChambers13;
+	sf::Texture castleChambers14;
+	sf::Texture castleChambers15;
+
+	sf::Texture castleLab1;
+	sf::Texture castleLab2;
+	sf::Texture castleLab3;
+	sf::Texture castleLab4;
+	sf::Texture castleLab5;
+	sf::Texture castleLab6;
+	sf::Texture castleLab7;
+	sf::Texture castleLab8;
+	sf::Texture castleLab9;
+	sf::Texture castleLab10;
+	sf::Texture castleLab11;
+	sf::Texture castleLab12;
+	sf::Texture castleLab13;
+	sf::Texture castleLab14;
+	sf::Texture castleLab15;
+
+	//Decay Wallpapers
+	sf::Texture decayChasms1;
+	sf::Texture decayChasms2;
+	sf::Texture decayChasms3;
+	sf::Texture decayChasms4;
+	sf::Texture decayChasms5;
+	sf::Texture decayChasms6;
+	sf::Texture decayChasms7;
+	sf::Texture decayChasms8;
+	sf::Texture decayChasms9;
+	sf::Texture decayChasms10;
+	sf::Texture decayChasms11;
+	sf::Texture decayChasms12;
+	sf::Texture decayChasms13;
+	sf::Texture decayChasms14;
+	sf::Texture decayChasms15;
+
+	sf::Texture decayOcean1;
+	sf::Texture decayOcean2;
+	sf::Texture decayOcean3;
+	sf::Texture decayOcean4;
+	sf::Texture decayOcean5;
+	sf::Texture decayOcean6;
+	sf::Texture decayOcean7;
+	sf::Texture decayOcean8;
+	sf::Texture decayOcean9;
+	sf::Texture decayOcean10;
+	sf::Texture decayOcean11;
+	sf::Texture decayOcean12;
+	sf::Texture decayOcean13;
+	sf::Texture decayOcean14;
+	sf::Texture decayOcean15;
+
+	sf::Texture decayForest1;
+	sf::Texture decayForest2;
+	sf::Texture decayForest3;
+	sf::Texture decayForest4;
+	sf::Texture decayForest5;
+	sf::Texture decayForest6;
+	sf::Texture decayForest7;
+	sf::Texture decayForest8;
+	sf::Texture decayForest9;
+	sf::Texture decayForest10;
+	sf::Texture decayForest11;
+	sf::Texture decayForest12;
+	sf::Texture decayForest13;
+	sf::Texture decayForest14;
+	sf::Texture decayForest15;
+
+	sf::Texture decayGiants1;
+	sf::Texture decayGiants2;
+	sf::Texture decayGiants3;
+	sf::Texture decayGiants4;
+	sf::Texture decayGiants5;
+	sf::Texture decayGiants6;
+	sf::Texture decayGiants7;
+	sf::Texture decayGiants8;
+	sf::Texture decayGiants9;
+	sf::Texture decayGiants10;
+	sf::Texture decayGiants11;
+	sf::Texture decayGiants12;
+	sf::Texture decayGiants13;
+	sf::Texture decayGiants14;
+	sf::Texture decayGiants15;
 
 	//Sprite Int Getters
 	int& getPlayerCounter() { return this->playerCounter; };
@@ -645,6 +862,10 @@ public:
 	//Combat Move Unlock Setters
 	void setCombatPlayerMovesInc() { this->combatPlayerMoves++; };
 	void setCombatZinMovesInc() { this->combatZinMoves++; };
+
+	//Music
+	bool& getTrackPlayed() { return this->trackPlayed; };
+	bool& getAmbTrackPlayed() { return this->ambPlayed; };
 
 	//String Getters
 	std::string& getPlayerName() { return this->playerName; };

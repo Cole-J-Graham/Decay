@@ -51,7 +51,7 @@ Player::~Player()
 void Player::combatReward()
 {
 	if (this->increase == true) {
-		this->exp += 100 + rand() % 10 + clock() / 95 - 100;
+		this->exp += 100 + rand() % 10 + clock() / 95;
 		this->zinExp += 100 + rand() % 15;
 		this->increase = false;
 	}
