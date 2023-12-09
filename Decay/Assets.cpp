@@ -101,7 +101,7 @@ Assets::Assets()
     //Load game assets
     this->loadSprites();
     this->loadSounds();
-    //this->loadMapImages(); (DEBUG)
+    this->loadMapImages(); //(DEBUG)
 }
 
 Assets::~Assets()

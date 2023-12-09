@@ -72,6 +72,10 @@ private:
 	int zinPickMove;
 	int thomPickMove;
 
+	//Combat Rewards
+	bool increase;
+	int expGain;
+
 	//Animation Control
 	bool comTextRemoved;
 
@@ -84,6 +88,7 @@ public:
 	void updateStats(Sprites& sprites, Player& player);
 	void updateStatsZin(Player& player);
 	void unlockMoves(Sprites& sprites, Player& player);
+	void combatReward(Sprites& sprites, Player& player);
 
 	//Core Combat Functions
 	void combatLoop(sf::RenderWindow& window, Sprites& sprites, Player& player, Animation& animate);
@@ -196,6 +201,10 @@ public:
 
 	//Animation Control Getters
 	bool& getComTextRemoved() { return this->comTextRemoved; };
+
+	//Comabt Reward Getters
+	bool& getIncease() { return this->increase; };
+
 
 	sf::Time combatTextElapsed;
 	sf::Clock combatTextTime;

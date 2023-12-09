@@ -65,6 +65,10 @@ Combat::Combat()
 	this->zinPickMove = 0;
 	this->thomPickMove = 0;
 
+	//Combat Rewards
+	this->increase = false;
+	this->expGain = 0;
+
 	//Animation Control
 	this->comTextRemoved = true;
 }
@@ -95,27 +99,27 @@ void Combat::unlockMoves(Sprites& sprites, Player& player)
 	switch (player.getLevel()) {
 	case 5:
 		//Unlock Guard
-		sprites.setCombatPlayerMovesInc();
+		sprites.getCombatPlayerMoves() = 1;
 		sprites.text.setString("Move 'Guard' learned!");
 		break;
 	case 15:
 		//Unlock Decayed Blade
-		sprites.setCombatPlayerMovesInc();
+		sprites.getCombatPlayerMoves() = 2;
 		sprites.text.setString("Move 'Decayed Blade' learned!");
 		break;
 	case 20:
 		//Unlock Hefty blow
-		sprites.setCombatPlayerMovesInc();
+		sprites.getCombatPlayerMoves() = 3;
 		sprites.text.setString("Move 'Hefty Blow' learned!");
 		break;
 	case 30:
 		//Unlock Decaying Synergy
-		sprites.setCombatPlayerMovesInc();
+		sprites.getCombatPlayerMoves() = 4;
 		sprites.text.setString("Move 'Decaying Synergy' learned!");
 		break;
 	case 40:
 		//Unlock Iron Wall
-		sprites.setCombatPlayerMovesInc();
+		sprites.getCombatPlayerMoves() = 5;
 		sprites.text.setString("Move 'Iron Wall' learned!");
 		break;
 	}
@@ -123,29 +127,38 @@ void Combat::unlockMoves(Sprites& sprites, Player& player)
 	switch (player.getZinLevel()) {
 	case 5:
 		//Unlock Mend
-		sprites.setCombatZinMovesInc();
+		sprites.getCombatZinMoves() = 1;
 		sprites.text.setString("Move 'Mend' learned!");
 		break;
 	case 10:
 		//Unlock Vengeance
-		sprites.setCombatZinMovesInc();
+		sprites.getCombatZinMoves() = 2;
 		sprites.text.setString("Move 'Vengeance' learned!");
 		break;
 	case 15:
 		//Unlock Hellish Blaze
-		sprites.setCombatZinMovesInc();
+		sprites.getCombatZinMoves() = 3;
 		sprites.text.setString("Move 'Hellish Blaze' learned!");
 		break;
 	case 25:
 		//Unlock Focused Healing
-		sprites.setCombatZinMovesInc();
+		sprites.getCombatZinMoves() = 4;
 		sprites.text.setString("Move 'Focused Healing' learned!");
 		break;
 	case 35:
 		//Unlock Crimson Flames
-		sprites.setCombatZinMovesInc();
+		sprites.getCombatZinMoves() = 5;
 		sprites.text.setString("Move 'Crimson Flames' learned!");
 		break;
+	}
+}
+
+void Combat::combatReward(Sprites& sprites, Player& player)
+{
+	if (!this->increase) {
+		player.getExp() += this->expGain;
+		player.getZinExp() += this->expGain;
+		this->increase = true;
 	}
 }
 
@@ -180,7 +193,7 @@ void Combat::combatLoop(sf::RenderWindow& window, Sprites& sprites, Player& play
 		//Check if hostile is dead. If so, end combat
 		if (getHostileHp() <= 0) {
 			sprites.setCombatAssetsFalse();
-			player.combatReward();
+			this->combatReward(sprites, player);
 			sprites.text.setString("You have killed the " + getHostileNameNoSpc() + ". " + std::to_string(player.getExp()) + " Exp gained...");
 			combatTextTime.restart();//Start timer to remove text
 			this->comTextRemoved = false;//Remove text
@@ -634,6 +647,8 @@ void Combat::initWolf(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 342;
 		getHostileHp() = 25;
 		getHostileHpMax() = 25;
 		getHostileStrike() = 5;
@@ -673,6 +688,8 @@ void Combat::initDecayWalker(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 254;
 		getHostileHp() = 35;
 		getHostileHpMax() = 35;
 		getHostileStrike() = 2;
@@ -712,6 +729,8 @@ void Combat::initHostileTree(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 384;
 		getHostileHp() = 65;
 		getHostileHpMax() = 65;
 		getHostileStrike() = 2;
@@ -751,6 +770,8 @@ void Combat::initDecayKnight(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 762;
 		getHostileHp() = 100;
 		getHostileHpMax() = 100;
 		getHostileStrike() = 15;
@@ -786,6 +807,8 @@ void Combat::initLostNun(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 873;
 		getHostileHp() = 200;
 		getHostileHpMax() = 200;
 		getHostileStrike() = 1;
@@ -825,6 +848,8 @@ void Combat::initDecapod(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 550;
 		getHostileHp() = 1;
 		getHostileHpMax() = 75;
 		getHostileStrike() = 12;
@@ -864,6 +889,8 @@ void Combat::initHazeDemon(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 552;
 		getHostileHp() = 75;
 		getHostileHpMax() = 75;
 		getHostileStrike() = 12;
@@ -902,6 +929,8 @@ void Combat::initCourtJester(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 825;
 		getHostileHp() = 80;
 		getHostileHpMax() = 80;
 		getHostileStrike() = 20;
@@ -939,6 +968,8 @@ void Combat::initWallMimic(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 557;
 		getHostileHp() = 80;
 		getHostileHpMax() = 80;
 		getHostileStrike() = 20;
@@ -976,6 +1007,8 @@ void Combat::initLostKnight(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 782;
 		getHostileHp() = 100;
 		getHostileHpMax() = 100;
 		getHostileStrike() = 25;
@@ -1013,6 +1046,8 @@ void Combat::initPhantom(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 444;
 		getHostileHp() = 120;
 		getHostileHpMax() = 120;
 		getHostileStrike() = 10;
@@ -1050,6 +1085,8 @@ void Combat::initSkinEater(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 274;
 		getHostileHp() = 65;
 		getHostileHpMax() = 65;
 		getHostileStrike() = 8;
@@ -1083,6 +1120,8 @@ void Combat::initSiward(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 1500;
 		getHostileHp() = 500;
 		getHostileHpMax() = 1000;
 		getHostileStrike() = 40;
@@ -1121,6 +1160,8 @@ void Combat::initLimbSplitter(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 750;
 		getHostileHp() = 250;
 		getHostileHpMax() = 250;
 		getHostileStrike() = 40;
@@ -1158,6 +1199,8 @@ void Combat::initBurrower(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 550;
 		getHostileHp() = 250;
 		getHostileHpMax() = 250;
 		getHostileStrike() = 40;
@@ -1195,6 +1238,8 @@ void Combat::initChatterMouth(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 550;
 		getHostileHp() = 265;
 		getHostileHpMax() = 265;
 		getHostileStrike() = 20;
@@ -1232,6 +1277,8 @@ void Combat::initReclus(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 253;
 		getHostileHp() = 265;
 		getHostileHpMax() = 265;
 		getHostileStrike() = 20;
@@ -1269,6 +1316,8 @@ void Combat::initTendrilAlpha(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 220;
 		getHostileHp() = 400;
 		getHostileHpMax() = 400;
 		getHostileStrike() = 25;
@@ -1302,6 +1351,8 @@ void Combat::initSpade(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 500;
 		getHostileHp() = 750;
 		getHostileHpMax() = 750;
 		getHostileStrike() = 40;
@@ -1335,6 +1386,8 @@ void Combat::initRotBeast(Sprites& sprites)
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
+		this->increase = false;
+		this->expGain = 2500;
 		getHostileHp() = 1500;
 		getHostileHpMax() = 1500;
 		getHostileStrike() = 50;

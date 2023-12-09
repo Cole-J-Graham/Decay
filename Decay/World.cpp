@@ -170,7 +170,7 @@ void World::saveGame(Sprites& sprites, Event& notevent, Combat& combat, Player& 
             << " " <<  player.getFortitude() << " " <<  player.getVitality() << " " <<  player.getZinLevel() << " " <<  player.getZinSp()
             << " " <<  player.getZinExp() << " " <<  player.getZinExpNext() << " " <<  player.getZinResolve() << " " <<  player.getZinPatience()
             << " " <<  player.getZinResilience() << " " <<  player.getSwordPower() << " " <<  player.getGold() << " " <<  player.getSmithingStones()
-            << " " <<  player.getIncease() << " " <<  travel.getFrame() << " " <<  travel.getTravel()
+            << " " <<  combat.getIncease() << " " <<  travel.getFrame() << " " <<  travel.getTravel()
             << " " <<  travel.getBonfireInit() << " " <<  travel.getIntroCounterDialogue() << " " <<  travel.getIntroCounter()
             << " " <<  travel.getForestCounter() << " " <<  travel.getCastleCounter() << " " <<  travel.getDecayCounter()
             << " " <<  travel.getFrameInit() << " " << this->unicode << " " << this->random << " " << this->test << " " << this->stop << " " << this->keyPress << " " << this->initialized
@@ -234,7 +234,7 @@ void World::loadGame(Sprites& sprites, Event& notevent, Combat& combat, Player& 
             >> player.getFortitude() >> player.getVitality() >> player.getZinLevel() >> player.getZinSp()
             >> player.getZinExp() >> player.getZinExpNext() >> player.getZinResolve() >> player.getZinPatience()
             >> player.getZinResilience() >> player.getSwordPower() >> player.getGold() >> player.getSmithingStones()
-            >> player.getIncease() >> travel.getFrame() >> travel.getTravel()
+            >> combat.getIncease() >> travel.getFrame() >> travel.getTravel()
             >> travel.getBonfireInit() >> travel.getIntroCounterDialogue() >> travel.getIntroCounter()
             >> travel.getForestCounter() >> travel.getCastleCounter() >> travel.getDecayCounter()
             >> travel.getFrameInit() >> this->unicode >> this->random >> this->test >> this->stop >> this->keyPress >> this->initialized
@@ -385,6 +385,7 @@ void World::draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
         }
     }
     else if (this->mainMenu == true) {
+        sprites.playTrack(sprites.track13);
         sprites.greyOnHover(window);
         animate.animateMenu(sprites);
         window.draw(animate.menuSprite);

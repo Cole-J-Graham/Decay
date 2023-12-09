@@ -2,7 +2,7 @@
 #include<time.h>
 #include<cstdlib>
 #include<string>
-#include"Assets.h"
+#include"Sprites.h"
 
 class Player
 {
@@ -41,9 +41,6 @@ private:
 	int smithingStones;
 	std::string basicSword;
 
-	//Control Flow
-	bool increase;
-
 public:
 
 	//Constructors & Destructors
@@ -51,7 +48,6 @@ public:
 	~Player();
 
 	//Core Functions
-	void combatReward();
 	void statsText(Assets& assets);
 	void printInventory(Assets& assets);
 
@@ -115,9 +111,6 @@ public:
 
 	//Item Setters
 	void setSmithingStonesDec() { this->smithingStones--; };
-
-	//Control Flow
-	bool& getIncease() { return this->increase; };
 	
 };
 

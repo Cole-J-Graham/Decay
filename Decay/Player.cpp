@@ -10,7 +10,7 @@ Player::Player()
 	//Leveling
 	this->level = 1;
 	this->exp = 0;
-	this->expNext = 100;
+	this->expNext = 250;
 	this->sp = 0;
 
 	//Attributes
@@ -22,7 +22,7 @@ Player::Player()
 	this->zinLevel = 1;
 	this->zinSp = 0;
 	this->zinExp = 0;
-	this->zinExpNext = 50;
+	this->zinExpNext = 200;
 
 	//Zin Attributes
 	this->zinResolve = 0;
@@ -37,9 +37,6 @@ Player::Player()
 	this->smithingStones = 0;
 
 	this->basicSword = "Basic Longsword";
-
-	//Control Flow
-	this->increase = true;
 }
 
 Player::~Player()
@@ -48,15 +45,6 @@ Player::~Player()
 }
 
 //Core Functions
-void Player::combatReward()
-{
-	if (this->increase == true) {
-		this->exp += 100 + rand() % 10 + clock() / 95;
-		this->zinExp += 100 + rand() % 15;
-		this->increase = false;
-	}
-}
-
 void Player::statsText(Assets& assets)
 {
 	assets.playerTextElements[0].setString("LEVEL " + std::to_string(this->level));

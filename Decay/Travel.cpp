@@ -17,6 +17,7 @@ Travel::Travel()
 
     //Core Bools
     this->frameInit = false;
+    this->reInMap = false;
 
     //Detection initialization (Controls whether or not the detection rect is drawn...)
     this->bonfireInit = false;
@@ -60,6 +61,8 @@ void Travel::newArea(Sprites& sprites, Animation& animate)
     this->soundPlay = true; //Reset bonfire sounds
     sprites.setBonfireAssetsFalse();
     animate.getDecayWarning() = true;
+    this->reInMap = false;
+    this->replayMusic = false;
 }
 
 void Travel::enterBonfire(sf::RenderWindow& window, Sprites& sprites, Event& notevent)
@@ -105,6 +108,7 @@ void Travel::introBeginning(sf::RenderWindow& window, Sprites& sprites, Event& n
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Intro/intro1.jpeg");
             sprites.track6.play();
+            sprites.track13.stop();
             this->frameInit = true;
         }
         sprites.text.setString("There once was a kingdom plentiful and prosperous. The citizens had very little to worry of and days were filled with joy. Though, not all good things last forever.");
@@ -123,14 +127,14 @@ void Travel::introBeginning(sf::RenderWindow& window, Sprites& sprites, Event& n
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Intro/intro3.jpeg");
             this->frameInit = true;
         }
-        sprites.text.setString("You were a great knight of the kingdom. Raised with a blade and eventually working your way to the top of the ranks, you were the captain of the royal guard.\nThough, despite your prestiege, you were not safe from this terrible disease either.\nYou became afflicted with the decay throughout your help with the injured and it began to rot your flesh down to the bone.");
+        sprites.text.setString("You were a great knight of the kingdom. Raised with a blade and eventually working your way to the top of the ranks, you were the captain of the royal guard.\nThough, despite your prestiege, you were not safe from this terrible disease either. You became afflicted with the decay throughout your help with the injured and it began to rot your flesh down to the bone.");
         break;
     case 3:
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Intro/intro4.jpeg");
             this->frameInit = true;
         }
-        sprites.text.setString("Some elven priests seemed to unexplainably have the power to resist the decay. \nMany believed they were granted the power by God himself as they possessed the power to burn the blight from the core of a human and restore them.\nThe king of the kingdom upon discovering this quickly rushed to find a priest to stop the disease from ravaging what is left of your body.");
+        sprites.text.setString("Some elven priests seemed to unexplainably have the power to resist the decay. \n\nMany believed they were granted the power by God himself as they possessed the power to burn the blight from the core of a human and restore them.\n\nThe king of the kingdom upon discovering this quickly rushed to find a priest to stop the disease from ravaging what is left of your body.");
         break;
     case 4:
         if (!this->frameInit) {
@@ -235,6 +239,7 @@ void Travel::introBeginning(sf::RenderWindow& window, Sprites& sprites, Event& n
         sprites.getIntroFinished() = true;
         sprites.getEventAssets() = false;
         sprites.track6.stop();
+        sprites.getTrackPlayed() = false;
         break;
     }
 }
@@ -333,7 +338,10 @@ void Travel::forestEntrance(sf::RenderWindow& window, Sprites& sprites, Event& n
         sprites.map.setTexture(sprites.forestEntrance15);
         sprites.getEndFrame() = true;
         sprites.getForestAreaUnlocked() = 2;
-        sprites.getInitForestMapTexture() = false;
+        this->reInitMap(sprites.getInitForestMapTexture());
+        //Remove Text
+        combat.getComTextRemoved() = false;
+        sprites.text.setString("Forest Entrance explored. View map to move to a new area.");
         break;
     }
 }
@@ -365,6 +373,7 @@ void Travel::forestDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
         sprites.map.setTexture(sprites.forestDepths6);
         combat.initHostileTree(sprites);
         combat.combatLoop(window, sprites, player, animate);
+        this->stopComTrack(combat, sprites.track9, sprites.track2);
         break;
     case 6:
         sprites.map.setTexture(sprites.forestDepths7);
@@ -388,6 +397,9 @@ void Travel::forestDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
         break;
     case 12:
         sprites.map.setTexture(sprites.forestDepths13);
+        combat.initWolf(sprites);
+        combat.combatLoop(window, sprites, player, animate);
+        this->stopComTrack(combat, sprites.track9, sprites.track2);
         break;
     case 13:
         sprites.getEndFrame() = false; //Ensure that the back arrow is gone
@@ -397,7 +409,10 @@ void Travel::forestDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
         sprites.getEndFrame() = true; //Ensure that the back arrow is gone
         sprites.map.setTexture(sprites.forestDepths15);
         sprites.getForestAreaUnlocked() = 3;
-        sprites.getInitForestMapTexture() = false;
+        this->reInitMap(sprites.getInitForestMapTexture());
+        //Remove Text
+        combat.getComTextRemoved() = false;
+        sprites.text.setString("Forest Depths explored. View map to move to a new area.");
         break;
     }
 }
@@ -462,7 +477,10 @@ void Travel::forestAbyssal(sf::RenderWindow& window, Sprites& sprites, Event& no
         sprites.getEndFrame() = true;
         sprites.map.setTexture(sprites.forestAbyssal15);
         sprites.getForestAreaUnlocked() = 4;
-        sprites.getInitForestMapTexture() = false;
+        this->reInitMap(sprites.getInitForestMapTexture());
+        //Remove Text
+        combat.getComTextRemoved() = false;
+        sprites.text.setString("Abyssal Forest explored. View map to move to a new area.");
         break;
     }
 }
@@ -523,6 +541,9 @@ void Travel::forestAbyssalDepths(sf::RenderWindow& window, Sprites& sprites, Eve
         sprites.getEndFrame() = true;
         sprites.map.setTexture(sprites.forestAbyssalDepth15);
         sprites.getAreaUnlocked() = 1;
+        //Remove Text
+        combat.getComTextRemoved() = false;
+        sprites.text.setString("Abyssal Depths explored. View map to move to a new area.");
         break;
     }
 }
@@ -614,7 +635,10 @@ void Travel::castleHalls(sf::RenderWindow& window, Sprites& sprites, Event& note
         sprites.getEndFrame() = true;
         sprites.map.setTexture(sprites.castleHalls15);
         sprites.getCastleAreaUnlocked() = 2;
-        sprites.getInitCastleMapTexture() = false;
+        this->reInitMap(sprites.getInitCastleMapTexture());
+        //Remove Text
+        combat.getComTextRemoved() = false;
+        sprites.text.setString("Castle Halls explored. View map to move to a new area.");
         break;
     }
 }
@@ -681,7 +705,10 @@ void Travel::castleDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
         sprites.getEndFrame() = true;
         sprites.map.setTexture(sprites.castleDepths15);
         sprites.getCastleAreaUnlocked() = 3;
-        sprites.getInitCastleMapTexture() = false;
+        this->reInitMap(sprites.getInitCastleMapTexture());
+        //Remove Text
+        combat.getComTextRemoved() = false;
+        sprites.text.setString("Castle Depths explored. View map to move to a new area.");
         break;
     }
 }
@@ -740,7 +767,10 @@ void Travel::castleChambers(sf::RenderWindow& window, Sprites& sprites, Event& n
         sprites.getEndFrame() = true;
         sprites.map.setTexture(sprites.castleChambers15);
         sprites.getCastleAreaUnlocked() = 4;
-        sprites.getInitCastleMapTexture() = false;
+        this->reInitMap(sprites.getInitCastleMapTexture());
+        //Remove Text
+        combat.getComTextRemoved() = false;
+        sprites.text.setString("Castle Chambers explored. View map to move to a new area.");
         break;
     }
 }
@@ -803,6 +833,9 @@ void Travel::castleLabyrinth(sf::RenderWindow& window, Sprites& sprites, Event& 
             combat.combatLoop(window, sprites, player, animate);
         }
         sprites.getAreaUnlocked() = 2;
+        //Remove Text
+        combat.getComTextRemoved() = false;
+        sprites.text.setString("Castle Labyrinth explored. View map to move to a new area.");
         break;
     }
 }
@@ -895,7 +928,10 @@ void Travel::decayChasms(sf::RenderWindow& window, Sprites& sprites, Event& note
         sprites.getEndFrame() = true;
         sprites.map.setTexture(sprites.decayChasms15);
         sprites.getDecayAreaUnlocked() = 2;
-        sprites.getInitDecayMapTexture() = false;
+        this->reInitMap(sprites.getInitDecayMapTexture());
+        //Remove Text
+        combat.getComTextRemoved() = false;
+        sprites.text.setString("Decay Chasms explored. View map to move to a new area.");
         break;
     }
 }
@@ -954,7 +990,10 @@ void Travel::decayOcean(sf::RenderWindow& window, Sprites& sprites, Event& notev
         sprites.getEndFrame() = true;
         sprites.map.setTexture(sprites.decayOcean15);
         sprites.getDecayAreaUnlocked() = 3;
-        sprites.getInitDecayMapTexture() = false;
+        this->reInitMap(sprites.getInitDecayMapTexture());
+        //Remove Text
+        combat.getComTextRemoved() = false;
+        sprites.text.setString("Decay Ocean explored. View map to move to a new area.");
         break;
     }
 }
@@ -1017,7 +1056,10 @@ void Travel::decayForest(sf::RenderWindow& window, Sprites& sprites, Event& note
         sprites.getEndFrame() = true;
         sprites.map.setTexture(sprites.decayForest15);
         sprites.getDecayAreaUnlocked() = 4;
-        sprites.getInitDecayMapTexture() = false;
+        this->reInitMap(sprites.getInitDecayMapTexture());
+        //Remove Text
+        combat.getComTextRemoved() = false;
+        sprites.text.setString("Decay Forest explored. View map to move to a new area.");
         break;
     }
 }

@@ -30,6 +30,7 @@ private:
 	//Core Bools
 	bool frameInit;
 	bool bonfireInit;
+	bool reInMap;
 
 	//Sound Bools
 	bool soundPlay;
@@ -47,6 +48,12 @@ public:
 	void travelCore(sf::RenderWindow& window, Sprites& sprites, Event& notevent, 
 		Combat& combat, Player& player, Animation& animate);
 	void newArea(Sprites& sprites, Animation& animate);
+	void reInitMap(bool& inBool) {
+		if (!this->reInMap) {
+			inBool = false;
+			this->reInMap = true;
+		}
+	}
 
 	//Draw Intro
 	void intro(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player);
