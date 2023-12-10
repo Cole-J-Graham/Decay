@@ -33,6 +33,7 @@ private:
 	bool initHostileTreeMimic;
 	bool initHostileLostNun;
 	bool initHostileDecapod;
+	bool initHostileHazeDemon;
 
 	//Hostile Castle Bools
 	bool initHostileJester;
@@ -49,6 +50,7 @@ private:
 	bool initHostileReclus;
 	bool initHostileTendrilAlpha;
 	bool initHostileSpade;
+	bool initHostileRotBeast;
 
 	//Combat Control Flow Bool
 	bool turnPlayer;

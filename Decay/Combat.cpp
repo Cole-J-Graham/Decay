@@ -27,6 +27,8 @@ Combat::Combat()
 	this->initHostileKnight = false;
 	this->initHostileTreeMimic = false;
 	this->initHostileLostNun = false;
+	this->initHostileDecapod = false;
+	this->initHostileHazeDemon = false;
 
 	//Hostile Castle Bools
 	this->initHostileJester = false;
@@ -43,6 +45,7 @@ Combat::Combat()
 	this->initHostileReclus = false;
 	this->initHostileTendrilAlpha = false;
 	this->initHostileSpade = false;
+	this->initHostileRotBeast = false;
 
 	//Combat Control Flow Bool
 	this->turnPlayer = true;
@@ -794,7 +797,7 @@ void Combat::initDecayKnight(Sprites& sprites)
 		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the knight!";
 		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health...";
 		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the knight!";
-		this->initHostileWalker = true;
+		this->initHostileKnight = true;
 	}
 }
 
@@ -878,7 +881,7 @@ void Combat::initDecapod(Sprites& sprites)
 
 void Combat::initHazeDemon(Sprites& sprites)
 {
-	if (!this->initHostileDecapod) {
+	if (!this->initHostileHazeDemon) {
 		sprites.track1.pause();
 		sprites.track5.play();
 		//Make entity viewer visible
@@ -1007,11 +1010,11 @@ void Combat::initLostKnight(Sprites& sprites)
 		sprites.track9.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
-		//Make wall mimic entity visible
+		//Make Knight entity visible
 		sprites.getEntityViewerCounter() = 14;
 		//Allow combat to start
 		this->combatEnd = false;
-		//Set wall mimic sprite
+		//Set Knight sprite
 		sprites.getHostileCounter() = 10;
 		//Allow new combat to start
 		this->initCombatOnce = false;
@@ -1405,7 +1408,7 @@ void Combat::initSpade(Sprites& sprites)
 
 void Combat::initRotBeast(Sprites& sprites)
 {
-	if (!this->initHostileTendrilAlpha) {
+	if (!this->initHostileRotBeast) {
 		sprites.track7.pause();
 		sprites.track4.play();
 		//Make entity viewer visible
@@ -1436,6 +1439,6 @@ void Combat::initRotBeast(Sprites& sprites)
 		getZinSmiteAtkText() = "Zin places her hands together and creates a bolt of lightning, smiting the beast!";
 		getZinMendAtkText() = "Zin slowly moves her arms outwards, casting a green aura around you and herself, restoring health and slowly burning away the decay...";
 		getZinVengeanceAtkText() = "Zin uses the blood spilled from your body to create blades made of blood, casting them into the beast!";
-		this->initHostileTendrilAlpha = true;
+		this->initHostileRotBeast = true;
 	}
 }
