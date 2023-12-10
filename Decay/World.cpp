@@ -385,7 +385,7 @@ void World::draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
         }
     }
     else if (this->mainMenu == true) {
-        sprites.playTrack(sprites.track13);
+        sprites.playTrack(sprites.track8);
         sprites.greyOnHover(window);
         animate.animateMenu(sprites);
         window.draw(animate.menuSprite);
@@ -548,7 +548,7 @@ void World::mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Event& n
         }
         else if (sprites.menuScreenElements[4].getGlobalBounds().contains(mousePosF)) {
             //Skip Intro Button Functionality
-            sprites.track13.stop();
+            sprites.track8.stop();
             sprites.soundClick.play();
             this->mainMenu = false;
             sprites.getIntroFinished() = true;

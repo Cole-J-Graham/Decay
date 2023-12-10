@@ -638,7 +638,7 @@ void Combat::initWolf(Sprites& sprites)
 {
 	if (!this->initHostileWolf) {
 		sprites.track2.pause();
-		sprites.track9.play();
+		sprites.track5.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make wolf entity visible
@@ -678,8 +678,8 @@ void Combat::initWolf(Sprites& sprites)
 void Combat::initDecayWalker(Sprites& sprites)
 {
 	if (!this->initHostileWalker) {
-		sprites.track2.pause();
-		sprites.track9.play();
+		sprites.track1.pause();
+		sprites.track5.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make decay walker entity visible
@@ -719,8 +719,8 @@ void Combat::initDecayWalker(Sprites& sprites)
 void Combat::initHostileTree(Sprites& sprites)
 {
 	if (!this->initHostileTreeMimic) {
-		sprites.track2.pause();
-		sprites.track9.play();
+		sprites.track1.pause();
+		sprites.track5.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make tree mimic entity visible
@@ -760,8 +760,8 @@ void Combat::initHostileTree(Sprites& sprites)
 void Combat::initDecayKnight(Sprites& sprites)
 {
 	if (!this->initHostileKnight) {
-		sprites.track2.pause();
-		sprites.track9.play();
+		sprites.track1.pause();
+		sprites.track5.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make tree mimic entity visible
@@ -801,8 +801,8 @@ void Combat::initDecayKnight(Sprites& sprites)
 void Combat::initLostNun(Sprites& sprites)
 {
 	if (!this->initHostileLostNun) {
-		sprites.track2.pause();
-		sprites.track9.play();
+		sprites.track1.pause();
+		sprites.track5.play();
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set nun sprite
@@ -838,8 +838,8 @@ void Combat::initLostNun(Sprites& sprites)
 void Combat::initDecapod(Sprites& sprites)
 {
 	if (!this->initHostileDecapod) {
-		sprites.track2.pause();
-		sprites.track9.play();
+		sprites.track1.pause();
+		sprites.track5.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make decapod entity visible
@@ -879,8 +879,8 @@ void Combat::initDecapod(Sprites& sprites)
 void Combat::initHazeDemon(Sprites& sprites)
 {
 	if (!this->initHostileDecapod) {
-		sprites.track2.pause();
-		sprites.track9.play();
+		sprites.track1.pause();
+		sprites.track5.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make decapod entity visible
@@ -921,6 +921,8 @@ void Combat::initHazeDemon(Sprites& sprites)
 void Combat::initCourtJester(Sprites& sprites)
 {
 	if (!this->initHostileJester) {
+		sprites.track6.pause();
+		sprites.track9.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make jester entity visible
@@ -960,6 +962,8 @@ void Combat::initCourtJester(Sprites& sprites)
 void Combat::initWallMimic(Sprites& sprites)
 {
 	if (!this->initHostileWallMimic) {
+		sprites.track6.pause();
+		sprites.track9.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make wall mimic entity visible
@@ -999,6 +1003,8 @@ void Combat::initWallMimic(Sprites& sprites)
 void Combat::initLostKnight(Sprites& sprites)
 {
 	if (!this->initHostileLostKnight) {
+		sprites.track6.pause();
+		sprites.track9.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make wall mimic entity visible
@@ -1038,6 +1044,8 @@ void Combat::initLostKnight(Sprites& sprites)
 void Combat::initPhantom(Sprites& sprites)
 {
 	if (!this->initHostilePhantom) {
+		sprites.track6.pause();
+		sprites.track9.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make wall mimic entity visible
@@ -1077,6 +1085,8 @@ void Combat::initPhantom(Sprites& sprites)
 void Combat::initSkinEater(Sprites& sprites)
 {
 	if (!this->initHostileEater) {
+		sprites.track6.pause();
+		sprites.track9.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make wall mimic entity visible
@@ -1116,6 +1126,8 @@ void Combat::initSkinEater(Sprites& sprites)
 void Combat::initSiward(Sprites& sprites)
 {
 	if (!this->initHostileSiward) {
+		sprites.track6.pause();
+		sprites.track3.play();
 		//Combat Text for Siward (Due to him having a seperate sprite sheet from hostiles)
 		sprites.spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
 		//Allow combat to start
@@ -1152,6 +1164,8 @@ void Combat::initSiward(Sprites& sprites)
 void Combat::initLimbSplitter(Sprites& sprites)
 {
 	if (!this->initHostileLimbSplitter) {
+		sprites.track7.pause();
+		sprites.track10.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make limb splitter entity visible
@@ -1191,6 +1205,8 @@ void Combat::initLimbSplitter(Sprites& sprites)
 void Combat::initBurrower(Sprites& sprites)
 {
 	if (!this->initHostileBurrower) {
+		sprites.track7.pause();
+		sprites.track10.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make burrower entity visible
@@ -1230,6 +1246,8 @@ void Combat::initBurrower(Sprites& sprites)
 void Combat::initChatterMouth(Sprites& sprites)
 {
 	if (!this->initHostileChatterMouth) {
+		sprites.track7.pause();
+		sprites.track10.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make chatter mouth entity visible
@@ -1269,6 +1287,8 @@ void Combat::initChatterMouth(Sprites& sprites)
 void Combat::initReclus(Sprites& sprites)
 {
 	if (!this->initHostileReclus) {
+		sprites.track7.pause();
+		sprites.track10.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make reclus entity visible
@@ -1308,6 +1328,8 @@ void Combat::initReclus(Sprites& sprites)
 void Combat::initTendrilAlpha(Sprites& sprites)
 {
 	if (!this->initHostileTendrilAlpha) {
+		sprites.track7.pause();
+		sprites.track10.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Make tendril alpha entity visible
@@ -1347,6 +1369,8 @@ void Combat::initTendrilAlpha(Sprites& sprites)
 void Combat::initSpade(Sprites& sprites)
 {
 	if (!this->initHostileSpade) {
+		sprites.track7.pause();
+		sprites.track4.play();
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set tendril alpha sprite
@@ -1382,6 +1406,8 @@ void Combat::initSpade(Sprites& sprites)
 void Combat::initRotBeast(Sprites& sprites)
 {
 	if (!this->initHostileTendrilAlpha) {
+		sprites.track7.pause();
+		sprites.track4.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
 		//Allow combat to start

@@ -159,6 +159,8 @@ void Assets::loadSounds()
     track6.openFromFile("Assets/Music/grandRiver.wav");
     track7.openFromFile("Assets/Music/Tugrul.wav");
     track8.openFromFile("Assets/Music/StoneBeacon.wav");
+    track9.openFromFile("Assets/Music/incarnadine.wav");
+    track10.openFromFile("Assets/Music/Accolade.wav");
 }
 
 void Assets::loadMapImages()

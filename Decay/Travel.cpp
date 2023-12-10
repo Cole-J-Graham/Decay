@@ -237,7 +237,7 @@ void Travel::introBeginning(sf::RenderWindow& window, Sprites& sprites, Event& n
         sprites.text.setString("");
         sprites.getIntroFinished() = true;
         sprites.getEventAssets() = false;
-        sprites.track6.stop();
+        sprites.track2.stop();
         sprites.getTrackPlayed() = false;
         break;
     }
@@ -376,6 +376,7 @@ void Travel::forestDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
         break;
     case 6:
         sprites.map.setTexture(sprites.forestDepths7);
+        notevent.thomEnc(sprites);
         break;
     case 7:
         sprites.map.setTexture(sprites.forestDepths8);
@@ -605,6 +606,9 @@ void Travel::castleHalls(sf::RenderWindow& window, Sprites& sprites, Event& note
         break;
     case 4:
         sprites.map.setTexture(sprites.castleHalls5);
+        combat.initCourtJester(sprites);
+        combat.combatLoop(window, sprites, player, animate);
+        combat.stopComTrack(sprites.track9, sprites.track6);
         break;
     case 5:
         sprites.map.setTexture(sprites.castleHalls6);
@@ -671,6 +675,9 @@ void Travel::castleDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
         break;
     case 3:
         sprites.map.setTexture(sprites.castleDepths4);
+        combat.initWallMimic(sprites);
+        combat.combatLoop(window, sprites, player, animate);
+        combat.stopComTrack(sprites.track9, sprites.track6);
         break;
     case 4:
         sprites.map.setTexture(sprites.castleDepths5);
@@ -737,6 +744,9 @@ void Travel::castleChambers(sf::RenderWindow& window, Sprites& sprites, Event& n
         break;
     case 4:
         sprites.map.setTexture(sprites.castleChambers5);
+        combat.initLostKnight(sprites);
+        combat.combatLoop(window, sprites, player, animate);
+        combat.stopComTrack(sprites.track9, sprites.track6);
         break;
     case 5:
         sprites.map.setTexture(sprites.castleChambers6);
@@ -752,6 +762,9 @@ void Travel::castleChambers(sf::RenderWindow& window, Sprites& sprites, Event& n
         break;
     case 9:
         sprites.map.setTexture(sprites.castleChambers10);
+        combat.initPhantom(sprites);
+        combat.combatLoop(window, sprites, player, animate);
+        combat.stopComTrack(sprites.track9, sprites.track6);
         break;
     case 10:
         sprites.map.setTexture(sprites.castleChambers11);
@@ -798,6 +811,9 @@ void Travel::castleLabyrinth(sf::RenderWindow& window, Sprites& sprites, Event& 
         break;
     case 4:
         sprites.map.setTexture(sprites.castleLab5);
+        combat.initSkinEater(sprites);
+        combat.combatLoop(window, sprites, player, animate);
+        combat.stopComTrack(sprites.track9, sprites.track6);
         break;
     case 5:
         sprites.map.setTexture(sprites.castleLab6);
@@ -838,6 +854,7 @@ void Travel::castleLabyrinth(sf::RenderWindow& window, Sprites& sprites, Event& 
         sprites.getAreaUnlocked() = 2;
         //Remove Text
         combat.getComTextRemoved() = false;
+        combat.stopComTrack(sprites.track3, sprites.track6);
         sprites.text.setString("Castle Labyrinth explored. View map to move to a new area.");
         break;
     }
@@ -881,6 +898,7 @@ void Travel::decayChasms(sf::RenderWindow& window, Sprites& sprites, Event& note
     switch (this->frame) {
     case 0:
         this->newArea(sprites, animate);
+        sprites.playTrack(sprites.track7);
         sprites.locationText.setString("Decay Chasms");
         sprites.map.setTexture(sprites.decayChasms1);
         break;
@@ -893,11 +911,13 @@ void Travel::decayChasms(sf::RenderWindow& window, Sprites& sprites, Event& note
         break;
     case 3:
         sprites.map.setTexture(sprites.decayChasms4);
-        combat.initLimbSplitter(sprites);
-        combat.combatLoop(window, sprites, player, animate);
+        notevent.decayGrifEnc(sprites);
         break;
     case 4:
         sprites.map.setTexture(sprites.decayChasms5);
+        combat.initLimbSplitter(sprites);
+        combat.combatLoop(window, sprites, player, animate);
+        combat.stopComTrack(sprites.track10, sprites.track7);
         break;
     case 5:
         sprites.map.setTexture(sprites.decayChasms6);
@@ -910,6 +930,9 @@ void Travel::decayChasms(sf::RenderWindow& window, Sprites& sprites, Event& note
         break;
     case 8:
         sprites.map.setTexture(sprites.decayChasms9);
+        combat.initChatterMouth(sprites);
+        combat.combatLoop(window, sprites, player, animate);
+        combat.stopComTrack(sprites.track10, sprites.track7);
         break;
     case 9:
         sprites.map.setTexture(sprites.decayChasms10);
@@ -919,6 +942,9 @@ void Travel::decayChasms(sf::RenderWindow& window, Sprites& sprites, Event& note
         break;
     case 11:
         sprites.map.setTexture(sprites.decayChasms12);
+        combat.initBurrower(sprites);
+        combat.combatLoop(window, sprites, player, animate);
+        combat.stopComTrack(sprites.track10, sprites.track7);
         break;
     case 12:
         sprites.map.setTexture(sprites.decayChasms13);
@@ -969,6 +995,9 @@ void Travel::decayOcean(sf::RenderWindow& window, Sprites& sprites, Event& notev
         break;
     case 7:
         sprites.map.setTexture(sprites.decayOcean8);
+        combat.initTendrilAlpha(sprites);
+        combat.combatLoop(window, sprites, player, animate);
+        combat.stopComTrack(sprites.track10, sprites.track7);
         break;
     case 8:
         sprites.map.setTexture(sprites.decayOcean9);
@@ -1043,6 +1072,7 @@ void Travel::decayForest(sf::RenderWindow& window, Sprites& sprites, Event& note
         if (notevent.getSpadeEnced()) {
             combat.initSpade(sprites);
             combat.combatLoop(window, sprites, player, animate);
+            combat.stopComTrack(sprites.track4, sprites.track7);
         }
         break;
     case 11:
@@ -1087,6 +1117,9 @@ void Travel::decayGiants(sf::RenderWindow& window, Sprites& sprites, Event& note
         break;
     case 4:
         sprites.map.setTexture(sprites.decayGiants5);
+        combat.initReclus(sprites);
+        combat.combatLoop(window, sprites, player, animate);
+        combat.stopComTrack(sprites.track10, sprites.track7);
         break;
     case 5:
         sprites.map.setTexture(sprites.decayGiants6);
