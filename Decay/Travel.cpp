@@ -24,7 +24,6 @@ Travel::Travel()
 
     //Sound Bools
     this->soundPlay = true;
-    this->replayMusic = false;
 }
 
 Travel::~Travel()
@@ -62,7 +61,6 @@ void Travel::newArea(Sprites& sprites, Animation& animate)
     sprites.setBonfireAssetsFalse();
     animate.getDecayWarning() = true;
     this->reInMap = false;
-    this->replayMusic = false;
 }
 
 void Travel::enterBonfire(sf::RenderWindow& window, Sprites& sprites, Event& notevent)
@@ -83,6 +81,7 @@ void Travel::enterBonfire(sf::RenderWindow& window, Sprites& sprites, Event& not
     sprites.setBonfireAssetsTrue();
     sprites.map.setTexture(sprites.mapTexture);
     sprites.map.setPosition(440.0f, -200.0f);
+    sprites.getTrackPlayed() = false;
     if (this->soundPlay) {
         sprites.bonfire.play();
         this->soundPlay = false;
@@ -107,8 +106,8 @@ void Travel::introBeginning(sf::RenderWindow& window, Sprites& sprites, Event& n
         sprites.locationText.setString("");
         if (!this->frameInit) {
             sprites.mapTexture.loadFromFile("Assets/Wallpapers/Intro/intro1.jpeg");
-            sprites.track6.play();
-            sprites.track13.stop();
+            sprites.track2.play();
+            sprites.track8.stop();
             this->frameInit = true;
         }
         sprites.text.setString("There once was a kingdom plentiful and prosperous. The citizens had very little to worry of and days were filled with joy. Though, not all good things last forever.");
@@ -285,7 +284,7 @@ void Travel::forestEntrance(sf::RenderWindow& window, Sprites& sprites, Event& n
         this->newArea(sprites, animate);
         sprites.locationText.setString("Forest Entrance");
         sprites.map.setTexture(sprites.forestEntrance1);
-        sprites.playTrack(sprites.track2);
+        sprites.playTrack(sprites.track1);
         sprites.playAmbience(sprites.forestAmbience);
         break;
     case 1:
@@ -293,7 +292,7 @@ void Travel::forestEntrance(sf::RenderWindow& window, Sprites& sprites, Event& n
         sprites.getStartFrame() = false;//Allow back arrow to re appear
         combat.initDecayWalker(sprites);
         combat.combatLoop(window, sprites, player, animate);
-        this->stopComTrack(combat, sprites.track9, sprites.track2);
+        combat.stopComTrack(sprites.track5, sprites.track1);
         break;
     case 2:
         sprites.map.setTexture(sprites.forestEntrance3);
@@ -373,7 +372,7 @@ void Travel::forestDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
         sprites.map.setTexture(sprites.forestDepths6);
         combat.initHostileTree(sprites);
         combat.combatLoop(window, sprites, player, animate);
-        this->stopComTrack(combat, sprites.track9, sprites.track2);
+        combat.stopComTrack(sprites.track5, sprites.track1);
         break;
     case 6:
         sprites.map.setTexture(sprites.forestDepths7);
@@ -386,6 +385,9 @@ void Travel::forestDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
         break;
     case 9:
         sprites.map.setTexture(sprites.forestDepths10);
+        combat.initDecayKnight(sprites);
+        combat.combatLoop(window, sprites, player, animate);
+        combat.stopComTrack(sprites.track5, sprites.track1);
         break;
     case 10:
         notevent.forestDepthsSpadeEnc(sprites);
@@ -399,7 +401,7 @@ void Travel::forestDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
         sprites.map.setTexture(sprites.forestDepths13);
         combat.initWolf(sprites);
         combat.combatLoop(window, sprites, player, animate);
-        this->stopComTrack(combat, sprites.track9, sprites.track2);
+        combat.stopComTrack(sprites.track5, sprites.track1);
         break;
     case 13:
         sprites.getEndFrame() = false; //Ensure that the back arrow is gone
@@ -587,6 +589,7 @@ void Travel::castleHalls(sf::RenderWindow& window, Sprites& sprites, Event& note
     case 0:
         //Draw Map Sprite
         this->newArea(sprites, animate);
+        sprites.playTrack(sprites.track6);
         sprites.locationText.setString("Castle Entrance");
         sprites.map.setTexture(sprites.castleHalls1);
         break;

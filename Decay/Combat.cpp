@@ -71,6 +71,9 @@ Combat::Combat()
 
 	//Animation Control
 	this->comTextRemoved = true;
+
+	//Music Bools
+	this->replayMusic = false;
 }
 
 Combat::~Combat()
@@ -203,6 +206,7 @@ void Combat::combatLoop(sf::RenderWindow& window, Sprites& sprites, Player& play
 			getThomEnraged() = false;
 			getPlayerFatigue() = false;
 			sprites.getTipBoxCounter() = -1;
+			this->replayMusic = false;
 			this->combatEnd = true;
 		}
 		//Hostiles turn

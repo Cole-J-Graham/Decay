@@ -79,6 +79,9 @@ private:
 	//Animation Control
 	bool comTextRemoved;
 
+	//Music Bools
+	bool replayMusic;
+
 public:
 	//Constructors & Destructors
 	Combat();
@@ -134,6 +137,15 @@ public:
 	void initTendrilAlpha(Sprites& sprites);
 	void initSpade(Sprites& sprites);
 	void initRotBeast(Sprites& sprites);
+
+	//Music Functions
+	void stopComTrack(sf::Music& comTrack, sf::Music& track) {
+		if (this->combatEnd && !this->replayMusic) {
+			comTrack.stop();
+			track.play();
+			this->replayMusic = true;
+		}
+	}
 
 	//Move Value Getters
 	int& getValZero() { return this->valZero; };
@@ -204,6 +216,9 @@ public:
 
 	//Comabt Reward Getters
 	bool& getIncease() { return this->increase; };
+
+	//Sound Getters
+	bool& getReplayMusic() { return this->replayMusic; };
 
 
 	sf::Time combatTextElapsed;

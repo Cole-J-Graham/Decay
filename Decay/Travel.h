@@ -34,7 +34,6 @@ private:
 
 	//Sound Bools
 	bool soundPlay;
-	bool replayMusic;
 
 public:
 
@@ -84,15 +83,6 @@ public:
 	void decayForest(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
 	void decayGiants(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
 
-	//Music Functions
-	void stopComTrack(Combat& combat, sf::Music& comTrack, sf::Music& track) {
-		if (combat.getCombatEnd() && !this->replayMusic) {
-			comTrack.stop();
-			track.play();
-			this->replayMusic = true;
-		}
-	}
-
 	//Core Getters
 	int& getFrame() { return this->frame; };
 	int& getTravel() { return this->travel; };
@@ -117,9 +107,6 @@ public:
 
 	//Core Bools Setters
 	void setFrameInitFalse() { this->frameInit = false; };
-
-	//Sound Getters
-	bool& getReplayMusic() { return this->replayMusic; };
 };
 
 

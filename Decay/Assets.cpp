@@ -151,19 +151,14 @@ void Assets::loadSounds()
     bufferIronWall.loadFromFile("Assets/Sounds/ironWall.wav");
 
     //Load Music
-    track1.openFromFile("Assets/Music/track1.wav");
-    track2.openFromFile("Assets/Music/track2.wav");
-    track3.openFromFile("Assets/Music/track3.wav");
-    track4.openFromFile("Assets/Music/track4.wav");
-    track5.openFromFile("Assets/Music/agony.wav");
-    track6.openFromFile("Assets/Music/ANocturneForAll.wav");
-    track7.openFromFile("Assets/Music/Communication.wav");
-    track8.openFromFile("Assets/Music/Helplessness.wav");
-    track9.openFromFile("Assets/Music/incision.wav");
-    track10.openFromFile("Assets/Music/MyBurdenIsLight.wav");
-    track11.openFromFile("Assets/Music/OrfordSentinel.wav");
-    track12.openFromFile("Assets/Music/Tugrul.wav");
-    track13.openFromFile("Assets/Music/StoneBeacon.wav");
+    track1.openFromFile("Assets/Music/track2.wav");
+    track2.openFromFile("Assets/Music/ANocturneForAll.wav");
+    track3.openFromFile("Assets/Music/Communication.wav");
+    track4.openFromFile("Assets/Music/Helplessness.wav");
+    track5.openFromFile("Assets/Music/incision.wav");
+    track6.openFromFile("Assets/Music/grandRiver.wav");
+    track7.openFromFile("Assets/Music/Tugrul.wav");
+    track8.openFromFile("Assets/Music/StoneBeacon.wav");
 }
 
 void Assets::loadMapImages()

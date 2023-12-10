@@ -548,6 +548,7 @@ void World::mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Event& n
         }
         else if (sprites.menuScreenElements[4].getGlobalBounds().contains(mousePosF)) {
             //Skip Intro Button Functionality
+            sprites.track13.stop();
             sprites.soundClick.play();
             this->mainMenu = false;
             sprites.getIntroFinished() = true;
@@ -601,7 +602,6 @@ void World::travelButtons(sf::RenderWindow& window, Sprites& sprites, Travel& tr
         //Sound && Music resetting
         sprites.getTrackPlayed() = false;
         sprites.getAmbTrackPlayed() = false;
-        travel.getReplayMusic() = false;
     }
 }
 
