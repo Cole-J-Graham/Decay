@@ -398,6 +398,7 @@ void World::draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Co
         }
     }
     else if (sprites.getPlayerDeath()) {
+        sprites.greyOnHover(window);
         sprites.drawDeathAssets();
         window.draw(sprites.deathText);
         window.draw(sprites.menuScreenElements[1]);

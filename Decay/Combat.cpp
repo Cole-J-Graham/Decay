@@ -236,8 +236,7 @@ void Combat::combatLoop(sf::RenderWindow& window, Sprites& sprites, Player& play
 		this->hostileTurn(sprites, animate);
 		//Check if player, Zin, or Thom has died
 		if (getPlayerHp() <= 0 && !this->playerDead) {
-			this->playerDead = true; //Use playerdead to detect???
-			this->combatEnd = true;
+			this->playerDead = true;
 			sprites.text.setString("You have been left unconscious...");
 		}
 		if (getZinHp() <= 0 && !this->zinDead) {
@@ -720,7 +719,7 @@ void Combat::initDecayWalker(Sprites& sprites)
 		this->expGain = 354;
 		getHostileHp() = 35;
 		getHostileHpMax() = 35;
-		getHostileStrike() = 2;
+		getHostileStrike() = 3000;
 
 		getHostileNameNoSpc() = "Decay Walker";
 		getHostileName() = "Decay Walker ";

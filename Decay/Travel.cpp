@@ -1159,7 +1159,8 @@ void Travel::decayGiants(sf::RenderWindow& window, Sprites& sprites, Event& note
             if (!combat.getPlayerDead() && combat.getCombatEnd()) {
                 notevent.rotBeastDeathEnding(sprites);
             }
-            else if (combat.getPlayerDead() && combat.getCombatEnd()) {
+            else if (combat.getPlayerDead()) {
+                combat.getCombatEnd() = true;
                 notevent.playerDeathEnding(sprites);
             }
         }

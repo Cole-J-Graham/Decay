@@ -565,24 +565,12 @@ void Assets::drawDeathAssets()
     menuScreenElements[1].setPosition(10.0f, 125.0f);
     menuScreenElements[2].setPosition(10.0f, 150.0f);
 
-    menuScreenElements[1].setSize(sf::Vector2f(100.0f, 25.0f));
-    menuScreenElements[1].setOutlineColor(sf::Color::White);
-    menuScreenElements[1].setOutlineThickness(1.0f);
-    menuScreenElements[2].setSize(sf::Vector2f(100.0f, 25.0f));
-    menuScreenElements[2].setOutlineColor(sf::Color::White);
-    menuScreenElements[2].setOutlineThickness(1.0f);
     //Draw Load and Quit Text
     deathText.setFont(font);
     deathText.setCharacterSize(48);
     deathText.setString("Perished...");
     deathText.setPosition(25.0f, 25.0f);
 
-    menuScreenElementsText[1].setFont(font);
-    menuScreenElementsText[1].setCharacterSize(18);
-    menuScreenElementsText[1].setString("Load");
-    menuScreenElementsText[2].setFont(font);
-    menuScreenElementsText[2].setCharacterSize(18);
-    menuScreenElementsText[2].setString("Quit");
     menuScreenElementsText[1].setPosition(10.0f, 125.0f);
     menuScreenElementsText[2].setPosition(10.0f, 150.0f);
 }
