@@ -149,6 +149,8 @@ void Assets::loadSounds()
     bufferBlaze.loadFromFile("Assets/Sounds/hellBlaze.wav");
     bufferFlames.loadFromFile("Assets/Sounds/crimsonFlames.wav");
     bufferIronWall.loadFromFile("Assets/Sounds/ironWall.wav");
+    bufferBeastDeath.loadFromFile("Assets/Sounds/normalBeastDeath.wav");
+    bufferAltBeastDeath.loadFromFile("Assets/Sounds/beastDeath.wav");
 
     //Load Music
     track1.openFromFile("Assets/Music/track2.wav");
@@ -1558,7 +1560,10 @@ void Assets::loadSFX()
     blipmenu.setBuffer(blipmenubuffer);
     //Load Stats Sfx
     statSound.setBuffer(statBuffer);
-
+    //Load Beast Death Sfx
+    soundBeastDeath.setBuffer(bufferBeastDeath);
+    //Load Alternative Beast Death Sfx
+    soundAltBeastDeath.setBuffer(bufferAltBeastDeath);
     //Load Combat Sound Effects
     soundCom.setBuffer(bufferCom);
     //Load Decay Blade Sound

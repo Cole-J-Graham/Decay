@@ -1634,9 +1634,17 @@ void Event::playerDeathEnding(Sprites& sprites)
             sprites.text.setString("*Zin watches as it raises its hand back from the ground, your lifeless body reduced to a puddle on the crimson floor. Zin looks around in disbelief as her tears hit the floor, blending into the red...*\n\n*The more she looks around, the more she realizes just how much blood is covering this battlefield you two created...*");
             break;
         case 9:
-            sprites.text.setString("*Zin stands as she continues to sob, a mixture of rage and sadness culminating within her as she knows you have fallen for good.*\n\n'Fuck you! You piece of shit animal! Fuck you!' *Zin screams out as all of the blood from the battlefield including yours slowly lifts into a large coagulated ball.*\n\n*Suddenly, the entire ball shifts into a massive blade of blood in almost an instance, slicing straight through the abomination! The Rot Beast falls to the ground, half of its body toppling off of the other.*");
+            sprites.text.setString("*Zin stands as she continues to sob, a mixture of rage and sadness culminating within her as she knows you have fallen for good.*\n\n'Fuck you! You piece of shit animal! Fuck you!' *Zin screams out as all of the blood from the battlefield including yours slowly lifts into a large coagulated ball.*");
             break;
         case 10:
+            if (!this->sfxUsed) {
+                sprites.soundBeastDeath.play();
+                this->sfxUsed = true;
+            }
+            sprites.text.setString("*Suddenly, the entire ball shifts into a massive blade of blood in almost an instance, slicing straight through the abomination! The Rot Beast falls to the ground, half of its body toppling off of the other.*");
+            break;
+        case 11:
+            this->sfxUsed = false;
             sprites.text.setString("*The crimson slowly loses its vibrance as the root of the decay now lies on the floor dead. Zin collapses to her knees, covered in blood as she sobs, mourning your death.*\n\n*The worlds balance will be restored, though it costed your life.*\n\n*You died for the sake of others. As a knight should...*");
             break;
         }
@@ -1657,9 +1665,14 @@ void Event::rotBeastDeathEnding(Sprites& sprites)
                 sprites.track11.play();
                 this->endMusic = true;
             }
+            if (!this->sfxUsed) {
+                sprites.soundAltBeastDeath.play();
+                this->sfxUsed = true;
+            }
             sprites.text.setString("*The beast slowly falls to the floor, the last blow rendering it unable to move. Yourself and Zin stand above the beast as the ground slowly becomes a dimmer shade of red.*");
             break;
         case 1:
+            this->sfxUsed = false;
             sprites.text.setString("*You both have succeeded in taking down this horrible beast plaguing the lands... Perhaps humanity may be able to live on now...*");
             break;
         }

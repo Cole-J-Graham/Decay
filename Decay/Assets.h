@@ -495,6 +495,8 @@ public:
 	sf::Sound soundBlaze;
 	sf::Sound soundFlames;
 	sf::Sound soundIronWall;
+	sf::Sound soundBeastDeath;
+	sf::Sound soundAltBeastDeath;
 	//Sound Buffers
 	sf::SoundBuffer buffer;
 	sf::SoundBuffer blipbuffer;
@@ -523,6 +525,8 @@ public:
 	sf::SoundBuffer bufferBlaze;
 	sf::SoundBuffer bufferFlames;
 	sf::SoundBuffer bufferIronWall;
+	sf::SoundBuffer bufferBeastDeath;
+	sf::SoundBuffer bufferAltBeastDeath;
 
 	//Music
 	sf::Music bonfire;
