@@ -7,6 +7,7 @@ Event::Event()
     this->reInitialize = true;
     this->sfxUsed = false;
     this->itemGained = false;
+    this->endMusic = false;
 
     //Event Availability Bools
     this->thomEnced = false;
@@ -1531,7 +1532,7 @@ void Event::decayGrifEnc(Sprites& sprites)
 //Final Events
 void Event::rotBeastEnc(Sprites& sprites)
 {
-    if (this->rotBeastEnced) {
+    if (!this->rotBeastEnced) {
         this->reInit(sprites);
         switch (this->dialogue) {
         case 0:
@@ -1583,6 +1584,13 @@ void Event::playerDeathEnding(Sprites& sprites)
         switch (this->dialogue) {
         case 0:
             this->hideOpenAssets(sprites);
+            if (!this->endMusic) {
+                sprites.track4.stop();
+                sprites.track11.play();
+                this->endMusic = true;
+            }
+            sprites.spriteText[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+            sprites.getTipBoxCounter() = -1;
             sprites.getPlayerCounter() = 4;
             sprites.text.setString("*You slam against the floor from the last blow, feeling that something is most certainly wrong. You've been hit with many attacks throughout your life, but this felt very different.*\n\n*You instinctively try to stand, only to immediately collapse back onto the floor.*");
             break;
@@ -1615,7 +1623,7 @@ void Event::playerDeathEnding(Sprites& sprites)
             sprites.getShowAnsBoxesCounter() = -1;
             switch (this->choiceCounter) {
             case 0:
-                sprites.text.setString("*You shove her out of the way from the massive hand of the beast, nothing but darkness now covering your view as she feel an immense pressure and then... Nothing. Nothing at all...*");
+                sprites.text.setString("*You shove her out of the way with the little strength you had left, the massive hand of the beast covering you in darkness. You feel an immense pressure and then... Nothing. Nothing at all...*");
                 break;
             case 1:
                 sprites.text.setString("*You slowly point upwards towards the massive hand of the beast quickly approching, Zin instinctively dodging out of the way as you feel an immense pressure... And then nothing at all...*");
@@ -1629,7 +1637,7 @@ void Event::playerDeathEnding(Sprites& sprites)
             sprites.text.setString("*Zin stands as she continues to sob, a mixture of rage and sadness culminating within her as she knows you have fallen for good.*\n\n'Fuck you! You piece of shit animal! Fuck you!' *Zin screams out as all of the blood from the battlefield including yours slowly lifts into a large coagulated ball.*\n\n*Suddenly, the entire ball shifts into a massive blade of blood in almost an instance, slicing straight through the abomination! The Rot Beast falls to the ground, half of its body toppling off of the other.*");
             break;
         case 10:
-            sprites.text.setString("*The crimson slowly loses its vibrance as the root of the decay now lies on the floor dead. Zin collapses to her knees, covered in blood as she sobs, mourning your death. The worlds balance will be restored, though it costed your life.*\n\n*You died for the sake of others. As a knight should...*");
+            sprites.text.setString("*The crimson slowly loses its vibrance as the root of the decay now lies on the floor dead. Zin collapses to her knees, covered in blood as she sobs, mourning your death.*\n\n*The worlds balance will be restored, though it costed your life.*\n\n*You died for the sake of others. As a knight should...*");
             break;
         }
     }
@@ -1642,6 +1650,13 @@ void Event::rotBeastDeathEnding(Sprites& sprites)
         switch (this->dialogue) {
         case 0:
             this->hideOpenAssets(sprites);
+            sprites.spriteText[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+            sprites.getTipBoxCounter() = -1;
+            if (!this->endMusic) {
+                sprites.track4.stop();
+                sprites.track11.play();
+                this->endMusic = true;
+            }
             sprites.text.setString("*The beast slowly falls to the floor, the last blow rendering it unable to move. Yourself and Zin stand above the beast as the ground slowly becomes a dimmer shade of red.*");
             break;
         case 1:

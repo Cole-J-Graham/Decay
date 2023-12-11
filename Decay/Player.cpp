@@ -10,7 +10,7 @@ Player::Player()
 	//Leveling
 	this->level = 1;
 	this->exp = 0;
-	this->expNext = 200;
+	this->expNext = 100;
 	this->sp = 0;
 
 	//Attributes
@@ -22,7 +22,7 @@ Player::Player()
 	this->zinLevel = 1;
 	this->zinSp = 0;
 	this->zinExp = 0;
-	this->zinExpNext = 175;
+	this->zinExpNext = 50;
 
 	//Zin Attributes
 	this->zinResolve = 0;

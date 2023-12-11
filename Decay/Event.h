@@ -12,6 +12,7 @@ private:
 	bool reInitialize;
 	bool sfxUsed;
 	bool itemGained;
+	bool endMusic;
 
 	//Event Availability Bools
 	bool thomEnced;

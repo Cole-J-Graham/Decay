@@ -134,12 +134,20 @@ public:
 	//Player Move Getters
 	int& getPlayerStrike() { return this->playerStrike; };
 	int& getPlayerGuard() { return this->playerGuard; };
+	int& getPlayerDecayedBlade() { return this->decayedBlade; };
+	int& getPlayerHeftyBlow() { return this->heftyBlowDmg; };
+	int& getPlayerDecayingSynDmg() { return this->decaySynergyDmg; };
+	int& getPlayerDecayingSynDef() { return this->decaySynergyDef; };
 
 	//Zin Move Getters
 	int& getZinSmite() { return this->zinSmite; };
 	int& getZinMend() { return this->zinMend; };
 	int& getZinVengeance() { return this->zinVengeance; };
-
+	int& getZinBlaze() { return this->zinBlaze; };
+	int& getZinFocus() { return this->zinFocus; };
+	int& getCrimsonFlames() { return this->zinCrimson; };
+	int& getIronWall() { return this->ironWallDef; };
+	
 	//Thom Move Getters
 	bool& getThomEnraged() { return this->thomEnraged; };
 	int& getEnraged() { return this->enraged; };

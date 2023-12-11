@@ -360,6 +360,9 @@ void Travel::forestDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
         break;
     case 2:
         sprites.map.setTexture(sprites.forestDepths3);
+        combat.initWolf(sprites);
+        combat.combatLoop(window, sprites, player, animate);
+        combat.stopComTrack(sprites.track5, sprites.track1);
         break;
     case 3:
         notevent.treeEnc(sprites, player);
@@ -400,9 +403,6 @@ void Travel::forestDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
         break;
     case 12:
         sprites.map.setTexture(sprites.forestDepths13);
-        combat.initWolf(sprites);
-        combat.combatLoop(window, sprites, player, animate);
-        combat.stopComTrack(sprites.track5, sprites.track1);
         break;
     case 13:
         sprites.getEndFrame() = false; //Ensure that the back arrow is gone
@@ -1117,12 +1117,12 @@ void Travel::decayGiants(sf::RenderWindow& window, Sprites& sprites, Event& note
         break;
     case 4:
         sprites.map.setTexture(sprites.decayGiants5);
-        combat.initReclus(sprites);
-        combat.combatLoop(window, sprites, player, animate);
-        combat.stopComTrack(sprites.track10, sprites.track7);
         break;
     case 5:
         sprites.map.setTexture(sprites.decayGiants6);
+        combat.initReclus(sprites);
+        combat.combatLoop(window, sprites, player, animate);
+        combat.stopComTrack(sprites.track10, sprites.track7);
         break;
     case 6:
         sprites.map.setTexture(sprites.decayGiants7);
@@ -1156,14 +1156,12 @@ void Travel::decayGiants(sf::RenderWindow& window, Sprites& sprites, Event& note
         if (notevent.getRotBeastEnced()) {
             combat.initRotBeast(sprites);
             combat.combatLoop(window, sprites, player, animate);
-        }
-        break;
-    case 15:
-        if (sprites.getThomUnlocked()) {
-            notevent.rotBeastDeathEnding(sprites);
-        }
-        else if (!sprites.getThomUnlocked()) {
-            notevent.playerDeathEnding(sprites);
+            if (!combat.getPlayerDead() && combat.getCombatEnd()) {
+                notevent.rotBeastDeathEnding(sprites);
+            }
+            else if (combat.getPlayerDead() && combat.getCombatEnd()) {
+                notevent.playerDeathEnding(sprites);
+            }
         }
         break;
     }

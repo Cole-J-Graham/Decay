@@ -68,6 +68,7 @@ void Sprites::loadSprites()
     zinTextureConcerned.loadFromFile("Assets/Sprites/zinConcerned.png");
     zinTextureAnnoyed.loadFromFile("Assets/Sprites/zinSpriteAnnoyed.png");
     zinTextureSad.loadFromFile("Assets/Sprites/zinSad.png");
+    zinTextureScared.loadFromFile("Assets/Sprites/zinScared.png");
 
     //Thom Sprites
     thomTexture.loadFromFile("Assets/Sprites/thomNormal.png");

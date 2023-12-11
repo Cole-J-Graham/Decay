@@ -32,10 +32,10 @@ Assets::Assets()
     this->settingsShown = false;
 
     //Map Button Control Flow
-    this->areaUnlocked = 0;
-    this->forestAreaUnlocked = 1;
-    this->castleAreaUnlocked = 1;
-    this->decayAreaUnlocked = 1;
+    this->areaUnlocked = 2;
+    this->forestAreaUnlocked = 4;
+    this->castleAreaUnlocked = 4;
+    this->decayAreaUnlocked = 4;
 
     this->startFrame = true;
     this->endFrame = false;
@@ -74,10 +74,10 @@ Assets::Assets()
 
     //ToolTip Strings
     this->tipStrength = "STRENGTH:\nMeasures the players raw power.\n\nIncreases all attack moves damage.";
-    this->tipFortitude = "FORTITUDE:\nMeasures the players survivability against decay.\n\nHigher fortitude makes the player more \nresistant to the decay.";
+    this->tipFortitude = "FORTITUDE:\nMeasures the players survivability against decay.\n\nHigher fortitude makes the player more \nresistant to the decay.\nAlso increases block\npower.";
     this->tipVitality = "VITALITY:\nMeasures the players health.\n\nHigh vitality allows the player to take a beating\nin combat.";
 
-    this->tipResolve = "RESOLVE:\nMeasures Zin's spells raw power.\n\nIncreases the damage of her lightning \nspells specifically.";
+    this->tipResolve = "RESOLVE:\nMeasures Zin's spells raw power.\n\nIncreases the damage of all spells.";
     this->tipPatience = "PATIENCE:\nMeasures Zin's healing capabilities.\n\nHigh patience makes her heal \nsignificantly more.";
     this->tipResilience = "RESILIENCE:\nMeasures Zin's health.\n\nHigh resilience allows Zin to take more \nhits and survive.";
 
@@ -161,6 +161,7 @@ void Assets::loadSounds()
     track8.openFromFile("Assets/Music/StoneBeacon.wav");
     track9.openFromFile("Assets/Music/incarnadine.wav");
     track10.openFromFile("Assets/Music/Accolade.wav");
+    track11.openFromFile("Assets/Music/Dewdrop.wav");
 }
 
 void Assets::loadMapImages()

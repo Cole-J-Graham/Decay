@@ -538,6 +538,7 @@ public:
 	sf::Music track8;
 	sf::Music track9;
 	sf::Music track10;
+	sf::Music track11;
 
 	//Forest Wallpapers
 	sf::Texture mapTexture;

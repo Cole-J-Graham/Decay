@@ -87,16 +87,36 @@ Combat::~Combat()
 //Core Stat Functions
 void Combat::updateStats(Sprites& sprites, Player& player)
 {
+	//Strength Modifiers
 	getPlayerStrike() = 5 + player.getStrength() + player.getSwordPower();
-	getPlayerHp() = getPlayerHpMax() + player.getVitality();
-	player.getDecayMax() = 25 + player.getFortitude();
-	getPlayerHpMax() = getPlayerHp();
-}
+	getPlayerHeftyBlow() = 25 + player.getStrength() + player.getSwordPower();
 
-void Combat::updateStatsZin(Player& player)
-{
+	//Vitality Modifiers
+	getPlayerHpMax() = getPlayerHp() + player.getVitality();
+
+	//Fortitude Modifiers
+	player.getDecayMax() = 25 + player.getFortitude();
+	getIronWall() = 10 + player.getFortitude();
+
+	//Other Modifiers
+	getPlayerDecayingSynDmg() = 3 + player.getDecay();
+	getPlayerDecayingSynDef() = 10 + player.getDecay();
+	getPlayerDecayedBlade()  = 10 + player.getDecay();
+	getPlayerHp() = getPlayerHpMax();
+
+	//Resolve Modifiers
 	getZinSmite() = 5 + player.getZinResolve();
+	getZinBlaze() = 45 + player.getZinResolve();
+	getCrimsonFlames() = 25 + player.getZinResolve();
+
+	//Resilience Modifiers
 	getZinHp() = 35 + player.getZinResilience();
+
+	//Patience Modifiers
+	getZinMend() = 5 + player.getZinPatience();
+	getZinFocus() = 40 + player.getZinPatience();
+
+	//Other Modifiers
 	getZinHpMax() = getZinHp();
 }
 
@@ -216,7 +236,8 @@ void Combat::combatLoop(sf::RenderWindow& window, Sprites& sprites, Player& play
 		this->hostileTurn(sprites, animate);
 		//Check if player, Zin, or Thom has died
 		if (getPlayerHp() <= 0 && !this->playerDead) {
-			this->playerDead = true;
+			this->playerDead = true; //Use playerdead to detect???
+			this->combatEnd = true;
 			sprites.text.setString("You have been left unconscious...");
 		}
 		if (getZinHp() <= 0 && !this->zinDead) {
@@ -640,7 +661,7 @@ void Combat::thomSelectMove(Sprites& sprites, Animation& animate)
 void Combat::initWolf(Sprites& sprites)
 {
 	if (!this->initHostileWolf) {
-		sprites.track2.pause();
+		sprites.track1.pause();
 		sprites.track5.play();
 		//Make entity viewer visible
 		sprites.getSpriteViewerCounter() = 0;
@@ -655,7 +676,7 @@ void Combat::initWolf(Sprites& sprites)
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
 		this->increase = false;
-		this->expGain = 342;
+		this->expGain = 185;
 		getHostileHp() = 25;
 		getHostileHpMax() = 25;
 		getHostileStrike() = 5;
@@ -696,7 +717,7 @@ void Combat::initDecayWalker(Sprites& sprites)
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
 		this->increase = false;
-		this->expGain = 254;
+		this->expGain = 354;
 		getHostileHp() = 35;
 		getHostileHpMax() = 35;
 		getHostileStrike() = 2;
@@ -778,10 +799,10 @@ void Combat::initDecayKnight(Sprites& sprites)
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
 		this->increase = false;
-		this->expGain = 762;
+		this->expGain = 672;
 		getHostileHp() = 100;
 		getHostileHpMax() = 100;
-		getHostileStrike() = 15;
+		getHostileStrike() = 7;
 
 		getHostileNameNoSpc() = "Decay Knight";
 		getHostileName() = "Decay Knight ";
@@ -856,7 +877,7 @@ void Combat::initDecapod(Sprites& sprites)
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
 		this->increase = false;
-		this->expGain = 550;
+		this->expGain = 250;
 		getHostileHp() = 1;
 		getHostileHpMax() = 75;
 		getHostileStrike() = 12;
@@ -897,7 +918,7 @@ void Combat::initHazeDemon(Sprites& sprites)
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
 		this->increase = false;
-		this->expGain = 552;
+		this->expGain = 352;
 		getHostileHp() = 75;
 		getHostileHpMax() = 75;
 		getHostileStrike() = 12;
@@ -939,7 +960,7 @@ void Combat::initCourtJester(Sprites& sprites)
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
 		this->increase = false;
-		this->expGain = 825;
+		this->expGain = 425;
 		getHostileHp() = 80;
 		getHostileHpMax() = 80;
 		getHostileStrike() = 20;
@@ -980,7 +1001,7 @@ void Combat::initWallMimic(Sprites& sprites)
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
 		this->increase = false;
-		this->expGain = 557;
+		this->expGain = 357;
 		getHostileHp() = 80;
 		getHostileHpMax() = 80;
 		getHostileStrike() = 20;
@@ -1021,7 +1042,7 @@ void Combat::initLostKnight(Sprites& sprites)
 		this->reInitCombatOnce = false;
 		//Set parameters for hostile
 		this->increase = false;
-		this->expGain = 782;
+		this->expGain = 682;
 		getHostileHp() = 100;
 		getHostileHpMax() = 100;
 		getHostileStrike() = 25;
@@ -1306,7 +1327,7 @@ void Combat::initReclus(Sprites& sprites)
 		//Set parameters for hostile
 		this->increase = false;
 		this->expGain = 253;
-		getHostileHp() = 265;
+		getHostileHp() = 1;
 		getHostileHpMax() = 265;
 		getHostileStrike() = 20;
 

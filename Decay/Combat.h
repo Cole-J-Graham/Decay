@@ -91,7 +91,6 @@ public:
 
 	//Core Stat Functions
 	void updateStats(Sprites& sprites, Player& player);
-	void updateStatsZin(Player& player);
 	void unlockMoves(Sprites& sprites, Player& player);
 	void combatReward(Sprites& sprites, Player& player);
 
