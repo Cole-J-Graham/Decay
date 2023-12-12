@@ -32,10 +32,10 @@ Assets::Assets()
     this->settingsShown = false;
 
     //Map Button Control Flow
-    this->areaUnlocked = 2;
-    this->forestAreaUnlocked = 4;
-    this->castleAreaUnlocked = 4;
-    this->decayAreaUnlocked = 4;
+    this->areaUnlocked = 0;
+    this->forestAreaUnlocked = 1;
+    this->castleAreaUnlocked = 1;
+    this->decayAreaUnlocked = 1;
 
     this->startFrame = true;
     this->endFrame = false;

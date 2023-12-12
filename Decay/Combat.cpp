@@ -92,7 +92,9 @@ void Combat::updateStats(Sprites& sprites, Player& player)
 	getPlayerHeftyBlow() = 25 + player.getStrength() + player.getSwordPower();
 
 	//Vitality Modifiers
-	getPlayerHpMax() = getPlayerHp() + player.getVitality();
+	getPlayerHpMax() = 50 + player.getVitality();
+	getPlayerHp() = getPlayerHpMax();
+
 
 	//Fortitude Modifiers
 	player.getDecayMax() = 25 + player.getFortitude();
@@ -226,7 +228,9 @@ void Combat::combatLoop(sf::RenderWindow& window, Sprites& sprites, Player& play
 			//Make entity viewer blank again
 			sprites.getEntityViewerCounter() = -1;
 			animate.getCombatAnimationLocation() = -1;
+			getFatigued() = 0;
 			getThomEnraged() = false;
+			getZinFatigue() = false;
 			getPlayerFatigue() = false;
 			sprites.getTipBoxCounter() = -1;
 			this->replayMusic = false;
@@ -410,7 +414,7 @@ void Combat::zinTurn(Sprites& sprites, Animation& animate)
 			break;
 		case 1:
 			//Zin Attacks Hostile
-			if (this->zinAttack == false) {
+			if (!getZinFatigue() && !this->zinAttack) {
 				this->zinSelectMove(sprites, animate);
 				this->zinAttack = true;
 			}
@@ -719,7 +723,7 @@ void Combat::initDecayWalker(Sprites& sprites)
 		this->expGain = 354;
 		getHostileHp() = 35;
 		getHostileHpMax() = 35;
-		getHostileStrike() = 3000;
+		getHostileStrike() = 3;
 
 		getHostileNameNoSpc() = "Decay Walker";
 		getHostileName() = "Decay Walker ";
@@ -838,7 +842,7 @@ void Combat::initLostNun(Sprites& sprites)
 		this->expGain = 873;
 		getHostileHp() = 200;
 		getHostileHpMax() = 200;
-		getHostileStrike() = 1;
+		getHostileStrike() = 10;
 
 		getHostileNameNoSpc() = "Lost Nun";
 		getHostileName() = "Lost Nun ";
@@ -1326,7 +1330,7 @@ void Combat::initReclus(Sprites& sprites)
 		//Set parameters for hostile
 		this->increase = false;
 		this->expGain = 253;
-		getHostileHp() = 1;
+		getHostileHp() = 265;
 		getHostileHpMax() = 265;
 		getHostileStrike() = 20;
 
