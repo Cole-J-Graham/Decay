@@ -881,7 +881,7 @@ void Combat::initDecapod(Sprites& sprites)
 		//Set parameters for hostile
 		this->increase = false;
 		this->expGain = 250;
-		getHostileHp() = 1;
+		getHostileHp() = 75;
 		getHostileHpMax() = 75;
 		getHostileStrike() = 12;
 
@@ -964,8 +964,8 @@ void Combat::initCourtJester(Sprites& sprites)
 		//Set parameters for hostile
 		this->increase = false;
 		this->expGain = 425;
-		getHostileHp() = 80;
-		getHostileHpMax() = 80;
+		getHostileHp() = 140;
+		getHostileHpMax() = 140;
 		getHostileStrike() = 20;
 
 		getHostileNameNoSpc() = "Court Jester";
@@ -1005,8 +1005,8 @@ void Combat::initWallMimic(Sprites& sprites)
 		//Set parameters for hostile
 		this->increase = false;
 		this->expGain = 357;
-		getHostileHp() = 80;
-		getHostileHpMax() = 80;
+		getHostileHp() = 160;
+		getHostileHpMax() = 160;
 		getHostileStrike() = 20;
 
 		getHostileNameNoSpc() = "Wall Mimic";
@@ -1046,8 +1046,8 @@ void Combat::initLostKnight(Sprites& sprites)
 		//Set parameters for hostile
 		this->increase = false;
 		this->expGain = 682;
-		getHostileHp() = 100;
-		getHostileHpMax() = 100;
+		getHostileHp() = 250;
+		getHostileHpMax() = 250;
 		getHostileStrike() = 25;
 
 		getHostileNameNoSpc() = "Lost Knight";
@@ -1087,8 +1087,8 @@ void Combat::initPhantom(Sprites& sprites)
 		//Set parameters for hostile
 		this->increase = false;
 		this->expGain = 444;
-		getHostileHp() = 120;
-		getHostileHpMax() = 120;
+		getHostileHp() = 185;
+		getHostileHpMax() = 185;
 		getHostileStrike() = 10;
 
 		getHostileNameNoSpc() = "Phantom";
@@ -1128,8 +1128,8 @@ void Combat::initSkinEater(Sprites& sprites)
 		//Set parameters for hostile
 		this->increase = false;
 		this->expGain = 274;
-		getHostileHp() = 65;
-		getHostileHpMax() = 65;
+		getHostileHp() = 400;
+		getHostileHpMax() = 400;
 		getHostileStrike() = 8;
 
 		getHostileNameNoSpc() = "Skin Eater";
@@ -1155,8 +1155,6 @@ void Combat::initSiward(Sprites& sprites)
 	if (!this->initHostileSiward) {
 		sprites.track6.pause();
 		sprites.track3.play();
-		//Combat Text for Siward (Due to him having a seperate sprite sheet from hostiles)
-		sprites.spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
 		//Allow combat to start
 		this->combatEnd = false;
 		//Allow new combat to start
@@ -1165,9 +1163,9 @@ void Combat::initSiward(Sprites& sprites)
 		//Set parameters for hostile
 		this->increase = false;
 		this->expGain = 1500;
-		getHostileHp() = 500;
+		getHostileHp() = 1000;
 		getHostileHpMax() = 1000;
-		getHostileStrike() = 40;
+		getHostileStrike() = 25;
 
 		getHostileNameNoSpc() = "Siward";
 		getHostileName() = "Siward ";
@@ -1207,8 +1205,8 @@ void Combat::initLimbSplitter(Sprites& sprites)
 		//Set parameters for hostile
 		this->increase = false;
 		this->expGain = 750;
-		getHostileHp() = 250;
-		getHostileHpMax() = 250;
+		getHostileHp() = 500;
+		getHostileHpMax() = 500;
 		getHostileStrike() = 40;
 
 		getHostileNameNoSpc() = "Limb Splitter";
@@ -1248,9 +1246,9 @@ void Combat::initBurrower(Sprites& sprites)
 		//Set parameters for hostile
 		this->increase = false;
 		this->expGain = 550;
-		getHostileHp() = 250;
-		getHostileHpMax() = 250;
-		getHostileStrike() = 40;
+		getHostileHp() = 400;
+		getHostileHpMax() = 400;
+		getHostileStrike() = 30;
 
 		getHostileNameNoSpc() = "Burrower";
 		getHostileName() = "Burrower ";
@@ -1289,8 +1287,8 @@ void Combat::initChatterMouth(Sprites& sprites)
 		//Set parameters for hostile
 		this->increase = false;
 		this->expGain = 550;
-		getHostileHp() = 265;
-		getHostileHpMax() = 265;
+		getHostileHp() = 325;
+		getHostileHpMax() = 325;
 		getHostileStrike() = 20;
 
 		getHostileNameNoSpc() = "Chatter Mouth";
@@ -1401,7 +1399,7 @@ void Combat::initSpade(Sprites& sprites)
 		//Allow combat to start
 		this->combatEnd = false;
 		//Set tendril alpha sprite
-		sprites.getSpadeCounter() = 6;//Hostile insane sprite
+		sprites.getSpadeCounter() = 6;
 		//Allow new combat to start
 		this->initCombatOnce = false;
 		this->reInitCombatOnce = false;
@@ -1447,7 +1445,7 @@ void Combat::initRotBeast(Sprites& sprites)
 		this->expGain = 2500;
 		getHostileHp() = 1500;
 		getHostileHpMax() = 1500;
-		getHostileStrike() = 50;
+		getHostileStrike() = 30;
 
 		getHostileNameNoSpc() = "The Rot Beast";
 		getHostileName() = "The Rot Beast ";

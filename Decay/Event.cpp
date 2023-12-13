@@ -1177,9 +1177,11 @@ void Event::castleGrifEnc(Sprites& sprites)
             break;
         case 8:
             sprites.getGrifCounter() = -1;
+            sprites.getEntityViewerCounter() = -1;
             sprites.text.setString("*Suddenly, you hear what sounds like scuffling across the floor getting closer... It could be anything. Grif jumps as the sound startles him.*\n\n'Well, that's my queue to leave. See ya!' *Grif runs off into the corridors without a second thought to get away from the sound near him.*");
             break;
         case 9:
+            sprites.getRiCounter() = 0;
             sprites.text.setString("*Ri suddenly appears around the corner as she rapidly looks around... However she quickly locks onto the both of you the second she notices your presence.* 'Oh, hey guys! I didn't expect to see you both so soon!'\n\n'Did you guys happen to see an undead anywhere nearby? I've been hunting them as you know I like to do.'");
             break;
         case 10:
@@ -1199,6 +1201,7 @@ void Event::castleGrifEnc(Sprites& sprites)
             }
             break;
         case 12:
+            sprites.getRiCounter() = -1;
             sprites.text.setString("*She walks off with her massive sword dragging against the ground and the look of bloodlust in her eyes. Something is seriously wrong with that child...*\n\n*Zin turns to you looking concerned.* 'Why did we let that undead live?'");
             break;
         case 13:
@@ -1325,6 +1328,7 @@ void Event::decaySpadeEnc(Sprites& sprites)
             sprites.text.setString("And with that, you watch what seemed like an absolutely insane, irrate jester walk off as a normal and kind girl. You take it as a lesson to not judge books by their covers...*\n\n*Until you remember all the horrific shit you've fought that definitely looks like their goddamn cover. Fuck life lessons here, let's just get out alive.*");
             break;
         case 10:
+            sprites.getZinCounter() = -1;
             sprites.text.setString("");
             sprites.getEventAssets() = false;
             this->reInitialize = true;//Reset dialogue counter for other events
@@ -1410,6 +1414,7 @@ void Event::decaySpadeEncPoison(Sprites& sprites)
             sprites.text.setString("*You take a step forwards, planting your feet in the floor and pulling your weapon in front.* 'Nothing we haven't taken on before, Zin. Just another fucking monster.'\n\n*Your words seem to bring confidence into Zin as she steps forwards closer to you, preparing her spells. It's do or die...*");
             break;
         case 12:
+            sprites.getZinCounter() = -1;
             sprites.getEventAssets() = false;
             sprites.text.setString("");
             this->reInitialize = true;//Reset dialogue counter for other events

@@ -466,6 +466,7 @@ void Travel::forestAbyssal(sf::RenderWindow& window, Sprites& sprites, Event& no
         if (notevent.getNunEnced()) {
             combat.initLostNun(sprites);
             combat.combatLoop(window, sprites, player, animate);
+            combat.stopComTrack(sprites.track5, sprites.track1);
         }
         sprites.map.setTexture(sprites.forestAbyssal12);
         break;
@@ -505,6 +506,7 @@ void Travel::forestAbyssalDepths(sf::RenderWindow& window, Sprites& sprites, Eve
         sprites.map.setTexture(sprites.forestAbyssalDepth3);
         combat.initDecapod(sprites);
         combat.combatLoop(window, sprites, player, animate);
+        combat.stopComTrack(sprites.track5, sprites.track1);
         break;
     case 3:
         sprites.map.setTexture(sprites.forestAbyssalDepth4);
@@ -848,14 +850,18 @@ void Travel::castleLabyrinth(sf::RenderWindow& window, Sprites& sprites, Event& 
         sprites.map.setTexture(sprites.castleLab15);
         notevent.castleSiwardFinalEnc(sprites);
         if (notevent.getSiwardEncedFinal()) {
+            sprites.spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
             combat.initSiward(sprites);
             combat.combatLoop(window, sprites, player, animate);
         }
         sprites.getAreaUnlocked() = 2;
+        if (combat.getCombatEnd() && notevent.getSiwardEncedFinal()) {
+            sprites.getSiwardCounter() = -1;
+            sprites.spriteText[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
+        }
         //Remove Text
         combat.getComTextRemoved() = false;
         combat.stopComTrack(sprites.track3, sprites.track6);
-        sprites.text.setString("Castle Labyrinth explored. View map to move to a new area.");
         break;
     }
 }
@@ -1070,9 +1076,14 @@ void Travel::decayForest(sf::RenderWindow& window, Sprites& sprites, Event& note
         sprites.map.setTexture(sprites.decayForest11);
         notevent.decaySpadeEncPoison(sprites);
         if (notevent.getSpadeEnced()) {
+            sprites.spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
             combat.initSpade(sprites);
             combat.combatLoop(window, sprites, player, animate);
             combat.stopComTrack(sprites.track4, sprites.track7);
+        }
+        if (combat.getCombatEnd() && notevent.getSpadeEnced()) {
+            sprites.getSpadeCounter() = -1;
+            sprites.spriteText[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         }
         break;
     case 11:

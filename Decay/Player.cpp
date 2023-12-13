@@ -22,7 +22,7 @@ Player::Player()
 	this->zinLevel = 1;
 	this->zinSp = 0;
 	this->zinExp = 0;
-	this->zinExpNext = 50;
+	this->zinExpNext = 75;
 
 	//Zin Attributes
 	this->zinResolve = 0;

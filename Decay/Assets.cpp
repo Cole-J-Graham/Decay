@@ -32,10 +32,10 @@ Assets::Assets()
     this->settingsShown = false;
 
     //Map Button Control Flow
-    this->areaUnlocked = 0;
-    this->forestAreaUnlocked = 1;
-    this->castleAreaUnlocked = 1;
-    this->decayAreaUnlocked = 1;
+    this->areaUnlocked = 2;//0
+    this->forestAreaUnlocked = 4;
+    this->castleAreaUnlocked = 4;
+    this->decayAreaUnlocked = 4;//1
 
     this->startFrame = true;
     this->endFrame = false;
@@ -1609,6 +1609,7 @@ void Assets::playTrack(sf::Music& track)
 {
     if (!this->trackPlayed) {
         track.play();
+        track.setLoop(true);
         this->trackPlayed = true;
     }
 }
@@ -1617,6 +1618,7 @@ void Assets::playAmbience(sf::Music& track)
 {
     if (!this->ambPlayed) {
         track.play();
+        track.setLoop(true);
         this->ambPlayed = true;
     }
 }
