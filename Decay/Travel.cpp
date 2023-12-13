@@ -59,7 +59,7 @@ void Travel::newArea(Sprites& sprites, Animation& animate)
     sprites.bonfire.stop(); //Stop the ambience from playing
     this->soundPlay = true; //Reset bonfire sounds
     sprites.setBonfireAssetsFalse();
-    animate.getDecayWarning() = true;
+    animate.getDecayWarning() = false;
     this->reInMap = false;
 }
 
@@ -270,6 +270,8 @@ void Travel::forestBonfire(sf::RenderWindow& window, Sprites& sprites, Event& no
 {
     sprites.locationText.setString("Forest Bonfire");
     if (!this->frameInit) {
+        sprites.track6.stop();
+        sprites.track7.stop();
         sprites.mapTexture.loadFromFile("Assets/Wallpapers/Forest/forestbonfire.jpeg");
         this->frameInit = true;
     }
@@ -579,6 +581,8 @@ void Travel::castleBonfire(sf::RenderWindow& window, Sprites& sprites, Event& no
 {
     sprites.locationText.setString("Castle Bonfire");
     if (!this->frameInit) {
+        sprites.track1.stop();
+        sprites.track7.stop();
         sprites.mapTexture.loadFromFile("Assets/Wallpapers/Castle/castleBonfire.jpeg");
         this->frameInit = true;
     }
@@ -892,6 +896,8 @@ void Travel::decayBonfire(sf::RenderWindow& window, Sprites& sprites, Event& not
 {
     sprites.locationText.setString("Decay Bonfire");
     if (!this->frameInit) {
+        sprites.track1.stop();
+        sprites.track6.stop();
         sprites.mapTexture.loadFromFile("Assets/Wallpapers/Decay/decayBonfire.jpeg");
         this->frameInit = true;
     }
