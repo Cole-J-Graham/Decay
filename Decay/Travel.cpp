@@ -88,6 +88,14 @@ void Travel::enterBonfire(sf::RenderWindow& window, Sprites& sprites, Event& not
     }
 }
 
+void Travel::nextArea(Sprites& sprites, std::string& inString)
+{
+    if (!this->frameInit) {
+        sprites.mapTexture.loadFromFile(inString);
+        frameInit = true;
+    }
+}
+
 //Draw Intro
 void Travel::intro(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player)
 {
@@ -285,58 +293,58 @@ void Travel::forestEntrance(sf::RenderWindow& window, Sprites& sprites, Event& n
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Forest Entrance");
-        sprites.map.setTexture(sprites.forestEntrance1);
+        this->nextArea(sprites, sprites.forestEntrance1);
         sprites.playTrack(sprites.track1);
         sprites.playAmbience(sprites.forestAmbience);
         break;
     case 1:
-        sprites.map.setTexture(sprites.forestEntrance2);
+        this->nextArea(sprites, sprites.forestEntrance2);
         sprites.getStartFrame() = false;//Allow back arrow to re appear
         combat.initDecayWalker(sprites);
         combat.combatLoop(window, sprites, player, animate);
         combat.stopComTrack(sprites.track5, sprites.track1);
         break;
     case 2:
-        sprites.map.setTexture(sprites.forestEntrance3);
+        this->nextArea(sprites, sprites.forestEntrance3);
         break;
     case 3:
-        sprites.map.setTexture(sprites.forestEntrance4);
+        this->nextArea(sprites, sprites.forestEntrance4);
         break;
     case 4:
-        sprites.map.setTexture(sprites.forestEntrance5);
+        this->nextArea(sprites, sprites.forestEntrance5);
         break;
     case 5:
-        sprites.map.setTexture(sprites.forestEntrance6);
+        this->nextArea(sprites, sprites.forestEntrance6);
         break;
     case 6:
-        sprites.map.setTexture(sprites.forestEntrance7);
+        this->nextArea(sprites, sprites.forestEntrance7);
         notevent.riEnc(sprites);
         break;
     case 7:
-        sprites.map.setTexture(sprites.forestEntrance8);
+        this->nextArea(sprites, sprites.forestEntrance8);
         break;
     case 8:
-        sprites.map.setTexture(sprites.forestEntrance9);
+        this->nextArea(sprites, sprites.forestEntrance9);
         break;
     case 9:
-        sprites.map.setTexture(sprites.forestEntrance10);
+        this->nextArea(sprites, sprites.forestEntrance10);
         break;
     case 10:
-        sprites.map.setTexture(sprites.forestEntrance11);
+        this->nextArea(sprites, sprites.forestEntrance11);
         notevent.forestSiwardEnc(sprites);
         break;
     case 11:
-        sprites.map.setTexture(sprites.forestEntrance12);
+        this->nextArea(sprites, sprites.forestEntrance12);
         break;
     case 12:
-        sprites.map.setTexture(sprites.forestEntrance13);
+        this->nextArea(sprites, sprites.forestEntrance13);
         break;
     case 13:
-        sprites.map.setTexture(sprites.forestEntrance14);
+        this->nextArea(sprites, sprites.forestEntrance14);
         sprites.getEndFrame() = false;
         break;
     case 14:
-        sprites.map.setTexture(sprites.forestEntrance15);
+        this->nextArea(sprites, sprites.forestEntrance15);
         sprites.getEndFrame() = true;
         sprites.getForestAreaUnlocked() = 2;
         this->reInitMap(sprites.getInitForestMapTexture());
@@ -354,65 +362,65 @@ void Travel::forestDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Forest Depths");
-        sprites.map.setTexture(sprites.forestDepths1);
+        this->nextArea(sprites, sprites.forestDepths1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        sprites.map.setTexture(sprites.forestDepths2);
+        this->nextArea(sprites, sprites.forestDepths2);
         break;
     case 2:
-        sprites.map.setTexture(sprites.forestDepths3);
+        this->nextArea(sprites, sprites.forestDepths3);
         combat.initWolf(sprites);
         combat.combatLoop(window, sprites, player, animate);
         combat.stopComTrack(sprites.track5, sprites.track1);
         break;
     case 3:
         notevent.treeEnc(sprites, player);
-        sprites.map.setTexture(sprites.forestDepths4);
+        this->nextArea(sprites, sprites.forestDepths4);
         break;
     case 4:
-        sprites.map.setTexture(sprites.forestDepths5);
+        this->nextArea(sprites, sprites.forestDepths5);
         break;
     case 5:
-        sprites.map.setTexture(sprites.forestDepths6);
+        this->nextArea(sprites, sprites.forestDepths6);
         combat.initHostileTree(sprites);
         combat.combatLoop(window, sprites, player, animate);
         combat.stopComTrack(sprites.track5, sprites.track1);
         break;
     case 6:
-        sprites.map.setTexture(sprites.forestDepths7);
+        this->nextArea(sprites, sprites.forestDepths7);
         notevent.thomEnc(sprites);
         break;
     case 7:
-        sprites.map.setTexture(sprites.forestDepths8);
+        this->nextArea(sprites, sprites.forestDepths8);
         break;
     case 8:
-        sprites.map.setTexture(sprites.forestDepths9);
+        this->nextArea(sprites, sprites.forestDepths9);
         break;
     case 9:
-        sprites.map.setTexture(sprites.forestDepths10);
+        this->nextArea(sprites, sprites.forestDepths10);
         combat.initDecayKnight(sprites);
         combat.combatLoop(window, sprites, player, animate);
         combat.stopComTrack(sprites.track5, sprites.track1);
         break;
     case 10:
         notevent.forestDepthsSpadeEnc(sprites);
-        sprites.map.setTexture(sprites.forestDepths11);
+        this->nextArea(sprites, sprites.forestDepths11);
         break;
     case 11:
-        sprites.map.setTexture(sprites.forestDepths12);
+        this->nextArea(sprites, sprites.forestDepths12);
         notevent.forestDepthsSpadeEnc(sprites);
         break;
     case 12:
-        sprites.map.setTexture(sprites.forestDepths13);
+        this->nextArea(sprites, sprites.forestDepths13);
         break;
     case 13:
         sprites.getEndFrame() = false; //Ensure that the back arrow is gone
-        sprites.map.setTexture(sprites.forestDepths14);
+        this->nextArea(sprites, sprites.forestDepths14);
         break;
     case 14:
         sprites.getEndFrame() = true; //Ensure that the back arrow is gone
-        sprites.map.setTexture(sprites.forestDepths15);
+        this->nextArea(sprites, sprites.forestDepths15);
         sprites.getForestAreaUnlocked() = 3;
         this->reInitMap(sprites.getInitForestMapTexture());
         //Remove Text
@@ -428,40 +436,40 @@ void Travel::forestAbyssal(sf::RenderWindow& window, Sprites& sprites, Event& no
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Abyssal Forest");
-        sprites.map.setTexture(sprites.forestAbyssal1);
+        this->nextArea(sprites, sprites.forestAbyssal1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        sprites.map.setTexture(sprites.forestAbyssal2);
+        this->nextArea(sprites, sprites.forestAbyssal2);
         break;
     case 2:
         notevent.forestAbyssalSpadeEnc(sprites, player);
-        sprites.map.setTexture(sprites.forestAbyssal3);
+        this->nextArea(sprites, sprites.forestAbyssal3);
         break;
     case 3:
-        sprites.map.setTexture(sprites.forestAbyssal4);
+        this->nextArea(sprites, sprites.forestAbyssal4);
         break;
     case 4:
         notevent.obeliskEnc(sprites, player);
-        sprites.map.setTexture(sprites.forestAbyssal5);
+        this->nextArea(sprites, sprites.forestAbyssal5);
         break;
     case 5:
-        sprites.map.setTexture(sprites.forestAbyssal6);
+        this->nextArea(sprites, sprites.forestAbyssal6);
         break;
     case 6:
-        sprites.map.setTexture(sprites.forestAbyssal7);
+        this->nextArea(sprites, sprites.forestAbyssal7);
         break;
     case 7:
-        sprites.map.setTexture(sprites.forestAbyssal8);
+        this->nextArea(sprites, sprites.forestAbyssal8);
         break;
     case 8:
-        sprites.map.setTexture(sprites.forestAbyssal9);
+        this->nextArea(sprites, sprites.forestAbyssal9);
         break;
     case 9:
-        sprites.map.setTexture(sprites.forestAbyssal10);
+        this->nextArea(sprites, sprites.forestAbyssal10);
         break;
     case 10:
-        sprites.map.setTexture(sprites.forestAbyssal11);
+        this->nextArea(sprites, sprites.forestAbyssal11);
         break;
     case 11:
         notevent.lostNunEnc(sprites);
@@ -470,18 +478,18 @@ void Travel::forestAbyssal(sf::RenderWindow& window, Sprites& sprites, Event& no
             combat.combatLoop(window, sprites, player, animate);
             combat.stopComTrack(sprites.track5, sprites.track1);
         }
-        sprites.map.setTexture(sprites.forestAbyssal12);
+        this->nextArea(sprites, sprites.forestAbyssal12);
         break;
     case 12:
-        sprites.map.setTexture(sprites.forestAbyssal13);
+        this->nextArea(sprites, sprites.forestAbyssal13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        sprites.map.setTexture(sprites.forestAbyssal14);
+        this->nextArea(sprites, sprites.forestAbyssal14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        sprites.map.setTexture(sprites.forestAbyssal15);
+        this->nextArea(sprites, sprites.forestAbyssal15);
         sprites.getForestAreaUnlocked() = 4;
         this->reInitMap(sprites.getInitForestMapTexture());
         //Remove Text
@@ -497,56 +505,56 @@ void Travel::forestAbyssalDepths(sf::RenderWindow& window, Sprites& sprites, Eve
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Abyssal Forest Depths");
-        sprites.map.setTexture(sprites.forestAbyssalDepth1);
+        this->nextArea(sprites, sprites.forestAbyssalDepth1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        sprites.map.setTexture(sprites.forestAbyssalDepth2);
+        this->nextArea(sprites, sprites.forestAbyssalDepth2);
         notevent.forestAbyssalSpadeEnc(sprites, player);
         break;
     case 2:
-        sprites.map.setTexture(sprites.forestAbyssalDepth3);
+        this->nextArea(sprites, sprites.forestAbyssalDepth3);
         combat.initDecapod(sprites);
         combat.combatLoop(window, sprites, player, animate);
         combat.stopComTrack(sprites.track5, sprites.track1);
         break;
     case 3:
-        sprites.map.setTexture(sprites.forestAbyssalDepth4);
+        this->nextArea(sprites, sprites.forestAbyssalDepth4);
         break;
     case 4:
-        sprites.map.setTexture(sprites.forestAbyssalDepth5);
+        this->nextArea(sprites, sprites.forestAbyssalDepth5);
         break;
     case 5:
-        sprites.map.setTexture(sprites.forestAbyssalDepth6);
+        this->nextArea(sprites, sprites.forestAbyssalDepth6);
         break;
     case 6:
-        sprites.map.setTexture(sprites.forestAbyssalDepth7);
+        this->nextArea(sprites, sprites.forestAbyssalDepth7);
         break;
     case 7:
-        sprites.map.setTexture(sprites.forestAbyssalDepth8);
+        this->nextArea(sprites, sprites.forestAbyssalDepth8);
         break;
     case 8:
-        sprites.map.setTexture(sprites.forestAbyssalDepth9);
+        this->nextArea(sprites, sprites.forestAbyssalDepth9);
         break;
     case 9:
-        sprites.map.setTexture(sprites.forestAbyssalDepth10);
+        this->nextArea(sprites, sprites.forestAbyssalDepth10);
         break;
     case 10:
-        sprites.map.setTexture(sprites.forestAbyssalDepth11);
+        this->nextArea(sprites, sprites.forestAbyssalDepth11);
         break;
     case 11:
-        sprites.map.setTexture(sprites.forestAbyssalDepth12);
+        this->nextArea(sprites, sprites.forestAbyssalDepth12);
         break;
     case 12:
-        sprites.map.setTexture(sprites.forestAbyssalDepth13);
+        this->nextArea(sprites, sprites.forestAbyssalDepth13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        sprites.map.setTexture(sprites.forestAbyssalDepth14);
+        this->nextArea(sprites, sprites.forestAbyssalDepth14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        sprites.map.setTexture(sprites.forestAbyssalDepth15);
+        this->nextArea(sprites, sprites.forestAbyssalDepth15);
         sprites.getAreaUnlocked() = 1;
         //Remove Text
         combat.getComTextRemoved() = false;
@@ -598,55 +606,55 @@ void Travel::castleHalls(sf::RenderWindow& window, Sprites& sprites, Event& note
         this->newArea(sprites, animate);
         sprites.playTrack(sprites.track6);
         sprites.locationText.setString("Castle Entrance");
-        sprites.map.setTexture(sprites.castleHalls1);
+        this->nextArea(sprites, sprites.castleHalls1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        sprites.map.setTexture(sprites.castleHalls2);
+        this->nextArea(sprites, sprites.castleHalls2);
         break;
     case 2:
-        sprites.map.setTexture(sprites.castleHalls3);
+        this->nextArea(sprites, sprites.castleHalls3);
         break;
     case 3:
-        sprites.map.setTexture(sprites.castleHalls4);
+        this->nextArea(sprites, sprites.castleHalls4);
         break;
     case 4:
-        sprites.map.setTexture(sprites.castleHalls5);
+        this->nextArea(sprites, sprites.castleHalls5);
         combat.initCourtJester(sprites);
         combat.combatLoop(window, sprites, player, animate);
         combat.stopComTrack(sprites.track9, sprites.track6);
         break;
     case 5:
-        sprites.map.setTexture(sprites.castleHalls6);
+        this->nextArea(sprites, sprites.castleHalls6);
         break;
     case 6:
-        sprites.map.setTexture(sprites.castleHalls7);
+        this->nextArea(sprites, sprites.castleHalls7);
         break;
     case 7:
-        sprites.map.setTexture(sprites.castleHalls8);
+        this->nextArea(sprites, sprites.castleHalls8);
         break;
     case 8:
-        sprites.map.setTexture(sprites.castleHalls9);
+        this->nextArea(sprites, sprites.castleHalls9);
         break;
     case 9:
-        sprites.map.setTexture(sprites.castleHalls10);
+        this->nextArea(sprites, sprites.castleHalls10);
         break;
     case 10:
-        sprites.map.setTexture(sprites.castleHalls11);
+        this->nextArea(sprites, sprites.castleHalls11);
         break;
     case 11:
-        sprites.map.setTexture(sprites.castleHalls12);
+        this->nextArea(sprites, sprites.castleHalls12);
         break;
     case 12:
-        sprites.map.setTexture(sprites.castleHalls13);
+        this->nextArea(sprites, sprites.castleHalls13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        sprites.map.setTexture(sprites.castleHalls14);
+        this->nextArea(sprites, sprites.castleHalls14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        sprites.map.setTexture(sprites.castleHalls15);
+        this->nextArea(sprites, sprites.castleHalls15);
         sprites.getCastleAreaUnlocked() = 2;
         this->reInitMap(sprites.getInitCastleMapTexture());
         //Remove Text
@@ -663,7 +671,7 @@ void Travel::castleDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Castle Depths");
-        sprites.map.setTexture(sprites.castleDepths1);
+        this->nextArea(sprites, sprites.castleDepths1);
         //Initialize Spade and Sprite
         if (notevent.getSpadePoison()) {
             notevent.castleSpadeEncPoison(sprites);
@@ -674,52 +682,52 @@ void Travel::castleDepths(sf::RenderWindow& window, Sprites& sprites, Event& not
         break;
     case 1:
         sprites.getStartFrame() = false;
-        sprites.map.setTexture(sprites.castleDepths2);
+        this->nextArea(sprites, sprites.castleDepths2);
         break;
     case 2:
-        sprites.map.setTexture(sprites.castleDepths3);
+        this->nextArea(sprites, sprites.castleDepths3);
         break;
     case 3:
-        sprites.map.setTexture(sprites.castleDepths4);
+        this->nextArea(sprites, sprites.castleDepths4);
         combat.initWallMimic(sprites);
         combat.combatLoop(window, sprites, player, animate);
         combat.stopComTrack(sprites.track9, sprites.track6);
         break;
     case 4:
-        sprites.map.setTexture(sprites.castleDepths5);
+        this->nextArea(sprites, sprites.castleDepths5);
         break;
     case 5:
-        sprites.map.setTexture(sprites.castleDepths6);
+        this->nextArea(sprites, sprites.castleDepths6);
         break;
     case 6:
-        sprites.map.setTexture(sprites.castleDepths7);
+        this->nextArea(sprites, sprites.castleDepths7);
         break;
     case 7:
-        sprites.map.setTexture(sprites.castleDepths8);
+        this->nextArea(sprites, sprites.castleDepths8);
         break;
     case 8:
-        sprites.map.setTexture(sprites.castleDepths9);
+        this->nextArea(sprites, sprites.castleDepths9);
         break;
     case 9:
-        sprites.map.setTexture(sprites.castleDepths10);
+        this->nextArea(sprites, sprites.castleDepths10);
         break;
     case 10:
-        sprites.map.setTexture(sprites.castleDepths11);
+        this->nextArea(sprites, sprites.castleDepths11);
         notevent.castleSiwardEnc(sprites);
         break;
     case 11:
-        sprites.map.setTexture(sprites.castleDepths12);
+        this->nextArea(sprites, sprites.castleDepths12);
         break;
     case 12:
-        sprites.map.setTexture(sprites.castleDepths13);
+        this->nextArea(sprites, sprites.castleDepths13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        sprites.map.setTexture(sprites.castleDepths14);
+        this->nextArea(sprites, sprites.castleDepths14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        sprites.map.setTexture(sprites.castleDepths15);
+        this->nextArea(sprites, sprites.castleDepths15);
         sprites.getCastleAreaUnlocked() = 3;
         this->reInitMap(sprites.getInitCastleMapTexture());
         //Remove Text
@@ -735,59 +743,59 @@ void Travel::castleChambers(sf::RenderWindow& window, Sprites& sprites, Event& n
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Castle Chambers");
-        sprites.map.setTexture(sprites.castleChambers1);
+        this->nextArea(sprites, sprites.castleChambers1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        sprites.map.setTexture(sprites.castleChambers2);
+        this->nextArea(sprites, sprites.castleChambers2);
         break;
     case 2:
-        sprites.map.setTexture(sprites.castleChambers3);
+        this->nextArea(sprites, sprites.castleChambers3);
         notevent.castleGrifEnc(sprites);
         break;
     case 3:
-        sprites.map.setTexture(sprites.castleChambers4);
+        this->nextArea(sprites, sprites.castleChambers4);
         break;
     case 4:
-        sprites.map.setTexture(sprites.castleChambers5);
+        this->nextArea(sprites, sprites.castleChambers5);
         combat.initLostKnight(sprites);
         combat.combatLoop(window, sprites, player, animate);
         combat.stopComTrack(sprites.track9, sprites.track6);
         break;
     case 5:
-        sprites.map.setTexture(sprites.castleChambers6);
+        this->nextArea(sprites, sprites.castleChambers6);
         break;
     case 6:
-        sprites.map.setTexture(sprites.castleChambers7);
+        this->nextArea(sprites, sprites.castleChambers7);
         break;
     case 7:
-        sprites.map.setTexture(sprites.castleChambers8);
+        this->nextArea(sprites, sprites.castleChambers8);
         break;
     case 8:
-        sprites.map.setTexture(sprites.castleChambers9);
+        this->nextArea(sprites, sprites.castleChambers9);
         break;
     case 9:
-        sprites.map.setTexture(sprites.castleChambers10);
+        this->nextArea(sprites, sprites.castleChambers10);
         combat.initPhantom(sprites);
         combat.combatLoop(window, sprites, player, animate);
         combat.stopComTrack(sprites.track9, sprites.track6);
         break;
     case 10:
-        sprites.map.setTexture(sprites.castleChambers11);
+        this->nextArea(sprites, sprites.castleChambers11);
         break;
     case 11:
-        sprites.map.setTexture(sprites.castleChambers12);
+        this->nextArea(sprites, sprites.castleChambers12);
         break;
     case 12:
-        sprites.map.setTexture(sprites.castleChambers13);
+        this->nextArea(sprites, sprites.castleChambers13);
         break;
         sprites.getEndFrame() = false;
     case 13:
-        sprites.map.setTexture(sprites.castleChambers14);
+        this->nextArea(sprites, sprites.castleChambers14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        sprites.map.setTexture(sprites.castleChambers15);
+        this->nextArea(sprites, sprites.castleChambers15);
         sprites.getCastleAreaUnlocked() = 4;
         this->reInitMap(sprites.getInitCastleMapTexture());
         //Remove Text
@@ -803,55 +811,55 @@ void Travel::castleLabyrinth(sf::RenderWindow& window, Sprites& sprites, Event& 
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Castle Labyrinth");
-        sprites.map.setTexture(sprites.castleLab1);
+        this->nextArea(sprites, sprites.castleLab1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        sprites.map.setTexture(sprites.castleLab2);
+        this->nextArea(sprites, sprites.castleLab2);
         break;
     case 2:
-        sprites.map.setTexture(sprites.castleLab3);
+        this->nextArea(sprites, sprites.castleLab3);
         break;
     case 3:
-        sprites.map.setTexture(sprites.castleLab4);
+        this->nextArea(sprites, sprites.castleLab4);
         break;
     case 4:
-        sprites.map.setTexture(sprites.castleLab5);
+        this->nextArea(sprites, sprites.castleLab5);
         combat.initSkinEater(sprites);
         combat.combatLoop(window, sprites, player, animate);
         combat.stopComTrack(sprites.track9, sprites.track6);
         break;
     case 5:
-        sprites.map.setTexture(sprites.castleLab6);
+        this->nextArea(sprites, sprites.castleLab6);
         break;
     case 6:
-        sprites.map.setTexture(sprites.castleLab7);
+        this->nextArea(sprites, sprites.castleLab7);
         break;
     case 7:
-        sprites.map.setTexture(sprites.castleLab8);
+        this->nextArea(sprites, sprites.castleLab8);
         break;
     case 8:
-        sprites.map.setTexture(sprites.castleLab9);
+        this->nextArea(sprites, sprites.castleLab9);
         break;
     case 9:
-        sprites.map.setTexture(sprites.castleLab10);
+        this->nextArea(sprites, sprites.castleLab10);
         break;
     case 10:
-        sprites.map.setTexture(sprites.castleLab11);
+        this->nextArea(sprites, sprites.castleLab11);
         break;
     case 11:
-        sprites.map.setTexture(sprites.castleLab12);
+        this->nextArea(sprites, sprites.castleLab12);
         break;
     case 12:
-        sprites.map.setTexture(sprites.castleLab13);
+        this->nextArea(sprites, sprites.castleLab13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        sprites.map.setTexture(sprites.castleLab14);
+        this->nextArea(sprites, sprites.castleLab14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        sprites.map.setTexture(sprites.castleLab15);
+        this->nextArea(sprites, sprites.castleLab15);
         notevent.castleSiwardFinalEnc(sprites);
         if (notevent.getSiwardEncedFinal()) {
             sprites.spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
@@ -912,62 +920,62 @@ void Travel::decayChasms(sf::RenderWindow& window, Sprites& sprites, Event& note
         this->newArea(sprites, animate);
         sprites.playTrack(sprites.track7);
         sprites.locationText.setString("Decay Chasms");
-        sprites.map.setTexture(sprites.decayChasms1);
+        this->nextArea(sprites, sprites.decayChasms1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        sprites.map.setTexture(sprites.decayChasms2);
+        this->nextArea(sprites, sprites.decayChasms2);
         break;
     case 2:
-        sprites.map.setTexture(sprites.decayChasms3);
+        this->nextArea(sprites, sprites.decayChasms3);
         break;
     case 3:
-        sprites.map.setTexture(sprites.decayChasms4);
+        this->nextArea(sprites, sprites.decayChasms4);
         notevent.decayGrifEnc(sprites);
         break;
     case 4:
-        sprites.map.setTexture(sprites.decayChasms5);
+        this->nextArea(sprites, sprites.decayChasms5);
         combat.initLimbSplitter(sprites);
         combat.combatLoop(window, sprites, player, animate);
         combat.stopComTrack(sprites.track10, sprites.track7);
         break;
     case 5:
-        sprites.map.setTexture(sprites.decayChasms6);
+        this->nextArea(sprites, sprites.decayChasms6);
         break;
     case 6:
-        sprites.map.setTexture(sprites.decayChasms7);
+        this->nextArea(sprites, sprites.decayChasms7);
         break;
     case 7:
-        sprites.map.setTexture(sprites.decayChasms8);
+        this->nextArea(sprites, sprites.decayChasms8);
         break;
     case 8:
-        sprites.map.setTexture(sprites.decayChasms9);
+        this->nextArea(sprites, sprites.decayChasms9);
         combat.initChatterMouth(sprites);
         combat.combatLoop(window, sprites, player, animate);
         combat.stopComTrack(sprites.track10, sprites.track7);
         break;
     case 9:
-        sprites.map.setTexture(sprites.decayChasms10);
+        this->nextArea(sprites, sprites.decayChasms10);
         break;
     case 10:
-        sprites.map.setTexture(sprites.decayChasms11);
+        this->nextArea(sprites, sprites.decayChasms11);
         break;
     case 11:
-        sprites.map.setTexture(sprites.decayChasms12);
+        this->nextArea(sprites, sprites.decayChasms12);
         combat.initBurrower(sprites);
         combat.combatLoop(window, sprites, player, animate);
         combat.stopComTrack(sprites.track10, sprites.track7);
         break;
     case 12:
-        sprites.map.setTexture(sprites.decayChasms13);
+        this->nextArea(sprites, sprites.decayChasms13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        sprites.map.setTexture(sprites.decayChasms14);
+        this->nextArea(sprites, sprites.decayChasms14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        sprites.map.setTexture(sprites.decayChasms15);
+        this->nextArea(sprites, sprites.decayChasms15);
         sprites.getDecayAreaUnlocked() = 2;
         this->reInitMap(sprites.getInitDecayMapTexture());
         //Remove Text
@@ -984,55 +992,55 @@ void Travel::decayOcean(sf::RenderWindow& window, Sprites& sprites, Event& notev
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Decay Ocean");
-        sprites.map.setTexture(sprites.decayOcean1);
+        this->nextArea(sprites, sprites.decayOcean1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        sprites.map.setTexture(sprites.decayOcean2);
+        this->nextArea(sprites, sprites.decayOcean2);
         break;
     case 2:
-        sprites.map.setTexture(sprites.decayOcean3);
+        this->nextArea(sprites, sprites.decayOcean3);
         break;
     case 3:
-        sprites.map.setTexture(sprites.decayOcean4);
+        this->nextArea(sprites, sprites.decayOcean4);
         break;
     case 4:
-        sprites.map.setTexture(sprites.decayOcean5);
+        this->nextArea(sprites, sprites.decayOcean5);
         break;
     case 5:
-        sprites.map.setTexture(sprites.decayOcean6);
+        this->nextArea(sprites, sprites.decayOcean6);
         break;
     case 6:
-        sprites.map.setTexture(sprites.decayOcean7);
+        this->nextArea(sprites, sprites.decayOcean7);
         break;
     case 7:
-        sprites.map.setTexture(sprites.decayOcean8);
+        this->nextArea(sprites, sprites.decayOcean8);
         combat.initTendrilAlpha(sprites);
         combat.combatLoop(window, sprites, player, animate);
         combat.stopComTrack(sprites.track10, sprites.track7);
         break;
     case 8:
-        sprites.map.setTexture(sprites.decayOcean9);
+        this->nextArea(sprites, sprites.decayOcean9);
         break;
     case 9:
-        sprites.map.setTexture(sprites.decayOcean10);
+        this->nextArea(sprites, sprites.decayOcean10);
         break;
     case 10:
-        sprites.map.setTexture(sprites.decayOcean11);
+        this->nextArea(sprites, sprites.decayOcean11);
         break;
     case 11:
-        sprites.map.setTexture(sprites.decayOcean12);
+        this->nextArea(sprites, sprites.decayOcean12);
         break;
     case 12:
-        sprites.map.setTexture(sprites.decayOcean13);
+        this->nextArea(sprites, sprites.decayOcean13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        sprites.map.setTexture(sprites.decayOcean14);
+        this->nextArea(sprites, sprites.decayOcean14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        sprites.map.setTexture(sprites.decayOcean15);
+        this->nextArea(sprites, sprites.decayOcean15);
         sprites.getDecayAreaUnlocked() = 3;
         this->reInitMap(sprites.getInitDecayMapTexture());
         //Remove Text
@@ -1048,38 +1056,38 @@ void Travel::decayForest(sf::RenderWindow& window, Sprites& sprites, Event& note
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Decay Ocean");
-        sprites.map.setTexture(sprites.decayForest1);
+        this->nextArea(sprites, sprites.decayForest1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        sprites.map.setTexture(sprites.decayForest2);
+        this->nextArea(sprites, sprites.decayForest2);
         break;
     case 2:
-        sprites.map.setTexture(sprites.decayForest3);
+        this->nextArea(sprites, sprites.decayForest3);
         break;
     case 3:
-        sprites.map.setTexture(sprites.decayForest4);
+        this->nextArea(sprites, sprites.decayForest4);
         break;
     case 4:
-        sprites.map.setTexture(sprites.decayForest5);
+        this->nextArea(sprites, sprites.decayForest5);
         break;
     case 5:
-        sprites.map.setTexture(sprites.decayForest6);
+        this->nextArea(sprites, sprites.decayForest6);
         break;
     case 6:
-        sprites.map.setTexture(sprites.decayForest7);
+        this->nextArea(sprites, sprites.decayForest7);
         break;
     case 7:
-        sprites.map.setTexture(sprites.decayForest8);
+        this->nextArea(sprites, sprites.decayForest8);
         break;
     case 8:
-        sprites.map.setTexture(sprites.decayForest9);
+        this->nextArea(sprites, sprites.decayForest9);
         break;
     case 9:
-        sprites.map.setTexture(sprites.decayForest10);
+        this->nextArea(sprites, sprites.decayForest10);
         break;
     case 10:
-        sprites.map.setTexture(sprites.decayForest11);
+        this->nextArea(sprites, sprites.decayForest11);
         notevent.decaySpadeEncPoison(sprites);
         if (notevent.getSpadeEnced()) {
             sprites.spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
@@ -1093,18 +1101,18 @@ void Travel::decayForest(sf::RenderWindow& window, Sprites& sprites, Event& note
         }
         break;
     case 11:
-        sprites.map.setTexture(sprites.decayForest12);
+        this->nextArea(sprites, sprites.decayForest12);
         break;
     case 12:
-        sprites.map.setTexture(sprites.decayForest13);
+        this->nextArea(sprites, sprites.decayForest13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        sprites.map.setTexture(sprites.decayForest14);
+        this->nextArea(sprites, sprites.decayForest14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        sprites.map.setTexture(sprites.decayForest15);
+        this->nextArea(sprites, sprites.decayForest15);
         sprites.getDecayAreaUnlocked() = 4;
         this->reInitMap(sprites.getInitDecayMapTexture());
         //Remove Text
@@ -1120,55 +1128,55 @@ void Travel::decayGiants(sf::RenderWindow& window, Sprites& sprites, Event& note
     case 0:
         this->newArea(sprites, animate);
         sprites.locationText.setString("Decay Ocean");
-        sprites.map.setTexture(sprites.decayGiants1);
+        this->nextArea(sprites, sprites.decayGiants1);
         break;
     case 1:
         sprites.getStartFrame() = false;
-        sprites.map.setTexture(sprites.decayGiants2);
+        this->nextArea(sprites, sprites.decayGiants2);
         break;
     case 2:
-        sprites.map.setTexture(sprites.decayGiants3);
+        this->nextArea(sprites, sprites.decayGiants3);
         break;
     case 3:
-        sprites.map.setTexture(sprites.decayGiants4);
+        this->nextArea(sprites, sprites.decayGiants4);
         break;
     case 4:
-        sprites.map.setTexture(sprites.decayGiants5);
+        this->nextArea(sprites, sprites.decayGiants5);
         break;
     case 5:
-        sprites.map.setTexture(sprites.decayGiants6);
+        this->nextArea(sprites, sprites.decayGiants6);
         combat.initReclus(sprites);
         combat.combatLoop(window, sprites, player, animate);
         combat.stopComTrack(sprites.track10, sprites.track7);
         break;
     case 6:
-        sprites.map.setTexture(sprites.decayGiants7);
+        this->nextArea(sprites, sprites.decayGiants7);
         break;
     case 7:
-        sprites.map.setTexture(sprites.decayGiants8);
+        this->nextArea(sprites, sprites.decayGiants8);
         break;
     case 8:
-        sprites.map.setTexture(sprites.decayGiants9);
+        this->nextArea(sprites, sprites.decayGiants9);
         break;
     case 9:
-        sprites.map.setTexture(sprites.decayGiants10);
+        this->nextArea(sprites, sprites.decayGiants10);
         break;
     case 10:
-        sprites.map.setTexture(sprites.decayGiants11);
+        this->nextArea(sprites, sprites.decayGiants11);
         break;
     case 11:
-        sprites.map.setTexture(sprites.decayGiants12);
+        this->nextArea(sprites, sprites.decayGiants12);
         break;
     case 12:
-        sprites.map.setTexture(sprites.decayGiants13);
+        this->nextArea(sprites, sprites.decayGiants13);
         break;
     case 13:
         sprites.getEndFrame() = false;
-        sprites.map.setTexture(sprites.decayGiants14);
+        this->nextArea(sprites, sprites.decayGiants14);
         break;
     case 14:
         sprites.getEndFrame() = true;
-        sprites.map.setTexture(sprites.decayGiants15);
+        this->nextArea(sprites, sprites.decayGiants15);
         notevent.rotBeastEnc(sprites);
         if (notevent.getRotBeastEnced()) {
             combat.initRotBeast(sprites);

@@ -22,7 +22,7 @@ Moves::Moves()
 	this->hostileHpMax = 50;
 
 	//Player Moves
-	this->playerStrike = 1000;
+	this->playerStrike = 5;
 	this->playerGuard = 1;
 	this->decayedBlade = 10;
 	this->heftyBlowDmg = 25;

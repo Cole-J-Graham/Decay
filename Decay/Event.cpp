@@ -1525,6 +1525,7 @@ void Event::decayGrifEnc(Sprites& sprites)
             }
             break;
         case 18:
+            sprites.getRiCounter() = -1;
             sprites.getEventAssets() = false;
             sprites.text.setString("");
             this->reInitialize = true;//Reset dialogue counter for other events

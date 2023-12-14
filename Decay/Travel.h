@@ -58,6 +58,7 @@ public:
 	void intro(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player);
 	void introBeginning(sf::RenderWindow& window, Sprites& sprites, Event& notevent);
 	void enterBonfire(sf::RenderWindow& window, Sprites& sprites, Event& notevent);
+	void nextArea(Sprites& sprites, std::string& inString);
 
 	//Draw Forest
 	void forestMap(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
