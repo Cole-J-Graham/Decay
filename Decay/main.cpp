@@ -1,19 +1,12 @@
 #include"World.h"
-
 World world;
-Assets assets;
-Sprites sprites;
-Combat combat;
-Player player;
-Event notevent;
-Travel travel;
 Animation animate;
 
 int main()
 {
     while (!world.getStop())
     {
-        world.bootUp(sprites, notevent, combat, player, travel, animate);
+        world.bootUp(animate);
     }
 
     return 0;

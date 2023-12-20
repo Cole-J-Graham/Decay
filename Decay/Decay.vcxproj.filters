@@ -68,5 +68,11 @@
     <Filter Include=".h">
       <UniqueIdentifier>{db4c232d-a73c-4c15-ac29-b23f176e676e}</UniqueIdentifier>
     </Filter>
+    <Filter Include=".h\Assets">
+      <UniqueIdentifier>{913b4a39-9b0c-4fab-a7bf-4ae9d6c528f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\Assets">
+      <UniqueIdentifier>{276a4125-0a89-4cb6-9a49-f5849dd0f2bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

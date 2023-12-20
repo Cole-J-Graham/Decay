@@ -45,21 +45,21 @@ Player::~Player()
 }
 
 //Core Functions
-void Player::statsText(Assets& assets)
+void Player::statsText()
 {
-	assets.playerTextElements[0].setString("LEVEL " + std::to_string(this->level));
-	assets.playerTextElements[1].setString("STRENGTH " + std::to_string(this->strength));
-	assets.playerTextElements[2].setString("FORTITUDE " + std::to_string(this->fortitude));
-	assets.playerTextElements[3].setString("VITALITY " + std::to_string(this->vitality));
+	playerTextElements[0].setString("LEVEL " + std::to_string(this->level));
+	playerTextElements[1].setString("STRENGTH " + std::to_string(this->strength));
+	playerTextElements[2].setString("FORTITUDE " + std::to_string(this->fortitude));
+	playerTextElements[3].setString("VITALITY " + std::to_string(this->vitality));
 
-	assets.zinTextElements[0].setString("LEVEL " + std::to_string(this->zinLevel));
-	assets.zinTextElements[1].setString("RESOLVE " + std::to_string(this->zinResolve));
-	assets.zinTextElements[2].setString("PATIENCE " + std::to_string(this->zinPatience));
-	assets.zinTextElements[3].setString("RESILIENCE " + std::to_string(this->zinResilience));
+	zinTextElements[0].setString("LEVEL " + std::to_string(this->zinLevel));
+	zinTextElements[1].setString("RESOLVE " + std::to_string(this->zinResolve));
+	zinTextElements[2].setString("PATIENCE " + std::to_string(this->zinPatience));
+	zinTextElements[3].setString("RESILIENCE " + std::to_string(this->zinResilience));
 }
 
-void Player::printInventory(Assets& assets)
+void Player::printInventory()
 {
-	assets.inventoryText.setString("[GENERAL ITEMS]\nGold: x" + std::to_string(this->gold) + "\nSmithing Stones: x"
+	inventoryText.setString("[GENERAL ITEMS]\nGold: x" + std::to_string(this->gold) + "\nSmithing Stones: x"
 		+ std::to_string(this->smithingStones) + "\n\n[EQUIPPED ITEMS]\n" + this->basicSword);
 }

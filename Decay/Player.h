@@ -3,8 +3,7 @@
 #include<cstdlib>
 #include<string>
 #include"Sprites.h"
-
-class Player
+class Player : virtual public Sprites
 {
 private:
 	//Core modifiers
@@ -48,8 +47,8 @@ public:
 	~Player();
 
 	//Core Functions
-	void statsText(Assets& assets);
-	void printInventory(Assets& assets);
+	void statsText();
+	void printInventory();
 
 	//Core Modifier Getters
 	int& getDecay() { return this->decay; };

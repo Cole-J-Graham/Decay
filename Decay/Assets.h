@@ -1,12 +1,10 @@
-#ifndef ASSETS_H
-#define ASSETS_H
-
+#pragma once
 #include<iostream>
 #include<vector>
+#include<SFML/Window.hpp>
 #include<SFML/Graphics.hpp>
 #include<SFML/Graphics/Text.hpp>
 #include<SFML/Audio.hpp>
-
 class Assets
 {
 private:
@@ -903,6 +901,3 @@ public:
 	//String Setters
 	void setPlayerName() { this->playerName; };
 };
-
-#endif
-

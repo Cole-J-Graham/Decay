@@ -5,7 +5,6 @@
 #include<SFML/Graphics.hpp>
 #include<SFML/Graphics/Text.hpp>
 #include<SFML/Audio.hpp>
-#include"Assets.h"
 
 class Animation
 {
@@ -96,7 +95,7 @@ public:
 	sf::Time menuElapsedFast;
 
 	//Core Animation Functions
-	void pickAnimation(Assets& assets);
+	void pickAnimation();
 	void animateTimer();
 	void animateCombatTimer();
 	void animateMenuTimer();
@@ -104,18 +103,18 @@ public:
 	//Animation Functions
 	void animateZin();
 	void animateNote();
-	void animateAnvil(Assets& assets);
-	void animateHeal(Assets& assets);
-	void animateMenu(Assets& assets);
+	void animateAnvil();
+	void animateHeal();
+	void animateMenu();
 
 	//Combat Animation Functions
-	void animateSlash(Assets& assets);
-	void animateGuard(Assets& assets);
-	void animateGuardBrk(Assets& assets);
-	void animateSmite(Assets& assets);
+	void animateSlash();
+	void animateGuard();
+	void animateGuardBrk();
+	void animateSmite();
 
 	//Draw Animation Functions
-	void drawAnimations(Assets& assets);
+	void drawAnimations();
 
 	//Getters
 	int& getAnimation() { return this->animation; };

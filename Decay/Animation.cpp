@@ -82,20 +82,20 @@ Animation::~Animation()
 }
 
 //Core Animation Functions
-void Animation::pickAnimation(Assets& assets)
+void Animation::pickAnimation()
 {
 	switch (this->animation) {
 	case 0:
-		animateSlash(assets);
+		animateSlash();
 		break;
 	case 1:
-		animateSmite(assets);
+		animateSmite();
 		break;
 	case 2:
-		animateGuard(assets);
+		animateGuard();
 		break;
 	case 3:
-		animateGuardBrk(assets);
+		animateGuardBrk();
 		break;
 	}
 }
@@ -249,7 +249,7 @@ void Animation::animateNote()
 	}
 }
 
-void Animation::animateAnvil(Assets& assets)
+void Animation::animateAnvil()
 {
 	anvilSprite.setPosition(1475, 675);
 	
@@ -274,7 +274,7 @@ void Animation::animateAnvil(Assets& assets)
 	}
 }
 
-void Animation::animateHeal(Assets& assets)
+void Animation::animateHeal()
 {
 	healSprite.setPosition(1475, 750);
 
@@ -300,7 +300,7 @@ void Animation::animateHeal(Assets& assets)
 }
 
 //Combat Animation Functions
-void Animation::animateSlash(Assets& assets)
+void Animation::animateSlash()
 {
 	//Set Animation Position
 	switch (this->combatAnimationLocation) {
@@ -352,7 +352,7 @@ void Animation::animateSlash(Assets& assets)
 	}
 }
 
-void Animation::animateGuard(Assets& assets)
+void Animation::animateGuard()
 {
 	//Set Animation Position
 	switch (this->combatAnimationLocation) {
@@ -404,7 +404,7 @@ void Animation::animateGuard(Assets& assets)
 	}
 }
 
-void Animation::animateGuardBrk(Assets& assets)
+void Animation::animateGuardBrk()
 {
 	//Set Animation Position
 	switch (this->combatAnimationLocation) {
@@ -456,7 +456,7 @@ void Animation::animateGuardBrk(Assets& assets)
 	}
 }
 
-void Animation::animateSmite(Assets& assets)
+void Animation::animateSmite()
 {
 	//Set Animation Position
 	switch (this->combatAnimationLocation) {
@@ -507,7 +507,7 @@ void Animation::animateSmite(Assets& assets)
 	}
 }
 
-void Animation::animateMenu(Assets& assets)
+void Animation::animateMenu()
 {
 	//Animate Hit Animation
 	this->animateMenuTimer();
@@ -534,14 +534,14 @@ void Animation::animateMenu(Assets& assets)
 }
 
 //Draw Animation Functions
-void Animation::drawAnimations(Assets& assets)
+void Animation::drawAnimations()
 {
-	if (assets.getBonfireAssets()) {
-		this->animateAnvil(assets);
-		this->animateHeal(assets);
+	/*if (getBonfireAssets()) {
+		this->animateAnvil();
+		this->animateHeal();
 	}
-	else if (!assets.getBonfireAssets()) {
+	else if (!getBonfireAssets()) {
 		anvilSprite.setPosition(10000, 10000);
 		healSprite.setPosition(10000, 10000);
-	}
+	}*/
 }
