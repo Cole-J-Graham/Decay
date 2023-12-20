@@ -5,8 +5,9 @@
 #include<SFML/Graphics.hpp>
 #include<SFML/Graphics/Text.hpp>
 #include<SFML/Audio.hpp>
+#include"Assets.h"
 
-class Animation
+class Animation : virtual public Assets
 {
 private:
 	int animation;

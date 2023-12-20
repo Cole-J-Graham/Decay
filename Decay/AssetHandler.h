@@ -3,7 +3,9 @@
 #include<cstdlib>
 #include<string>
 #include"Sprites.h"
-class Player : virtual public Sprites
+#include"Animation.h"
+
+class AssetHandler : public Sprites, public Animation
 {
 private:
 	//Core modifiers
@@ -43,8 +45,8 @@ private:
 public:
 
 	//Constructors & Destructors
-	Player();
-	~Player();
+	AssetHandler();
+	~AssetHandler();
 
 	//Core Functions
 	void statsText();

@@ -1,7 +1,7 @@
-#include "Player.h"
+#include "AssetHandler.h"
 
 //Constructors & Destructors
-Player::Player()
+AssetHandler::AssetHandler()
 {
 	//Core Modifiers
 	this->decay = 0;
@@ -39,13 +39,13 @@ Player::Player()
 	this->basicSword = "Basic Longsword";
 }
 
-Player::~Player()
+AssetHandler::~AssetHandler()
 {
 
 }
 
 //Core Functions
-void Player::statsText()
+void AssetHandler::statsText()
 {
 	playerTextElements[0].setString("LEVEL " + std::to_string(this->level));
 	playerTextElements[1].setString("STRENGTH " + std::to_string(this->strength));
@@ -58,7 +58,7 @@ void Player::statsText()
 	zinTextElements[3].setString("RESILIENCE " + std::to_string(this->zinResilience));
 }
 
-void Player::printInventory()
+void AssetHandler::printInventory()
 {
 	inventoryText.setString("[GENERAL ITEMS]\nGold: x" + std::to_string(this->gold) + "\nSmithing Stones: x"
 		+ std::to_string(this->smithingStones) + "\n\n[EQUIPPED ITEMS]\n" + this->basicSword);

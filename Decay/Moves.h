@@ -1,8 +1,9 @@
 #pragma once
 #include<string>
 #include"Animation.h"
-#include"Player.h"
-class Moves : public Player
+#include"AssetHandler.h"
+
+class Moves : public AssetHandler
 {
 private:	
 	//Hp

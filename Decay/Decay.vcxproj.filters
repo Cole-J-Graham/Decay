@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Animation.cpp">
-      <Filter>cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets.cpp">
-      <Filter>cpp</Filter>
-    </ClCompile>
     <ClCompile Include="Combat.cpp">
       <Filter>cpp</Filter>
     </ClCompile>
@@ -16,36 +10,33 @@
     <ClCompile Include="main.cpp">
       <Filter>cpp</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>cpp</Filter>
-    </ClCompile>
     <ClCompile Include="Travel.cpp">
       <Filter>cpp</Filter>
     </ClCompile>
     <ClCompile Include="World.cpp">
       <Filter>cpp</Filter>
     </ClCompile>
-    <ClCompile Include="Sprites.cpp">
-      <Filter>cpp</Filter>
-    </ClCompile>
     <ClCompile Include="Moves.cpp">
       <Filter>cpp</Filter>
     </ClCompile>
+    <ClCompile Include="Assets.cpp">
+      <Filter>.h\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprites.cpp">
+      <Filter>.h\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>.h\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetHandler.cpp">
+      <Filter>.h\Assets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h">
-      <Filter>.h</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets.h">
-      <Filter>.h</Filter>
-    </ClInclude>
     <ClInclude Include="Event.h">
       <Filter>.h</Filter>
     </ClInclude>
     <ClInclude Include="Combat.h">
-      <Filter>.h</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
       <Filter>.h</Filter>
     </ClInclude>
     <ClInclude Include="Travel.h">
@@ -54,11 +45,20 @@
     <ClInclude Include="World.h">
       <Filter>.h</Filter>
     </ClInclude>
-    <ClInclude Include="Sprites.h">
-      <Filter>.h</Filter>
-    </ClInclude>
     <ClInclude Include="Moves.h">
       <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets.h">
+      <Filter>.h\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprites.h">
+      <Filter>.h\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>.h\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetHandler.h">
+      <Filter>.h\Assets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -70,9 +70,6 @@
     </Filter>
     <Filter Include=".h\Assets">
       <UniqueIdentifier>{913b4a39-9b0c-4fab-a7bf-4ae9d6c528f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="cpp\Assets">
-      <UniqueIdentifier>{276a4125-0a89-4cb6-9a49-f5849dd0f2bb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

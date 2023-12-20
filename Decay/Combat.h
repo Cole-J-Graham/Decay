@@ -1,6 +1,7 @@
 #pragma once
 #include"Moves.h"
 #include"Animation.h"
+
 class Combat : public Moves
 {
 private:

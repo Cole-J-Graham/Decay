@@ -7,6 +7,7 @@
 #include<string>
 #include<SFML/Audio.hpp>
 #include"Event.h"
+
 class Travel : public Event
 {
 private:

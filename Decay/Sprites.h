@@ -1,5 +1,6 @@
 #pragma once
 #include"Assets.h"
+
 class Sprites: virtual public Assets
 {
 

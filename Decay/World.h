@@ -8,6 +8,7 @@
 #include<string>
 #include<SFML/Audio.hpp>
 #include"Travel.h"
+
 class World : public Travel
 {
 private:

@@ -1,5 +1,6 @@
 #pragma once
 #include"Combat.h"
+
 class Event: public Combat
 {
 private:
