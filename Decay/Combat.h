@@ -92,23 +92,23 @@ public:
 	void combatReward();
 
 	//Core Combat Functions
-	void combatLoop(sf::RenderWindow& window, Animation& animate);
-	void initCombat(Animation& animate);
+	void combatLoop(sf::RenderWindow& window);
+	void initCombat();
 	void reInitCombat();
 	void playerDeath();
 
 	//Combat Functions
-	void playerTurn(sf::RenderWindow& window, Animation& animate);
-	void zinTurn(Animation& animate);
-	void thomTurn(Animation& animate);
-	void hostileTurn(Animation& animate);
+	void playerTurn(sf::RenderWindow& window);
+	void zinTurn();
+	void thomTurn();
+	void hostileTurn();
 
 	//Combat Pick Attacks
 	void pickMove(sf::RenderWindow& window);
 	void pickMoveFunc(sf::RenderWindow& window, sf::RectangleShape& inputRect, int& counter, int& moveChar, int& moveVal);
-	void playerSelectMove(Animation& animate);
-	void zinSelectMove(Animation& animate);
-	void thomSelectMove(Animation& animate);
+	void playerSelectMove();
+	void zinSelectMove();
+	void thomSelectMove();
 
 	//Combat Init Forest Hostiles
 	void initWolf();

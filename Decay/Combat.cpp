@@ -191,16 +191,16 @@ void Combat::combatReward()
 }
 
 //Core Combat Functions
-void Combat::combatLoop(sf::RenderWindow& window, Animation& animate)
+void Combat::combatLoop(sf::RenderWindow& window)
 {
 	if (!combatEnd) {
 		//Combat Animations
-		if (!animate.getAnimEnd()) {
-			animate.pickAnimation();
+		if (!getAnimEnd()) {
+			pickAnimation();
 		}
 		//Begin combat loop initialization
 		if (initCombatOnce == false) {
-			this->initCombat(animate);
+			this->initCombat();
 			initCombatOnce = true;
 		} //Reinitialize the combat loop for each pass
 		else if (reInitCombatOnce == false) {
@@ -209,14 +209,14 @@ void Combat::combatLoop(sf::RenderWindow& window, Animation& animate)
 		}
 		//Players turn
 		if (!this->playerDead) {
-			this->playerTurn(window, animate);
+			this->playerTurn(window);
 		}
 		//Zin's Turn
 		if (!this->zinDead) {
-			this->zinTurn(animate);
+			this->zinTurn();
 		}
 		if (!this->thomDead) {
-			this->thomTurn(animate);
+			this->thomTurn();
 		}
 		//Check if hostile is dead. If soend combat
 		if (getHostileHp() <= 0) {
@@ -227,7 +227,7 @@ void Combat::combatLoop(sf::RenderWindow& window, Animation& animate)
 			this->comTextRemoved = false;//Remove text
 			//Make entity viewer blank again
 			getEntityViewerCounter() = -1;
-			animate.getCombatAnimationLocation() = -1;
+			getCombatAnimationLocation() = -1;
 			getFatigued() = 0;
 			getThomEnraged() = false;
 			getZinFatigue() = false;
@@ -237,7 +237,7 @@ void Combat::combatLoop(sf::RenderWindow& window, Animation& animate)
 			this->combatEnd = true;
 		}
 		//Hostiles turn
-		this->hostileTurn(animate);
+		this->hostileTurn();
 		//Check if playerZinor Thom has died
 		if (getPlayerHp() <= 0 && !this->playerDead) {
 			this->playerDead = true;
@@ -259,7 +259,7 @@ void Combat::combatLoop(sf::RenderWindow& window, Animation& animate)
 	}
 }
 
-void Combat::initCombat(Animation& animate)
+void Combat::initCombat()
 {
 	soundCombatStart.play(); //Play combat Sfx
 	//this->updateStats(assetsplayer);
@@ -281,7 +281,7 @@ void Combat::initCombat(Animation& animate)
 	setInitStatsFalse(); //Hide stats if open
 	setInitInventoryFalse(); //Hide inventory if open
 
-	animate.getAnimEnd() = true;//Prevent animation attempt from running at start
+	getAnimEnd() = true;//Prevent animation attempt from running at start
 	getFirstAttack() = false;
 }
 
@@ -346,7 +346,7 @@ void Combat::playerDeath()
 }
 
 //Combat Functions
-void Combat::playerTurn(sf::RenderWindow& window, Animation& animate)
+void Combat::playerTurn(sf::RenderWindow& window)
 {
 	if (this->turnPlayer == true) {
 		switch (this->attackCounter) {
@@ -362,7 +362,7 @@ void Combat::playerTurn(sf::RenderWindow& window, Animation& animate)
 			break;
 		case 1:
 			if (!this->playerAttack && !getPlayerFatigue()) {
-				this->playerSelectMove(animate);
+				this->playerSelectMove();
 				this->playerAttack = true;
 			}
 			else if (getPlayerFatigue() && !this->playerAttack) {
@@ -398,7 +398,7 @@ void Combat::playerTurn(sf::RenderWindow& window, Animation& animate)
 	}
 }
 
-void Combat::zinTurn(Animation& animate)
+void Combat::zinTurn()
 {
 	if (this->turnZin == true) {
 		switch (this->zinAttackCounter) {
@@ -415,7 +415,7 @@ void Combat::zinTurn(Animation& animate)
 		case 1:
 			//Zin Attacks Hostile
 			if (!getZinFatigue() && !this->zinAttack) {
-				this->zinSelectMove(animate);
+				this->zinSelectMove();
 				this->zinAttack = true;
 			}
 			else if (getZinFatigue() && !this->zinAttack) {
@@ -445,7 +445,7 @@ void Combat::zinTurn(Animation& animate)
 	}
 }
 
-void Combat::thomTurn(Animation& animate)
+void Combat::thomTurn()
 {
 	if (this->turnThom == true) {
 		switch (this->thomAttackCounter) {
@@ -461,7 +461,7 @@ void Combat::thomTurn(Animation& animate)
 		case 1:
 			//Thoms turn
 			if (!this->thomAttack && !getThomEnraged()) {
-				this->thomSelectMove(animate);
+				this->thomSelectMove();
 				this->thomAttack = true;
 			}
 			else if (this->thomAttack == false && getThomEnraged()) {
@@ -483,7 +483,7 @@ void Combat::thomTurn(Animation& animate)
 	}
 }
 
-void Combat::hostileTurn(Animation& animate)
+void Combat::hostileTurn()
 {
 	if (this->turnHostile == true) {
 		switch (getCombatCounter()) {
@@ -497,17 +497,17 @@ void Combat::hostileTurn(Animation& animate)
 				soundCom.play();
 				spriteText[0].setString(getPlayerName() + "     " + std::to_string(getPlayerHp()) + "/" + std::to_string(getPlayerHpMax()));
 				text.setString(getHostileAtkPlayerText());
-				animate.getCombatAnimationLocation() = 1;
-				animate.getAnimation() = 0;
-				animate.getAnimEnd() = false;//Play Attack Animation
+				getCombatAnimationLocation() = 1;
+				getAnimation() = 0;
+				getAnimEnd() = false;//Play Attack Animation
 				this->hostileAttack = true;
 			}
 			else if (!this->hostileAttack && getPlayerGuarded()) {
 				text.setString(getHostileAtkPlayerBlkText());
 				soundPlayerGuarded.play();
-				animate.getCombatAnimationLocation() = 1;
-				animate.getAnimation() = 3;
-				animate.getAnimEnd() = false;//Play Attack Animation
+				getCombatAnimationLocation() = 1;
+				getAnimation() = 3;
+				getAnimEnd() = false;//Play Attack Animation
 				this->hostileAttack = true;
 			}
 			break;
@@ -521,17 +521,17 @@ void Combat::hostileTurn(Animation& animate)
 				soundCom.play();
 				spriteText[1].setString("Zin            " + std::to_string(getZinHp()) + "/" + std::to_string(getZinHpMax()));
 				text.setString(getHostileAtkZinText());
-				animate.getCombatAnimationLocation() = 2;
-				animate.getAnimation() = 0;
-				animate.getAnimEnd() = false;//Play Attack Animation
+				getCombatAnimationLocation() = 2;
+				getAnimation() = 0;
+				getAnimEnd() = false;//Play Attack Animation
 				this->hostileAttackZin = true;
 			}
 			else if (getZinGuarded() == true && !this->hostileAttackZin && !this->zinDead) {
 				soundGuarded.play();
 				text.setString(getHostileAtkZinBlkText());
-				animate.getCombatAnimationLocation() = 2;
-				animate.getAnimation() = 3;
-				animate.getAnimEnd() = false;//Play Attack Animation
+				getCombatAnimationLocation() = 2;
+				getAnimation() = 3;
+				getAnimEnd() = false;//Play Attack Animation
 				this->hostileAttackZin = true;
 			}
 			break;
@@ -549,9 +549,9 @@ void Combat::hostileTurn(Animation& animate)
 				soundCom.play();
 				spriteText[5].setString("Thom          " + std::to_string(getThomHp()) + "/" + std::to_string(getThomHpMax()));
 				text.setString("The hostile strikes Thom!");
-				animate.getCombatAnimationLocation() = 3;
-				animate.getAnimation() = 0;
-				animate.getAnimEnd() = false;//Play Attack Animation
+				getCombatAnimationLocation() = 3;
+				getAnimation() = 0;
+				getAnimEnd() = false;//Play Attack Animation
 				this->hostileAttackThom = true;
 			}
 			break;
@@ -599,63 +599,63 @@ void Combat::pickMoveFunc(sf::RenderWindow& window, sf::RectangleShape& inputRec
 	}
 }
 
-void Combat::playerSelectMove(Animation& animate)
+void Combat::playerSelectMove()
 {
 	switch (this->playerPickMove) {
 	case 0:
-		slash(animate);
+		slash();
 		break;
 	case 1:
-		guard(animate);
+		guard();
 		break;
 	case 2:
-		decayBlade(animate);
+		decayBlade();
 		break;
 	case 3:
-		heftyBlow(animate);
+		heftyBlow();
 		break;
 	case 4:
-		decaySynergy(animate);
+		decaySynergy();
 		break;
 	case 5:
-		ironWall(animate);
+		ironWall();
 		break;
 	}
 }
 
-void Combat::zinSelectMove(Animation& animate)
+void Combat::zinSelectMove()
 {
 	switch (this->zinPickMove) {
 	case 0:
-		smite(animate);
+		smite();
 		break;
 	case 1:
-		mend(animate);
+		mend();
 		break;
 	case 2:
-		vengeance(animate);
+		vengeance();
 		break;
 	case 3:
-		hellBlaze(animate);
+		hellBlaze();
 		break;
 	case 4:
-		focusHeal(animate);
+		focusHeal();
 		break;
 	case 5:
-		crimsonFlames(animate);
+		crimsonFlames();
 		break;
 	}
 	
 }
 
-void Combat::thomSelectMove(Animation& animate)
+void Combat::thomSelectMove()
 {
 	switch (this->thomPickMove) {
 	case 0:
-		barrier(animate);
+		barrier();
 		break;
 	case 1:
-		enrage(animate);
+		enrage();
 		break;
 	}
 }

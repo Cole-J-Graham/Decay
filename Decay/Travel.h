@@ -39,8 +39,8 @@ public:
 	~Travel();
 
 	//Core
-	void travelCore(sf::RenderWindow& window, Animation& animate);
-	void newArea(Animation& animate);
+	void travelCore(sf::RenderWindow& window);
+	void newArea();
 	void reInitMap(bool& inBool) {
 		if (!this->reInMap) {
 			inBool = false;
@@ -55,28 +55,28 @@ public:
 	void nextArea(std::string& inString);
 
 	//Draw Forest
-	void forestMap(sf::RenderWindow& window, Animation& animate);
-	void forestBonfire(sf::RenderWindow& window, Animation& animate);
-	void forestEntrance(sf::RenderWindow& window,  Animation& animate);
-	void forestDepths(sf::RenderWindow& window,  Animation& animate);
-	void forestAbyssal(sf::RenderWindow& window,  Animation& animate);
-	void forestAbyssalDepths(sf::RenderWindow& window,  Animation& animate);
+	void forestMap(sf::RenderWindow& window);
+	void forestBonfire(sf::RenderWindow& window);
+	void forestEntrance(sf::RenderWindow& window);
+	void forestDepths(sf::RenderWindow& window);
+	void forestAbyssal(sf::RenderWindow& window);
+	void forestAbyssalDepths(sf::RenderWindow& window);
 
 	//Draw Castle
-	void castleMap(sf::RenderWindow& window, Animation& animate);
-	void castleBonfire(sf::RenderWindow& window,  Animation& animate);
-	void castleHalls(sf::RenderWindow& window,  Animation& animate);
-	void castleDepths(sf::RenderWindow& window,  Animation& animate);
-	void castleChambers(sf::RenderWindow& window,  Animation& animate);
-	void castleLabyrinth(sf::RenderWindow& window,  Animation& animate);
+	void castleMap(sf::RenderWindow& window);
+	void castleBonfire(sf::RenderWindow& window);
+	void castleHalls(sf::RenderWindow& window);
+	void castleDepths(sf::RenderWindow& window);
+	void castleChambers(sf::RenderWindow& window);
+	void castleLabyrinth(sf::RenderWindow& window);
 
 	//Draw Decay
-	void decayMap(sf::RenderWindow& window, Animation& animate);
-	void decayBonfire(sf::RenderWindow& window,  Animation& animate);
-	void decayChasms(sf::RenderWindow& window,  Animation& animate);
-	void decayOcean(sf::RenderWindow& window,  Animation& animate);
-	void decayForest(sf::RenderWindow& window,  Animation& animate);
-	void decayGiants(sf::RenderWindow& window,  Animation& animate);
+	void decayMap(sf::RenderWindow& window);
+	void decayBonfire(sf::RenderWindow& window);
+	void decayChasms(sf::RenderWindow& window);
+	void decayOcean(sf::RenderWindow& window);
+	void decayForest(sf::RenderWindow& window);
+	void decayGiants(sf::RenderWindow& window);
 
 	//Core Getters
 	int& getFrame() { return this->frame; };

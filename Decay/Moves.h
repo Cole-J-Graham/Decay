@@ -95,24 +95,24 @@ public:
 	~Moves();
 
 	//Player Moves
-	void slash(Animation& animate);
-	void guard(Animation& animate);
-	void decayBlade(Animation& animate);
-	void heftyBlow(Animation& animate);
-	void decaySynergy(Animation& animate);
-	void ironWall(Animation& animte);
+	void slash();
+	void guard();
+	void decayBlade();
+	void heftyBlow();
+	void decaySynergy();
+	void ironWall();
 
 	//Zin Moves
-	void smite(Animation& animate);
-	void mend(Animation& animate);
-	void vengeance(Animation& animate);
-	void hellBlaze(Animation& animate);
-	void focusHeal(Animation& animate);
-	void crimsonFlames(Animation& animate);
+	void smite();
+	void mend();
+	void vengeance();
+	void hellBlaze();
+	void focusHeal();
+	void crimsonFlames();
 
 	//Thom Moves
-	void barrier(Animation& animate);
-	void enrage(Animation& animate);
+	void barrier();
+	void enrage();
 
 	//Hostile Moves
 

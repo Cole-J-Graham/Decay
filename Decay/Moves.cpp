@@ -91,7 +91,7 @@ Moves::~Moves()
 }
 
 //Player Moves
-void Moves::slash(Animation& animate)
+void Moves::slash()
 {
 	soundSlash.play();
 	this->hostileHp -= this->playerStrike + playerAtk;
@@ -99,55 +99,55 @@ void Moves::slash(Animation& animate)
 	setPlayerTurnAssetsFalse();
 	text.setString(this->playerSlashAtkText);
 	if (!this->firstAttack) {
-		animate.combatTimer.restart();
+		combatTimer.restart();
 		this->firstAttack = true;
 	}
-	animate.getCombatAnimationLocation() = 0;
-	animate.getAnimation() = 0;
-	animate.getAnimEnd() = false;//Play Attack Animation
+	getCombatAnimationLocation() = 0;
+	getAnimation() = 0;
+	getAnimEnd() = false;//Play Attack Animation
 	getTipBoxCounter() = -1;
 }
 
-void Moves::guard(Animation& animate)
+void Moves::guard()
 {
 	soundGuard.play();
 	setPlayerTurnAssetsFalse();
 	this->zinGuarded = true;
 	text.setString(this->playerGuardAtkText);
 	getTipBoxCounter() = -1;
-	animate.getCombatAnimationLocation() = 2;
-	animate.getAnimation() = 2;
-	animate.getAnimEnd() = false;//Play Attack Animation
+	getCombatAnimationLocation() = 2;
+	getAnimation() = 2;
+	getAnimEnd() = false;//Play Attack Animation
 }
 
-void Moves::decayBlade(Animation& animate)
+void Moves::decayBlade()
 {
 	soundDecay.play();
 	this->hostileHp -= this->decayedBlade + playerAtk;
 	spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 	setPlayerTurnAssetsFalse();
 	text.setString(this->playerDecayAtkText);
-	animate.getCombatAnimationLocation() = 0;
-	animate.getAnimation() = 0;
-	animate.getAnimEnd() = false;//Play Attack Animation
+	getCombatAnimationLocation() = 0;
+	getAnimation() = 0;
+	getAnimEnd() = false;//Play Attack Animation
 	getTipBoxCounter() = -1;
 }
 
-void Moves::heftyBlow(Animation& animate)
+void Moves::heftyBlow()
 {
 	soundHefty.play();
 	this->hostileHp -= this->heftyBlowDmg + playerAtk;
 	spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 	setPlayerTurnAssetsFalse();
 	text.setString(this->playerHeftyAtkText);
-	animate.getCombatAnimationLocation() = 0;
-	animate.getAnimation() = 0;
-	animate.getAnimEnd() = false;//Play Attack Animation
+	getCombatAnimationLocation() = 0;
+	getAnimation() = 0;
+	getAnimEnd() = false;//Play Attack Animation
 	this->playerFatigue = true;
 	getTipBoxCounter() = -1;
 }
 
-void Moves::decaySynergy(Animation& animate)
+void Moves::decaySynergy()
 {
 	soundSynergy.play();
 	this->hostileHp -= this->decaySynergyDmg += playerAtk;
@@ -156,12 +156,12 @@ void Moves::decaySynergy(Animation& animate)
 	spriteText[1].setString("Zin            " + std::to_string(zinHp + zinDef) + "/" + std::to_string(zinHpMax));
 	text.setString(this->playerSynergyAtkText);
 	setPlayerTurnAssetsFalse();
-	animate.getCombatAnimationLocation() = 0;
-	animate.getAnimEnd() = false;//Play Attack Animation
+	getCombatAnimationLocation() = 0;
+	getAnimEnd() = false;//Play Attack Animation
 	getTipBoxCounter() = -1;
 }
 
-void Moves::ironWall(Animation& animte)
+void Moves::ironWall()
 {
 	soundIronWall.play();
 	this->playerDef += this->ironWallDef;
@@ -176,22 +176,22 @@ void Moves::ironWall(Animation& animte)
 }
 
 //Zin Moves
-void Moves::smite(Animation& animate)
+void Moves::smite()
 {
 	soundSmite.play();
 	this->hostileHp -= this->zinSmite + zinAtk;
 	spriteText[2].setString(this->hostileName + std::to_string(hostileHp) + "/" + std::to_string(hostileHpMax));
 	setZinTurnAssetsFalse();
 	text.setString(this->zinSmiteAtkText);
-	animate.getCombatAnimationLocation() = 0;
-	animate.getAnimEnd() = false;//Play Attack Animation
+	getCombatAnimationLocation() = 0;
+	getAnimEnd() = false;//Play Attack Animation
 	getTipBoxCounter() = -1;
-	animate.getAnimation() = 1;
-	animate.getCombatAnimationLocation() = 0;
-	animate.getAnimEnd() = false;//Play Attack Animation
+	getAnimation() = 1;
+	getCombatAnimationLocation() = 0;
+	getAnimEnd() = false;//Play Attack Animation
 }
 
-void Moves::mend(Animation& animate)
+void Moves::mend()
 {
 	soundMend.play();
 	if (this->playerHp < this->playerHpMax) {
@@ -220,7 +220,7 @@ void Moves::mend(Animation& animate)
 	getTipBoxCounter() = -1;
 }
 
-void Moves::vengeance(Animation& animate)
+void Moves::vengeance()
 {
 	soundVengeance.play();
 	this->zinVengeance = this->playerHpMax - this->playerHp + zinAtk;
@@ -231,7 +231,7 @@ void Moves::vengeance(Animation& animate)
 	getTipBoxCounter() = -1;
 }
 
-void Moves::hellBlaze(Animation& animate)
+void Moves::hellBlaze()
 {
 	soundBlaze.play();
 	this->hostileHp -= this->zinBlaze + zinAtk;
@@ -242,7 +242,7 @@ void Moves::hellBlaze(Animation& animate)
 	getTipBoxCounter() = -1;
 }
 
-void Moves::focusHeal(Animation& animate)
+void Moves::focusHeal()
 {
 	soundMend.play();
 	if (this->playerHp < this->playerHpMax) {
@@ -257,7 +257,7 @@ void Moves::focusHeal(Animation& animate)
 	getTipBoxCounter() = -1;
 }
 
-void Moves::crimsonFlames(Animation& animate)
+void Moves::crimsonFlames()
 {
 	soundFlames.play();
 	this->playerAtk += zinCrimson;
@@ -268,7 +268,7 @@ void Moves::crimsonFlames(Animation& animate)
 }
 
 //Thom Moves
-void Moves::barrier(Animation& animate)
+void Moves::barrier()
 {
 	this->playerGuarded = true;
 	soundThomGuard.play();
@@ -276,12 +276,12 @@ void Moves::barrier(Animation& animate)
 	text.setString(this->thomBarrierAtkText);
 	setThomTurnAssetsFalse();
 	getTipBoxCounter() = -1;
-	animate.getCombatAnimationLocation() = 1;
-	animate.getAnimation() = 2;
-	animate.getAnimEnd() = false;//Play Attack Animation
+	getCombatAnimationLocation() = 1;
+	getAnimation() = 2;
+	getAnimEnd() = false;//Play Attack Animation
 }
 
-void Moves::enrage(Animation& animate)
+void Moves::enrage()
 {
 	this->thomEnraged = true;
 	this->enraged = 3;
