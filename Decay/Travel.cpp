@@ -32,20 +32,20 @@ Travel::~Travel()
 }
 
 //Core
-void Travel::travelCore(sf::RenderWindow& window)
+void Travel::travelCore(sf::RenderWindow& window, Animation& animate)
 {
     switch (getMapCounter()) {
     case -1:
         this->intro(window);
         break;
     case 0:
-        this->forestMap(window);
+        this->forestMap(window, animate);
         break;
     case 1:
-        this->castleMap(window);
+        this->castleMap(window, animate);
         break;
     case 2:
-        this->decayMap(window);
+        this->decayMap(window, animate);
         break;
     }
 }
@@ -58,9 +58,11 @@ void Travel::newArea()
     this->bonfireInit = false; //Uninit bonfire
     bonfire.stop(); //Stop the ambience from playing
     this->soundPlay = true; //Reset bonfire sounds
-    setBonfireAssetsFalse();
+    getBonfireAssets() = false;
     getDecayWarning() = false;
     this->reInMap = false;
+    anvilSprite.setPosition(10000, 10000);
+    healSprite.setPosition(10000, 10000);
 }
 
 void Travel::enterBonfire(sf::RenderWindow& window)
@@ -78,7 +80,7 @@ void Travel::enterBonfire(sf::RenderWindow& window)
     }
     //Draw detection rects for healing and smithing
     this->bonfireInit = true;
-    setBonfireAssetsTrue();
+    getBonfireAssets() = true;
     map.setTexture(mapTexture);
     map.setPosition(440.0f, -200.0f);
     getTrackPlayed() = false;
@@ -252,7 +254,7 @@ void Travel::introBeginning(sf::RenderWindow& window)
 }
 
 //Draw Forest
-void Travel::forestMap(sf::RenderWindow& window)
+void Travel::forestMap(sf::RenderWindow& window, Animation& animate)
 {
     //Pick which location is currently selected within the forest...
     switch (this->forestCounter) {
@@ -260,16 +262,16 @@ void Travel::forestMap(sf::RenderWindow& window)
         this->forestBonfire(window);
         break;
     case 1:
-        this->forestEntrance(window);
+        this->forestEntrance(window, animate);
         break;
     case 2:
-        this->forestDepths(window);
+        this->forestDepths(window, animate);
         break;
     case 3:
-        this->forestAbyssal(window);
+        this->forestAbyssal(window, animate);
         break;
     case 4:
-        this->forestAbyssalDepths(window);
+        this->forestAbyssalDepths(window, animate);
         break;
     }
 }
@@ -286,7 +288,7 @@ void Travel::forestBonfire(sf::RenderWindow& window)
     this->enterBonfire(window);
 }
 
-void Travel::forestEntrance(sf::RenderWindow& window)
+void Travel::forestEntrance(sf::RenderWindow& window, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     switch (this->frame) {
@@ -301,7 +303,7 @@ void Travel::forestEntrance(sf::RenderWindow& window)
         this->nextArea(forestEntrance2);
         getStartFrame() = false;//Allow back arrow to re appear
         initDecayWalker();
-        combatLoop(window);
+        combatLoop(window, animate);
         stopComTrack(track5, track1);
         break;
     case 2:
@@ -355,7 +357,7 @@ void Travel::forestEntrance(sf::RenderWindow& window)
     }
 }
 
-void Travel::forestDepths(sf::RenderWindow& window)
+void Travel::forestDepths(sf::RenderWindow& window, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     switch (this->frame) {
@@ -371,7 +373,7 @@ void Travel::forestDepths(sf::RenderWindow& window)
     case 2:
         this->nextArea(forestDepths3);
         initWolf();
-        combatLoop(window);
+        combatLoop(window, animate);
         stopComTrack(track5, track1);
         break;
     case 3:
@@ -384,7 +386,7 @@ void Travel::forestDepths(sf::RenderWindow& window)
     case 5:
         this->nextArea(forestDepths6);
         initHostileTree();
-        combatLoop(window);
+        combatLoop(window, animate);
         stopComTrack(track5, track1);
         break;
     case 6:
@@ -400,7 +402,7 @@ void Travel::forestDepths(sf::RenderWindow& window)
     case 9:
         this->nextArea(forestDepths10);
         initDecayKnight();
-        combatLoop(window);
+        combatLoop(window, animate);
         stopComTrack(track5, track1);
         break;
     case 10:
@@ -430,7 +432,7 @@ void Travel::forestDepths(sf::RenderWindow& window)
     }
 }
 
-void Travel::forestAbyssal(sf::RenderWindow& window)
+void Travel::forestAbyssal(sf::RenderWindow& window, Animation& animate)
 {
     switch (this->frame) {
     case 0:
@@ -475,7 +477,7 @@ void Travel::forestAbyssal(sf::RenderWindow& window)
         lostNunEnc();
         if (getNunEnced()) {
             initLostNun();
-            combatLoop(window);
+            combatLoop(window, animate);
             stopComTrack(track5, track1);
         }
         this->nextArea(forestAbyssal12);
@@ -499,7 +501,7 @@ void Travel::forestAbyssal(sf::RenderWindow& window)
     }
 }
 
-void Travel::forestAbyssalDepths(sf::RenderWindow& window)
+void Travel::forestAbyssalDepths(sf::RenderWindow& window, Animation& animate)
 {
     switch (this->frame) {
     case 0:
@@ -515,7 +517,7 @@ void Travel::forestAbyssalDepths(sf::RenderWindow& window)
     case 2:
         this->nextArea(forestAbyssalDepth3);
         initDecapod();
-        combatLoop(window);
+        combatLoop(window, animate);
         stopComTrack(track5, track1);
         break;
     case 3:
@@ -564,23 +566,23 @@ void Travel::forestAbyssalDepths(sf::RenderWindow& window)
 }
 
 //Draw Castle
-void Travel::castleMap(sf::RenderWindow& window)
+void Travel::castleMap(sf::RenderWindow& window, Animation& animate)
 {
     switch (this->castleCounter) {
     case 0:
         this->castleBonfire(window);
         break;
     case 1:
-        this->castleHalls(window);
+        this->castleHalls(window, animate);
         break;
     case 2:
-        this->castleDepths(window);
+        this->castleDepths(window, animate);
         break;
     case 3:
-        this->castleChambers(window);
+        this->castleChambers(window, animate);
         break;
     case 4:
-        this->castleLabyrinth(window);
+        this->castleLabyrinth(window, animate);
         break;
     }
 }
@@ -597,7 +599,7 @@ void Travel::castleBonfire(sf::RenderWindow& window)
     this->enterBonfire(window);
 }
 
-void Travel::castleHalls(sf::RenderWindow& window)
+void Travel::castleHalls(sf::RenderWindow& window, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     switch (this->frame) {
@@ -621,7 +623,7 @@ void Travel::castleHalls(sf::RenderWindow& window)
     case 4:
         this->nextArea(castleHalls5);
         initCourtJester();
-        combatLoop(window);
+        combatLoop(window, animate);
         stopComTrack(track9, track6);
         break;
     case 5:
@@ -664,7 +666,7 @@ void Travel::castleHalls(sf::RenderWindow& window)
     }
 }
 
-void Travel::castleDepths(sf::RenderWindow& window)
+void Travel::castleDepths(sf::RenderWindow& window, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     switch (this->frame) {
@@ -690,7 +692,7 @@ void Travel::castleDepths(sf::RenderWindow& window)
     case 3:
         this->nextArea(castleDepths4);
         initWallMimic();
-        combatLoop(window);
+        combatLoop(window, animate);
         stopComTrack(track9, track6);
         break;
     case 4:
@@ -737,7 +739,7 @@ void Travel::castleDepths(sf::RenderWindow& window)
     }
 }
 
-void Travel::castleChambers(sf::RenderWindow& window)
+void Travel::castleChambers(sf::RenderWindow& window, Animation& animate)
 {
     switch (this->frame) {
     case 0:
@@ -759,7 +761,7 @@ void Travel::castleChambers(sf::RenderWindow& window)
     case 4:
         this->nextArea(castleChambers5);
         initLostKnight();
-        combatLoop(window);
+        combatLoop(window, animate);
         stopComTrack(track9, track6);
         break;
     case 5:
@@ -777,7 +779,7 @@ void Travel::castleChambers(sf::RenderWindow& window)
     case 9:
         this->nextArea(castleChambers10);
         initPhantom();
-        combatLoop(window);
+        combatLoop(window, animate);
         stopComTrack(track9, track6);
         break;
     case 10:
@@ -805,7 +807,7 @@ void Travel::castleChambers(sf::RenderWindow& window)
     }
 }
 
-void Travel::castleLabyrinth(sf::RenderWindow& window)
+void Travel::castleLabyrinth(sf::RenderWindow& window, Animation& animate)
 {
     switch (this->frame) {
     case 0:
@@ -826,7 +828,7 @@ void Travel::castleLabyrinth(sf::RenderWindow& window)
     case 4:
         this->nextArea(castleLab5);
         initSkinEater();
-        combatLoop(window);
+        combatLoop(window, animate);
         stopComTrack(track9, track6);
         break;
     case 5:
@@ -864,7 +866,7 @@ void Travel::castleLabyrinth(sf::RenderWindow& window)
         if (getSiwardEncedFinal()) {
             spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
             initSiward();
-            combatLoop(window);
+            combatLoop(window, animate);
         }
         getAreaUnlocked() = 2;
         if (getCombatEnd() && getSiwardEncedFinal()) {
@@ -879,23 +881,23 @@ void Travel::castleLabyrinth(sf::RenderWindow& window)
 }
 
 //Draw Decay
-void Travel::decayMap(sf::RenderWindow& window)
+void Travel::decayMap(sf::RenderWindow& window, Animation& animate)
 {
     switch (this->decayCounter) {
     case 0:
         this->decayBonfire(window);
         break;
     case 1:
-        this->decayChasms(window);
+        this->decayChasms(window, animate);
         break;
     case 2:
-        this->decayOcean(window);
+        this->decayOcean(window, animate);
         break;
     case 3:
-        this->decayForest(window);
+        this->decayForest(window, animate);
         break;
     case 4:
-        this->decayGiants(window);
+        this->decayGiants(window, animate);
         break;
     }
 }
@@ -912,7 +914,7 @@ void Travel::decayBonfire(sf::RenderWindow& window)
     this->enterBonfire(window);
 }
 
-void Travel::decayChasms(sf::RenderWindow& window)
+void Travel::decayChasms(sf::RenderWindow& window, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     switch (this->frame) {
@@ -936,7 +938,7 @@ void Travel::decayChasms(sf::RenderWindow& window)
     case 4:
         this->nextArea(decayChasms5);
         initLimbSplitter();
-        combatLoop(window);
+        combatLoop(window, animate);
         stopComTrack(track10, track7);
         break;
     case 5:
@@ -951,7 +953,7 @@ void Travel::decayChasms(sf::RenderWindow& window)
     case 8:
         this->nextArea(decayChasms9);
         initChatterMouth();
-        combatLoop(window);
+        combatLoop(window, animate);
         stopComTrack(track10, track7);
         break;
     case 9:
@@ -963,7 +965,7 @@ void Travel::decayChasms(sf::RenderWindow& window)
     case 11:
         this->nextArea(decayChasms12);
         initBurrower();
-        combatLoop(window);
+        combatLoop(window, animate);
         stopComTrack(track10, track7);
         break;
     case 12:
@@ -985,7 +987,7 @@ void Travel::decayChasms(sf::RenderWindow& window)
     }
 }
 
-void Travel::decayOcean(sf::RenderWindow& window)
+void Travel::decayOcean(sf::RenderWindow& window, Animation& animate)
 {
     //Uninitialize && Reinitialize castleDepth Event
     switch (this->frame) {
@@ -1016,7 +1018,7 @@ void Travel::decayOcean(sf::RenderWindow& window)
     case 7:
         this->nextArea(decayOcean8);
         initTendrilAlpha();
-        combatLoop(window);
+        combatLoop(window, animate);
         stopComTrack(track10, track7);
         break;
     case 8:
@@ -1050,7 +1052,7 @@ void Travel::decayOcean(sf::RenderWindow& window)
     }
 }
 
-void Travel::decayForest(sf::RenderWindow& window)
+void Travel::decayForest(sf::RenderWindow& window, Animation& animate)
 {
     switch (this->frame) {
     case 0:
@@ -1092,7 +1094,7 @@ void Travel::decayForest(sf::RenderWindow& window)
         if (getSpadeEnced()) {
             spriteText[2].setPosition(sf::Vector2f(1650.0f, 453.0f));
             initSpade();
-            combatLoop(window);
+            combatLoop(window, animate);
             stopComTrack(track4, track7);
         }
         if (getCombatEnd() && getSpadeEnced()) {
@@ -1122,7 +1124,7 @@ void Travel::decayForest(sf::RenderWindow& window)
     }
 }
 
-void Travel::decayGiants(sf::RenderWindow& window)
+void Travel::decayGiants(sf::RenderWindow& window, Animation& animate)
 {
     switch (this->frame) {
     case 0:
@@ -1146,7 +1148,7 @@ void Travel::decayGiants(sf::RenderWindow& window)
     case 5:
         this->nextArea(decayGiants6);
         initReclus();
-        combatLoop(window);
+        combatLoop(window, animate);
         stopComTrack(track10, track7);
         break;
     case 6:
@@ -1180,7 +1182,7 @@ void Travel::decayGiants(sf::RenderWindow& window)
         rotBeastEnc();
         if (getRotBeastEnced()) {
             initRotBeast();
-            combatLoop(window);
+            combatLoop(window, animate);
             if (!getPlayerDead() && getCombatEnd()) {
                 rotBeastDeathEnding();
             }

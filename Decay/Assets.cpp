@@ -61,8 +61,8 @@ Assets::Assets()
     this->thomTurnAssets = false;
 
     //Combat Move Unlocks
-    this->combatPlayerMoves = 0;
-    this->combatZinMoves = 0;
+    this->combatPlayerMoves = 3;
+    this->combatZinMoves = 3;
     this->combatThomMoves = 1;
 
     //Music

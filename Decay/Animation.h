@@ -31,10 +31,7 @@ private:
 	float sheetX;
 	float sheetY;
 
-	bool playerMovingUp;
-	bool playerMovingRight;
-	bool playerMovingLeft;
-	bool playerMovingDown;
+	bool playerMoving;
 
 	std::string animateString;
 
@@ -45,12 +42,17 @@ public:
 
 	//Character Sprite Animations
 	sf::Sprite playerPixelSprite;
-	sf::Texture playerSpriteSheet;
-	
-	sf::Texture playerwalkRight1;
-	sf::Texture playerwalkRight2;
-	sf::Texture playerwalkRight3;
-	sf::Texture playerwalkRight4;
+	sf::Texture playerWalkDown;
+	sf::Texture playerWalkLeft;
+	sf::Texture playerWalkRight;
+	sf::Texture playerWalkUp;
+
+	//Zin Walk Animations
+	sf::Sprite zinPixelSprite;
+	sf::Texture zinWalkDown;
+	sf::Texture zinWalkLeft;
+	sf::Texture zinWalkRight;
+	sf::Texture zinWalkUp;
 
 	//Other Animations
 	sf::Font font;
@@ -59,25 +61,12 @@ public:
 	sf::Texture zin1;
 	sf::Texture zin2;
 
-	sf::Texture heal1;
-	sf::Texture heal2;
-	sf::Texture heal3;
-	sf::Texture heal4;
-	sf::Texture heal5;
+	sf::Texture healSpriteSheet;
 
-	sf::Texture anvil1;
-	sf::Texture anvil2;
-	sf::Texture anvil3;
-	sf::Texture anvil4;
-	sf::Texture anvil5;
+	sf::Texture anvilSpriteSheet;
 
 	sf::Texture hitBlank;
-	sf::Texture hit1;
-	sf::Texture hit2;
-	sf::Texture hit3;
-	sf::Texture hit4;
-	sf::Texture hit5;
-	sf::Texture hit6;
+	sf::Texture hitSpriteSheet;
 
 	sf::Texture guard1;
 	sf::Texture guard2;
@@ -85,6 +74,7 @@ public:
 	sf::Texture guard4;
 	sf::Texture guard5;
 
+	sf::Texture guardBrkSpriteSheet;
 	sf::Texture guardBrk1;
 	sf::Texture guardBrk2;
 	sf::Texture guardBrk3;
@@ -133,13 +123,14 @@ public:
 	void animateMenu();
 
 	//Combat Animation Functions
+	void animateSprite(sf::Sprite& inSprite, float xOffset);
 	void animateSlash();
 	void animateGuard();
 	void animateGuardBrk();
 	void animateSmite();
 
-	//Draw Animation Functions
-	void drawAnimations();
+	//Load Animations
+	void bonfireAnimations();
 
 	//Getters
 	int& getAnimation() { return this->animation; };

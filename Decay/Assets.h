@@ -844,14 +844,12 @@ public:
 
 	//Initialize Combat Assets Setters
 	void setCombatAssetsTrue() { this->combatAssets = true; };
-	void setBonfireAssetsTrue() { this->bonfireAssets = true; };
 	void setPlayerTurnAssetsTrue() { this->playerTurnAssets = true; };
 	void setZinTurnAssetsTrue() { this->zinTurnAssets = true; };
 	void setThomTurnAssetsTrue() { this->thomTurnAssets = true; };
 	void setPlayerDeathTrue() { this->playerDeath = true; };
 
 	void setCombatAssetsFalse() { this->combatAssets = false; };
-	void setBonfireAssetsFalse() { this->bonfireAssets = false; };
 	void setPlayerTurnAssetsFalse() { this->playerTurnAssets = false; };
 	void setZinTurnAssetsFalse() { this->zinTurnAssets = false; };
 	void setThomTurnAssetsFalse() { this->thomTurnAssets = false; };

@@ -92,7 +92,7 @@ void World::bootUp(Animation& animate)
                 break;
             }
             //Main Travel Loop
-            travelCore(window);
+            travelCore(window, animate);
         }
         //Draw Everything...
         window.clear(sf::Color::Black);
@@ -277,7 +277,7 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
         }
         greyOnHover(window);
         drawObjects();
-        travelCore(window);
+        travelCore(window, animate);
         window.draw(rect);
         window.draw(map);
         window.draw(mapBorder);
@@ -292,8 +292,8 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
         window.draw(entityBoxText);
 
         //Tilemap Stuff
-        walkCycle();
-        loadMap(window);
+        //walkCycle();
+        //loadMap(window);
         window.draw(playerPixelSprite);
 
         //Draw all sprite border rects and text
@@ -308,7 +308,8 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
         }
 
         //Draw Bonfire Detection Rect
-        if (getBonfireInit() == true) {
+        if (getBonfireAssets()) {
+            animate.bonfireAnimations();
             bonfireHealDetectionText.setPosition(mousePos.x - 5.0f, mousePos.y + 15.0f);
             bonfireSmithDetectionText.setPosition(mousePos.x - 5.0f, mousePos.y + 15.0f);
             //Animate Icons
@@ -344,7 +345,6 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
 
         //Draw Animations
         animate.animateNote();
-        animate.drawAnimations();
         window.draw(animate.zinSprite);
         window.draw(animate.decayWarn);
         window.draw(animate.hitSprite);
@@ -432,7 +432,6 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
             window.draw(menuScreenElementsText[i]);
         }
     }
-    
 }
 
 void World::drawMapSelectorButtons(sf::RenderWindow& window)
