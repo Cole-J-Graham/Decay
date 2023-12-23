@@ -28,6 +28,8 @@ private:
 	std::string input;
 	std::string targetHpView;
 
+	bool mapDefinitionHasLoaded;
+
 	int unicode;
 	int random;
 	int test;

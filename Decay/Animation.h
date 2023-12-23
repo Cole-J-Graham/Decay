@@ -25,6 +25,17 @@ private:
 	float notePosX;
 	float notePosY;
 
+	float x_pos;
+	float y_pos;
+
+	float sheetX;
+	float sheetY;
+
+	bool playerMovingUp;
+	bool playerMovingRight;
+	bool playerMovingLeft;
+	bool playerMovingDown;
+
 	std::string animateString;
 
 public:
@@ -32,6 +43,16 @@ public:
 	Animation();
 	~Animation();
 
+	//Character Sprite Animations
+	sf::Sprite playerPixelSprite;
+	sf::Texture playerSpriteSheet;
+	
+	sf::Texture playerwalkRight1;
+	sf::Texture playerwalkRight2;
+	sf::Texture playerwalkRight3;
+	sf::Texture playerwalkRight4;
+
+	//Other Animations
 	sf::Font font;
 	sf::Text decayWarn;
 
@@ -100,6 +121,9 @@ public:
 	void animateTimer();
 	void animateCombatTimer();
 	void animateMenuTimer();
+
+	//Movement
+	void walkCycle();
 
 	//Animation Functions
 	void animateZin();

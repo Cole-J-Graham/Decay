@@ -2,10 +2,9 @@
 #include<time.h>
 #include<cstdlib>
 #include<string>
-#include"Sprites.h"
-#include"Animation.h"
+#include"TileMap.h"
 
-class AssetHandler : public Sprites, public Animation
+class AssetHandler : public TileMap
 {
 private:
 	//Core modifiers
@@ -42,6 +41,9 @@ private:
 	int smithingStones;
 	std::string basicSword;
 
+	//Movement
+	bool playerMovable;
+
 public:
 
 	//Constructors & Destructors
@@ -51,6 +53,12 @@ public:
 	//Core Functions
 	void statsText();
 	void printInventory();
+
+	//Player Movement
+	void moveEntity();
+
+	//Tilemap Definitions
+	void defineForest();
 
 	//Core Modifier Getters
 	int& getDecay() { return this->decay; };

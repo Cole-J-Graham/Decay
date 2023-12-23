@@ -14,7 +14,14 @@ Animation::Animation()
 	this->decayWarning = false;
 
 	this->animEnd = true;
+
+	this->sheetX;
+	this->sheetY;
 	
+	this->playerMovingUp = false;
+	this->playerMovingRight = false;
+	this->playerMovingLeft = false;
+	this->playerMovingDown = false;
 
 	this->notePosX = 0;
 	this->notePosY = 0;
@@ -22,6 +29,18 @@ Animation::Animation()
 	this->animateString = "";
 	
 	decayWarn.setPosition(10000, 10000);
+
+	//PLayer Movement
+	playerSpriteSheet.loadFromFile("Assets/Sprites/playerWalkSpriteSheet.png");
+	//playerwalk1.loadFromFile("Assets/Sprites/playerWalk1.png"); DEPRICATED
+	//playerwalk2.loadFromFile("Assets/Sprites/playerWalk2.png");
+	//playerwalk3.loadFromFile("Assets/Sprites/playerWalk3.png");
+	//playerwalk4.loadFromFile("Assets/Sprites/playerWalk4.png");
+
+	playerwalkRight1.loadFromFile("Assets/Sprites/playerWalkRightAnimation1.png");
+	playerwalkRight2.loadFromFile("Assets/Sprites/playerWalkRightAnimation2.png");
+	playerwalkRight3.loadFromFile("Assets/Sprites/playerWalkRightAnimation3.png");
+	playerwalkRight4.loadFromFile("Assets/Sprites/playerWalkRightAnimation4.png");
 
 	zin1.loadFromFile("Assets/Sprites/zinsprite.png");
 	zin2.loadFromFile("Assets/Sprites/zinspriteannoyed.png");
@@ -117,10 +136,6 @@ void Animation::animateTimer()
 			timer.restart();
 		}
 		else if (this->animationFrame == 2) {
-			this->animationFrame++;
-			timer.restart();
-		}
-		else if (this->animationFrame == 3) {
 			this->animationFrame = -1;
 			timer.restart();
 		}
@@ -199,6 +214,78 @@ void Animation::animateMenuTimer()
 				this->menuCycleSlow = true;
 			}
 		}
+	}
+}
+
+//Movement
+void Animation::walkCycle()
+{
+	if (this->playerMovingDown) {
+		this->animateTimer();
+		switch (this->animationFrame) {
+		case -1:
+			sheetX = 0;
+			sheetY = 0;
+			break;
+		case 0:
+			sheetX = 16;
+			sheetY = 0;
+			break;
+		case 1:
+			sheetX = 32;
+			sheetY = 0;
+			break;
+		case 2:
+			sheetX = 48;
+			sheetY = 0;
+			break;
+		}
+	}
+	if (this->playerMovingRight) {
+		this->animateTimer();
+		switch (this->animationFrame) {
+		case -1:
+			playerPixelSprite.setTexture(playerwalkRight1);
+			break;
+		case 0:
+			playerPixelSprite.setTexture(playerwalkRight2);
+			break;
+		case 1:
+			playerPixelSprite.setTexture(playerwalkRight3);
+			break;
+		case 2:
+			playerPixelSprite.setTexture(playerwalkRight4);
+			break;
+		}
+	}
+	//playerPixelSprite.setTexture(playerwalk1);
+	playerPixelSprite.setPosition(x_pos, y_pos);
+	playerPixelSprite.setScale(2.42, 2.42);
+	playerPixelSprite.setTexture(playerSpriteSheet);
+	playerPixelSprite.setTextureRect(sf::IntRect(sheetX, sheetY, 16, 16));
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+		playerPixelSprite.setPosition(x_pos, y_pos--);
+	}
+	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+		playerPixelSprite.setPosition(x_pos--, y_pos);
+	}
+	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+		playerPixelSprite.setPosition(x_pos, y_pos++);
+		this->playerMovingDown = true;
+	}
+	else {
+		this->playerMovingDown = false;
+	}
+	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		playerPixelSprite.setPosition(x_pos++, y_pos);
+		this->playerMovingRight = true;
+	}
+	else {
+		this->playerMovingRight = false;
 	}
 }
 
@@ -536,12 +623,12 @@ void Animation::animateMenu()
 //Draw Animation Functions
 void Animation::drawAnimations()
 {
-	/*if (getBonfireAssets()) {
+	if (getBonfireAssets()) {
 		this->animateAnvil();
 		this->animateHeal();
 	}
 	else if (!getBonfireAssets()) {
 		anvilSprite.setPosition(10000, 10000);
 		healSprite.setPosition(10000, 10000);
-	}*/
+	}
 }

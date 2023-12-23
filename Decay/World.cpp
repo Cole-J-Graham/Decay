@@ -17,6 +17,8 @@ World::World()
     this->bonfire = true;
     this->mainMenu = true;
 
+    this->mapDefinitionHasLoaded = false;
+
     //Menu Bool
     this->statsmenu = false;
 
@@ -90,10 +92,12 @@ void World::bootUp(Animation& animate)
                 break;
             }
             //Main Travel Loop
-            travelCore(window, animate);
+            travelCore(window);
         }
         //Draw Everything...
+        window.clear(sf::Color::Black);
         this->draw(window, animate);
+        window.display();
     }
 }
 
@@ -109,6 +113,9 @@ void World::userInput()
     playerInput += event.text.unicode;
     input = event.text.unicode;
     unicode = event.text.unicode;
+
+    //Player movement input
+    moveEntity();
 
     //Getting user input for settings
     if (unicode == 36) {
@@ -260,9 +267,7 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
         window.setIcon(windowIcon.getSize().x, windowIcon.getSize().y, windowIcon.getPixelsPtr()); //set window icon
         setInitialDrawInTrue();
     }
-    // clear the window with black color
-    window.clear(sf::Color::Black);
-
+    
     // draw everything here...
     if (this->mainMenu == false && !getPlayerDeath()) {
         combatTextElapsed = combatTextTime.getElapsedTime();//Reset stats text after 3 seconds
@@ -272,8 +277,7 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
         }
         greyOnHover(window);
         drawObjects();
-        travelCore(window, animate);
-
+        travelCore(window);
         window.draw(rect);
         window.draw(map);
         window.draw(mapBorder);
@@ -286,6 +290,11 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
         window.draw(entitySprite);
         window.draw(entityBoxHeader);
         window.draw(entityBoxText);
+
+        //Tilemap Stuff
+        walkCycle();
+        loadMap(window);
+        window.draw(playerPixelSprite);
 
         //Draw all sprite border rects and text
         for (int i = 0; i < spriteRect.size(); i++) {
@@ -423,9 +432,7 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
             window.draw(menuScreenElementsText[i]);
         }
     }
-
-    // end the current frame
-    window.display();
+    
 }
 
 void World::drawMapSelectorButtons(sf::RenderWindow& window)

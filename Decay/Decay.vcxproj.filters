@@ -31,6 +31,7 @@
     <ClCompile Include="AssetHandler.cpp">
       <Filter>.h\Assets</Filter>
     </ClCompile>
+    <ClCompile Include="TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Event.h">
@@ -59,6 +60,9 @@
     </ClInclude>
     <ClInclude Include="AssetHandler.h">
       <Filter>.h\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMap.h">
+      <Filter>.h</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
