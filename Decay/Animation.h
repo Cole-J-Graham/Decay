@@ -10,6 +10,7 @@
 class Animation : virtual public Assets
 {
 private:
+	int characterSelection;
 	int animation;
 	int animationFrame;
 	int combatAnimationFrame;
@@ -68,18 +69,9 @@ public:
 	sf::Texture hitBlank;
 	sf::Texture hitSpriteSheet;
 
-	sf::Texture guard1;
-	sf::Texture guard2;
-	sf::Texture guard3;
-	sf::Texture guard4;
-	sf::Texture guard5;
+	sf::Texture guardSpriteSheet;
 
 	sf::Texture guardBrkSpriteSheet;
-	sf::Texture guardBrk1;
-	sf::Texture guardBrk2;
-	sf::Texture guardBrk3;
-	sf::Texture guardBrk4;
-	sf::Texture guardBrk5;
 
 	sf::Texture menu1;
 	sf::Texture menu2;
@@ -108,26 +100,19 @@ public:
 
 	//Core Animation Functions
 	void pickAnimation();
+	void animateSixFrames(sf::Sprite& inSprite, float xOffset);
+	void animateFourFrames(sf::Sprite& inSprite, float xOffset, float posX, float posY);
 	void animateTimer();
 	void animateCombatTimer();
 	void animateMenuTimer();
 
 	//Movement
-	void walkCycle();
+	void characterSelect();
+	void walkCycle(sf::Sprite& inSprite, sf::Texture& up, sf::Texture& down, sf::Texture& left, sf::Texture& right);
 
 	//Animation Functions
-	void animateZin();
 	void animateNote();
-	void animateAnvil();
-	void animateHeal();
 	void animateMenu();
-
-	//Combat Animation Functions
-	void animateSprite(sf::Sprite& inSprite, float xOffset);
-	void animateSlash();
-	void animateGuard();
-	void animateGuardBrk();
-	void animateSmite();
 
 	//Load Animations
 	void bonfireAnimations();

@@ -114,9 +114,6 @@ void World::userInput()
     input = event.text.unicode;
     unicode = event.text.unicode;
 
-    //Player movement input
-    moveEntity();
-
     //Getting user input for settings
     if (unicode == 36) {
         soundClick.play();
@@ -257,7 +254,7 @@ void World::loadGame(Animation& animate)
     animate.getDecayWarning() = true;
 }
 
-//Display Functions
+//Draw Functions
 void World::draw(sf::RenderWindow& window, Animation& animate)
 {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
@@ -267,17 +264,22 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
         window.setIcon(windowIcon.getSize().x, windowIcon.getSize().y, windowIcon.getPixelsPtr()); //set window icon
         setInitialDrawInTrue();
     }
-    
     // draw everything here...
-    if (this->mainMenu == false && !getPlayerDeath()) {
+    if (!this->mainMenu && !getPlayerDeath()) {
         combatTextElapsed = combatTextTime.getElapsedTime();//Reset stats text after 3 seconds
         if (combatTextElapsed.asSeconds() >= 3 && !getComTextRemoved()) {
             text.setString("");
             getComTextRemoved() = true;
         }
+
+        //Allow all hoverables to work
         greyOnHover(window);
+        //Draw all initial objects to screen
         drawObjects();
+        //Allow traveling to work
         travelCore(window, animate);
+
+        //Draw main window
         window.draw(rect);
         window.draw(map);
         window.draw(mapBorder);
@@ -292,9 +294,10 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
         window.draw(entityBoxText);
 
         //Tilemap Stuff
-        //walkCycle();
-        //loadMap(window);
+        characterSelect();
+        loadMap(window);
         window.draw(playerPixelSprite);
+        window.draw(zinPixelSprite);
 
         //Draw all sprite border rects and text
         for (int i = 0; i < spriteRect.size(); i++) {
@@ -308,23 +311,7 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
         }
 
         //Draw Bonfire Detection Rect
-        if (getBonfireAssets()) {
-            animate.bonfireAnimations();
-            bonfireHealDetectionText.setPosition(mousePos.x - 5.0f, mousePos.y + 15.0f);
-            bonfireSmithDetectionText.setPosition(mousePos.x - 5.0f, mousePos.y + 15.0f);
-            //Animate Icons
-            window.draw(animate.healSprite);
-            window.draw(animate.anvilSprite);
-            //Healing
-            window.draw(bonfireHealDetectionRect);
-            window.draw(bonfireHealBorder);
-            //Smithing
-            window.draw(bonfireSmithDetectionRect);
-            window.draw(bonfireSmithBorder);
-            //Text
-            window.draw(bonfireHealDetectionText);
-            window.draw(bonfireSmithDetectionText);
-        }
+        this->drawBonfire(window, animate);
 
         //Draw rectangle elements
         for (int i = 0; i < rectElements.size(); i++) {
@@ -350,50 +337,20 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
         window.draw(animate.hitSprite);
         window.draw(animate.guardSprite);
         window.draw(animate.guardBrkSprite);
-        
 
-        if (getInitMap() == true) {
-            //Draw main map rect
-            window.draw(rectMap);
-            //Choose which map is selected
-            switch (getMapCounter()) {
-            case 0:
-                this->drawForestMap(window);
-                break;
-            case 1:
-                this->drawCastleMap(window);
-                break;
-            case 2:
-                this->drawDecayMap(window);
-                break;
-            }
-            //Make Box Movable if clicked...
-            this->movableBox(window);
-        }
+        //Draw Map
+        this->drawMap(window);
 
-        if (getInitStats() == true) {
-            textElapsed = textTime.getElapsedTime();//Reset stats text after 3 seconds
-            if (textElapsed.asSeconds() >= 3) {
-                text.setString("");
-            }
-            window.draw(rectStatsBox);
-            if (getPlayerStatsInit() == true) {
-                this->printPlayerStats(window);
-            }
-            else if (getZinStatsInit() == true) {
-                this->printZinStats(window);
-            }
-            window.draw(rectStatsSideMenu);
-            window.draw(playerStatsBoxButtonText);
-            window.draw(zinStatsBoxButtonText);
-        }
-        if (getInitInventory() == true) {
+        //Draw Stats Menu
+        this->drawStatsMenu(window);
+
+        if (getInitInventory()) {
             printInventory();
             window.draw(rectInventoryBox);
             window.draw(inventoryText);
         }
     }
-    else if (this->mainMenu == true) {
+    else if (this->mainMenu) {
         playTrack(track8);
         greyOnHover(window);
         animate.animateMenu();
@@ -434,6 +391,72 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
     }
 }
 
+void World::drawStatsMenu(sf::RenderWindow& window)
+{
+    if (getInitStats()) {
+        textElapsed = textTime.getElapsedTime();//Reset stats text after 3 seconds
+        if (textElapsed.asSeconds() >= 3) {
+            text.setString("");
+        }
+        window.draw(rectStatsBox);
+        if (getPlayerStatsInit()) {
+            this->printPlayerStats(window);
+        }
+        else if (getZinStatsInit()) {
+            this->printZinStats(window);
+        }
+        window.draw(rectStatsSideMenu);
+        window.draw(playerStatsBoxButtonText);
+        window.draw(zinStatsBoxButtonText);
+    }
+}
+
+void World::drawMap(sf::RenderWindow& window)
+{
+    if (getInitMap()) {
+        //Draw main map rect
+        window.draw(rectMap);
+        //Choose which map is selected
+        switch (getMapCounter()) {
+        case 0:
+            this->drawForestMap(window);
+            break;
+        case 1:
+            this->drawCastleMap(window);
+            break;
+        case 2:
+            this->drawDecayMap(window);
+            break;
+        }
+        //Make Box Movable if clicked...
+        this->movableBox(window);
+    }
+}
+
+void World::drawBonfire(sf::RenderWindow& window, Animation& animate)
+{
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+    if (getBonfireAssets()) {
+        animate.bonfireAnimations();
+        bonfireHealDetectionText.setPosition(mousePos.x - 5.0f, mousePos.y + 15.0f);
+        bonfireSmithDetectionText.setPosition(mousePos.x - 5.0f, mousePos.y + 15.0f);
+        //Animate Icons
+        window.draw(animate.healSprite);
+        window.draw(animate.anvilSprite);
+        //Healing
+        window.draw(bonfireHealDetectionRect);
+        window.draw(bonfireHealBorder);
+        //Smithing
+        window.draw(bonfireSmithDetectionRect);
+        window.draw(bonfireSmithBorder);
+        //Text
+        window.draw(bonfireHealDetectionText);
+        window.draw(bonfireSmithDetectionText);
+    }
+}
+
+//Display Functions
 void World::drawMapSelectorButtons(sf::RenderWindow& window)
 {
     //Draw all rectangle elements for map button selectors

@@ -63,8 +63,13 @@ public:
 	void saveGame(Animation& animate);
 	void loadGame(Animation& animate);
 
-	//Display Functions
+	//Draw Functions
 	void draw(sf::RenderWindow& window, Animation& animate);
+	void drawStatsMenu(sf::RenderWindow& window);
+	void drawMap(sf::RenderWindow& window);
+	void drawBonfire(sf::RenderWindow& window, Animation& animate);
+
+	//Display Functions
 	void drawMapSelectorButtons(sf::RenderWindow& window);
 	void printPlayerStats(sf::RenderWindow& window);
 	void printZinStats(sf::RenderWindow& window);

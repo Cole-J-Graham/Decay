@@ -54,12 +54,6 @@ public:
 	void statsText();
 	void printInventory();
 
-	//Player Movement
-	void moveEntity();
-
-	//Tilemap Definitions
-	void defineForest();
-
 	//Core Modifier Getters
 	int& getDecay() { return this->decay; };
 	int& getDecayMax() { return this->decayMax; };

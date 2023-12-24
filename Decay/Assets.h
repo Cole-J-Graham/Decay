@@ -104,6 +104,24 @@ private:
 
 	std::string tipBarrier;
 	std::string tipEnrage;
+
+	//Move Names
+	std::string texSmite = "Smite";
+	std::string texMend = "Mend";
+	std::string texVengeance = "Vengeance";
+	std::string texHellBlaze = "Hell Blaze";
+	std::string texFocus = "Focus";
+	std::string texFlames = "Flames";
+
+	std::string texSlash = "Slash";
+	std::string texGuard = "Guard";
+	std::string texDecay = "Decay";
+	std::string texHeftyBlow = "Hefty Blow";
+	std::string texSynergy = "Synergy";
+	std::string texIronWall = "Iron Wall";
+
+	std::string texBarrier = "Barrier";
+	std::string texEnrage = "Enrage";
 	
 public:
 	//Constructors & Destructors
@@ -153,6 +171,7 @@ public:
 	void playerCombatAssets();
 	void zinCombatAssets();
 	void thomCombatAssets();
+	void setMovePosition(sf::RectangleShape& inRect, sf::Text& inText, std::string& inString, float posX, float posY);
 
 	//Window Icon
 	sf::Image windowIcon;

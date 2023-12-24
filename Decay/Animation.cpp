@@ -2,6 +2,7 @@
 
 Animation::Animation()
 {
+	this->characterSelection = 1;
 	this->animation = -1;
 	this->animationFrame = -1;
 	this->combatAnimationFrame = -1;
@@ -29,12 +30,12 @@ Animation::Animation()
 	playerWalkDown.loadFromFile("Assets/SpriteSheets/playerWalkSpriteSheet.png");
 	playerWalkLeft.loadFromFile("Assets/SpriteSheets/playerWalkLeftSpriteSheet.png");
 	playerWalkRight.loadFromFile("Assets/SpriteSheets/playerWalkRightSpriteSheet.png");
-	//playerWalkUp.loadFromFile(""); (SHEET REQUIRED)
+	playerWalkUp.loadFromFile("Assets/SpriteSheets/playerWalkUpSpriteSheet.png");
 
 	zinWalkDown.loadFromFile("Assets/SpriteSheets/zinWalkSpriteSheet.png");
 	zinWalkLeft.loadFromFile("Assets/SpriteSheets/zinWalkLeftSpriteSheet.png");
 	zinWalkRight.loadFromFile("Assets/SpriteSheets/zinWalkRightSpriteSheet.png");
-	//zinWalkUp.loadFromFile(""); (SHEET REQUIRED)
+	zinWalkUp.loadFromFile("Assets/SpriteSheets/zinWalkUpSpriteSheet.png");
 
 	zin1.loadFromFile("Assets/Sprites/zinsprite.png");
 	zin2.loadFromFile("Assets/Sprites/zinspriteannoyed.png");
@@ -55,12 +56,10 @@ Animation::Animation()
 	hitSprite.setTexture(hitSpriteSheet);
 	hitSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
 
-	guard1.loadFromFile("Assets/Game_Resources/guard1.png");
-	guard2.loadFromFile("Assets/Game_Resources/guard2.png");
-	guard3.loadFromFile("Assets/Game_Resources/guard3.png");
-	guard4.loadFromFile("Assets/Game_Resources/guard4.png");
-	guard5.loadFromFile("Assets/Game_Resources/guard5.png");
-	guardSprite.setScale(1.0f, 1.0f);
+	guardSpriteSheet.loadFromFile("Assets/Game_Resources/guardSpriteSheet.png");
+	guardSprite.setScale(9.5f, 9.5f);
+	guardSprite.setTexture(guardSpriteSheet);
+	guardSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
 
 	guardBrkSpriteSheet.loadFromFile("Assets/Game_Resources/guardedSpriteSheet.png");
 	guardBrkSprite.setScale(9.5f, 9.5f);
@@ -88,16 +87,105 @@ void Animation::pickAnimation()
 {
 	switch (this->animation) {
 	case 0:
-		animateSprite(hitSprite, 64);
+		animateSixFrames(hitSprite, 64);
 		break;
 	case 1:
-		animateSprite(hitSprite, 64);
+		animateSixFrames(hitSprite, 64);
 		break;
 	case 2:
-		animateSprite(guardSprite, 16);
+		animateSixFrames(guardSprite, 16);
 		break;
 	case 3:
-		animateSprite(guardBrkSprite, 16);
+		animateSixFrames(guardBrkSprite, 16);
+		break;
+	}
+}
+
+void Animation::animateSixFrames(sf::Sprite& inSprite, float xOffset)
+{
+	//Set Animation Position
+	switch (this->combatAnimationLocation) {
+	case -1:
+		inSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
+		break;
+	case 0:
+		//Hostile Sprite Location
+		inSprite.setPosition(sf::Vector2f(1650.0f, 300.0f));
+		break;
+	case 1:
+		//Player Sprite Location
+		inSprite.setPosition(sf::Vector2f(50.0f, 100.0f));
+		break;
+	case 2:
+		//Zin Sprite Location
+		inSprite.setPosition(sf::Vector2f(50.0f, 300.0f));
+		break;
+	case 3:
+		//Thom Sprite Location
+		inSprite.setPosition(sf::Vector2f(50.0f, 500.0f));
+		break;
+	}
+
+	//Animate Sprite
+	this->animateCombatTimer();
+	switch (this->combatAnimationFrame) {
+	case -1:
+		inSprite.setTextureRect(sf::IntRect(sheetX, sheetY, xOffset, xOffset));
+		sheetX = 0;
+		sheetY = 0;
+		break;
+	case 0:
+		inSprite.setTextureRect(sf::IntRect(sheetX, sheetY, xOffset, xOffset));
+		sheetX = xOffset;
+		sheetY = 0;
+		break;
+	case 1:
+		inSprite.setTextureRect(sf::IntRect(sheetX, sheetY, xOffset, xOffset));
+		sheetX = xOffset * 2;
+		sheetY = 0;
+		break;
+	case 2:
+		inSprite.setTextureRect(sf::IntRect(sheetX, sheetY, xOffset, xOffset));
+		sheetX = xOffset * 3;
+		sheetY = 0;
+		break;
+	case 3:
+		inSprite.setTextureRect(sf::IntRect(sheetX, sheetY, xOffset, xOffset));
+		sheetX = xOffset * 4;
+		sheetY = 0;
+		break;
+	case 4:
+		inSprite.setTextureRect(sf::IntRect(sheetX, sheetY, xOffset, xOffset));
+		sheetX = xOffset * 5;
+		sheetY = 0;
+		inSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
+		this->animEnd = true;
+		this->combatAnimationFrame = -1;
+		break;
+	}
+}
+
+void Animation::animateFourFrames(sf::Sprite& inSprite, float xOffset, float posX, float posY)
+{
+	inSprite.setTextureRect(sf::IntRect(sheetX, sheetY, xOffset, xOffset));
+	inSprite.setPosition(posX, posY);
+	this->animateTimer();
+	switch (this->animationFrame) {
+	case -1:
+		sheetX = 0;
+		sheetY = 0;
+		break;
+	case 0:
+		sheetX = xOffset;
+		sheetY = 0;
+		break;
+	case 1:
+		sheetX = xOffset * 2;
+		sheetY = 0;
+		break;
+	case 2:
+		sheetX = xOffset * 3;
+		sheetY = 0;
 		break;
 	}
 }
@@ -105,7 +193,7 @@ void Animation::pickAnimation()
 void Animation::animateTimer()
 {
 	elapsed = timer.getElapsedTime();
-	if (elapsed.asSeconds() >= 0.5f) {
+	if (elapsed.asSeconds() >= 0.2f) {
 		if (this->animationFrame == -1) {
 			this->animationFrame++;
 			timer.restart();
@@ -201,8 +289,24 @@ void Animation::animateMenuTimer()
 }
 
 //Movement
-void Animation::walkCycle()
+void Animation::characterSelect()
 {
+	//Select which character is movable on screen
+	switch (this->characterSelection) {
+	case 0:
+		//Player
+		this->walkCycle(playerPixelSprite, playerWalkUp, playerWalkDown, playerWalkLeft, playerWalkRight);
+		break;
+	case 1:
+		//Zin
+		this->walkCycle(zinPixelSprite, zinWalkUp, zinWalkDown, zinWalkLeft, zinWalkRight);
+		break;
+	}
+}
+
+void Animation::walkCycle(sf::Sprite& inSprite, sf::Texture& up, sf::Texture& down, sf::Texture& left, sf::Texture& right)
+{
+	//Animate walk cycle
 	if (this->playerMoving) {
 		this->animateTimer();
 		switch (this->animationFrame) {
@@ -224,53 +328,41 @@ void Animation::walkCycle()
 			break;
 		}
 	}
-	playerPixelSprite.setPosition(x_pos, y_pos);
-	playerPixelSprite.setScale(3, 3);
-	playerPixelSprite.setTextureRect(sf::IntRect(sheetX, sheetY, 16, 16));
-
+	//Set basic attributes for sprite
+	inSprite.setPosition(x_pos, y_pos);
+	inSprite.setScale(4, 4);
+	inSprite.setTextureRect(sf::IntRect(sheetX, sheetY, 16, 16));
+	//Character moving
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-		playerPixelSprite.setPosition(x_pos, y_pos--);
+		inSprite.setPosition(x_pos, y_pos--);
+		inSprite.setTexture(up);
 		this->playerMoving = true;
 	}
-	
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-		playerPixelSprite.setPosition(x_pos--, y_pos);
-		playerPixelSprite.setTexture(playerWalkLeft);
-		this->playerMoving = true;
-	}
-	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-		playerPixelSprite.setPosition(x_pos, y_pos++);
-		playerPixelSprite.setTexture(playerWalkDown);
+		inSprite.setPosition(x_pos, y_pos++);
+		inSprite.setTexture(down);
 		this->playerMoving = true;
 	}
-	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+		inSprite.setPosition(x_pos--, y_pos);
+		inSprite.setTexture(left);
+		this->playerMoving = true;
+	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		playerPixelSprite.setPosition(x_pos++, y_pos);
-		playerPixelSprite.setTexture(playerWalkRight);
+		inSprite.setPosition(x_pos++, y_pos);
+		inSprite.setTexture(right);
 		this->playerMoving = true;
 	}
-
+	//Character stops moving
 	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) &&
 		!sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		sheetX = 0;
+		sheetY = 0;
 		this->playerMoving = false;
 	}
 }
 
 //Animation Functions
-void Animation::animateZin()
-{
-	this->animateTimer();
-	switch (this->animationFrame) {
-	case 0:
-		zinSprite.setTexture(zin1);
-		break;
-	case 1:
-		zinSprite.setTexture(zin2);
-		break;
-	}
-}
-
 void Animation::animateNote()
 {
 	decayWarn.setString(animateString);
@@ -304,122 +396,7 @@ void Animation::animateNote()
 	}
 }
 
-void Animation::animateAnvil()
-{
-	anvilSprite.setTextureRect(sf::IntRect(sheetX, sheetY, 32, 32));
-	anvilSprite.setPosition(1475, 675);
-	this->animateTimer();
-	switch (this->animationFrame) {
-	case -1:
-		sheetX = 0;
-		sheetY = 0;
-		break;
-	case 0:
-		sheetX = 32;
-		sheetY = 0;
-		break;
-	case 1:
-		sheetX = 64;
-		sheetY = 0;
-		break;
-	case 2:
-		sheetX = 86;
-		sheetY = 0;
-		break;
-	}
-}
-
-void Animation::animateHeal()
-{
-	healSprite.setTextureRect(sf::IntRect(sheetX, sheetY, 32, 32));
-	healSprite.setPosition(1475, 750);
-	//Animate Heal Icon
-	this->animateTimer();
-	switch (this->animationFrame) {
-	case -1:
-		sheetX = 0;
-		sheetY = 0;
-		break;
-	case 0:
-		sheetX = 32;
-		sheetY = 0;
-		break;
-	case 1:
-		sheetX = 64;
-		sheetY = 0;
-		break;
-	case 2:
-		sheetX = 86;
-		sheetY = 0;
-		break;
-	}
-}
-
 //Combat Animation Functions
-void Animation::animateSprite(sf::Sprite& inSprite, float xOffset)
-{
-	//Set Animation Position
-	switch (this->combatAnimationLocation) {
-	case -1:
-		inSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
-		break;
-	case 0:
-		//Hostile Sprite Location
-		inSprite.setPosition(sf::Vector2f(1650.0f, 300.0f));
-		break;
-	case 1:
-		//Player Sprite Location
-		inSprite.setPosition(sf::Vector2f(50.0f, 100.0f));
-		break;
-	case 2:
-		//Zin Sprite Location
-		inSprite.setPosition(sf::Vector2f(50.0f, 300.0f));
-		break;
-	case 3:
-		//Thom Sprite Location
-		inSprite.setPosition(sf::Vector2f(50.0f, 500.0f));
-		break;
-	}
-
-	//Animate Hit Animation
-	this->animateCombatTimer();
-	switch (this->combatAnimationFrame) {
-	case -1:
-		inSprite.setTextureRect(sf::IntRect(sheetX, sheetY, xOffset, xOffset));
-		sheetX = 0;
-		sheetY = 0;
-		break;
-	case 0:
-		inSprite.setTextureRect(sf::IntRect(sheetX, sheetY, xOffset, xOffset));
-		sheetX = xOffset;
-		sheetY = 0;
-		break;
-	case 1:
-		inSprite.setTextureRect(sf::IntRect(sheetX, sheetY, xOffset, xOffset));
-		sheetX = xOffset * 2;
-		sheetY = 0;
-		break;
-	case 2:
-		inSprite.setTextureRect(sf::IntRect(sheetX, sheetY, xOffset, xOffset));
-		sheetX = xOffset * 3;
-		sheetY = 0;
-		break;
-	case 3:
-		inSprite.setTextureRect(sf::IntRect(sheetX, sheetY, xOffset, xOffset));
-		sheetX = xOffset * 4;
-		sheetY = 0;
-		break;
-	case 4:
-		inSprite.setTextureRect(sf::IntRect(sheetX, sheetY, xOffset, xOffset));
-		sheetX = xOffset * 5;
-		sheetY = 0;
-		inSprite.setPosition(sf::Vector2f(10000.0f, 10000.0f));
-		this->animEnd = true;
-		this->combatAnimationFrame = -1;
-		break;
-	}
-}
-
 void Animation::animateMenu()
 {
 	//Animate Hit Animation
@@ -449,6 +426,6 @@ void Animation::animateMenu()
 //Load Animations
 void Animation::bonfireAnimations()
 {
-	this->animateAnvil();
-	this->animateHeal();
+	this->animateFourFrames(anvilSprite, 32, 1475, 675);
+	this->animateFourFrames(healSprite, 32, 1475, 750);
 }

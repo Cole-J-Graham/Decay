@@ -66,15 +66,3 @@ void AssetHandler::printInventory()
 	inventoryText.setString("[GENERAL ITEMS]\nGold: x" + std::to_string(this->gold) + "\nSmithing Stones: x"
 		+ std::to_string(this->smithingStones) + "\n\n[EQUIPPED ITEMS]\n" + this->basicSword);
 }
-
-//Player Movement
-void AssetHandler::moveEntity()
-{
-	
-}
-
-//Tilemap Definitions
-void AssetHandler::defineForest()
-{
-	
-}
