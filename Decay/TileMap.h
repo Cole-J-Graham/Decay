@@ -3,7 +3,7 @@
 #include"Animation.h"
 #include<SFML/Graphics/Transformable.hpp>
 
-class TileMap : public Sprites, public Animation
+class TileMap : virtual public Sprites, public Animation
 {
 public:
 	//Constructors and Destructors
@@ -22,7 +22,7 @@ public:
 	int toX;
 	int toY;
 
-	float gridSizeF = 82.f;
+	float gridSizeF = 75.f;
 
 	int x;
 	int y;
