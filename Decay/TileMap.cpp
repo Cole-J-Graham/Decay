@@ -4,11 +4,15 @@
 TileMap::TileMap()
 {
 	//Core Variables
-	this->fromX = 0;
-	this->fromY = 0;
-	this->toX = 0;
-	this->toY = 0;
+	this->gridSizeF = 64.f;
+	this->col = 13;
+	this->row = 13;
+
 	//map.loadFromFile("Assets/Wallpapers/map.png");
+	this->forestTile1.loadFromFile("Assets/SpriteSheets/Sprite-0001.png");
+	this->forestTile2.loadFromFile("Assets/SpriteSheets/Sprite-0002.png");
+	this->forestTile3.loadFromFile("Assets/SpriteSheets/Sprite-0003.png");
+	this->forestTile4.loadFromFile("Assets/SpriteSheets/Sprite-0004.png");
 }
 
 TileMap::~TileMap()
@@ -16,34 +20,70 @@ TileMap::~TileMap()
 
 }
 
+void TileMap::loadingOnTile(std::vector<std::vector<sf::Sprite>>& inSprite, std::vector<std::vector<int>> tiles, sf::Texture& tex1, sf::Texture& tex2, sf::Texture& tex3, sf::Texture& tex4)
+{
+	//Draw a specific set texture tile based on which input is recieved from a tilemap vector
+	for (int x = 0; x < col; x++) {
+		for (int y = 0; y < row; y++) {
+			if (tiles[x][y] == 0) {
+				inSprite[x][y].setTexture(tex1);
+			}
+			else if (tiles[x][y] == 1){
+				inSprite[x][y].setTexture(tex2);
+			}
+			else if (tiles[x][y] == 2) {
+				inSprite[x][y].setTexture(tex3);
+			}
+			else if (tiles[x][y] == 3) {
+				inSprite[x][y].setTexture(tex4);
+			}
+		}
+	}
+}
+
 //TileMaps
 void TileMap::loadMap(sf::RenderWindow& window)
 {
-	/*Copy code below to ensure its safety as you continue your work. Attempt to make this similar to the
-		code in the SFML tilesheets example utilizing an array to push in specific tiles from a tilesheet.
-		Once loading from a specific tilesheet, the tilemaps process will be complete.
-		Also attempt to make these functions more reusable and functional for future use as this code is
-		extremely reusable.
-	*/
-	int col = 10;
-	int row = 10;
+	//Create Level
+	std::vector<std::vector<int>> level{
+		{1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 1, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},	
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	};
 
 	//Instantiate a 2d vector
 	std::vector<std::vector<sf::Sprite>> tileMap;
 	//Resize the 2d vector to rows and columns of a specific size
 	tileMap.resize(row, std::vector<sf::Sprite>(col));
 	//Set attributes for the 2d vector
-	for (int x = 0; x < row; x++) {
-		for (int y = 0; y < col; y++) {
-			tileMap[x][y].setScale(sf::Vector2f(0.05, 0.05));
-			tileMap[x][y].setTexture(zinTexture);
-			tileMap[x][y].setPosition(x * gridSizeF, y * gridSizeF);
+	for (int x = 0; x < col; x++) {
+		for (int y = 0; y < row; y++) {
+			tileMap[x][y].setScale(sf::Vector2f(0.4, 0.4));
+			tileMap[x][y].setPosition(x * gridSizeF + 440, y * gridSizeF);
+			loadingOnTile(tileMap, level, forestTile1, forestTile2, forestTile3, forestTile4);
 		}
 	}
 	//Draw the 2d vector aka tilemap
-	for (int x = 0; x < row; x++) {
-		for (int y = 0; y < col; y++) {
+	for (int x = 0; x < col; x++) {
+		for (int y = 0; y < row; y++) {
 			window.draw(tileMap[x][y]);
+			//Basic player collision detection
+			playerDetection.setSize(sf::Vector2f(60.f, 60.f));
+			playerDetection.setFillColor(sf::Color::Transparent);
+			playerDetection.setPosition(getXPos(), getYPos());
+			if (playerDetection.getGlobalBounds().intersects(tileMap[x][y].getGlobalBounds())) {
+				std::cout << "Zin colliding..." << "\n";
+			}
 		}
 	}
 }

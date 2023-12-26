@@ -22,6 +22,10 @@ Animation::Animation()
 	this->notePosX = 0;
 	this->notePosY = 0;
 
+	this->x_pos = 600;
+	this->y_pos = 200;
+	this->collision = false;
+
 	this->animateString = "";
 	
 	decayWarn.setPosition(10000, 10000);
@@ -333,32 +337,34 @@ void Animation::walkCycle(sf::Sprite& inSprite, sf::Texture& up, sf::Texture& do
 	inSprite.setScale(4, 4);
 	inSprite.setTextureRect(sf::IntRect(sheetX, sheetY, 16, 16));
 	//Character moving
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-		inSprite.setPosition(x_pos, y_pos--);
-		inSprite.setTexture(up);
-		this->playerMoving = true;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-		inSprite.setPosition(x_pos, y_pos++);
-		inSprite.setTexture(down);
-		this->playerMoving = true;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-		inSprite.setPosition(x_pos--, y_pos);
-		inSprite.setTexture(left);
-		this->playerMoving = true;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		inSprite.setPosition(x_pos++, y_pos);
-		inSprite.setTexture(right);
-		this->playerMoving = true;
-	}
-	//Character stops moving
-	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) &&
-		!sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		sheetX = 0;
-		sheetY = 0;
-		this->playerMoving = false;
+	if (!this->collision) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+			inSprite.setPosition(x_pos, y_pos--);
+			inSprite.setTexture(up);
+			this->playerMoving = true;
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+			inSprite.setPosition(x_pos, y_pos++);
+			inSprite.setTexture(down);
+			this->playerMoving = true;
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+			inSprite.setPosition(x_pos--, y_pos);
+			inSprite.setTexture(left);
+			this->playerMoving = true;
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			inSprite.setPosition(x_pos++, y_pos);
+			inSprite.setTexture(right);
+			this->playerMoving = true;
+		}
+		//Character stops moving
+		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) &&
+			!sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			sheetX = 0;
+			sheetY = 0;
+			this->playerMoving = false;
+		}
 	}
 }
 

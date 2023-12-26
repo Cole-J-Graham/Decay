@@ -298,6 +298,7 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
         loadMap(window);
         window.draw(playerPixelSprite);
         window.draw(zinPixelSprite);
+        window.draw(playerDetection);
 
         //Draw all sprite border rects and text
         for (int i = 0; i < spriteRect.size(); i++) {

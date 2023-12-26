@@ -11,21 +11,19 @@ public:
 	~TileMap();
 
 	//Core Functions
+	void loadingOnTile(std::vector<std::vector<sf::Sprite>>& inSprite, std::vector<std::vector<int>> tiles, sf::Texture& tex1, sf::Texture& tex2, sf::Texture& tex3, sf::Texture& tex4);
 	void loadMap(sf::RenderWindow& window);
 
-	//Core Variables
-	const int mapSize = 10;
-	
-	int fromX;
-	int fromY;
+	sf::Texture forestTile1;
+	sf::Texture forestTile2;
+	sf::Texture forestTile3;
+	sf::Texture forestTile4;
+	sf::RectangleShape playerDetection;
 
-	int toX;
-	int toY;
-
-	float gridSizeF = 75.f;
-
-	int x;
-	int y;
+	//Core Variables	
+	float gridSizeF;
+	int col;
+	int row;
 
 private:
 };

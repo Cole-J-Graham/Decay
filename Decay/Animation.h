@@ -33,6 +33,7 @@ private:
 	float sheetY;
 
 	bool playerMoving;
+	bool collision;
 
 	std::string animateString;
 
@@ -125,10 +126,13 @@ public:
 
 	float& getNotePosX() { return this->notePosX; };
 	float& getNotePosY() { return this->notePosY; };
+	float& getXPos() { return this->x_pos; };
+	float& getYPos() { return this->y_pos; };
 	std::string& getAnimateString() { return this->animateString; };
 
 	bool& getDecayWarning() { return this->decayWarning; };
 	bool& getAnimEnd() { return this->animEnd; };
+	bool& getCollision() { return this->collision; };
 
 	//Setters
 	void setTimerRestart() { timer.restart(); };
