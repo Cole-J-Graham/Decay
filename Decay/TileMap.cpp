@@ -60,9 +60,7 @@ void TileMap::loadMap(sf::RenderWindow& window)
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	};
-
-	//Instantiate a 2d vector
-	std::vector<std::vector<sf::Sprite>> tileMap;
+	
 	//Resize the 2d vector to rows and columns of a specific size
 	tileMap.resize(row, std::vector<sf::Sprite>(col));
 	//Set attributes for the 2d vector
@@ -77,13 +75,74 @@ void TileMap::loadMap(sf::RenderWindow& window)
 	for (int x = 0; x < col; x++) {
 		for (int y = 0; y < row; y++) {
 			window.draw(tileMap[x][y]);
-			//Basic player collision detection
-			playerDetection.setSize(sf::Vector2f(60.f, 60.f));
-			playerDetection.setFillColor(sf::Color::Transparent);
-			playerDetection.setPosition(getXPos(), getYPos());
-			if (playerDetection.getGlobalBounds().intersects(tileMap[x][y].getGlobalBounds())) {
-				std::cout << "Zin colliding..." << "\n";
+		}
+	}
+}
+
+void TileMap::loadCollisionMap(sf::RenderWindow& window)
+{
+	//Create Collisions
+	std::vector<std::vector<int>> collisionData{
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+	};
+
+	//Resize the 2d vector to rows and columns of a specific size
+	collisionMap.resize(row, std::vector<sf::RectangleShape>(col));
+	//Set attributes for the 2d vector
+	for (int x = 0; x < col; x++) {
+		for (int y = 0; y < row; y++) {
+			collisionMap[x][y].setScale(sf::Vector2f(0.4, 0.4));
+			collisionMap[x][y].setPosition(x * gridSizeF + 440, y * gridSizeF);
+			//loadingOnTile(tileMap, level, forestTile1, forestTile2, forestTile3, forestTile4);
+		}
+	}
+	for (int x = 0; x < col; x++) {
+		for (int y = 0; y < row; y++) {
+			collisionMap[x][y].setSize(sf::Vector2f(155.f, 155.f));
+			if (collisionData[x][y] == 0) {
+				collisionMap[x][y].setFillColor(sf::Color::Transparent);
 			}
+			else if (collisionData[x][y] == 1) {
+				collisionMap[x][y].setFillColor(sf::Color::Blue);
+			}
+		}
+	}
+	for (int x = 0; x < collisionMap.size(); x++) {
+		for (int y = 0; y < collisionMap.size(); y++) {
+			if (playerDetection.getGlobalBounds().intersects(collisionMap[x][y].getGlobalBounds())) {
+				if (collisionData[x][y] == 1) {
+					if (cMoveUpDet) {
+						cMoveUp = false;
+					}
+					else if (cMoveDownDet) {
+						cMoveDown = false;
+					}
+					else if (cMoveRightDet) {
+						cMoveRight = false;
+					}
+					else if (cMoveLeftDet) {
+						cMoveLeft = false;
+					}
+				}
+			}
+		}
+	}
+	//Draw the 2d vector aka tilemap
+	for (int x = 0; x < col; x++) {
+		for (int y = 0; y < row; y++) {
+			window.draw(collisionMap[x][y]);
 		}
 	}
 }

@@ -296,9 +296,11 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
         //Tilemap Stuff
         characterSelect();
         loadMap(window);
+        collisionDetection(window);
         window.draw(playerPixelSprite);
         window.draw(zinPixelSprite);
-        window.draw(playerDetection);
+        loadCollisionMap(window);
+        
 
         //Draw all sprite border rects and text
         for (int i = 0; i < spriteRect.size(); i++) {

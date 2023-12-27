@@ -39,6 +39,19 @@ private:
 
 public:
 
+	bool cMoveUp;
+	bool cMoveDown;
+	bool cMoveLeft;
+	bool cMoveRight;
+
+	bool cMoveUpDet;
+	bool cMoveDownDet;
+	bool cMoveLeftDet;
+	bool cMoveRightDet;
+
+	int keyData;
+	int playerMove;
+
 	Animation();
 	~Animation();
 
@@ -109,7 +122,8 @@ public:
 
 	//Movement
 	void characterSelect();
-	void walkCycle(sf::Sprite& inSprite, sf::Texture& up, sf::Texture& down, sf::Texture& left, sf::Texture& right);
+	void walkCycle();
+	void walk(sf::Texture& inTex, bool& bt, bool& dbt, bool& dbf, bool& dbf2, bool& dbf3, bool& bt1, bool& bt2, bool& bt3);
 
 	//Animation Functions
 	void animateNote();

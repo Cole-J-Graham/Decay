@@ -25,12 +25,20 @@ Animation::Animation()
 	this->x_pos = 600;
 	this->y_pos = 200;
 	this->collision = false;
+	this->keyData = -1;
+	this->playerMove = -1;
+
+	this->cMoveUp = true;
+	this->cMoveDown = true;
+	this->cMoveLeft = true;
+	this->cMoveRight = true;
 
 	this->animateString = "";
 	
 	decayWarn.setPosition(10000, 10000);
 
 	//PLayer Movement Animations
+	zinPixelSprite.setTexture(zinWalkDown);
 	playerWalkDown.loadFromFile("Assets/SpriteSheets/playerWalkSpriteSheet.png");
 	playerWalkLeft.loadFromFile("Assets/SpriteSheets/playerWalkLeftSpriteSheet.png");
 	playerWalkRight.loadFromFile("Assets/SpriteSheets/playerWalkRightSpriteSheet.png");
@@ -299,16 +307,34 @@ void Animation::characterSelect()
 	switch (this->characterSelection) {
 	case 0:
 		//Player
-		this->walkCycle(playerPixelSprite, playerWalkUp, playerWalkDown, playerWalkLeft, playerWalkRight);
+		//this->walkCycle(playerPixelSprite, playerWalkUp, playerWalkDown, playerWalkLeft, playerWalkRight);
 		break;
 	case 1:
+		walkCycle();
 		//Zin
-		this->walkCycle(zinPixelSprite, zinWalkUp, zinWalkDown, zinWalkLeft, zinWalkRight);
+		//this->walkCycle(zinPixelSprite, zinWalkUp, zinWalkDown, zinWalkLeft, zinWalkRight);
 		break;
 	}
 }
 
-void Animation::walkCycle(sf::Sprite& inSprite, sf::Texture& up, sf::Texture& down, sf::Texture& left, sf::Texture& right)
+void Animation::walk(sf::Texture& inTex, bool& bt, bool& dbt, bool& dbf, bool& dbf2, bool& dbf3, bool& bt1, bool& bt2, bool& bt3)
+{
+	if (bt) {
+		zinPixelSprite.setTexture(inTex);
+		dbt = true;
+		dbf = false;
+		dbf2 = false;
+		dbf3 = false;
+		this->playerMoving = true;
+		if (!bt1 || !bt2 || !bt3) {
+			bt1 = true;
+			bt2 = true;
+			bt3 = true;
+		}
+	}
+}
+
+void Animation::walkCycle()
 {
 	//Animate walk cycle
 	if (this->playerMoving) {
@@ -333,38 +359,47 @@ void Animation::walkCycle(sf::Sprite& inSprite, sf::Texture& up, sf::Texture& do
 		}
 	}
 	//Set basic attributes for sprite
-	inSprite.setPosition(x_pos, y_pos);
-	inSprite.setScale(4, 4);
-	inSprite.setTextureRect(sf::IntRect(sheetX, sheetY, 16, 16));
+	zinPixelSprite.setPosition(x_pos, y_pos);
+	zinPixelSprite.setScale(4, 4);
+	zinPixelSprite.setTextureRect(sf::IntRect(sheetX, sheetY, 16, 16));
 	//Character moving
-	if (!this->collision) {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-			inSprite.setPosition(x_pos, y_pos--);
-			inSprite.setTexture(up);
-			this->playerMoving = true;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-			inSprite.setPosition(x_pos, y_pos++);
-			inSprite.setTexture(down);
-			this->playerMoving = true;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-			inSprite.setPosition(x_pos--, y_pos);
-			inSprite.setTexture(left);
-			this->playerMoving = true;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-			inSprite.setPosition(x_pos++, y_pos);
-			inSprite.setTexture(right);
-			this->playerMoving = true;
-		}
-		//Character stops moving
-		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) &&
-			!sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-			sheetX = 0;
-			sheetY = 0;
-			this->playerMoving = false;
-		}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && cMoveUp) {
+		zinPixelSprite.setPosition(x_pos, y_pos--);
+		walk(zinWalkUp, cMoveUp, cMoveUpDet, cMoveDownDet, cMoveRightDet, cMoveLeftDet, cMoveDown, cMoveRight, cMoveLeft);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && cMoveDown) {
+		zinPixelSprite.setPosition(x_pos, y_pos++);
+		walk(zinWalkDown, cMoveDown, cMoveDownDet, cMoveUpDet, cMoveRightDet, cMoveLeftDet, cMoveUp, cMoveRight, cMoveLeft);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && cMoveLeft) {
+		zinPixelSprite.setPosition(x_pos--, y_pos);
+		walk(zinWalkLeft, cMoveLeft, cMoveLeftDet, cMoveDownDet, cMoveRightDet, cMoveUpDet, cMoveDown, cMoveRight, cMoveUp);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && cMoveRight) {
+		zinPixelSprite.setPosition(x_pos++, y_pos);
+		walk(zinWalkRight, cMoveRight, cMoveRightDet, cMoveDownDet, cMoveLeftDet, cMoveUpDet, cMoveDown, cMoveLeft, cMoveUp);
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::A) && cMoveUp) {
+		
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::A) && cMoveDown) {
+		
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && sf::Keyboard::isKeyPressed(sf::Keyboard::D) && cMoveLeft) {
+
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::D) && cMoveRight) {
+
+	}
+
+
+	//Character stops moving
+	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::W) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A) &&
+		!sf::Keyboard::isKeyPressed(sf::Keyboard::S) && !sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		sheetX = 0;
+		sheetY = 0;
+		this->playerMoving = false;
 	}
 }
 

@@ -47,7 +47,23 @@ AssetHandler::~AssetHandler()
 
 }
 
-//Core Functions
+//Core Movement Functions
+void AssetHandler::collisionDetection(sf::RenderWindow& window)
+{
+	//Basic player collision detection
+	for (int x = 0; x < tileMap.size(); x++) {
+		for (int y = 0; y < tileMap.size(); y++) {
+			playerDetection.setSize(sf::Vector2f(60.f, 60.f));
+			playerDetection.setFillColor(sf::Color::Transparent);
+			playerDetection.setPosition(getXPos(), getYPos());
+			if (playerDetection.getGlobalBounds().intersects(tileMap[x][y].getGlobalBounds())) {
+				getCollision() = false;
+			}
+			window.draw(playerDetection);
+		}
+	}
+}
+
 void AssetHandler::statsText()
 {
 	playerTextElements[0].setString("LEVEL " + std::to_string(this->level));
