@@ -123,17 +123,29 @@ void TileMap::loadCollisionMap(sf::RenderWindow& window)
 		for (int y = 0; y < collisionMap.size(); y++) {
 			if (playerDetection.getGlobalBounds().intersects(collisionMap[x][y].getGlobalBounds())) {
 				if (collisionData[x][y] == 1) {
-					if (cMoveUpDet) {
-						cMoveUp = false;
+					sf::FloatRect playerBounds = zinPixelSprite.getGlobalBounds();
+					sf::FloatRect wallBounds = collisionMap[x][y].getGlobalBounds();
+					//Right Collision
+					if (playerBounds.left < wallBounds.left
+						&& playerBounds.left + playerBounds.width < wallBounds.left + wallBounds.width
+						&& playerBounds.top < wallBounds.top + wallBounds.height
+						&& playerBounds.top + playerBounds.height > wallBounds.top) 
+					{
+						std::cout << "Collision detected: RIGHT" << "\n";
+						velocity.x = 0.f;
+						playerDetection.setPosition(wallBounds.left - playerBounds.width, playerBounds.top);
+						zinPixelSprite.setPosition(wallBounds.left - playerBounds.width, playerBounds.top);
 					}
-					else if (cMoveDownDet) {
-						cMoveDown = false;
-					}
-					else if (cMoveRightDet) {
-						cMoveRight = false;
-					}
-					else if (cMoveLeftDet) {
-						cMoveLeft = false;
+					//Left Collision
+					if (playerBounds.left > wallBounds.left
+						&& playerBounds.left + playerBounds.width > wallBounds.left + wallBounds.width
+						&& playerBounds.top < wallBounds.top + wallBounds.height
+						&& playerBounds.top + playerBounds.height > wallBounds.top)
+					{
+						std::cout << "Collision detected: LEFT" << "\n";
+						velocity.x = 0.f;
+						playerDetection.setPosition(wallBounds.left + wallBounds.width, playerBounds.top);
+						zinPixelSprite.setPosition(wallBounds.left + wallBounds.width, playerBounds.top);
 					}
 				}
 			}

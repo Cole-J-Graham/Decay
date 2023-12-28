@@ -10,6 +10,7 @@
 class Animation : virtual public Assets
 {
 private:
+
 	int characterSelection;
 	int animation;
 	int animationFrame;
@@ -26,9 +27,6 @@ private:
 	float notePosX;
 	float notePosY;
 
-	float x_pos;
-	float y_pos;
-
 	float sheetX;
 	float sheetY;
 
@@ -38,16 +36,10 @@ private:
 	std::string animateString;
 
 public:
+	sf::RectangleShape playerDetection;
+	sf::Vector2f velocity;
 
-	bool cMoveUp;
-	bool cMoveDown;
-	bool cMoveLeft;
-	bool cMoveRight;
-
-	bool cMoveUpDet;
-	bool cMoveDownDet;
-	bool cMoveLeftDet;
-	bool cMoveRightDet;
+	float movementSpeed;
 
 	int keyData;
 	int playerMove;
@@ -140,8 +132,8 @@ public:
 
 	float& getNotePosX() { return this->notePosX; };
 	float& getNotePosY() { return this->notePosY; };
-	float& getXPos() { return this->x_pos; };
-	float& getYPos() { return this->y_pos; };
+	//float& getXPos() { return this->x_pos; };
+	//float& getYPos() { return this->y_pos; };
 	std::string& getAnimateString() { return this->animateString; };
 
 	bool& getDecayWarning() { return this->decayWarning; };

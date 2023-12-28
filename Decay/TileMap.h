@@ -22,7 +22,7 @@ public:
 	sf::Texture forestTile2;
 	sf::Texture forestTile3;
 	sf::Texture forestTile4;
-	sf::RectangleShape playerDetection;
+	//sf::RectangleShape playerDetection;
 
 	//Core Variables	
 	float gridSizeF;
