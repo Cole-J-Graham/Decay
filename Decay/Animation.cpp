@@ -83,6 +83,8 @@ Animation::Animation()
 	menuSprite.setPosition(620, 260);
 
 	font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
+
+	zinPixelSprite.setPosition(600, 400);
 }
 
 Animation::~Animation()
@@ -338,27 +340,32 @@ void Animation::walkCycle()
 		}
 	}
 	//Set basic attributes for sprite
-	//zinPixelSprite.setPosition(pos.x, pos.y);
-	zinPixelSprite.setScale(4, 4);
+	zinPixelSprite.setScale(4.1, 4.1);
 	zinPixelSprite.setTextureRect(sf::IntRect(sheetX, sheetY, 16, 16));
 	this->velocity.x = 0.f;
 	this->velocity.y = 0.f;
-	playerDetection.setSize(sf::Vector2f(60.f, 60.f));
-	playerDetection.setFillColor(sf::Color::Red);
+
 	//Movement
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 		velocity.y += -movementSpeed;
+		this->playerMoving = true;
+		zinPixelSprite.setTexture(zinWalkUp);
 	} 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
 		velocity.y += movementSpeed;
+		this->playerMoving = true;
+		zinPixelSprite.setTexture(zinWalkDown);
 	} 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 		velocity.x += -movementSpeed;
+		this->playerMoving = true;
+		zinPixelSprite.setTexture(zinWalkLeft);
 	} 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		velocity.x += movementSpeed;
+		this->playerMoving = true;
+		zinPixelSprite.setTexture(zinWalkRight);
 	}
-	playerDetection.move(velocity);
 	zinPixelSprite.move(velocity);
 
 	//Character stops moving

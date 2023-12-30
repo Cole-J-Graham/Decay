@@ -121,32 +121,51 @@ void TileMap::loadCollisionMap(sf::RenderWindow& window)
 	}
 	for (int x = 0; x < collisionMap.size(); x++) {
 		for (int y = 0; y < collisionMap.size(); y++) {
-			if (playerDetection.getGlobalBounds().intersects(collisionMap[x][y].getGlobalBounds())) {
+			if (zinPixelSprite.getGlobalBounds().intersects(collisionMap[x][y].getGlobalBounds())) {
 				if (collisionData[x][y] == 1) {
 					sf::FloatRect playerBounds = zinPixelSprite.getGlobalBounds();
 					sf::FloatRect wallBounds = collisionMap[x][y].getGlobalBounds();
-					//Right Collision
 					if (playerBounds.left < wallBounds.left
-						&& playerBounds.left + playerBounds.width < wallBounds.left + wallBounds.width
-						&& playerBounds.top < wallBounds.top + wallBounds.height
+						&& playerBounds.left + playerBounds.width < wallBounds.left + wallBounds.width 
+						&& playerBounds.top < wallBounds.top + wallBounds.height 
 						&& playerBounds.top + playerBounds.height > wallBounds.top) 
 					{
-						std::cout << "Collision detected: RIGHT" << "\n";
+						//Right Collision
+						std::cout << "Right" << "\n";
 						velocity.x = 0.f;
-						playerDetection.setPosition(wallBounds.left - playerBounds.width, playerBounds.top);
 						zinPixelSprite.setPosition(wallBounds.left - playerBounds.width, playerBounds.top);
 					}
-					//Left Collision
-					if (playerBounds.left > wallBounds.left
+					else if (playerBounds.top > wallBounds.top
+						&& playerBounds.top + playerBounds.height > wallBounds.top + wallBounds.height
+						&& playerBounds.left < wallBounds.left + wallBounds.width
+						&& playerBounds.left + playerBounds.width > wallBounds.left)
+					{
+						//Top Collision
+						std::cout << "Top" << "\n";
+						velocity.y = 0.f;
+						zinPixelSprite.setPosition(playerBounds.left, wallBounds.top + wallBounds.height);
+					}
+					else if (playerBounds.top < wallBounds.top 
+						&& playerBounds.top + playerBounds.height < wallBounds.top + wallBounds.height
+						&& playerBounds.left < wallBounds.left + wallBounds.width 
+						&& playerBounds.left + playerBounds.width > wallBounds.left) 
+					{
+						//Bottom Collision
+						std::cout << "Bottom" << "\n";
+						velocity.y = 0.f;
+						zinPixelSprite.setPosition(playerBounds.left, wallBounds.top - playerBounds.height);
+					}
+					else if (playerBounds.left > wallBounds.left
 						&& playerBounds.left + playerBounds.width > wallBounds.left + wallBounds.width
 						&& playerBounds.top < wallBounds.top + wallBounds.height
 						&& playerBounds.top + playerBounds.height > wallBounds.top)
 					{
-						std::cout << "Collision detected: LEFT" << "\n";
+						//Left Collision
+						std::cout << "Left" << "\n";
 						velocity.x = 0.f;
-						playerDetection.setPosition(wallBounds.left + wallBounds.width, playerBounds.top);
 						zinPixelSprite.setPosition(wallBounds.left + wallBounds.width, playerBounds.top);
 					}
+					
 				}
 			}
 		}

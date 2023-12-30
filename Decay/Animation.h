@@ -36,7 +36,6 @@ private:
 	std::string animateString;
 
 public:
-	sf::RectangleShape playerDetection;
 	sf::Vector2f velocity;
 
 	float movementSpeed;

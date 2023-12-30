@@ -47,22 +47,6 @@ AssetHandler::~AssetHandler()
 
 }
 
-//Core Movement Functions
-void AssetHandler::collisionDetection(sf::RenderWindow& window)
-{
-	//Basic player collision detection
-	for (int x = 0; x < tileMap.size(); x++) {
-		for (int y = 0; y < tileMap.size(); y++) {
-			
-			
-			if (playerDetection.getGlobalBounds().intersects(tileMap[x][y].getGlobalBounds())) {
-				getCollision() = false;
-			}
-			
-		}
-	}
-}
-
 void AssetHandler::statsText()
 {
 	playerTextElements[0].setString("LEVEL " + std::to_string(this->level));

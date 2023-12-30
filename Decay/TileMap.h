@@ -24,7 +24,7 @@ public:
 	sf::Texture forestTile4;
 	//sf::RectangleShape playerDetection;
 
-	//Core Variables	
+	//Core Variables
 	float gridSizeF;
 	int col;
 	int row;

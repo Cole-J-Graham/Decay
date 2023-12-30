@@ -51,7 +51,6 @@ public:
 	~AssetHandler();
 
 	//Core Movement Functions
-	void collisionDetection(sf::RenderWindow& window);
 	void statsText();
 	void printInventory();
 
