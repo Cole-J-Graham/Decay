@@ -299,22 +299,6 @@ void Animation::animateMenuTimer()
 }
 
 //Movement
-void Animation::characterSelect()
-{
-	//Select which character is movable on screen
-	switch (this->characterSelection) {
-	case 0:
-		//Player
-		//this->walkCycle(playerPixelSprite, playerWalkUp, playerWalkDown, playerWalkLeft, playerWalkRight);
-		break;
-	case 1:
-		walkCycle();
-		//Zin
-		//this->walkCycle(zinPixelSprite, zinWalkUp, zinWalkDown, zinWalkLeft, zinWalkRight);
-		break;
-	}
-}
-
 void Animation::walkCycle()
 {
 	//Animate walk cycle
@@ -340,7 +324,7 @@ void Animation::walkCycle()
 		}
 	}
 	//Set basic attributes for sprite
-	zinPixelSprite.setScale(4.1, 4.1);
+	zinPixelSprite.setScale(4.0, 4.0);
 	zinPixelSprite.setTextureRect(sf::IntRect(sheetX, sheetY, 16, 16));
 	this->velocity.x = 0.f;
 	this->velocity.y = 0.f;
@@ -351,17 +335,17 @@ void Animation::walkCycle()
 		this->playerMoving = true;
 		zinPixelSprite.setTexture(zinWalkUp);
 	} 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
 		velocity.y += movementSpeed;
 		this->playerMoving = true;
 		zinPixelSprite.setTexture(zinWalkDown);
 	} 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 		velocity.x += -movementSpeed;
 		this->playerMoving = true;
 		zinPixelSprite.setTexture(zinWalkLeft);
 	} 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		velocity.x += movementSpeed;
 		this->playerMoving = true;
 		zinPixelSprite.setTexture(zinWalkRight);

@@ -110,7 +110,7 @@ void TileMap::loadCollisionMap(sf::RenderWindow& window)
 	}
 	for (int x = 0; x < col; x++) {
 		for (int y = 0; y < row; y++) {
-			collisionMap[x][y].setSize(sf::Vector2f(155.f, 155.f));
+			collisionMap[x][y].setSize(sf::Vector2f(160.f, 160.f));
 			if (collisionData[x][y] == 0) {
 				collisionMap[x][y].setFillColor(sf::Color::Transparent);
 			}
@@ -125,47 +125,38 @@ void TileMap::loadCollisionMap(sf::RenderWindow& window)
 				if (collisionData[x][y] == 1) {
 					sf::FloatRect playerBounds = zinPixelSprite.getGlobalBounds();
 					sf::FloatRect wallBounds = collisionMap[x][y].getGlobalBounds();
-					if (playerBounds.left < wallBounds.left
-						&& playerBounds.left + playerBounds.width < wallBounds.left + wallBounds.width 
-						&& playerBounds.top < wallBounds.top + wallBounds.height 
-						&& playerBounds.top + playerBounds.height > wallBounds.top) 
+
+					sf::FloatRect area;
+					if (zinPixelSprite.getGlobalBounds().intersects(collisionMap[x][y].getGlobalBounds(), area))
 					{
-						//Right Collision
-						std::cout << "Right" << "\n";
-						velocity.x = 0.f;
-						zinPixelSprite.setPosition(wallBounds.left - playerBounds.width, playerBounds.top);
+						// Verifying if we need to apply collision to the vertical axis, else we apply to horizontal axis
+						if (area.width > area.height)
+						{
+							if (area.contains({ area.left, zinPixelSprite.getPosition().y }))
+							{
+								// Up side crash
+								zinPixelSprite.setPosition({ zinPixelSprite.getPosition().x, zinPixelSprite.getPosition().y + area.height });
+							}
+							else
+							{
+								// Down side crash
+								zinPixelSprite.setPosition({ zinPixelSprite.getPosition().x, zinPixelSprite.getPosition().y - area.height });
+							}
+						}
+						else if (area.width < area.height)
+						{
+							if (area.contains({ zinPixelSprite.getPosition().x + zinPixelSprite.getGlobalBounds().width - 1.f, area.top + 1.f }))
+							{
+								//Right side crash
+								zinPixelSprite.setPosition({ zinPixelSprite.getPosition().x - area.width, zinPixelSprite.getPosition().y });
+							}
+							else
+							{
+								//Left side crash
+								zinPixelSprite.setPosition({ zinPixelSprite.getPosition().x + area.width, zinPixelSprite.getPosition().y });
+							}
+						}
 					}
-					else if (playerBounds.top > wallBounds.top
-						&& playerBounds.top + playerBounds.height > wallBounds.top + wallBounds.height
-						&& playerBounds.left < wallBounds.left + wallBounds.width
-						&& playerBounds.left + playerBounds.width > wallBounds.left)
-					{
-						//Top Collision
-						std::cout << "Top" << "\n";
-						velocity.y = 0.f;
-						zinPixelSprite.setPosition(playerBounds.left, wallBounds.top + wallBounds.height);
-					}
-					else if (playerBounds.top < wallBounds.top 
-						&& playerBounds.top + playerBounds.height < wallBounds.top + wallBounds.height
-						&& playerBounds.left < wallBounds.left + wallBounds.width 
-						&& playerBounds.left + playerBounds.width > wallBounds.left) 
-					{
-						//Bottom Collision
-						std::cout << "Bottom" << "\n";
-						velocity.y = 0.f;
-						zinPixelSprite.setPosition(playerBounds.left, wallBounds.top - playerBounds.height);
-					}
-					else if (playerBounds.left > wallBounds.left
-						&& playerBounds.left + playerBounds.width > wallBounds.left + wallBounds.width
-						&& playerBounds.top < wallBounds.top + wallBounds.height
-						&& playerBounds.top + playerBounds.height > wallBounds.top)
-					{
-						//Left Collision
-						std::cout << "Left" << "\n";
-						velocity.x = 0.f;
-						zinPixelSprite.setPosition(wallBounds.left + wallBounds.width, playerBounds.top);
-					}
-					
 				}
 			}
 		}

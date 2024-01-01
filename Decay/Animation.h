@@ -112,9 +112,7 @@ public:
 	void animateMenuTimer();
 
 	//Movement
-	void characterSelect();
 	void walkCycle();
-	void walk(sf::Texture& inTex, bool& bt, bool& dbt, bool& dbf, bool& dbf2, bool& dbf3, bool& bt1, bool& bt2, bool& bt3);
 
 	//Animation Functions
 	void animateNote();

@@ -294,7 +294,7 @@ void World::draw(sf::RenderWindow& window, Animation& animate)
         window.draw(entityBoxText);
 
         //Tilemap Stuff
-        characterSelect();
+        walkCycle();
         loadMap(window);
         window.draw(playerPixelSprite);
         window.draw(zinPixelSprite);
