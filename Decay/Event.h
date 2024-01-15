@@ -1,11 +1,7 @@
-#ifndef EVENT_H
-#define EVENT_H
-#include "Assets.h"
-#include "Combat.h"
-#include "Player.h"
-#include "Animation.h"
+#pragma once
+#include"Combat.h"
 
-class Event
+class Event: public Combat
 {
 private:
 	//Control Flow Bools
@@ -55,55 +51,55 @@ public:
 	~Event();
 
 	//Core Functions
-	void reInit(Sprites& sprites);
-	void hideOpenAssets(Sprites& sprites);
+	void reInit();
+	void hideOpenAssets();
 
 	//Bonfire Events
-	void healCharactersText(sf::RenderWindow& window, Sprites& sprites);
-	void healCharacters(sf::RenderWindow& window, Sprites& sprites, Combat& combat);
-	void smithingText(sf::RenderWindow& window, Sprites& sprites);
-	void smithingSharpenBlade(sf::RenderWindow& window, Sprites& sprites, Player& player, Combat& combat);
+	void healCharactersText(sf::RenderWindow& window);
+	void healCharacters(sf::RenderWindow& window);
+	void smithingText(sf::RenderWindow& window);
+	void smithingSharpenBlade(sf::RenderWindow& window);
 
 	//Forest Entrance Events
-	void forestSiwardEnc(Sprites& sprites);
-	void riEnc(Sprites& sprites);
+	void forestSiwardEnc();
+	void riEnc();
 
 	//Forest Depths Events
-	void forestDepthsSpadeEnc(Sprites& sprites);
-	void treeEnc(Sprites& sprites, Player& player);
-	void thomEnc(Sprites& sprites);
+	void forestDepthsSpadeEnc();
+	void treeEnc();
+	void thomEnc();
 
 	//Forest Abyssal Events
-	void obeliskEnc(Sprites& sprites, Player& player);
-	void lostNunEnc(Sprites& sprites);
+	void obeliskEnc();
+	void lostNunEnc();
 
 	//Forest Abyssal Depths Events
-	void forestAbyssalSpadeEnc(Sprites& sprites, Player& player);
+	void forestAbyssalSpadeEnc();
 
 	//Castle Hall Events
-	void castleSpadeEnc(Sprites& sprites);
-	void castleSpadeEncPoison(Sprites& sprites);
+	void castleSpadeEnc();
+	void castleSpadeEncPoison();
 
 	//Castle Depth Events
-	void castleSiwardEnc(Sprites& sprites);
+	void castleSiwardEnc();
 
 	//Castle Chambers Events
-	void castleGrifEnc(Sprites& sprites);
+	void castleGrifEnc();
 
 	//Castle Labyrinth Events
-	void castleSiwardFinalEnc(Sprites& sprites);
+	void castleSiwardFinalEnc();
 
 	//Decay Forest Events
-	void decaySpadeEnc(Sprites& sprites);
-	void decaySpadeEncPoison(Sprites& sprites);
-	void rotBeastDeathEnding(Sprites& sprites);
+	void decaySpadeEnc();
+	void decaySpadeEncPoison();
+	void rotBeastDeathEnding();
 
 	//Decay Ocean Events
-	void decayGrifEnc(Sprites& sprites);
+	void decayGrifEnc();
 
 	//Final Events
-	void rotBeastEnc(Sprites& sprites);
-	void playerDeathEnding(Sprites& sprites);
+	void rotBeastEnc();
+	void playerDeathEnding();
 
 	//Control Flow Getters
 	bool& getReInitialize() { return this->reInitialize; };
@@ -149,6 +145,4 @@ public:
 	//Setters
 	void setDialogueInc() { this->dialogue++; };
 };
-
-#endif
 

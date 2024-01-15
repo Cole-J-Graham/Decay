@@ -1,6 +1,7 @@
 #pragma once
-#include "Assets.h"
-class Sprites : public Assets
+#include"Assets.h"
+
+class Sprites: virtual public Assets
 {
 
 private:
@@ -18,7 +19,7 @@ public:
 	~Sprites();
 
 	//Core Functions
-	void drawObjects(Assets& assets);
+	void drawObjects(sf::RenderWindow& window);
 
 	//Loading Functions
 	void loadSprites();
@@ -28,10 +29,10 @@ public:
 	void drawEntityViewer();
 
 	//Sprite Functions
-	void hostileSprite(Assets& assets);
-	void playerSprite(Assets& assets);
-	void zinSprite(Assets& assets);
-	void thomSprite(Assets& assets);
+	void hostileSprite();
+	void playerSprite();
+	void zinSprite();
+	void thomSprite();
 	void siwardSprite();
 	void spadeSprite();
 	void riSprite();

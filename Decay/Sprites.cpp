@@ -22,9 +22,9 @@ Sprites::~Sprites()
 }
 
 //Core Functions
-void Sprites::drawObjects(Assets& assets)
+void Sprites::drawObjects(sf::RenderWindow& window)
 {
-    this->drawMainWindow();
+    //this->drawMainWindow(window);
     this->drawText();
     this->drawMap();
     this->drawStats();
@@ -41,10 +41,10 @@ void Sprites::drawObjects(Assets& assets)
     //User Input
     this->drawAnswerBoxes();
     //Sprite Assets
-    this->playerSprite(assets);
-    this->zinSprite(assets);
-    this->thomSprite(assets);
-    this->hostileSprite(assets);
+    this->playerSprite();
+    this->zinSprite();
+    this->thomSprite();
+    this->hostileSprite();
     this->siwardSprite();
     this->spadeSprite();
     this->riSprite();
@@ -298,10 +298,10 @@ void Sprites::drawEntityViewer()
 }
 
 //Sprite Functions
-void Sprites::hostileSprite(Assets& assets)
+void Sprites::hostileSprite()
 {
     //Pick Hostile Sprite
-    switch (assets.getHostileCounter()) {
+    switch (getHostileCounter()) {
     case -1:
         spriteElements[5].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteRect[2].setPosition(sf::Vector2f(10000.0f, 10000.0f));
@@ -458,10 +458,10 @@ void Sprites::hostileSprite(Assets& assets)
     }
 }
 
-void Sprites::playerSprite(Assets& assets)
+void Sprites::playerSprite()
 {
     //Pick Player Sprite Emotion
-    switch (assets.getPlayerCounter()) {
+    switch (getPlayerCounter()) {
     case -1:
         spriteElements[4].setPosition(sf::Vector2f(10000.0f, 10000.0f));
         spriteRect[0].setPosition(10000.0f, 10000.0f);
@@ -510,10 +510,10 @@ void Sprites::playerSprite(Assets& assets)
     spriteElements[4].setScale(0.244f, 0.244f);
 }
 
-void Sprites::zinSprite(Assets& assets)
+void Sprites::zinSprite()
 {
     //Pick Zin Sprite Emotion
-    switch (assets.getZinCounter()) {
+    switch (getZinCounter()) {
     case -1:
         //Hide Zin Sprite
         spriteElements[3].setPosition(sf::Vector2f(10000.0f, 10000.0f));
@@ -569,10 +569,10 @@ void Sprites::zinSprite(Assets& assets)
     spriteElements[3].setScale(0.0504f, 0.0504f);
 }
 
-void Sprites::thomSprite(Assets& assets)
+void Sprites::thomSprite()
 {
     //Pick Thom Emotion
-    switch (assets.getThomCounter()) {
+    switch (getThomCounter()) {
     case -1:
         //Hide Thom
         spriteElements[7].setPosition(sf::Vector2f(10000.0f, 10000.0f));

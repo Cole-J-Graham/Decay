@@ -1,11 +1,11 @@
-#ifndef ASSETS_H
-#define ASSETS_H
-
+#pragma once
 #include<iostream>
 #include<vector>
+#include<SFML/Window.hpp>
 #include<SFML/Graphics.hpp>
 #include<SFML/Graphics/Text.hpp>
 #include<SFML/Audio.hpp>
+#include"Button.h"
 
 class Assets
 {
@@ -105,6 +105,24 @@ private:
 
 	std::string tipBarrier;
 	std::string tipEnrage;
+
+	//Move Names
+	std::string texSmite = "Smite";
+	std::string texMend = "Mend";
+	std::string texVengeance = "Vengeance";
+	std::string texHellBlaze = "Hell Blaze";
+	std::string texFocus = "Focus";
+	std::string texFlames = "Flames";
+
+	std::string texSlash = "Slash";
+	std::string texGuard = "Guard";
+	std::string texDecay = "Decay";
+	std::string texHeftyBlow = "Hefty Blow";
+	std::string texSynergy = "Synergy";
+	std::string texIronWall = "Iron Wall";
+
+	std::string texBarrier = "Barrier";
+	std::string texEnrage = "Enrage";
 	
 public:
 	//Constructors & Destructors
@@ -118,7 +136,7 @@ public:
 
 	//Draw Functions
 	void drawObjects();
-	void drawMainWindow();
+	void drawMainWindow(sf::RenderTarget* target);
 	void drawText();
 	void drawMainMenu();
 	void drawDeathAssets();
@@ -154,6 +172,7 @@ public:
 	void playerCombatAssets();
 	void zinCombatAssets();
 	void thomCombatAssets();
+	void setMovePosition(sf::RectangleShape& inRect, sf::Text& inText, std::string& inString, float posX, float posY);
 
 	//Window Icon
 	sf::Image windowIcon;
@@ -845,14 +864,12 @@ public:
 
 	//Initialize Combat Assets Setters
 	void setCombatAssetsTrue() { this->combatAssets = true; };
-	void setBonfireAssetsTrue() { this->bonfireAssets = true; };
 	void setPlayerTurnAssetsTrue() { this->playerTurnAssets = true; };
 	void setZinTurnAssetsTrue() { this->zinTurnAssets = true; };
 	void setThomTurnAssetsTrue() { this->thomTurnAssets = true; };
 	void setPlayerDeathTrue() { this->playerDeath = true; };
 
 	void setCombatAssetsFalse() { this->combatAssets = false; };
-	void setBonfireAssetsFalse() { this->bonfireAssets = false; };
 	void setPlayerTurnAssetsFalse() { this->playerTurnAssets = false; };
 	void setZinTurnAssetsFalse() { this->zinTurnAssets = false; };
 	void setThomTurnAssetsFalse() { this->thomTurnAssets = false; };
@@ -903,6 +920,3 @@ public:
 	//String Setters
 	void setPlayerName() { this->playerName; };
 };
-
-#endif
-

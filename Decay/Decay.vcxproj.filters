@@ -4,9 +4,6 @@
     <ClCompile Include="Animation.cpp">
       <Filter>cpp</Filter>
     </ClCompile>
-    <ClCompile Include="Assets.cpp">
-      <Filter>cpp</Filter>
-    </ClCompile>
     <ClCompile Include="Combat.cpp">
       <Filter>cpp</Filter>
     </ClCompile>
@@ -25,18 +22,36 @@
     <ClCompile Include="World.cpp">
       <Filter>cpp</Filter>
     </ClCompile>
-    <ClCompile Include="Sprites.cpp">
-      <Filter>cpp</Filter>
-    </ClCompile>
     <ClCompile Include="Moves.cpp">
       <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetHandler.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Assets.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprites.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
-      <Filter>.h</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets.h">
       <Filter>.h</Filter>
     </ClInclude>
     <ClInclude Include="Event.h">
@@ -54,11 +69,32 @@
     <ClInclude Include="World.h">
       <Filter>.h</Filter>
     </ClInclude>
-    <ClInclude Include="Sprites.h">
-      <Filter>.h</Filter>
-    </ClInclude>
     <ClInclude Include="Moves.h">
       <Filter>.h</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetHandler.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprites.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuState.h">
+      <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +103,12 @@
     </Filter>
     <Filter Include=".h">
       <UniqueIdentifier>{db4c232d-a73c-4c15-ac29-b23f176e676e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{3cc35a83-5ef5-49a7-bdbd-7bd0ff0649ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States">
+      <UniqueIdentifier>{84355af7-6553-42f9-b993-b401f2a6d294}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1,6 +1,4 @@
-#ifndef TRAVEL_H
-#define TRAVEL_H
-
+#pragma once
 #include<iostream>
 #include<SFML/Window.hpp>
 #include<SFML/Graphics.hpp>
@@ -8,12 +6,9 @@
 #include<sstream>
 #include<string>
 #include<SFML/Audio.hpp>
-#include"Assets.h"
 #include"Event.h"
-#include"Combat.h"
-#include"Player.h"
 
-class Travel
+class Travel : public Event
 {
 private:
 	//Core
@@ -37,16 +32,17 @@ private:
 
 public:
 
-	Assets assets;
+	//Assets assets;
+
+	void render(sf::RenderTarget* target = nullptr);
 
 	//Constructors & Destructors
 	Travel();
 	~Travel();
 
 	//Core
-	void travelCore(sf::RenderWindow& window, Sprites& sprites, Event& notevent, 
-		Combat& combat, Player& player, Animation& animate);
-	void newArea(Sprites& sprites, Animation& animate);
+	void travelCore(sf::RenderWindow& window, Animation& animate);
+	void newArea(Animation& animate);
 	void reInitMap(bool& inBool) {
 		if (!this->reInMap) {
 			inBool = false;
@@ -55,34 +51,34 @@ public:
 	}
 
 	//Draw Intro
-	void intro(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player);
-	void introBeginning(sf::RenderWindow& window, Sprites& sprites, Event& notevent);
-	void enterBonfire(sf::RenderWindow& window, Sprites& sprites, Event& notevent);
-	void nextArea(Sprites& sprites, std::string& inString);
+	void intro(sf::RenderWindow& window);
+	void introBeginning(sf::RenderWindow& window);
+	void enterBonfire(sf::RenderWindow& window);
+	void nextArea(std::string& inString);
 
 	//Draw Forest
-	void forestMap(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void forestBonfire(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void forestEntrance(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void forestDepths(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void forestAbyssal(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void forestAbyssalDepths(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void forestMap(sf::RenderWindow& window, Animation& animate);
+	void forestBonfire(sf::RenderWindow& window);
+	void forestEntrance(sf::RenderWindow& window, Animation& animate);
+	void forestDepths(sf::RenderWindow& window, Animation& animate);
+	void forestAbyssal(sf::RenderWindow& window, Animation& animate);
+	void forestAbyssalDepths(sf::RenderWindow& window, Animation& animate);
 
 	//Draw Castle
-	void castleMap(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void castleBonfire(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void castleHalls(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void castleDepths(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void castleChambers(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void castleLabyrinth(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void castleMap(sf::RenderWindow& window, Animation& animate);
+	void castleBonfire(sf::RenderWindow& window);
+	void castleHalls(sf::RenderWindow& window, Animation& animate);
+	void castleDepths(sf::RenderWindow& window, Animation& animate);
+	void castleChambers(sf::RenderWindow& window, Animation& animate);
+	void castleLabyrinth(sf::RenderWindow& window, Animation& animate);
 
 	//Draw Decay
-	void decayMap(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void decayBonfire(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void decayChasms(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void decayOcean(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void decayForest(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
-	void decayGiants(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Animation& animate);
+	void decayMap(sf::RenderWindow& window, Animation& animate);
+	void decayBonfire(sf::RenderWindow& window);
+	void decayChasms(sf::RenderWindow& window, Animation& animate);
+	void decayOcean(sf::RenderWindow& window, Animation& animate);
+	void decayForest(sf::RenderWindow& window, Animation& animate);
+	void decayGiants(sf::RenderWindow& window, Animation& animate);
 
 	//Core Getters
 	int& getFrame() { return this->frame; };
@@ -109,8 +105,3 @@ public:
 	//Core Bools Setters
 	void setFrameInitFalse() { this->frameInit = false; };
 };
-
-
-
-#endif
-

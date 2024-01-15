@@ -10,6 +10,7 @@
 class Animation
 {
 private:
+	int characterSelection;
 	int animation;
 	int animationFrame;
 	int combatAnimationFrame;
@@ -25,6 +26,14 @@ private:
 	float notePosX;
 	float notePosY;
 
+	float x_pos;
+	float y_pos;
+
+	float sheetX;
+	float sheetY;
+
+	bool playerMoving;
+
 	std::string animateString;
 
 public:
@@ -32,43 +41,23 @@ public:
 	Animation();
 	~Animation();
 
+	//Animations
 	sf::Font font;
 	sf::Text decayWarn;
 
 	sf::Texture zin1;
 	sf::Texture zin2;
 
-	sf::Texture heal1;
-	sf::Texture heal2;
-	sf::Texture heal3;
-	sf::Texture heal4;
-	sf::Texture heal5;
+	sf::Texture healSpriteSheet;
 
-	sf::Texture anvil1;
-	sf::Texture anvil2;
-	sf::Texture anvil3;
-	sf::Texture anvil4;
-	sf::Texture anvil5;
+	sf::Texture anvilSpriteSheet;
 
 	sf::Texture hitBlank;
-	sf::Texture hit1;
-	sf::Texture hit2;
-	sf::Texture hit3;
-	sf::Texture hit4;
-	sf::Texture hit5;
-	sf::Texture hit6;
+	sf::Texture hitSpriteSheet;
 
-	sf::Texture guard1;
-	sf::Texture guard2;
-	sf::Texture guard3;
-	sf::Texture guard4;
-	sf::Texture guard5;
+	sf::Texture guardSpriteSheet;
 
-	sf::Texture guardBrk1;
-	sf::Texture guardBrk2;
-	sf::Texture guardBrk3;
-	sf::Texture guardBrk4;
-	sf::Texture guardBrk5;
+	sf::Texture guardBrkSpriteSheet;
 
 	sf::Texture menu1;
 	sf::Texture menu2;
@@ -96,26 +85,20 @@ public:
 	sf::Time menuElapsedFast;
 
 	//Core Animation Functions
-	void pickAnimation(Assets& assets);
+	void pickAnimation();
+	void animateSixFrames(sf::Sprite& inSprite, float xOffset);
+	void animateFourFrames(sf::Sprite& inSprite, float xOffset, float posX, float posY);
+
+	//Animation Timers
 	void animateTimer();
 	void animateCombatTimer();
 	void animateMenuTimer();
 
 	//Animation Functions
-	void animateZin();
-	void animateNote();
-	void animateAnvil(Assets& assets);
-	void animateHeal(Assets& assets);
-	void animateMenu(Assets& assets);
+	void animateMenu();
 
-	//Combat Animation Functions
-	void animateSlash(Assets& assets);
-	void animateGuard(Assets& assets);
-	void animateGuardBrk(Assets& assets);
-	void animateSmite(Assets& assets);
-
-	//Draw Animation Functions
-	void drawAnimations(Assets& assets);
+	//Load Animations
+	void bonfireAnimations();
 
 	//Getters
 	int& getAnimation() { return this->animation; };

@@ -61,8 +61,8 @@ Assets::Assets()
     this->thomTurnAssets = false;
 
     //Combat Move Unlocks
-    this->combatPlayerMoves = 0;
-    this->combatZinMoves = 0;
+    this->combatPlayerMoves = 3;
+    this->combatZinMoves = 3;
     this->combatThomMoves = 1;
 
     //Music
@@ -101,7 +101,7 @@ Assets::Assets()
     //Load game assets
     this->loadSprites();
     this->loadSounds();
-    this->loadMapImages(); //(DEBUG)
+    this->loadMapImages();
 }
 
 Assets::~Assets()
@@ -365,7 +365,7 @@ void Assets::loadMapImages()
 }
 
 //Draw Fuctions
-void Assets::drawMainWindow()
+void Assets::drawMainWindow(sf::RenderTarget* target)
 {
     //Draw Menu Box
     rect.setPosition(0.0f, 825.0f);
@@ -477,6 +477,12 @@ void Assets::drawText()
 
 void Assets::drawMainMenu()
 {
+    //Button buttonBoot = Button("Boot", 10.f, 100.f);
+    //Button buttonLoad = Button("Load", 10.f, 125.f);
+    //Button buttonQuit = Button("Quit", 10.f, 150.f);
+    //Button buttonIntro = Button("Intro", 10.f, 175.f);
+    //Button buttonSkip = Button("Skip", 10.f, 200.f);
+
     //Set all screen elements attributes
     for (int i = 0; i < menuScreenElements.size(); i++) {
         menuScreenElementsText[i].setFont(font);
@@ -1283,131 +1289,47 @@ void Assets::playerCombatAssets()
     if (this->playerTurnAssets) {
         switch (this->combatPlayerMoves) {
         case 0:
-            //Draw Player Slash Button
-            combatRect[0].setPosition(335.0f, 795.0f);
-            //Draw Player Slash Text
-            combatText[0].setPosition(335.0f, 795.0f);
-            combatText[0].setString("Slash");
+            this->setMovePosition(combatRect[0], combatText[0], texSlash, 335, 795);
             break;
         case 1:
-            //Draw Player Slash Button
-            combatRect[0].setPosition(335.0f, 795.0f);
-            //Draw Player Slash Text
-            combatText[0].setPosition(335.0f, 795.0f);
-            combatText[0].setString("Slash");
-            //Draw Player Guard Button
-            combatRect[1].setPosition(335.0f, 765.0f);
-            //Draw Player Guard Text
-            combatText[1].setPosition(335.0f, 765.0f);
-            combatText[1].setString("Guard");
+            this->setMovePosition(combatRect[0], combatText[0], texSlash, 335, 795);
+            this->setMovePosition(combatRect[1], combatText[1], texGuard, 335, 765);
             break;
         case 2:
-            //Draw Player Slash Button
-            combatRect[0].setPosition(335.0f, 795.0f);
-            //Draw Player Slash Text
-            combatText[0].setPosition(335.0f, 795.0f);
-            combatText[0].setString("Slash");
-            //Draw Player Guard Button
-            combatRect[1].setPosition(335.0f, 765.0f);
-            //Draw Player Guard Text
-            combatText[1].setPosition(335.0f, 765.0f);
-            combatText[1].setString("Guard");
-            //Draw Player Decay Button
-            combatRect[2].setPosition(335.0f, 735.0f);
-            //Draw Player Decay Text
-            combatText[2].setPosition(335.0f, 735.0f);
-            combatText[2].setString("Decay");
+            this->setMovePosition(combatRect[0], combatText[0], texSlash, 335, 795);
+            this->setMovePosition(combatRect[1], combatText[1], texGuard, 335, 765);
+            this->setMovePosition(combatRect[2], combatText[2], texDecay, 335, 735);
             break;
         case 3:
-            //Draw Player Slash Button
-            combatRect[0].setPosition(335.0f, 795.0f);
-            //Draw Player Slash Text
-            combatText[0].setPosition(335.0f, 795.0f);
-            combatText[0].setString("Slash");
-            //Draw Player Guard Button
-            combatRect[1].setPosition(335.0f, 765.0f);
-            //Draw Player Guard Text
-            combatText[1].setPosition(335.0f, 765.0f);
-            combatText[1].setString("Guard");
-            //Draw Player Decay Button
-            combatRect[2].setPosition(335.0f, 735.0f);
-            //Draw Player Decay Text
-            combatText[2].setPosition(335.0f, 735.0f);
-            combatText[2].setString("Decay");
-            //Draw Player Hefty Button
-            combatRect[3].setPosition(335.0f, 705.0f);
-            //Draw Player Hefty Text
-            combatText[3].setPosition(335.0f, 705.0f);
-            combatText[3].setString("Hefty Blow");
+            this->setMovePosition(combatRect[0], combatText[0], texSlash, 335, 795);
+            this->setMovePosition(combatRect[1], combatText[1], texGuard, 335, 765);
+            this->setMovePosition(combatRect[2], combatText[2], texDecay, 335, 735);
+            this->setMovePosition(combatRect[3], combatText[3], texHeftyBlow, 335, 705);
             break;
         case 4:
-            //Draw Player Slash Button
-            combatRect[0].setPosition(335.0f, 795.0f);
-            //Draw Player Slash Text
-            combatText[0].setPosition(335.0f, 795.0f);
-            combatText[0].setString("Slash");
-            //Draw Player Guard Button
-            combatRect[1].setPosition(335.0f, 765.0f);
-            //Draw Player Guard Text
-            combatText[1].setPosition(335.0f, 765.0f);
-            combatText[1].setString("Guard");
-            //Draw Player Decay Button
-            combatRect[2].setPosition(335.0f, 735.0f);
-            //Draw Player Decay Text
-            combatText[2].setPosition(335.0f, 735.0f);
-            combatText[2].setString("Decay");
-            //Draw Player Hefty Button
-            combatRect[3].setPosition(335.0f, 705.0f);
-            //Draw Player Hefty Text
-            combatText[3].setPosition(335.0f, 705.0f);
-            combatText[3].setString("Hefty Blow");
-            //Draw Player Synergy Button
-            combatRect[4].setPosition(335.0f, 675.0f);
-            //Draw Player Synergy Text
-            combatText[4].setPosition(335.0f, 675.0f);
-            combatText[4].setString("Synergy");
+            this->setMovePosition(combatRect[0], combatText[0], texSlash, 335, 795);
+            this->setMovePosition(combatRect[1], combatText[1], texGuard, 335, 765);
+            this->setMovePosition(combatRect[2], combatText[2], texDecay, 335, 735);
+            this->setMovePosition(combatRect[3], combatText[3], texHeftyBlow, 335, 705);
+            this->setMovePosition(combatRect[4], combatText[4], texSynergy, 335, 675);
             break;
         case 5:
-            //Draw Player Slash Button
-            combatRect[0].setPosition(335.0f, 795.0f);
-            //Draw Player Slash Text
-            combatText[0].setPosition(335.0f, 795.0f);
-            combatText[0].setString("Slash");
-            //Draw Player Guard Button
-            combatRect[1].setPosition(335.0f, 765.0f);
-            //Draw Player Guard Text
-            combatText[1].setPosition(335.0f, 765.0f);
-            combatText[1].setString("Guard");
-            //Draw Player Decay Button
-            combatRect[2].setPosition(335.0f, 735.0f);
-            //Draw Player Decay Text
-            combatText[2].setPosition(335.0f, 735.0f);
-            combatText[2].setString("Decay");
-            //Draw Player Hefty Button
-            combatRect[3].setPosition(335.0f, 705.0f);
-            //Draw Player Hefty Text
-            combatText[3].setPosition(335.0f, 705.0f);
-            combatText[3].setString("Hefty Blow");
-            //Draw Player Synergy Button
-            combatRect[4].setPosition(335.0f, 675.0f);
-            //Draw Player Synergy Text
-            combatText[4].setPosition(335.0f, 675.0f);
-            combatText[4].setString("Synergy");
-            //Draw Player Iron Wall Button
-            combatRect[5].setPosition(335.0f, 645.0f);
-            //Draw Player Iron Wall Text
-            combatText[5].setPosition(335.0f, 645.0f);
-            combatText[5].setString("Iron wall");
+            this->setMovePosition(combatRect[0], combatText[0], texSlash, 335, 795);
+            this->setMovePosition(combatRect[1], combatText[1], texGuard, 335, 765);
+            this->setMovePosition(combatRect[2], combatText[2], texDecay, 335, 735);
+            this->setMovePosition(combatRect[3], combatText[3], texHeftyBlow, 335, 705);
+            this->setMovePosition(combatRect[4], combatText[4], texSynergy, 335, 675);
+            this->setMovePosition(combatRect[5], combatText[5], texIronWall, 335, 645);
             break;
         }
     }
     else if (!this->playerTurnAssets) {
-        combatRect[0].setPosition(10000.0f, 10000.0f);
-        combatRect[1].setPosition(10000.0f, 10000.0f);
-        combatRect[2].setPosition(10000.0f, 10000.0f);
-        combatRect[3].setPosition(10000.0f, 10000.0f);
-        combatRect[4].setPosition(10000.0f, 10000.0f);
-        combatRect[5].setPosition(10000.0f, 10000.0f);
+        this->setMovePosition(combatRect[0], combatText[0], texSlash, 10000, 10000);
+        this->setMovePosition(combatRect[1], combatText[1], texGuard, 10000, 10000);
+        this->setMovePosition(combatRect[2], combatText[2], texDecay, 10000, 10000);
+        this->setMovePosition(combatRect[3], combatText[3], texHeftyBlow, 10000, 10000);
+        this->setMovePosition(combatRect[4], combatText[4], texSynergy, 10000, 10000);
+        this->setMovePosition(combatRect[5], combatText[5], texIronWall, 10000, 10000);
     }
 }
 
@@ -1416,95 +1338,47 @@ void Assets::zinCombatAssets()
     if (this->zinTurnAssets) {
         switch (this->combatZinMoves) {
         case 0:
-            combatRect[6].setPosition(335.0f, 795.0f);
-            combatText[6].setPosition(335.0f, 795.0f);
-            combatText[6].setString("Smite");
+            this->setMovePosition(combatRect[6], combatText[6], texSmite, 335, 795);
             break;
         case 1:
-            combatRect[6].setPosition(335.0f, 795.0f);
-            combatText[6].setPosition(335.0f, 795.0f);
-            combatText[6].setString("Smite");
-            combatRect[7].setPosition(335.0f, 765.0f);
-            combatText[7].setPosition(335.0f, 765.0f);
-            combatText[7].setString("Mend");
+            this->setMovePosition(combatRect[6], combatText[6], texSmite, 335, 795);
+            this->setMovePosition(combatRect[7], combatText[7], texMend, 335, 765);
             break;
         case 2:
-            combatRect[6].setPosition(335.0f, 795.0f);
-            combatText[6].setPosition(335.0f, 795.0f);
-            combatText[6].setString("Smite");
-            combatRect[7].setPosition(335.0f, 765.0f);
-            combatText[7].setPosition(335.0f, 765.0f);
-            combatText[7].setString("Mend");
-            combatRect[8].setPosition(335.0f, 735.0f);
-            combatText[8].setPosition(335.0f, 735.0f);
-            combatText[8].setString("Vengeance");
+            this->setMovePosition(combatRect[6], combatText[6], texSmite, 335, 795);
+            this->setMovePosition(combatRect[7], combatText[7], texMend, 335, 765);
+            this->setMovePosition(combatRect[8], combatText[8], texVengeance, 335, 735);
             break;
         case 3:
-            combatRect[6].setPosition(335.0f, 795.0f);
-            combatText[6].setPosition(335.0f, 795.0f);
-            combatText[6].setString("Smite");
-            combatRect[7].setPosition(335.0f, 765.0f);
-            combatText[7].setPosition(335.0f, 765.0f);
-            combatText[7].setString("Mend");
-            combatRect[8].setPosition(335.0f, 735.0f);
-            combatText[8].setPosition(335.0f, 735.0f);
-            combatText[8].setString("Vengeance");
-            combatRect[9].setPosition(335.0f, 705.0f);
-            combatText[9].setPosition(335.0f, 705.0f);
-            combatText[9].setString("Hell Blaze");
+            this->setMovePosition(combatRect[6], combatText[6], texSmite, 335, 795);
+            this->setMovePosition(combatRect[7], combatText[7], texMend, 335, 765);
+            this->setMovePosition(combatRect[8], combatText[8], texVengeance, 335, 735);
+            this->setMovePosition(combatRect[9], combatText[9], texHellBlaze, 335, 705);
             break;
         case 4:
-            combatRect[6].setPosition(335.0f, 795.0f);
-            combatText[6].setPosition(335.0f, 795.0f);
-            combatText[6].setString("Smite");
-            combatRect[7].setPosition(335.0f, 765.0f);
-            combatText[7].setPosition(335.0f, 765.0f);
-            combatText[7].setString("Mend");
-            combatRect[8].setPosition(335.0f, 735.0f);
-            combatText[8].setPosition(335.0f, 735.0f);
-            combatText[8].setString("Vengeance");
-            combatRect[9].setPosition(335.0f, 705.0f);
-            combatText[9].setPosition(335.0f, 705.0f);
-            combatText[9].setString("Hell Blaze");
-            combatRect[10].setPosition(335.0f, 675.0f);
-            combatText[10].setPosition(335.0f, 675.0f);
-            combatText[10].setString("Focus");
+            this->setMovePosition(combatRect[6], combatText[6], texSmite, 335, 795);
+            this->setMovePosition(combatRect[7], combatText[7], texMend, 335, 765);
+            this->setMovePosition(combatRect[8], combatText[8], texVengeance, 335, 735);
+            this->setMovePosition(combatRect[9], combatText[9], texHellBlaze, 335, 705);
+            this->setMovePosition(combatRect[10], combatText[10], texFocus, 335, 675);
             break;
         case 5:
-            combatRect[6].setPosition(335.0f, 795.0f);
-            combatText[6].setPosition(335.0f, 795.0f);
-            combatText[6].setString("Smite");
-            combatRect[7].setPosition(335.0f, 765.0f);
-            combatText[7].setPosition(335.0f, 765.0f);
-            combatText[7].setString("Mend");
-            combatRect[8].setPosition(335.0f, 735.0f);
-            combatText[8].setPosition(335.0f, 735.0f);
-            combatText[8].setString("Vengeance");
-            combatRect[9].setPosition(335.0f, 705.0f);
-            combatText[9].setPosition(335.0f, 705.0f);
-            combatText[9].setString("Hell Blaze");
-            combatRect[10].setPosition(335.0f, 675.0f);
-            combatText[10].setPosition(335.0f, 675.0f);
-            combatText[10].setString("Focus");
-            combatRect[11].setPosition(335.0f, 645.0f);
-            combatText[11].setPosition(335.0f, 645.0f);
-            combatText[11].setString("Flames");
+            this->setMovePosition(combatRect[6], combatText[6], texSmite, 335, 795);
+            this->setMovePosition(combatRect[7], combatText[7], texMend, 335, 765);
+            this->setMovePosition(combatRect[8], combatText[8], texVengeance, 335, 735);
+            this->setMovePosition(combatRect[9], combatText[9], texHellBlaze, 335, 705);
+            this->setMovePosition(combatRect[10], combatText[10], texFocus, 335, 675);
+            this->setMovePosition(combatRect[11], combatText[11], texFlames, 335, 645);
             break;
         }
     }
     else if (!this->zinTurnAssets) {
-        combatRect[6].setPosition(10000.0f, 10000.0f);
-        combatRect[7].setPosition(10000.0f, 10000.0f);
-        combatRect[8].setPosition(10000.0f, 10000.0f);
-        combatRect[9].setPosition(10000.0f, 10000.0f);
-        combatRect[10].setPosition(10000.0f, 10000.0f);
-        combatRect[11].setPosition(10000.0f, 10000.0f);
-        combatText[6].setPosition(10000.0f, 10000.0f);
-        combatText[7].setPosition(10000.0f, 10000.0f);
-        combatText[8].setPosition(10000.0f, 10000.0f);
-        combatText[9].setPosition(10000.0f, 10000.0f);
-        combatText[10].setPosition(10000.0f, 10000.0f);
-        combatText[11].setPosition(10000.0f, 10000.0f);
+        this->setMovePosition(combatRect[6], combatText[6], texSmite, 10000, 10000);
+        this->setMovePosition(combatRect[7], combatText[7], texMend, 10000, 10000);
+        this->setMovePosition(combatRect[8], combatText[8], texVengeance, 10000, 10000);
+        this->setMovePosition(combatRect[9], combatText[9], texHellBlaze, 10000, 10000);
+        this->setMovePosition(combatRect[10], combatText[10], texFocus, 10000, 10000);
+        this->setMovePosition(combatRect[11], combatText[11], texFlames, 10000, 10000);
     }
 }
 
@@ -1513,32 +1387,25 @@ void Assets::thomCombatAssets()
     if (this->thomTurnAssets) {
         switch (this->combatThomMoves) {
         case 0:
-            //Draw Thom Barrier Button
-            combatRect[12].setPosition(335.0f, 795.0f);
-            //Draw Player Slash Text
-            combatText[12].setPosition(335.0f, 795.0f);
-            combatText[12].setString("Barrier");
+            this->setMovePosition(combatRect[12], combatText[12], texBarrier, 335, 795);
             break;
         case 1:
-            //Draw Thom Barrier Button
-            combatRect[12].setPosition(335.0f, 795.0f);
-            //Draw Player Slash Text
-            combatText[12].setPosition(335.0f, 795.0f);
-            combatText[12].setString("Barrier");
-            //Draw Thom Barrier Button
-            combatRect[13].setPosition(335.0f, 765.0f);
-            //Draw Player Slash Text
-            combatText[13].setPosition(335.0f, 765.0f);
-            combatText[13].setString("Enrage");
+            this->setMovePosition(combatRect[12], combatText[12], texBarrier, 335, 795);
+            this->setMovePosition(combatRect[13], combatText[13], texEnrage, 335, 765);
             break;
         }
     }
     else if (!this->thomTurnAssets) {
-        combatRect[12].setPosition(10000.0f, 10000.0f);
-        combatText[12].setPosition(10000.0f, 10000.0f);
-        combatRect[13].setPosition(10000.0f, 10000.0f);
-        combatText[13].setPosition(10000.0f, 10000.0f);
+        this->setMovePosition(combatRect[12], combatText[12], texBarrier, 10000, 10000);
+        this->setMovePosition(combatRect[13], combatText[13], texEnrage, 10000, 10000);
     }
+}
+
+void Assets::setMovePosition(sf::RectangleShape& inRect, sf::Text& inText, std::string& inString, float posX, float posY)
+{
+    inRect.setPosition(posX, posY);
+    inText.setPosition(posX, posY);
+    inText.setString(inString);
 }
 
 //Sound Functions

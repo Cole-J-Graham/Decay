@@ -1,9 +1,9 @@
-#ifndef MOVES_H
-#define MOVES_H
-#include"Sprites.h"
+#pragma once
+#include<string>
 #include"Animation.h"
+#include"AssetHandler.h"
 
-class Moves
+class Moves : public AssetHandler
 {
 private:	
 	//Hp
@@ -95,24 +95,24 @@ public:
 	~Moves();
 
 	//Player Moves
-	void slash(Sprites& sprites, Animation& animate);
-	void guard(Sprites& sprites, Animation& animate);
-	void decayBlade(Sprites& sprites, Animation& animate);
-	void heftyBlow(Sprites& sprites, Animation& animate);
-	void decaySynergy(Sprites& sprites, Animation& animate);
-	void ironWall(Sprites& sprites, Animation& animte);
+	void slash(Animation& animate);
+	void guard(Animation& animate);
+	void decayBlade(Animation& animate);
+	void heftyBlow(Animation& animate);
+	void decaySynergy(Animation& animate);
+	void ironWall(Animation& animate);
 
 	//Zin Moves
-	void smite(Sprites& sprites, Animation& animate);
-	void mend(Sprites& sprites, Animation& animate);
-	void vengeance(Sprites& sprites, Animation& animate);
-	void hellBlaze(Sprites& sprites, Animation& animate);
-	void focusHeal(Sprites& sprites, Animation& animate);
-	void crimsonFlames(Sprites& sprites, Animation& animate);
+	void smite(Animation& animate);
+	void mend(Animation& animate);
+	void vengeance(Animation& animate);
+	void hellBlaze(Animation& animate);
+	void focusHeal(Animation& animate);
+	void crimsonFlames(Animation& animate);
 
 	//Thom Moves
-	void barrier(Sprites& sprites, Animation& animate);
-	void enrage(Sprites& sprites, Animation& animate);
+	void barrier(Animation& animate);
+	void enrage(Animation& animate);
 
 	//Hostile Moves
 
@@ -188,7 +188,4 @@ public:
 
 	std::string& getThomBarrierAtkText() { return this->thomBarrierAtkText; };
 	std::string& getThomEnragedAtkText() { return this->thomEnragedAtkText; };
-
-#endif
 };
-

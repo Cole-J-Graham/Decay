@@ -8,12 +8,9 @@
 #include<string>
 #include<SFML/Audio.hpp>
 #include"Travel.h"
-#include"Assets.h"
-#include"Event.h"
-#include"Combat.h"
-#include"Animation.h"
+#include"Player.h"
 
-class World
+class World : public Travel
 {
 private:
 	sf::RenderWindow window;
@@ -31,6 +28,8 @@ private:
 	//Core
 	std::string input;
 	std::string targetHpView;
+
+	bool mapDefinitionHasLoaded;
 
 	int unicode;
 	int random;
@@ -60,44 +59,48 @@ public:
 	~World();
 
 	//Core Functions
-	void bootUp(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate);
-	void userInput(Sprites& sprites);
-	void saveGame(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate);
-	void loadGame(Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate);
+	void bootUp(Animation& animate);
+	void userInput();
+	void saveGame(Animation& animate);
+	void loadGame(Animation& animate);
+
+	//Draw Functions
+	void draw(sf::RenderWindow& window, Animation& animate);
+	void drawStatsMenu(sf::RenderWindow& window);
+	void drawMap(sf::RenderWindow& window);
+	void drawBonfire(sf::RenderWindow& window, Animation& animate);
 
 	//Display Functions
-	void draw(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player, Travel& travel, Animation& animate);
-	void drawMapSelectorButtons(sf::RenderWindow& window, Sprites& sprites);
-	void printPlayerStats(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player);
-	void printZinStats(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player);
-	void printToolTipFunc(sf::RenderWindow& window, Sprites& sprites, sf::RectangleShape& inputRect, std::string& toolTip);
-	void printToolTip(sf::RenderWindow& window, Sprites& sprites, Event& notevent, Combat& combat, Player& player);
+	void drawMapSelectorButtons(sf::RenderWindow& window);
+	void printPlayerStats(sf::RenderWindow& window);
+	void printZinStats(sf::RenderWindow& window);
+	void printToolTipFunc(sf::RenderWindow& window, sf::RectangleShape& inputRect, std::string& toolTip);
+	void printToolTip(sf::RenderWindow& window);
 
 	//Display Element Functionality
-	void mainMenuButtons(sf::RenderWindow& window, Sprites& sprites, Event& notevent, 
-		Combat& combat, Player& player, Travel& travel, Animation& animate);
-	void travelButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel, Animation& animate, Player& player);
-	void menuBar(sf::RenderWindow& window, Sprites& sprites);
-	void dialogueCombatBox(sf::RenderWindow& window, Combat& combat, Sprites& sprites, Travel& travel, Event& notevent);
-	void movableBox(sf::RenderWindow& window, Sprites& sprites);
+	void mainMenuButtons(sf::RenderWindow& window, Animation& animate);
+	void travelButtons(sf::RenderWindow& window, Animation& animate);
+	void menuBar(sf::RenderWindow& window);
+	void dialogueCombatBox(sf::RenderWindow& window);
+	void movableBox(sf::RenderWindow& window);
 
 	//Stat Functionality
-	void statsFunctionality(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites);
-	void levelUp(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites, sf::RectangleShape& inputRect, int& lvl, int& sp, int& exp, int& expNext);
-	void statUp(sf::RenderWindow& window, Combat& combat, Player& player, Sprites& sprites, sf::RectangleShape& inputRect, int& stat, int& sp, int& exp, int& expNext);
+	void statsFunctionality(sf::RenderWindow& window);
+	void levelUp(sf::RenderWindow& window, sf::RectangleShape& inputRect, int& lvl, int& sp, int& exp, int& expNext);
+	void statUp(sf::RenderWindow& window, sf::RectangleShape& inputRect, int& stat, int& sp, int& exp, int& expNext);
 
 	//Map Button Functionality
-	void mapButtons(sf::RenderWindow& window, Sprites& sprites, Travel& travel);
-	void mapButtonsForest(sf::RenderWindow& window, Sprites& sprites, Travel& travel);
-	void mapButtonsCastle(sf::RenderWindow& window, Sprites& sprites, Travel& travel);
-	void mapButtonsDecay(sf::RenderWindow& window, Sprites& sprites, Travel& travel);
+	void mapButtons(sf::RenderWindow& window);
+	void mapButtonsForest(sf::RenderWindow& window);
+	void mapButtonsCastle(sf::RenderWindow& window);
+	void mapButtonsDecay(sf::RenderWindow& window);
 
 	//Map Functions
-	void resetMapPosition(sf::RenderWindow& window, Sprites& sprites);
-	void selectMapView(sf::RenderWindow& window, Sprites& sprites, Travel& travel);
-	void drawForestMap(sf::RenderWindow& window, Sprites& sprites);
-	void drawCastleMap(sf::RenderWindow& window, Sprites& sprites);
-	void drawDecayMap(sf::RenderWindow& window, Sprites& sprites);
+	void resetMapPosition(sf::RenderWindow& window);
+	void selectMapView(sf::RenderWindow& window);
+	void drawForestMap(sf::RenderWindow& window);
+	void drawCastleMap(sf::RenderWindow& window);
+	void drawDecayMap(sf::RenderWindow& window);
 
 	//Getters and Setters
 	bool& getStop() { return this->stop; };

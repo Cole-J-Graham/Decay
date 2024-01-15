@@ -1,9 +1,6 @@
-#ifndef COMBAT_H
-#define COMBAT_H
-#include"Sprites.h"
-#include"Player.h"
-#include"Animation.h"
+#pragma once
 #include"Moves.h"
+#include"Animation.h"
 
 class Combat : public Moves
 {
@@ -90,54 +87,54 @@ public:
 	~Combat();
 
 	//Core Stat Functions
-	void updateStats(Sprites& sprites, Player& player);
-	void unlockMoves(Sprites& sprites, Player& player);
-	void combatReward(Sprites& sprites, Player& player);
+	void updateStats();
+	void unlockMoves();
+	void combatReward();
 
 	//Core Combat Functions
-	void combatLoop(sf::RenderWindow& window, Sprites& sprites, Player& player, Animation& animate);
-	void initCombat(Sprites& sprites, Player& player, Animation& animate);
-	void reInitCombat(Sprites& sprites);
-	void playerDeath(Sprites& sprites);
+	void combatLoop(sf::RenderWindow& window, Animation& animate);
+	void initCombat();
+	void reInitCombat();
+	void playerDeath();
 
 	//Combat Functions
-	void playerTurn(sf::RenderWindow& window, Sprites& sprites, Animation& animate);
-	void zinTurn(Sprites& sprites, Animation& animate);
-	void thomTurn(Sprites& sprites, Animation& animate);
-	void hostileTurn(Sprites& sprites, Animation& animate);
+	void playerTurn(sf::RenderWindow& window, Animation& animate);
+	void zinTurn(Animation& animate);
+	void thomTurn(Animation& animate);
+	void hostileTurn(Animation& animate);
 
 	//Combat Pick Attacks
-	void pickMove(sf::RenderWindow& window, Sprites& sprites);
+	void pickMove(sf::RenderWindow& window);
 	void pickMoveFunc(sf::RenderWindow& window, sf::RectangleShape& inputRect, int& counter, int& moveChar, int& moveVal);
-	void playerSelectMove(Sprites& sprites, Animation& animate);
-	void zinSelectMove(Sprites& sprites, Animation& animate);
-	void thomSelectMove(Sprites& sprites, Animation& animate);
+	void playerSelectMove(Animation& animate);
+	void zinSelectMove(Animation& animate);
+	void thomSelectMove(Animation& animate);
 
 	//Combat Init Forest Hostiles
-	void initWolf(Sprites& sprites);
-	void initDecayWalker(Sprites& sprites);
-	void initHostileTree(Sprites& sprites);
-	void initDecayKnight(Sprites& sprites);
-	void initLostNun(Sprites& sprites);
-	void initDecapod(Sprites& sprites);
-	void initHazeDemon(Sprites& sprites);
+	void initWolf();
+	void initDecayWalker();
+	void initHostileTree();
+	void initDecayKnight();
+	void initLostNun();
+	void initDecapod();
+	void initHazeDemon();
 
 	//Combat Init Castle Hostiles
-	void initCourtJester(Sprites& sprites);
-	void initWallMimic(Sprites& sprites);
-	void initLostKnight(Sprites& sprites);
-	void initPhantom(Sprites& sprites);
-	void initSkinEater(Sprites& sprites);
-	void initSiward(Sprites& sprites);
+	void initCourtJester();
+	void initWallMimic();
+	void initLostKnight();
+	void initPhantom();
+	void initSkinEater();
+	void initSiward();
 
 	//Combat Init Decay Hostiles
-	void initLimbSplitter(Sprites& sprites);
-	void initBurrower(Sprites& sprites);
-	void initChatterMouth(Sprites& sprites);
-	void initReclus(Sprites& sprites);
-	void initTendrilAlpha(Sprites& sprites);
-	void initSpade(Sprites& sprites);
-	void initRotBeast(Sprites& sprites);
+	void initLimbSplitter();
+	void initBurrower();
+	void initChatterMouth();
+	void initReclus();
+	void initTendrilAlpha();
+	void initSpade();
+	void initRotBeast();
 
 	//Music Functions
 	void stopComTrack(sf::Music& comTrack, sf::Music& track) {
@@ -225,6 +222,3 @@ public:
 	sf::Time combatTextElapsed;
 	sf::Clock combatTextTime;
 };
-
-#endif
-
