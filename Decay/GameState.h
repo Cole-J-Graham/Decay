@@ -2,6 +2,7 @@
 #define GAMESTATE_H
 
 #include"State.h"
+#include"MainMenuState.h"
 class GameState : public State
 {
 public:

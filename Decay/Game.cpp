@@ -42,6 +42,7 @@ void Game::initStates()
 {
 	/*Push in states here*/
 	this->states.push(new GameState());
+	this->states.push(new MainMenuState());
 }
 
 //Update
