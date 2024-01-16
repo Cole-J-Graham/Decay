@@ -11,20 +11,28 @@ class State
 {
 public:
 	//Constructors and Destructors
-	State();
+	State(sf::RenderWindow* window);
 	~State();
 
 	//Core State Functionality
 	virtual void updateKeybinds(const float& dt) = 0;
 	virtual void render(sf::RenderTarget* target = nullptr) = 0;
 	virtual void update(const float& dt) = 0;
+	virtual void updateMousePositions();
 
 	const bool& getQuit() const;
 	void checkForQuit();
 	void endState();
 
+	sf::RenderWindow* window;
 
 private:
+
+	//Mouse Position
+	sf::Vector2i mousePosScreen;
+	sf::Vector2i mousePosWindow;
+	sf::Vector2f mousePosView;
+
 	bool quit;
 };
 

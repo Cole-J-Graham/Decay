@@ -1,6 +1,7 @@
 #include "MainMenuState.h"
 //Constructors and Destructors
-MainMenuState::MainMenuState()
+MainMenuState::MainMenuState(sf::RenderWindow* window)
+    : State(window)
 {
     font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
     this->setAssets();
@@ -12,15 +13,15 @@ MainMenuState::~MainMenuState()
 
 }
 
-
 //State Functions
 void MainMenuState::updateKeybinds(const float& dt)
 {
-
+    
 }
 
 void MainMenuState::update(const float& dt)
 {
+    this->updateMousePositions();
     this->updateKeybinds(dt);
 }
 

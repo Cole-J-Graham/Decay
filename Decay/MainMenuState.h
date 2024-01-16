@@ -3,7 +3,7 @@
 class MainMenuState: public State
 {
 public:
-	MainMenuState();
+	MainMenuState(sf::RenderWindow * window);
 	~MainMenuState();
 
 	//State Functions
@@ -17,8 +17,6 @@ public:
 		
 
 private:
-	//Get window position for input
-	sf::RenderWindow* window;
 
 	//Button Assets
 	sf::Font font;

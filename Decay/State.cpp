@@ -1,7 +1,9 @@
 #include "State.h"
 //Constructors and Destructors
-State::State()
+State::State(sf::RenderWindow* window)
 {
+	//Core Initializations (window Required to function)
+	this->window = window;
 	this->quit = false;
 }
 
@@ -19,6 +21,13 @@ void State::render(sf::RenderTarget* target)
 void State::update(const float& dt)
 {
 
+}
+
+void State::updateMousePositions()
+{
+	this->mousePosScreen = sf::Mouse::getPosition();
+	this->mousePosWindow = sf::Mouse::getPosition(*this->window);
+	this->mousePosView = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
 }
 
 const bool& State::getQuit() const
