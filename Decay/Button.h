@@ -1,22 +1,38 @@
 #pragma once
-#include"Assets.h"
+#include<iostream>
+
+#include<SFML/System.hpp>
+#include<SFML/Graphics.hpp>
+#include<SFML/Window.hpp>
+#include<SFML/Audio.hpp>
+
+enum button_states { BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE };
+
 class Button
 {
 public:
-	Button(std::string text, float x, float y);
+	//Constructors and Destructors
+	Button(float x, float y, float width, float height, sf::Font font,
+	std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor);
 	~Button();
 
 	//Core Functions
-	void draw(sf::RenderWindow& window);
-	void setPos(float& x, float& y);
+	void update(const sf::Vector2f mousePos);
 	void render(sf::RenderTarget* target);
 
+	//Accessors
+	const bool isPressed() const;
+
 private:
-	sf::RectangleShape button;
-	sf::Text buttonText;
+	//Core Booleans
+	short unsigned buttonState;
+
+	sf::RectangleShape shape;
+	sf::Text text;
 	sf::Font font;
 
-	//Asset Functions
-	void loadButton();
+	sf::Color idleColor;
+	sf::Color hoverColor;
+	sf::Color activeColor;
 };
 

@@ -1,8 +1,10 @@
 #pragma once
 #include"State.h"
+#include"Button.h"
 class MainMenuState: public State
 {
 public:
+	//Constructors and Destructors
 	MainMenuState(sf::RenderWindow * window);
 	~MainMenuState();
 
@@ -20,15 +22,7 @@ private:
 
 	//Button Assets
 	sf::Font font;
-	sf::RectangleShape start_button;
-	sf::RectangleShape load_button;
-	sf::RectangleShape quit_button;
-	sf::Text start_text;
-	sf::Text load_text;
-	sf::Text quit_text;
-
-	//Vectors
-	std::vector<sf::RectangleShape> buttons{start_button, load_button, quit_button};
-	std::vector<sf::Text> buttonsText{ start_text, load_text, quit_text };
+	
+	Button* gamestate_btn;
 };
 

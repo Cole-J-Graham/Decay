@@ -2,6 +2,7 @@
 #include<iostream>
 #include<vector>
 #include<stack>
+
 #include<SFML/Window.hpp>
 #include<SFML/Graphics.hpp>
 #include<SFML/Graphics/Text.hpp>
@@ -25,6 +26,9 @@ public:
 	void endState();
 
 	sf::RenderWindow* window;
+
+	//Getters
+	sf::Vector2f getMousePosView() { return this->mousePosView; };
 
 private:
 
