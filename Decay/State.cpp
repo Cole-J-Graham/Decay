@@ -1,9 +1,10 @@
 #include "State.h"
 //Constructors and Destructors
-State::State(sf::RenderWindow* window)
+State::State(sf::RenderWindow* window, std::stack<State*>* states)
 {
 	//Core Initializations (window Required to function)
 	this->window = window;
+	this->states = states;
 	this->quit = false;
 }
 

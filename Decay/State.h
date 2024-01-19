@@ -12,7 +12,7 @@ class State
 {
 public:
 	//Constructors and Destructors
-	State(sf::RenderWindow* window);
+	State(sf::RenderWindow* window, std::stack<State*>* states);
 	~State();
 
 	//Core State Functionality
@@ -23,8 +23,9 @@ public:
 
 	const bool& getQuit() const;
 	void checkForQuit();
-	void endState();
+	virtual void endState();
 
+	std::stack<State*>* states;
 	sf::RenderWindow* window;
 
 	//Getters

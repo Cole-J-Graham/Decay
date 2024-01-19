@@ -1,7 +1,7 @@
 #include "MainMenuState.h"
 //Constructors and Destructors
-MainMenuState::MainMenuState(sf::RenderWindow* window)
-    : State(window)
+MainMenuState::MainMenuState(sf::RenderWindow* window, std::stack<State*>* states)
+    : State(window, states)
 {
     font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
     this->setAssets();
@@ -21,6 +21,11 @@ MainMenuState::~MainMenuState()
 }
 
 //State Functions
+void MainMenuState::endState()
+{
+    std::cout << "Ending MainMenuState!~" << "\n";
+}
+
 void MainMenuState::updateKeybinds(const float& dt)
 {
     this->checkForQuit();
@@ -52,6 +57,12 @@ void MainMenuState::updateButtons()
     /*Updates all buttons in the State and handles their functionality*/
     for (auto &it : this->buttons) {
         it.second->update(getMousePosView());
+    }
+
+    //Start the game
+    if (this->buttons["GAME_STATE"]->isPressed()) {
+        this->states->push(new GameState(this->window, this->states));
+        std::cout << "Starting gamestate!";
     }
 
     //Quit the game

@@ -7,7 +7,7 @@ class GameState : public State
 {
 public:
 	//Constructors and Destructors
-	GameState(sf::RenderWindow* window);
+	GameState(sf::RenderWindow* window, std::stack<State*>* states);
 	virtual ~GameState();
 
 	//Functions
