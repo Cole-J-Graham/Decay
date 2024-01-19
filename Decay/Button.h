@@ -1,10 +1,5 @@
 #pragma once
-#include<iostream>
-
-#include<SFML/System.hpp>
-#include<SFML/Graphics.hpp>
-#include<SFML/Window.hpp>
-#include<SFML/Audio.hpp>
+#include "Asset.h"
 
 enum button_states { BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE };
 

@@ -5,7 +5,6 @@ MainMenuState::MainMenuState(sf::RenderWindow* window, std::stack<State*>* state
 {
     font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
     this->setAssets();
-    this->setAssetsPos();
 
     //Initialize Main Menu
     this->initButtons();
@@ -13,7 +12,6 @@ MainMenuState::MainMenuState(sf::RenderWindow* window, std::stack<State*>* state
 
 MainMenuState::~MainMenuState()
 {
-
     auto it = this->buttons.begin();
     for (it = this->buttons.begin(); it != this->buttons.end(); ++it) {
         delete it->second;
@@ -79,11 +77,6 @@ void MainMenuState::renderButtons(sf::RenderTarget* target)
 }
 
 void MainMenuState::setAssets()
-{
-    
-}
-
-void MainMenuState::setAssetsPos()
 {
     
 }

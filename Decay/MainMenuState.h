@@ -19,7 +19,6 @@ public:
 	void updateButtons();
 	void renderButtons(sf::RenderTarget* target = nullptr);
 	void setAssets();
-	void setAssetsPos();
 		
 
 private:
