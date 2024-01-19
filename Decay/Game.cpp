@@ -41,7 +41,6 @@ void Game::initWindow()
 void Game::initStates()
 {
 	/*Push in states here*/
-	this->states.push(new GameState(window));
 	this->states.push(new MainMenuState(window));
 }
 

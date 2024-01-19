@@ -14,6 +14,9 @@ public:
 	void render(sf::RenderTarget* target = nullptr);
 
 	//Asset Functions
+	void initButtons();
+	void updateButtons();
+	void renderButtons(sf::RenderTarget* target = nullptr);
 	void setAssets();
 	void setAssetsPos();
 		
@@ -23,6 +26,6 @@ private:
 	//Button Assets
 	sf::Font font;
 	
-	Button* gamestate_btn;
+	std::map<std::string, Button*> buttons;
 };
 

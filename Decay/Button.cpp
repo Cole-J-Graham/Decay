@@ -7,12 +7,14 @@ Button::Button(float x, float y, float width, float height, sf::Font font,
 
     this->shape.setPosition(sf::Vector2f(x, y));
     this->shape.setSize(sf::Vector2f(width, height));
+    this->shape.setOutlineThickness(1.f);
+    this->shape.setOutlineColor(sf::Color::White);
 
     this->font = font;
     this->text.setFont(this->font);
     this->text.setString(text);
     this->text.setFillColor(sf::Color::White);
-    this->text.setCharacterSize(12);
+    this->text.setCharacterSize(16);
     this->text.setPosition(x, y);
 
     this->idleColor = idleColor;

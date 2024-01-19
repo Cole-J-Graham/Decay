@@ -30,13 +30,13 @@ public:
 	//Getters
 	sf::Vector2f getMousePosView() { return this->mousePosView; };
 
+	bool quit;
+
 private:
 
 	//Mouse Position
 	sf::Vector2i mousePosScreen;
 	sf::Vector2i mousePosWindow;
 	sf::Vector2f mousePosView;
-
-	bool quit;
 };
 
