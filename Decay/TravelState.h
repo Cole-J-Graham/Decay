@@ -18,14 +18,16 @@ public:
 
 	//Asset Functions
 	void initButtons();
+	void updateButtons();
 	void renderButtons(sf::RenderTarget* target);
 	void initRects();
 	void renderRects(sf::RenderTarget* target);
 
 private:
+	sf::Font font;
 
 	//Assets
-	std::map<std::string, Rectangle*> buttons;
+	std::map<std::string, Button*> buttons;
 	std::map<std::string, Rectangle*> rectangles;
 
 };
