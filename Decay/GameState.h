@@ -1,7 +1,8 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 #include"State.h"
-#include"MainMenuState.h"
+#include"TravelState.h"
+
 #include"Button.h"
 #include"Rectangle.h"
 class GameState : public State

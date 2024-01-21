@@ -164,6 +164,7 @@
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="Travel.cpp" />
+    <ClCompile Include="TravelState.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +184,7 @@
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="Travel.h" />
+    <ClInclude Include="TravelState.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

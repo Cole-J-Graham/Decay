@@ -43,14 +43,17 @@
     <ClCompile Include="GameState.cpp">
       <Filter>States</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenuState.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
     <ClCompile Include="Button.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="Rectangle.cpp">
       <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>PlayStates</Filter>
+    </ClCompile>
+    <ClCompile Include="TravelState.cpp">
+      <Filter>PlayStates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -93,9 +96,6 @@
     <ClInclude Include="GameState.h">
       <Filter>States</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenuState.h">
-      <Filter>States</Filter>
-    </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>Resources</Filter>
     </ClInclude>
@@ -104,6 +104,12 @@
     </ClInclude>
     <ClInclude Include="Asset.h">
       <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuState.h">
+      <Filter>PlayStates</Filter>
+    </ClInclude>
+    <ClInclude Include="TravelState.h">
+      <Filter>PlayStates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +127,9 @@
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{1f3ad11b-c7f1-4438-8e90-d44d5dda9372}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PlayStates">
+      <UniqueIdentifier>{5bb6a893-8872-4406-b51d-e59bae97fbd8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -53,9 +53,9 @@ void GameState::render(sf::RenderTarget* target)
 //Asset Functions
 void GameState::initButtons()
 {
-	this->buttons["EXPLORE"] = new Button(100, 100, 100, 25, this->font, "Explore",
+	this->buttons["EXPLORE"] = new Button(455, 755, 100, 25, this->font, "Explore",
 		sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70));
-    this->buttons["EXIT"] = new Button(100, 125, 100, 25, this->font, "Exit",
+    this->buttons["EXIT"] = new Button(455, 780, 100, 25, this->font, "Exit",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70));
 }
 
@@ -68,7 +68,7 @@ void GameState::updateButtons()
 
     //Start the game
     if (this->buttons["EXPLORE"]->isPressed()) {
-        //this->states->push(new GameState(this->window, this->states));
+        this->states->push(new TravelState(this->window, this->states));
         std::cout << "Starting Travel State!";
     }
 
@@ -87,7 +87,11 @@ void GameState::renderButtons(sf::RenderTarget* target)
 
 void GameState::initRects()
 {
-    this->rectangles["BORDER"] = new Rectangle(690, 0, 800, 800, sf::Color::Transparent,
+    this->rectangles["BORDER"] = new Rectangle(560, 5, 800, 800, sf::Color::Transparent,
+        sf::Color::White, 1.f);
+    this->rectangles["LEFTBOX"] = new Rectangle(0, 5, 555, 800, sf::Color::Transparent,
+        sf::Color::White, 1.f);
+    this->rectangles["RIGHTBOX"] = new Rectangle(1365, 5, 555, 800, sf::Color::Transparent,
         sf::Color::White, 1.f);
 }
 
