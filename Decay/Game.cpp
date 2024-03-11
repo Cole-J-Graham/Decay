@@ -19,7 +19,7 @@ Game::~Game()
 
 void Game::endApplication()
 {
-	std::cout << "Ending Applicaiton!" << "\n";
+	std::cout << "Ending Application!" << "\n";
 }
 
 //Initialization (Private Functions)
@@ -51,7 +51,7 @@ void Game::update()
 	this->updateSFMLEvents();
 	//Update the states while not empty
 	if (!this->states.empty()) {
-		this->states.top()->update(this->dt);
+		this->states.top()->update();
 		//If getQuit is called in the top stack, delete the top of the stack and cleanup
 		if (this->states.top()->getQuit()) {
 			this->states.top()->endState();

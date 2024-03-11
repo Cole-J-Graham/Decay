@@ -1,10 +1,7 @@
 #include"Game.h"
-
-Game game;
-
 int main()
 {
-    game.run();
+	Game game;
 
-    return 0;
+	game.run();
 }

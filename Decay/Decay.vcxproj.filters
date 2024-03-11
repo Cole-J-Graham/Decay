@@ -1,39 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Animation.cpp">
-      <Filter>cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="Combat.cpp">
-      <Filter>cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="Event.cpp">
-      <Filter>cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="Travel.cpp">
-      <Filter>cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="World.cpp">
-      <Filter>cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="Moves.cpp">
-      <Filter>cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetHandler.cpp">
-      <Filter>Assets</Filter>
-    </ClCompile>
-    <ClCompile Include="Assets.cpp">
-      <Filter>Assets</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprites.cpp">
-      <Filter>Assets</Filter>
-    </ClCompile>
     <ClCompile Include="State.cpp">
       <Filter>States</Filter>
     </ClCompile>
@@ -52,41 +19,29 @@
     <ClCompile Include="MainMenuState.cpp">
       <Filter>PlayStates</Filter>
     </ClCompile>
-    <ClCompile Include="TravelState.cpp">
+    <ClCompile Include="ForestState.cpp">
       <Filter>PlayStates</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInputComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MapComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="CombatState.cpp">
+      <Filter>Combat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h">
-      <Filter>.h</Filter>
-    </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>.h</Filter>
-    </ClInclude>
-    <ClInclude Include="Combat.h">
-      <Filter>.h</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>.h</Filter>
-    </ClInclude>
-    <ClInclude Include="Travel.h">
-      <Filter>.h</Filter>
-    </ClInclude>
-    <ClInclude Include="World.h">
-      <Filter>.h</Filter>
-    </ClInclude>
-    <ClInclude Include="Moves.h">
-      <Filter>.h</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetHandler.h">
-      <Filter>Assets</Filter>
-    </ClInclude>
-    <ClInclude Include="Assets.h">
-      <Filter>Assets</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprites.h">
-      <Filter>Assets</Filter>
-    </ClInclude>
     <ClInclude Include="State.h">
       <Filter>States</Filter>
     </ClInclude>
@@ -108,20 +63,26 @@
     <ClInclude Include="MainMenuState.h">
       <Filter>PlayStates</Filter>
     </ClInclude>
-    <ClInclude Include="TravelState.h">
+    <ClInclude Include="ForestState.h">
       <Filter>PlayStates</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInputComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MapComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="CombatState.h">
+      <Filter>Combat</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="cpp">
-      <UniqueIdentifier>{993ef4cc-4a00-4a85-86e5-f7582c7ea8a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include=".h">
-      <UniqueIdentifier>{db4c232d-a73c-4c15-ac29-b23f176e676e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Assets">
-      <UniqueIdentifier>{3cc35a83-5ef5-49a7-bdbd-7bd0ff0649ed}</UniqueIdentifier>
-    </Filter>
     <Filter Include="States">
       <UniqueIdentifier>{84355af7-6553-42f9-b993-b401f2a6d294}</UniqueIdentifier>
     </Filter>
@@ -130,6 +91,18 @@
     </Filter>
     <Filter Include="PlayStates">
       <UniqueIdentifier>{5bb6a893-8872-4406-b51d-e59bae97fbd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{b642a9a3-ba75-4139-9ba8-a2e5f05b4c17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{35e1494a-89ea-45f1-9cca-df5dea7acb75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Characters">
+      <UniqueIdentifier>{b4c5fe12-01fe-4e6a-9d0f-7d5d882d7c89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Combat">
+      <UniqueIdentifier>{a25bae97-28ea-4d9a-903b-8ef709bd37e5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

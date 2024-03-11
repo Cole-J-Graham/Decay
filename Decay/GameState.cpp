@@ -32,15 +32,15 @@ void GameState::endState()
 }
 
 //Functions
-void GameState::updateKeybinds(const float& dt)
+void GameState::updateKeybinds()
 {
 	this->checkForQuit();
 }
 
-void GameState::update(const float& dt)
+void GameState::update()
 {
 	this->updateMousePositions();
-	this->updateKeybinds(dt);
+	this->updateKeybinds();
     this->updateButtons();
 }
 
@@ -54,9 +54,9 @@ void GameState::render(sf::RenderTarget* target)
 void GameState::initButtons()
 {
 	this->buttons["EXPLORE"] = new Button(455, 755, 100, 25, this->font, "Explore",
-		sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70));
+		sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
     this->buttons["EXIT"] = new Button(455, 780, 100, 25, this->font, "Exit",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70));
+        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 }
 
 void GameState::updateButtons()
@@ -68,7 +68,7 @@ void GameState::updateButtons()
 
     //Start the game
     if (this->buttons["EXPLORE"]->isPressed()) {
-        this->states->push(new TravelState(this->window, this->states));
+        this->states->push(new CombatState(this->window, this->states));
         std::cout << "Starting Travel State!";
     }
 

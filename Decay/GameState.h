@@ -1,7 +1,8 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 #include"State.h"
-#include"TravelState.h"
+#include"ForestState.h"
+#include"CombatState.h"
 
 #include"Button.h"
 #include"Rectangle.h"
@@ -16,8 +17,8 @@ public:
 	void endState();
 
 	//State Functions
-	void updateKeybinds(const float& dt);
-	void update(const float& dt);
+	void updateKeybinds();
+	void update();
 	void render(sf::RenderTarget* target = nullptr);
 
 	//Asset Functions

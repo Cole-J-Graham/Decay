@@ -148,44 +148,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="AssetHandler.cpp" />
-    <ClCompile Include="Assets.cpp" />
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Combat.cpp" />
-    <ClCompile Include="Event.cpp" />
+    <ClCompile Include="CombatState.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
-    <ClCompile Include="Moves.cpp" />
+    <ClCompile Include="MapComponent.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rectangle.cpp" />
-    <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="State.cpp" />
-    <ClCompile Include="Travel.cpp" />
-    <ClCompile Include="TravelState.cpp" />
-    <ClCompile Include="World.cpp" />
+    <ClCompile Include="Text.cpp" />
+    <ClCompile Include="ForestState.cpp" />
+    <ClCompile Include="UserInputComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h" />
     <ClInclude Include="Asset.h" />
-    <ClInclude Include="AssetHandler.h" />
-    <ClInclude Include="Assets.h" />
     <ClInclude Include="Button.h" />
-    <ClInclude Include="Combat.h" />
-    <ClInclude Include="Event.h" />
+    <ClInclude Include="CombatState.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="MainMenuState.h" />
-    <ClInclude Include="Moves.h" />
+    <ClInclude Include="MapComponent.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rectangle.h" />
-    <ClInclude Include="Sprites.h" />
     <ClInclude Include="State.h" />
-    <ClInclude Include="Travel.h" />
-    <ClInclude Include="TravelState.h" />
-    <ClInclude Include="World.h" />
+    <ClInclude Include="Text.h" />
+    <ClInclude Include="ForestState.h" />
+    <ClInclude Include="UserInputComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
