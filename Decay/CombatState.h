@@ -2,11 +2,12 @@
 //States
 #include"State.h"
 //Assets
+#include"Text.h"
 #include"Rectangle.h"
 #include"Button.h"
-//Entities
-#include"Player.h"
-class CombatState : public State
+//Modules
+#include"CombatComponent.h"
+class CombatState : public State, public CombatComponent
 {
 public:
 	//Constructors and Destructors

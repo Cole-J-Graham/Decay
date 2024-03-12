@@ -5,13 +5,10 @@ CombatState::CombatState(sf::RenderWindow* window, std::stack<State*>* states)
 {
     //Initialization
     this->initRects();
-    this->player = new Player();
 }
 
 CombatState::~CombatState()
 {
-    //Delete Entities
-    delete this->player;
     //Delete Rectangles
     auto ir = this->rectangles.begin();
     for (ir = this->rectangles.begin(); ir != this->rectangles.end(); ++ir) {
@@ -47,13 +44,14 @@ void CombatState::updateKeybinds()
 void CombatState::update()
 {
     this->updateMousePositions();
-    this->player->update(this->getMousePosView());
+    this->updateCombat(this->getMousePosView());
 }
 
 void CombatState::render(sf::RenderTarget* target)
 {
     this->renderRects(target);
-    this->player->render(target);
+    this->renderText(target);
+    this->renderCombat(target);
 }
 
 //Rectangle Functions

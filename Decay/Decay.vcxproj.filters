@@ -40,6 +40,12 @@
     <ClCompile Include="CombatState.cpp">
       <Filter>Combat</Filter>
     </ClCompile>
+    <ClCompile Include="CombatComponent.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsModule.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
@@ -81,6 +87,12 @@
     <ClInclude Include="CombatState.h">
       <Filter>Combat</Filter>
     </ClInclude>
+    <ClInclude Include="CombatComponent.h">
+      <Filter>Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsModule.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="States">
@@ -103,6 +115,9 @@
     </Filter>
     <Filter Include="Combat">
       <UniqueIdentifier>{a25bae97-28ea-4d9a-903b-8ef709bd37e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{9850c770-ac1a-4b1d-9fa8-eab73f04c043}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

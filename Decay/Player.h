@@ -8,19 +8,26 @@ public:
 	~Player();
 
 	//Core Functions
-	void update(const sf::Vector2f mousePos);
-	void render(sf::RenderTarget* target);
+	void updatePlayer(const sf::Vector2f mousePos);
+	void renderPlayer(sf::RenderTarget* target);
 
 	//Combat Functions
 	void playerTurn();
-	void strike(int* hostileHp = nullptr);
-	void cloak();
-	void guard();
 
 	//Button Functions
 	void updateButtons(const sf::Vector2f mousePos);
 	void initButtons();
 	void renderButtons(sf::RenderTarget* target);
+
+	//Getters
+	int& playerHp() { return this->hp; };
+	int& playerHpMax() { return this->hpMax; };
+	int& playerDamage() { return this->damage; };
+	int& playerDefense() { return this->defense; };
+
+	int& playerFrame() { return this->player_frame; };
+
+	std::map<std::string, Button*>& playerCombatButtons() { return this->combatButtons; };
 
 private:
 	//Player Variables
@@ -29,11 +36,10 @@ private:
 	int damage;
 	int defense;
 
-	int playerFrame;
+	int player_frame;
 
 	//Player Assets
 	std::map<std::string, Button*> combatButtons;
 	sf::Sprite player;
-	std::string combatMessage;
 	sf::Font font;
 };

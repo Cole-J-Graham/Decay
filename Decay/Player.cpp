@@ -23,12 +23,12 @@ Player::~Player()
 }
 
 //Core Functions
-void Player::update(const sf::Vector2f mousePos)
+void Player::updatePlayer(const sf::Vector2f mousePos)
 {
     this->updateButtons(mousePos);
 }
 
-void Player::render(sf::RenderTarget* target)
+void Player::renderPlayer(sf::RenderTarget* target)
 {
     this->renderButtons(target);
 }
@@ -36,7 +36,7 @@ void Player::render(sf::RenderTarget* target)
 //Combat Functions
 void Player::playerTurn()
 {
-    switch (this->playerFrame) {
+    switch (this->player_frame) {
     case 0:
         for (auto& it : this->combatButtons) { it.second->show(); }
         break;
@@ -46,36 +46,10 @@ void Player::playerTurn()
     }
 }
 
-void Player::strike(int* hostileHp)
-{
-    hostileHp -= this->damage * 2;
-    this->combatMessage = "The player slashes at the opponent with all his might!";
-}
-
-void Player::cloak()
-{
-    this->combatMessage = "The player cloaks himself!";
-}
-
-void Player::guard()
-{
-    this->combatMessage = "The player prepares to protect Zin...";
-}
-
 //Button Functions
 void Player::updateButtons(const sf::Vector2f mousePos)
 {
     for (auto& it : this->combatButtons) { it.second->update(mousePos); }
-
-    if (this->combatButtons["STRIKE"]->isPressed()) {
-        this->strike();
-    }
-    if (this->combatButtons["CLOAK"]->isPressed()) {
-        this->cloak();
-    }
-    if (this->combatButtons["GUARD"]->isPressed()) {
-        this->guard();
-    }
 }
 
 void Player::initButtons()
