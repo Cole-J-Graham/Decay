@@ -9,12 +9,16 @@ Player::Player()
     this->defense = 10;
 
     //Initialization
+    this->statsMod = new StatsModule();
     font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
+    this->initStats();
     this->initButtons();
+
 }
 
 Player::~Player()
 {
+    delete this->statsMod;
     //Delete Combat Buttons
     auto it = this->combatButtons.begin();
     for (it = this->combatButtons.begin(); it != this->combatButtons.end(); ++it) {
@@ -31,6 +35,8 @@ void Player::updatePlayer(const sf::Vector2f mousePos)
 void Player::renderPlayer(sf::RenderTarget* target)
 {
     this->renderButtons(target);
+    this->statsMod->render(target);
+    this->statsMod->setShown();
 }
 
 //Combat Functions
@@ -46,10 +52,18 @@ void Player::playerTurn()
     }
 }
 
+//Stat Functions
+void Player::initStats()
+{
+    this->statsMod->createStat("STRENGTH", "STR");
+    this->statsMod->createStat("AGILITY", "AGI");
+}
+
 //Button Functions
 void Player::updateButtons(const sf::Vector2f mousePos)
 {
     for (auto& it : this->combatButtons) { it.second->update(mousePos); }
+    this->statsMod->update(mousePos);
 }
 
 void Player::initButtons()

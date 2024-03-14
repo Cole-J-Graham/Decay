@@ -1,5 +1,6 @@
 #pragma once
 #include"Button.h"
+#include"StatsModule.h"
 class Player
 {
 public:
@@ -13,6 +14,9 @@ public:
 
 	//Combat Functions
 	void playerTurn();
+
+	//Stat Functions
+	void initStats();
 
 	//Button Functions
 	void updateButtons(const sf::Vector2f mousePos);
@@ -39,6 +43,7 @@ private:
 	int player_frame;
 
 	//Player Assets
+	StatsModule* statsMod;
 	std::map<std::string, Button*> combatButtons;
 	sf::Sprite player;
 	sf::Font font;

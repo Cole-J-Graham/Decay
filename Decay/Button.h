@@ -20,6 +20,7 @@ public:
 	const bool isPressed() const;
 	
 	//Modifiers
+	void setPosition(int x, int y) { this->shape.setPosition(x, y); this->text.setPosition(x, y); };
 	void show() { this->hidden = false; };
 	void hide() { this->hidden = true; };
 

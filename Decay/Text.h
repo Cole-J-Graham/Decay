@@ -10,8 +10,10 @@ public:
 
 	//Text Functions
 	void render(sf::RenderTarget* target);
-
 	void setString(std::string text);
+
+	//Modifiers
+	void setPosition(int x, int y) { this->text.setPosition(x, y); };
 
 	//Getters
 	bool& getHidden() { return this->hidden; };
