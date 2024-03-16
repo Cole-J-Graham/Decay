@@ -39,16 +39,16 @@ void UserInputComponent::render(sf::RenderTarget* target)
 //Button Functions
 void UserInputComponent::initButtons()
 {
-    this->buttons["RETURN_BONFIRE"] = new Button(415, 10, 135, 25, this->font, "Return->Bonfire",
+    this->buttons["RETURN_BONFIRE"] = new Button(415, 10, 135, 25, 0.5f, this->font, "Return->Bonfire",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->buttons["BUTTON_RIGHT"] = new Button(1335, 780, 20, 20, this->font, "->",
+    this->buttons["BUTTON_RIGHT"] = new Button(1335, 780, 20, 20, 0.5f, this->font, "->",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->buttons["BUTTON_LEFT"] = new Button(565, 780, 20, 20, this->font, "<-",
+    this->buttons["BUTTON_LEFT"] = new Button(565, 780, 20, 20, 0.5f, this->font, "<-",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 
-    this->buttons["DIALOGUEBOXTOP"] = new Button(0, 806, 1920, 140, this->font, "...",
+    this->buttons["DIALOGUEBOXTOP"] = new Button(0, 806, 1920, 140, 0.5f, this->font, "...",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), true);
-    this->buttons["DIALOGUEBOXBOTTOM"] = new Button(0, 947, 1920, 140, this->font, "...",
+    this->buttons["DIALOGUEBOXBOTTOM"] = new Button(0, 947, 1920, 140, 0.5f, this->font, "...",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), true);
 }
 

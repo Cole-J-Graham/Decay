@@ -13,7 +13,7 @@ public:
 	void setString(std::string text);
 
 	//Modifiers
-	void setPosition(int x, int y) { this->text.setPosition(x, y); };
+	void setPosition(float x, float y) { this->text.setPosition(x, y); };
 
 	//Getters
 	bool& getHidden() { return this->hidden; };

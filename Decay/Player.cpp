@@ -36,7 +36,6 @@ void Player::renderPlayer(sf::RenderTarget* target)
 {
     this->renderButtons(target);
     this->statsMod->render(target);
-    this->statsMod->setShown();
 }
 
 //Combat Functions
@@ -68,11 +67,11 @@ void Player::updateButtons(const sf::Vector2f mousePos)
 
 void Player::initButtons()
 {
-    this->combatButtons["STRIKE"] = new Button(350, 750, 100, 25, this->font, "STRIKE",
+    this->combatButtons["STRIKE"] = new Button(350, 750, 100, 25, 0.5f, this->font, "STRIKE",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->combatButtons["CLOAK"] = new Button(350, 775, 100, 25, this->font, "CLOAK",
+    this->combatButtons["CLOAK"] = new Button(350, 775, 100, 25, 0.5f, this->font, "CLOAK",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->combatButtons["GUARD"] = new Button(350, 800, 100, 25, this->font, "GUARD",
+    this->combatButtons["GUARD"] = new Button(350, 800, 100, 25, 0.5f, this->font, "GUARD",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 }
 

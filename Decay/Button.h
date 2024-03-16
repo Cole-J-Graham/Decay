@@ -7,7 +7,7 @@ class Button
 {
 public:
 	//Constructors and Destructors
-	Button(float x, float y, float width, float height, sf::Font font,
+	Button(float x, float y, float width, float height, float clicktime, sf::Font font,
 	std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor,
 		bool hidden);
 	~Button();
@@ -20,7 +20,7 @@ public:
 	const bool isPressed() const;
 	
 	//Modifiers
-	void setPosition(int x, int y) { this->shape.setPosition(x, y); this->text.setPosition(x, y); };
+	void setPosition(float x, float y) { this->shape.setPosition(x, y); this->text.setPosition(x, y); };
 	void show() { this->hidden = false; };
 	void hide() { this->hidden = true; };
 
@@ -28,6 +28,10 @@ private:
 	//Core Booleans
 	short unsigned buttonState;
 	bool hidden;
+	float clicktime;
+
+	sf::Clock clock;
+	sf::Time elapsed;
 
 	sf::RectangleShape shape;
 	sf::Text text;

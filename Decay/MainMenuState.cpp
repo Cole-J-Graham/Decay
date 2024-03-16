@@ -43,9 +43,9 @@ void MainMenuState::render(sf::RenderTarget* target)
 //Asset Functions
 void MainMenuState::initButtons()
 {
-    this->buttons["GAME_STATE"] = new Button(100, 100, 100, 25, this->font, "Start",
+    this->buttons["GAME_STATE"] = new Button(100, 100, 100, 25, 0.5f, this->font, "Start",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->buttons["EXIT_STATE"] = new Button(100, 125, 100, 25, this->font, "Quit",
+    this->buttons["EXIT_STATE"] = new Button(100, 125, 100, 25, 0.5f, this->font, "Quit",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 }
 

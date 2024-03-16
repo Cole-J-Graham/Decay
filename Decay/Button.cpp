@@ -1,6 +1,6 @@
 #include "Button.h"
 //Constructors and Destructors
-Button::Button(float x, float y, float width, float height, sf::Font font,
+Button::Button(float x, float y, float width, float height, float clicktime, sf::Font font,
     std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor, 
     bool hidden)
 {
@@ -24,6 +24,7 @@ Button::Button(float x, float y, float width, float height, sf::Font font,
 
     this->shape.setFillColor(this->idleColor);
     this->hidden = hidden;
+    this->clicktime = clicktime;
 
 
     font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
@@ -38,15 +39,19 @@ Button::~Button()
 void Button::update(const sf::Vector2f mousePos)
 {
     /*Update the booleans for hover and pressed*/
+    this->elapsed = this->clock.getElapsedTime();
 
     //Idle
     this->buttonState = BTN_IDLE;
     if (this->shape.getGlobalBounds().contains(mousePos)) {
         //Hover
         this->buttonState = BTN_HOVER;
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-            //Pressed
-            this->buttonState = BTN_ACTIVE;
+        if (this->elapsed.asSeconds() >= this->clicktime) {
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                //Pressed
+                this->buttonState = BTN_ACTIVE;
+                this->clock.restart();
+            }
         }
     }
 
