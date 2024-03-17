@@ -1,5 +1,5 @@
 #pragma once
-#include"UserInputComponent.h"
+#include"EventModule.h"
 #include<fstream>
 class MapComponent
 {
@@ -24,9 +24,8 @@ public:
 	//Modifier Functions
 	void setMapFrame(int& frame) { this->map.setTexture(this->mapContainer[frame]);};
 
-	UserInputComponent* userInput;
-
 private:
+	EventModule* event;
 	std::string file_input;
 	std::ifstream ifs;
 	std::string line;

@@ -113,3 +113,16 @@ void UserInputComponent::hideDialogueOptions()
     this->buttons["DIALOGUEBOXTOP"]->hide();
     this->buttons["DIALOGUEBOXBOTTOM"]->hide();
 }
+
+void UserInputComponent::showMoveArrows()
+{
+    this->buttons["BUTTON_RIGHT"]->show();
+    this->buttons["BUTTON_LEFT"]->show();
+    
+}
+
+void UserInputComponent::hideMoveArrows()
+{
+    this->buttons["BUTTON_RIGHT"]->hide();
+    this->buttons["BUTTON_LEFT"]->hide();
+}

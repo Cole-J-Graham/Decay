@@ -46,6 +46,9 @@
     <ClCompile Include="StatsModule.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="EventModule.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
@@ -93,6 +96,9 @@
     <ClInclude Include="StatsModule.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="EventModule.h">
+      <Filter>Events</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="States">
@@ -107,9 +113,6 @@
     <Filter Include="Components">
       <UniqueIdentifier>{b642a9a3-ba75-4139-9ba8-a2e5f05b4c17}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Entities">
-      <UniqueIdentifier>{35e1494a-89ea-45f1-9cca-df5dea7acb75}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Characters">
       <UniqueIdentifier>{b4c5fe12-01fe-4e6a-9d0f-7d5d882d7c89}</UniqueIdentifier>
     </Filter>
@@ -118,6 +121,9 @@
     </Filter>
     <Filter Include="Modules">
       <UniqueIdentifier>{9850c770-ac1a-4b1d-9fa8-eab73f04c043}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Events">
+      <UniqueIdentifier>{8c5d17aa-9015-493b-b130-6e69b5e38afc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -10,15 +10,16 @@ MapComponent::MapComponent(std::string file_input)
     this->move_time = 1.0f;
 
     //Initialization
+    this->event = new EventModule();
     this->loadMap(file_input);
     this->initText();
-    this->userInput = new UserInputComponent();
+    
 }
 
 MapComponent::~MapComponent()
 {
-    //Delete Components
-    delete this->userInput;
+    //Delete Modules
+    delete this->event;
     //Delete Text
     auto it = this->text.begin();
     for (it = this->text.begin(); it != this->text.end(); ++it) {
@@ -30,13 +31,13 @@ MapComponent::~MapComponent()
 void MapComponent::update(sf::Vector2f mousePos)
 {
     this->move();
-    this->userInput->update(mousePos);
+    this->event->update(mousePos);
 }
 
 void MapComponent::render(sf::RenderTarget* target)
 {
     target->draw(this->map);
-    this->userInput->render(target);
+    this->event->render(target);
     this->renderText(target);
 }
 
@@ -45,12 +46,12 @@ void MapComponent::move()
     this->time = this->clock.getElapsedTime();
     if (this->time.asSeconds() >= this->move_time) {
         if (this->mapFrame != this->getMapMaxSize() + 1) {
-            if (this->userInput->rightArrowClicked()) {
+            if (this->event->userInput->rightArrowClicked()) {
                 this->mapFrame++;
                 this->setMapFrame(mapFrame);
                 this->clock.restart();
             }
-            if (this->userInput->leftArrowClicked()) {
+            if (this->event->userInput->leftArrowClicked()) {
                 this->mapFrame--;
                 this->setMapFrame(mapFrame);
                 this->clock.restart();

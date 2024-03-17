@@ -34,6 +34,8 @@ public:
 	//Modifiers
 	void showDialogueOptions();
 	void hideDialogueOptions();
+	void showMoveArrows();
+	void hideMoveArrows();
 
 private:
 	//Assets

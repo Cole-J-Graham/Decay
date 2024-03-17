@@ -151,6 +151,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CombatComponent.cpp" />
     <ClCompile Include="CombatState.cpp" />
+    <ClCompile Include="EventModule.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="CombatComponent.h" />
     <ClInclude Include="CombatState.h" />
+    <ClInclude Include="EventModule.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="MainMenuState.h" />
