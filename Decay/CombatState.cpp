@@ -17,11 +17,12 @@ CombatState::~CombatState()
 }
 
 //Core Functions
-void CombatState::combatLoop()
+void CombatState::combatLoop(const sf::Vector2f mousePos)
 {
     switch (this->combatFrame) {
     case 0:
         //Players Turn
+        this->updatePlayer(mousePos);
         break;
     case 1:
         //Zin's Turn
@@ -45,6 +46,7 @@ void CombatState::update()
 {
     this->updateMousePositions();
     this->updateCombat(this->getMousePosView());
+    this->combatLoop(this->getMousePosView());
 }
 
 void CombatState::render(sf::RenderTarget* target)

@@ -18,7 +18,6 @@ CombatComponent::~CombatComponent()
 //Core Functions
 void CombatComponent::updateCombat(const sf::Vector2f mousePos)
 {
-    this->updatePlayer(mousePos);
     this->updateMoveSelect();
 }
 

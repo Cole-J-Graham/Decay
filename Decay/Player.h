@@ -14,6 +14,7 @@ public:
 
 	//Combat Functions
 	void playerTurn();
+	void resetTurn();
 
 	//Stat Functions
 	void initStats();
@@ -23,13 +24,22 @@ public:
 	void initButtons();
 	void renderButtons(sf::RenderTarget* target);
 
+	//Text Functions
+	void initText();
+	void renderText(sf::RenderTarget* target = nullptr);
+	void updateText();
+
+	//Sprite Functions
+	void initSprite();
+	void renderSprite(sf::RenderTarget* target = nullptr);
+
 	//Getters
 	int& playerHp() { return this->hp; };
 	int& playerHpMax() { return this->hpMax; };
 	int& playerDamage() { return this->damage; };
 	int& playerDefense() { return this->defense; };
 
-	int& playerFrame() { return this->player_frame; };
+	int& getPlayerFrame() { return this->playerFrame; };
 
 	std::map<std::string, Button*>& playerCombatButtons() { return this->combatButtons; };
 
@@ -40,11 +50,13 @@ private:
 	int damage;
 	int defense;
 
-	int player_frame;
+	int playerFrame;
 
 	//Player Assets
 	StatsModule* statsMod;
-	std::map<std::string, Button*> combatButtons;
+	sf::Texture playerTexture;
 	sf::Sprite player;
+	std::map<std::string, Button*> combatButtons;
+	std::map<std::string, Text*> text;
 	sf::Font font;
 };

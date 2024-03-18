@@ -15,7 +15,7 @@ public:
 	~CombatState();
 
 	//Core Functions
-	void combatLoop();
+	void combatLoop(const sf::Vector2f mousePos);
 
 	//State Functions
 	void updateKeybinds();
