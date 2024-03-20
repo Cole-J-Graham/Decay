@@ -1,10 +1,7 @@
 #pragma once
 //States
 #include"State.h"
-//Assets
-#include"Text.h"
 #include"Rectangle.h"
-#include"Button.h"
 //Modules
 #include"CombatComponent.h"
 class CombatState : public State, public CombatComponent
@@ -28,6 +25,5 @@ public:
 
 private:
 	int combatFrame;
-	Player* player;
 	std::map<std::string, Rectangle*> rectangles;
 };

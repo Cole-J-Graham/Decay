@@ -149,6 +149,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="CombatComponent.cpp" />
     <ClCompile Include="CombatState.cpp" />
     <ClCompile Include="EventModule.cpp" />
@@ -157,7 +158,6 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="MapComponent.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StatsModule.cpp" />
@@ -168,6 +168,7 @@
   <ItemGroup>
     <ClInclude Include="Asset.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="CombatComponent.h" />
     <ClInclude Include="CombatState.h" />
     <ClInclude Include="EventModule.h" />
@@ -175,7 +176,6 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="MapComponent.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StatsModule.h" />

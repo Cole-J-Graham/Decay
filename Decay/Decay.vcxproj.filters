@@ -31,9 +31,6 @@
     <ClCompile Include="Text.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Characters</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>States</Filter>
     </ClCompile>
@@ -48,6 +45,9 @@
     </ClCompile>
     <ClCompile Include="EventModule.cpp">
       <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>Characters</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -84,9 +84,6 @@
     <ClInclude Include="Text.h">
       <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Characters</Filter>
-    </ClInclude>
     <ClInclude Include="CombatState.h">
       <Filter>Combat</Filter>
     </ClInclude>
@@ -98,6 +95,9 @@
     </ClInclude>
     <ClInclude Include="EventModule.h">
       <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>Characters</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

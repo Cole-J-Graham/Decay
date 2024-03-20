@@ -22,7 +22,6 @@ void CombatState::combatLoop(const sf::Vector2f mousePos)
     switch (this->combatFrame) {
     case 0:
         //Players Turn
-        this->updatePlayer(mousePos);
         break;
     case 1:
         //Zin's Turn
@@ -34,6 +33,7 @@ void CombatState::combatLoop(const sf::Vector2f mousePos)
         //Hostiles Turn
         break;
     }
+    std::cout << this->combatFrame << "\n";
 }
 
 //State Functions
@@ -64,6 +64,8 @@ void CombatState::initRects()
     this->rectangles["ZINBORDER"] = new Rectangle(25, 420, 200, 200, sf::Color::Transparent,
         sf::Color::White, 1.f);
     this->rectangles["THOMBORDER"] = new Rectangle(25, 690, 200, 200, sf::Color::Transparent,
+        sf::Color::White, 1.f);
+    this->rectangles["COMBATCONSOLE"] = new Rectangle(350, 830, 1250, 175, sf::Color::Transparent,
         sf::Color::White, 1.f);
 }
 
