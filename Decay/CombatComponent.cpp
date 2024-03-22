@@ -4,15 +4,18 @@ CombatComponent::CombatComponent()
 {
     //Initialization
     font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
-    this->player = new Character(100, 100, 10, 10, 25.f, 150.f, 0.2f, playerTexture, true);
+    this->initCharacters();
     this->initText();
     this->initMoves();
-    this->playerTexture = "Assets/Sprites/Player.png";
 }
 
 CombatComponent::~CombatComponent()
 {
-    delete this->player;
+    //Delete Characters
+    auto ic = this->characters.begin();
+    for (ic = this->characters.begin(); ic != this->characters.end(); ++ic) {
+        delete ic->second;
+    }
     //Delete Text
     auto it = this->text.begin();
     for (it = this->text.begin(); it != this->text.end(); ++it) {
@@ -24,13 +27,12 @@ CombatComponent::~CombatComponent()
 void CombatComponent::updateCombat(const sf::Vector2f mousePos)
 {
     this->updateMoveSelect();
-    this->player->update(mousePos);
 }
 
 void CombatComponent::renderCombat(sf::RenderTarget* target)
 {
     this->renderText(target);
-    this->player->render(target);
+    this->renderCharacters(target);
 }
 
 void CombatComponent::updateMoveSelect()
@@ -41,14 +43,42 @@ void CombatComponent::updateMoveSelect()
 
 void CombatComponent::initMoves()
 {
-    this->player->createMove("Slash", 450, 700, 100, 25, 0.1, font, "Slash",
+    this->characters["PLAYER"]->createMove("Slash", 100, 25, 0.1, font, "Slash",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+    this->characters["PLAYER"]->createMove("Cloak", 100, 25, 0.1, font, "Cloak",
+        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+
+    this->characters["ZIN"]->createMove("Protection", 100, 25, 0.1, font, "Protection",
+        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+    this->characters["ZIN"]->createMove("Healing", 100, 25, 0.1, font, "Healing",
+        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+}
+
+//Character Functions
+void CombatComponent::initCharacters()
+{
+    this->characters["PLAYER"] = new Character("Player", 100, 100, 10, 10, 25.f, 150.f, 0.319f, "Assets/Sprites/Player.png", true);
+    this->characters["ZIN"] = new Character("Zin", 100, 100, 10, 10, 25.f, 420.f, 0.066f, "Assets/Sprites/zinSprite.png", false);
+}
+
+void CombatComponent::updateCharacters(const sf::Vector2f mousePos)
+{
+    for (auto& it : this->characters) {
+        it.second->update(mousePos);
+    }
+}
+
+void CombatComponent::renderCharacters(sf::RenderTarget* target)
+{
+    for (auto& it : this->characters) {
+        it.second->render(target);
+    }
 }
 
 //Player Functions
 void CombatComponent::playerMoveSelect()
 {
-    if (this->player->getMoves()["Slash"]->isPressed()) {
+    if (this->characters["PLAYER"]->getMoves()["Slash"]->isPressed()) {
         this->strike();
     }
 }
@@ -72,9 +102,12 @@ void CombatComponent::guard()
 //Zin Functions
 void CombatComponent::zinMoveSelect()
 {
-    /*if (this->zinCombatButtons()["PROTECTION"]->isPressed()) {
+    if (this->characters["ZIN"]->getMoves()["Protection"]->isPressed()) {
         this->protection();
-    }*/
+    }
+    if (this->characters["ZIN"]->getMoves()["Healing"]->isPressed()) {
+        this->healing();
+    }
 }
 
 void CombatComponent::protection()
@@ -88,15 +121,10 @@ void CombatComponent::healing()
     this->updateText("Zin casts healing on you!");
 }
 
-void CombatComponent::flame()
-{
-    this->updateText("Zin casts flame!");
-}
-
 //Text Functions
 void CombatComponent::initText()
 {
-    this->text["COMBATTEXT"] = new Text(500, 900, 16, this->combatMessage,
+    this->text["COMBATTEXT"] = new Text(355, 835, 16, this->combatMessage,
         sf::Color::White, false);
 }
 

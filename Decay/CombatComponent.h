@@ -14,6 +14,11 @@ public:
 	void updateMoveSelect();
 	void initMoves();
 
+	//Character Functions
+	void initCharacters();
+	void updateCharacters(const sf::Vector2f mousePos);
+	void renderCharacters(sf::RenderTarget* target);
+
 	//Player Functions
 	void playerMoveSelect();
 	void strike();
@@ -24,19 +29,17 @@ public:
 	void zinMoveSelect();
 	void protection();
 	void healing();
-	void flame();
 
 	//Text Functions
 	void initText();
 	void renderText(sf::RenderTarget* target = nullptr);
 	void updateText(std::string text);
 
+	std::map<std::string, Character*> characters;
 
 private:
-	Character* player;
-	Character* zin;
+
 	sf::Font font;
-	std::string playerTexture;
 	std::string combatMessage;
 	std::map<std::string, Text*> text;
 };
