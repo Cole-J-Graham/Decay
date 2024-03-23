@@ -1,5 +1,5 @@
 #pragma once
-#include"Button.h"
+#include"Move.h"
 #include"StatsModule.h"
 class Character
 {
@@ -22,7 +22,7 @@ public:
 	void renderButtons(sf::RenderTarget* target);
 
 	//Move Functions
-	void createMove(std::string key, float width, float height,
+	void createMove(std::string key, std::string tipMessage, float width, float height,
 		float clicktime, sf::Font font, std::string text, sf::Color idleColor, sf::Color hoverColor,
 		sf::Color activeColor, bool hidden);
 	void renderMoveButtons(sf::RenderTarget* target);
@@ -32,17 +32,11 @@ public:
 	void renderText(sf::RenderTarget* target = nullptr);
 	void updateText();
 
-	std::map<std::string, Button*> getMoves() { return this->moveButtons; };
 	bool& isEndClicked() { return this->endActive; };
 
+	std::map<std::string, Move*> getMoves()& { return this->moveButtons; }
+
 private:
-	class Move {
-	public:
-
-
-	private:
-
-	};
 
 	//Player Variables
 	int hp;
@@ -54,16 +48,14 @@ private:
 	int characterFrame;
 	float x;
 	float y;
-	float xMove;
-	float yMove;
 	bool turnActive;
 	bool endActive;
 	sf::Texture characterTexture;
 	sf::Sprite character;
 	std::string characterName;
 	std::map<std::string, Button*> buttons;
-	std::map<std::string, Button*> moveButtons;
 	std::map<std::string, Text*> text;
+	std::map<std::string, Move*> moveButtons;
 	sf::Font font;
 };
 

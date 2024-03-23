@@ -18,6 +18,7 @@ public:
 
 	//Accessors
 	const bool isPressed() const;
+	const bool isHovered() const;
 	
 	//Modifiers
 	void setPosition(float x, float y) { this->shape.setPosition(x, y); this->text.setPosition(x, y); };

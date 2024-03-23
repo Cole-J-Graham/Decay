@@ -87,3 +87,11 @@ const bool Button::isPressed() const
 
     return false;
 }
+
+const bool Button::isHovered() const
+{
+    if (this->buttonState == BTN_HOVER)
+        return true;
+
+    return false;
+}

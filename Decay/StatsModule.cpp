@@ -94,7 +94,7 @@ void StatsModule::increaseLevel()
 void StatsModule::initRects()
 {
     this->rectangles["STATSMENU"] = new Rectangle(1400, 100, 300, 800, sf::Color::Transparent,
-        sf::Color::White, 1.f);
+        sf::Color::White, 1.f, false);
 }
 
 void StatsModule::renderRects(sf::RenderTarget* target)

@@ -43,14 +43,19 @@ void CombatComponent::updateMoveSelect()
 
 void CombatComponent::initMoves()
 {
-    this->characters["PLAYER"]->createMove("Slash", 100, 25, 0.1, font, "Slash",
+    this->characters["PLAYER"]->createMove("Slash", "Players basic attack", 100, 25, 0.1, font, "Slash",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->characters["PLAYER"]->createMove("Cloak", 100, 25, 0.1, font, "Cloak",
+    this->characters["PLAYER"]->createMove("Cloak", "Players basic cloak", 100, 25, 0.1, font, "Cloak",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 
-    this->characters["ZIN"]->createMove("Protection", 100, 25, 0.1, font, "Protection",
+    this->characters["ZIN"]->createMove("Protection", "Zin's basic barrier", 100, 25, 0.1, font, "Protection",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->characters["ZIN"]->createMove("Healing", 100, 25, 0.1, font, "Healing",
+    this->characters["ZIN"]->createMove("Healing", "Zin's basic healing", 100, 25, 0.1, font, "Healing",
+        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+
+    this->characters["THOM"]->createMove("Harden", "Thom's defense boost", 100, 25, 0.1, font, "Harden",
+        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+    this->characters["THOM"]->createMove("Spiked", "Thom's thorn passive ability", 100, 25, 0.1, font, "Spiked",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 }
 
@@ -59,6 +64,7 @@ void CombatComponent::initCharacters()
 {
     this->characters["PLAYER"] = new Character("Player", 100, 100, 10, 10, 25.f, 150.f, 0.319f, "Assets/Sprites/Player.png", true);
     this->characters["ZIN"] = new Character("Zin", 100, 100, 10, 10, 25.f, 420.f, 0.066f, "Assets/Sprites/zinSprite.png", false);
+    this->characters["THOM"] = new Character("Thom", 100, 100, 10, 10, 25.f, 690.f, 0.625f, "Assets/Sprites/thomNormal.png", false);
 }
 
 void CombatComponent::updateCharacters(const sf::Vector2f mousePos)

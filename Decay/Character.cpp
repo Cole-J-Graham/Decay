@@ -18,8 +18,6 @@ Character::Character(std::string characterName, int hp, int hpMax, int damage, i
 	this->character.setPosition(x, y);
 	this->character.setScale(scale, scale);
 	this->characterName = characterName;
-	this->xMove = 350;
-	this->yMove = 800;
 	this->endActive = false;
 
 	this->turnActive = turnActive;
@@ -124,20 +122,20 @@ void Character::renderButtons(sf::RenderTarget* target)
 }
 
 //Move Functions
-void Character::createMove(std::string key, float width, float height, 
+void Character::createMove(std::string key, std::string tipMessage, float width, float height,
 	float clicktime, sf::Font font, std::string text, sf::Color idleColor, sf::Color hoverColor, 
 	sf::Color activeColor, bool hidden)
 {
-	this->moveButtons[key] = new Button(this->xMove, this->yMove, width, height, clicktime, font, text, idleColor, 
-		hoverColor, activeColor, hidden);
+	this->moveButtons[key] = new Move(key, tipMessage, width, height, clicktime, font, text, 
+		idleColor, hoverColor, activeColor, hidden);
 }
 
 void Character::renderMoveButtons(sf::RenderTarget* target)
 {
-	int y = this->yMove;
+	int y = 800;
 	for (auto& it : this->moveButtons) {
 		it.second->render(target);
-		it.second->setPosition(this->xMove, y -= 25);
+		it.second->setPosition(350, y -= 25);
 	}
 }
 

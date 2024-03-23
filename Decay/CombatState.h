@@ -1,7 +1,6 @@
 #pragma once
 //States
 #include"State.h"
-#include"Rectangle.h"
 //Modules
 #include"CombatComponent.h"
 class CombatState : public State, public CombatComponent

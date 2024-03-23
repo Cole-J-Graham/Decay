@@ -30,6 +30,7 @@ void CombatState::combatLoop(const sf::Vector2f mousePos)
         break;
     case 2:
         //Thom's turn
+        this->characters["THOM"]->characterTurn(this->combatFrame, mousePos);
         break;
     case 3:
         //Hostiles Turn
@@ -62,15 +63,15 @@ void CombatState::render(sf::RenderTarget* target)
 void CombatState::initRects()
 {
     this->rectangles["PLAYERBORDER"] = new Rectangle(25, 150, 200, 200, sf::Color::Transparent,
-        sf::Color::White, 1.f);
+        sf::Color::White, 1.f, false);
     this->rectangles["ZINBORDER"] = new Rectangle(25, 420, 200, 200, sf::Color::Transparent,
-        sf::Color::White, 1.f);
+        sf::Color::White, 1.f, false);
     this->rectangles["THOMBORDER"] = new Rectangle(25, 690, 200, 200, sf::Color::Transparent,
-        sf::Color::White, 1.f);
+        sf::Color::White, 1.f, false);
     this->rectangles["HOSTILEBORDER"] = new Rectangle(1695, 420, 200, 200, sf::Color::Transparent,
-        sf::Color::White, 1.f);
+        sf::Color::White, 1.f, false);
     this->rectangles["COMBATCONSOLE"] = new Rectangle(350, 830, 1250, 175, sf::Color::Transparent,
-        sf::Color::White, 1.f);
+        sf::Color::White, 1.f, false);
 }
 
 void CombatState::renderRects(sf::RenderTarget* target)

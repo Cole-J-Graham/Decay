@@ -49,6 +49,9 @@
     <ClCompile Include="Character.cpp">
       <Filter>Characters</Filter>
     </ClCompile>
+    <ClCompile Include="Move.cpp">
+      <Filter>Characters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
@@ -97,6 +100,9 @@
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="Character.h">
+      <Filter>Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Move.h">
       <Filter>Characters</Filter>
     </ClInclude>
   </ItemGroup>
