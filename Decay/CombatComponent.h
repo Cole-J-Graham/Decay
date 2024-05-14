@@ -1,6 +1,8 @@
 #pragma once
+#include<random>
 //Entities
 #include"Character.h"
+#include"Enemy.h"
 class CombatComponent
 {
 public:
@@ -16,7 +18,6 @@ public:
 
 	//Character Functions
 	void initCharacters();
-	void updateCharacters(const sf::Vector2f mousePos);
 	void renderCharacters(sf::RenderTarget* target);
 
 	//Player Functions
@@ -30,12 +31,18 @@ public:
 	void protection();
 	void healing();
 
+	//Enemy Functions
+	void initEnemies();
+	void renderEnemies(sf::RenderTarget* target);
+	void enemyMoveSelect();
+
 	//Text Functions
 	void initText();
 	void renderText(sf::RenderTarget* target = nullptr);
 	void updateText(std::string text);
 
 	std::map<std::string, Character*> characters;
+	std::map<std::string, Enemy*> enemies;
 
 private:
 

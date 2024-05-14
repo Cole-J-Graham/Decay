@@ -5,8 +5,10 @@ CombatComponent::CombatComponent()
     //Initialization
     font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
     this->initCharacters();
+    this->initEnemies();
     this->initText();
     this->initMoves();
+    srand(time(NULL));
 }
 
 CombatComponent::~CombatComponent()
@@ -21,6 +23,11 @@ CombatComponent::~CombatComponent()
     for (it = this->text.begin(); it != this->text.end(); ++it) {
         delete it->second;
     }
+    //Delete Enemies
+    auto ie = this->enemies.begin();
+    for (ie = this->enemies.begin(); ie != this->enemies.end(); ++ie) {
+        delete ie->second;
+    }
 }
 
 //Core Functions
@@ -33,12 +40,14 @@ void CombatComponent::renderCombat(sf::RenderTarget* target)
 {
     this->renderText(target);
     this->renderCharacters(target);
+    this->renderEnemies(target);
 }
 
 void CombatComponent::updateMoveSelect()
 {
     this->playerMoveSelect();
     this->zinMoveSelect();
+    //this->enemyMoveSelect();
 }
 
 void CombatComponent::initMoves()
@@ -65,13 +74,6 @@ void CombatComponent::initCharacters()
     this->characters["PLAYER"] = new Character("Player", 100, 100, 10, 10, 25.f, 150.f, 0.319f, "Assets/Sprites/Player.png", true);
     this->characters["ZIN"] = new Character("Zin", 100, 100, 10, 10, 25.f, 420.f, 0.066f, "Assets/Sprites/zinSprite.png", false);
     this->characters["THOM"] = new Character("Thom", 100, 100, 10, 10, 25.f, 690.f, 0.625f, "Assets/Sprites/thomNormal.png", false);
-}
-
-void CombatComponent::updateCharacters(const sf::Vector2f mousePos)
-{
-    for (auto& it : this->characters) {
-        it.second->update(mousePos);
-    }
 }
 
 void CombatComponent::renderCharacters(sf::RenderTarget* target)
@@ -125,6 +127,39 @@ void CombatComponent::protection()
 void CombatComponent::healing()
 {
     this->updateText("Zin casts healing on you!");
+}
+
+//Enemy Functions
+void CombatComponent::initEnemies()
+{
+    this->enemies["WOLF"] = new Enemy("Wolf", 25, 25, 5, 5, 0.195, "Assets/HostileSprites/wolfsprite.png", false);
+}
+
+void CombatComponent::enemyMoveSelect()
+{
+    //Insert random integers across the top row of a matrix
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> random_number(0, 2);
+
+    switch (random_number(rng)) {
+    case 0:
+        std::cout << "Attack 1" << "\n";
+        break;
+    case 1:
+        std::cout << "Attack 2" << "\n";
+        break;
+    case 2:
+        std::cout << "Attack 3" << "\n";
+        break;
+    }
+}
+
+void CombatComponent::renderEnemies(sf::RenderTarget* target)
+{
+    for (auto& it : this->enemies) {
+        it.second->render(target);
+    }
 }
 
 //Text Functions

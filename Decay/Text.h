@@ -4,6 +4,7 @@ class Text
 {
 public:
 	//Constructors and Destructors
+	Text();
 	Text(float x, float y, int text_size, std::string text, sf::Color text_color, 
 		bool hidden);
 	~Text();

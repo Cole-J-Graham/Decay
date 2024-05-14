@@ -18,7 +18,6 @@ Character::Character(std::string characterName, int hp, int hpMax, int damage, i
 	this->character.setPosition(x, y);
 	this->character.setScale(scale, scale);
 	this->characterName = characterName;
-	this->endActive = false;
 
 	this->turnActive = turnActive;
 
@@ -39,6 +38,11 @@ Character::~Character()
 	auto ic = this->moveButtons.begin();
 	for (ic = this->moveButtons.begin(); ic != this->moveButtons.end(); ++ic) {
 		delete ic->second;
+	}
+	//Delete Text Objects
+	auto it = this->text.begin();
+	for (it = this->text.begin(); it != this->text.end(); ++it) {
+		delete it->second;
 	}
 }
 
@@ -88,10 +92,6 @@ void Character::endTurn(int& combatFrame)
 		this->resetTurn();
 		combatFrame++;
 		this->buttons["ENDTURN"]->hide();
-		this->endActive = true;
-	}
-	else {
-		this->endActive = false;
 	}
 }
 
@@ -110,7 +110,7 @@ void Character::updateButtons(const sf::Vector2f mousePos)
 
 void Character::initButtons()
 {
-	this->buttons["ENDTURN"] = new Button(1450, 800, 150, 25, 0.5f, this->font, "End " + this->characterName + "'s Turn",
+	this->buttons["ENDTURN"] = new Button(450, 800, 150, 25, 0.5f, this->font, "End " + this->characterName + "'s Turn",
 		sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), true);
 }
 
@@ -132,7 +132,7 @@ void Character::createMove(std::string key, std::string tipMessage, float width,
 
 void Character::renderMoveButtons(sf::RenderTarget* target)
 {
-	int y = 800;
+	int y = 825;
 	for (auto& it : this->moveButtons) {
 		it.second->render(target);
 		it.second->setPosition(350, y -= 25);

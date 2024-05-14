@@ -34,9 +34,13 @@ void CombatState::combatLoop(const sf::Vector2f mousePos)
         break;
     case 3:
         //Hostiles Turn
+        this->enemies["WOLF"]->enemyTurn(this->combatFrame, mousePos);
+        break;
+    case 4:
+        //Detect and Loop
+        this->combatFrame = 0;
         break;
     }
-    std::cout << this->combatFrame << "\n";
 }
 
 //State Functions
@@ -50,6 +54,7 @@ void CombatState::update()
     this->updateMousePositions();
     this->updateCombat(this->getMousePosView());
     this->combatLoop(this->getMousePosView());
+    this->updateRects(this->getMousePosView());
 }
 
 void CombatState::render(sf::RenderTarget* target)
@@ -72,6 +77,13 @@ void CombatState::initRects()
         sf::Color::White, 1.f, false);
     this->rectangles["COMBATCONSOLE"] = new Rectangle(350, 830, 1250, 175, sf::Color::Transparent,
         sf::Color::White, 1.f, false);
+}
+
+void CombatState::updateRects(const sf::Vector2f mousePos)
+{
+    for (auto& it : this->rectangles) { 
+        it.second->update(mousePos); 
+    }
 }
 
 void CombatState::renderRects(sf::RenderTarget* target)

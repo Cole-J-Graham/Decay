@@ -32,8 +32,6 @@ public:
 	void renderText(sf::RenderTarget* target = nullptr);
 	void updateText();
 
-	bool& isEndClicked() { return this->endActive; };
-
 	std::map<std::string, Move*> getMoves()& { return this->moveButtons; }
 
 private:
@@ -49,7 +47,6 @@ private:
 	float x;
 	float y;
 	bool turnActive;
-	bool endActive;
 	sf::Texture characterTexture;
 	sf::Sprite character;
 	std::string characterName;

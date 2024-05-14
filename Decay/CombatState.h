@@ -20,6 +20,7 @@ public:
 
 	//Rectangle Functions
 	void initRects();
+	void updateRects(const sf::Vector2f mousePos);
 	void renderRects(sf::RenderTarget* target = nullptr);
 
 private:

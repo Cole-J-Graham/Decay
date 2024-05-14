@@ -14,15 +14,23 @@ public:
 
 	//Core Functions
 	void render(sf::RenderTarget* target = nullptr);
+	void update(const sf::Vector2f mousePos);
+
+	//Detection Functions
+	void detectClick(const sf::Vector2f mousePos);
 
 	//Modifiers
 	void show() { this->hidden = false; };
 	void hide() { this->hidden = true; };
 
+	//Getters
+	bool& isClicked() { return this->clicked; }
+
 private:
 	sf::RectangleShape shape;
 	sf::Text text;
 	sf::Font font;
+	bool clicked;
 	bool hidden;
 };
 
