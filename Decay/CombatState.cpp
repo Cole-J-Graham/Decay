@@ -5,6 +5,7 @@ CombatState::CombatState(sf::RenderWindow* window, std::stack<State*>* states)
 {
     //Initialization
     this->initRects();
+    this->enemyPool();
 }
 
 CombatState::~CombatState()
@@ -34,7 +35,7 @@ void CombatState::combatLoop(const sf::Vector2f mousePos)
         break;
     case 3:
         //Hostiles Turn
-        this->enemies["WOLF"]->enemyTurn(this->combatFrame, mousePos);
+        this->enemies[this->getEnemyId()]->enemyTurn(this->combatFrame, mousePos);
         break;
     case 4:
         //Detect and Loop

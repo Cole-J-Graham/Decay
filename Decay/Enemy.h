@@ -5,6 +5,7 @@ class Enemy
 {
 public:
 	//Constructors and Deconstructors
+	Enemy() {};
 	Enemy(std::string enemyName, int hp, int hpMax, int damage, 
 		int defense, float scale, std::string enemyTexture, bool turnActive);
 	~Enemy();
@@ -41,10 +42,13 @@ private:
 	float x;
 	float y;
 	bool turnActive;
+
 	sf::Texture enemyTexture;
 	sf::Sprite enemy;
 	std::string enemyName;
+
 	std::map<std::string, Button*> buttons;
 	std::map<std::string, Text*> text;
+
 	sf::Font font;
 };

@@ -30,6 +30,7 @@ private:
 	short unsigned buttonState;
 	bool hidden;
 	float clicktime;
+	bool enabled;
 
 	sf::Clock clock;
 	sf::Time elapsed;

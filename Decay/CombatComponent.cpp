@@ -5,10 +5,14 @@ CombatComponent::CombatComponent()
     //Initialization
     font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
     this->initCharacters();
-    this->initEnemies();
     this->initText();
     this->initMoves();
     srand(time(NULL));
+
+    //Variables
+    this->enemyRangeMin = 0;
+    this->enemyRangeMax = 2;
+    this->enemyId = "";
 }
 
 CombatComponent::~CombatComponent()
@@ -47,7 +51,6 @@ void CombatComponent::updateMoveSelect()
 {
     this->playerMoveSelect();
     this->zinMoveSelect();
-    //this->enemyMoveSelect();
 }
 
 void CombatComponent::initMoves()
@@ -130,35 +133,33 @@ void CombatComponent::healing()
 }
 
 //Enemy Functions
-void CombatComponent::initEnemies()
-{
-    this->enemies["WOLF"] = new Enemy("Wolf", 25, 25, 5, 5, 0.195, "Assets/HostileSprites/wolfsprite.png", false);
-}
-
-void CombatComponent::enemyMoveSelect()
-{
-    //Insert random integers across the top row of a matrix
-    std::random_device dev;
-    std::mt19937 rng(dev());
-    std::uniform_int_distribution<std::mt19937::result_type> random_number(0, 2);
-
-    switch (random_number(rng)) {
-    case 0:
-        std::cout << "Attack 1" << "\n";
-        break;
-    case 1:
-        std::cout << "Attack 2" << "\n";
-        break;
-    case 2:
-        std::cout << "Attack 3" << "\n";
-        break;
-    }
-}
-
 void CombatComponent::renderEnemies(sf::RenderTarget* target)
 {
     for (auto& it : this->enemies) {
         it.second->render(target);
+    }
+}
+
+void CombatComponent::enemyPool()
+{
+    //Insert random integers across the top row of a matrix
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> enemyRange(this->enemyRangeMin, this->enemyRangeMax);
+
+    switch (enemyRange(rng)) {
+    case 0:
+        this->enemies["WOLF"] = new Enemy("Wolf", 25, 25, 5, 5, 0.195, "Assets/HostileSprites/wolfsprite.png", false);
+        this->setEnemyId("WOLF");
+        break;
+    case 1:
+        this->enemies["WALKER"] = new Enemy("Walker", 25, 25, 5, 5, 0.195, "Assets/HostileSprites/decaywalkersprite.jpeg", false);
+        this->setEnemyId("WALKER");
+        break;
+    case 2:
+        this->enemies["PHANTOM"] = new Enemy("Phantom", 25, 25, 5, 5, 0.195, "Assets/HostileSprites/phantomSprite.jpeg", false);
+        this->setEnemyId("PHANTOM");
+        break;
     }
 }
 
@@ -179,4 +180,9 @@ void CombatComponent::renderText(sf::RenderTarget* target)
 void CombatComponent::updateText(std::string text)
 {
     this->text["COMBATTEXT"]->setString(text);
+}
+
+void CombatComponent::setEnemyId(std::string text)
+{
+    this->enemyId = text;
 }

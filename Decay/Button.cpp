@@ -25,6 +25,7 @@ Button::Button(float x, float y, float width, float height, float clicktime, sf:
     this->shape.setFillColor(this->idleColor);
     this->hidden = hidden;
     this->clicktime = clicktime;
+    this->enabled = true;
 
 
     font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");

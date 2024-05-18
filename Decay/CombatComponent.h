@@ -34,12 +34,16 @@ public:
 	//Enemy Functions
 	void initEnemies();
 	void renderEnemies(sf::RenderTarget* target);
-	void enemyMoveSelect();
+	void enemyPool();
 
 	//Text Functions
 	void initText();
 	void renderText(sf::RenderTarget* target = nullptr);
 	void updateText(std::string text);
+	void setEnemyId(std::string text);
+
+	//Getters
+	const std::string& getEnemyId() { return this->enemyId; };
 
 	std::map<std::string, Character*> characters;
 	std::map<std::string, Enemy*> enemies;
@@ -49,4 +53,8 @@ private:
 	sf::Font font;
 	std::string combatMessage;
 	std::map<std::string, Text*> text;
+	std::string enemyId;
+
+	int enemyRangeMin;
+	int enemyRangeMax;
 };

@@ -24,6 +24,7 @@ public:
 	void renderRects(sf::RenderTarget* target = nullptr);
 
 private:
+
 	int combatFrame;
 	std::map<std::string, Rectangle*> rectangles;
 };

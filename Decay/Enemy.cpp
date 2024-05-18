@@ -8,16 +8,16 @@ Enemy::Enemy(std::string enemyName, int hp, int hpMax, int damage,
 	this->hpMax = hpMax;
 	this->damage = damage;
 	this->defense = defense;
+	this->enemyName = enemyName;
 	this->enemyFrame = 0;
 	this->x = 1695;
 	this->y = 420;
-
+	
 	//Asset Variables
 	this->enemyTexture.loadFromFile(enemyTexture);
 	this->enemy.setTexture(this->enemyTexture);
 	this->enemy.setPosition(this->x, this->y);
 	this->enemy.setScale(scale, scale);
-	this->enemyName = enemyName;
 
 	this->turnActive = turnActive;
 
@@ -87,7 +87,7 @@ void Enemy::updateButtons(const sf::Vector2f mousePos)
 
 void Enemy::initButtons()
 {
-	this->buttons["CONTINUE"] = new Button(350, 800, 150, 25, 0.5f, this->font, "Continue...",
+	this->buttons["CONTINUE"] = new Button(450, 775, 150, 25, 0.5f, this->font, "Continue...",
 		sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), true);
 }
 
