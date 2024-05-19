@@ -166,6 +166,7 @@
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="ForestState.cpp" />
     <ClCompile Include="UserInputComponent.cpp" />
+    <ClCompile Include="ViewerModule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asset.h" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Text.h" />
     <ClInclude Include="ForestState.h" />
     <ClInclude Include="UserInputComponent.h" />
+    <ClInclude Include="ViewerModule.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

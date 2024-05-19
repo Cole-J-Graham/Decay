@@ -149,15 +149,15 @@ void CombatComponent::enemyPool()
 
     switch (enemyRange(rng)) {
     case 0:
-        this->enemies["WOLF"] = new Enemy("Wolf", 25, 25, 5, 5, 0.195, "Assets/HostileSprites/wolfsprite.png", false);
+        this->enemies["WOLF"] = new Enemy("Wolf", 25, 25, 5, 5, 0.195, "Assets/HostileSprites/wolfsprite.png", "Assets/Entities/wolfEntity.jpeg", false);
         this->setEnemyId("WOLF");
         break;
     case 1:
-        this->enemies["WALKER"] = new Enemy("Walker", 25, 25, 5, 5, 0.195, "Assets/HostileSprites/decaywalkersprite.jpeg", false);
+        this->enemies["WALKER"] = new Enemy("Walker", 25, 25, 5, 5, 0.195, "Assets/HostileSprites/decaywalkersprite.jpeg", "Assets/Entities/decayEntity.jpeg", false);
         this->setEnemyId("WALKER");
         break;
     case 2:
-        this->enemies["PHANTOM"] = new Enemy("Phantom", 25, 25, 5, 5, 0.195, "Assets/HostileSprites/phantomSprite.jpeg", false);
+        this->enemies["PHANTOM"] = new Enemy("Phantom", 25, 25, 5, 5, 0.195, "Assets/HostileSprites/phantomSprite.jpeg", "Assets/Entities/phantomEntity.jpeg", false);
         this->setEnemyId("PHANTOM");
         break;
     }

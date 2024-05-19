@@ -1,7 +1,7 @@
 #include "Enemy.h"
 //Constructors and Deconstructors
-Enemy::Enemy(std::string enemyName, int hp, int hpMax, int damage, 
-	int defense, float scale, std::string enemyTexture, bool turnActive)
+Enemy::Enemy(std::string enemyName, int hp, int hpMax, int damage, int defense, 
+	float scale, std::string enemyTexture, std::string enemyView, bool turnActive)
 {
 	//Player Variables
 	this->hp = hp;
@@ -25,10 +25,13 @@ Enemy::Enemy(std::string enemyName, int hp, int hpMax, int damage,
 	font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
 	this->initText();
 	this->initButtons();
+	this->closeViewer = new ViewerModule(enemyView, scale);
 }
 
 Enemy::~Enemy()
 {
+	//Delete ViewerModule
+	delete this->closeViewer;
 	//Delete Buttons
 	auto ib = this->buttons.begin();
 	for (ib = this->buttons.begin(); ib != this->buttons.end(); ++ib) {
@@ -41,16 +44,15 @@ void Enemy::update(const sf::Vector2f mousePos)
 {
 	this->updateText();
 	this->updateButtons(mousePos);
+	this->closeViewer->update(mousePos);
 }
 
 void Enemy::render(sf::RenderTarget* target)
 {
+	this->closeViewer->render(target);
 	target->draw(this->enemy);
 	this->renderButtons(target);
 	this->renderText(target);
-
-	//Render all turn combat assets
-	
 }
 
 void Enemy::enemyTurn(int& combatFrame, const sf::Vector2f mousePos)
