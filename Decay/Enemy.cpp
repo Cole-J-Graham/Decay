@@ -87,7 +87,7 @@ void Enemy::updateButtons(const sf::Vector2f mousePos)
 
 void Enemy::initButtons()
 {
-	this->buttons["CONTINUE"] = new Button(450, 775, 150, 25, 0.5f, this->font, "Continue...",
+	this->buttons["CONTINUE"] = new Button(600, 800, 150, 25, 0.5f, this->font, "Continue...",
 		sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), true);
 }
 

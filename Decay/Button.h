@@ -10,7 +10,6 @@ public:
 	Button(float x, float y, float width, float height, float clicktime, sf::Font font,
 	std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor,
 		bool hidden);
-	~Button();
 
 	//Core Functions
 	void update(const sf::Vector2f mousePos);
@@ -19,18 +18,22 @@ public:
 	//Accessors
 	const bool isPressed() const;
 	const bool isHovered() const;
-	
 	//Modifiers
 	void setPosition(float x, float y) { this->shape.setPosition(x, y); this->text.setPosition(x, y); };
 	void show() { this->hidden = false; };
 	void hide() { this->hidden = true; };
+	void deActivate() { this->clickBlocked = true; this->shape.setFillColor(this->activeColor); }
+	void reActivate() { this->clickBlocked = false; this->shape.setFillColor(this->idleColor); }
 
 private:
 	//Core Booleans
 	short unsigned buttonState;
+
 	bool hidden;
-	float clicktime;
-	bool enabled;
+	bool clickBlocked;
+
+	sf::Clock clickBlockTimer;
+	float clickBlockDuration;
 
 	sf::Clock clock;
 	sf::Time elapsed;

@@ -6,6 +6,7 @@ Move::Move(std::string key, std::string tipMessage, float width, float height,
 	this->button = new Button(350, 800, width, height, clicktime, font, text, idleColor,
 		hoverColor, activeColor, hidden);
     this->tipMessage = tipMessage;
+    this->hidden = hidden;
     this->initRects();
 }
 
@@ -21,8 +22,10 @@ Move::~Move()
 //Core Functions
 void Move::render(sf::RenderTarget* target)
 {
-	this->button->render(target);
-    this->renderRects(target);
+    if (!this->hidden) {
+        this->button->render(target);
+        this->renderRects(target);
+    }
 }
 
 void Move::update(const sf::Vector2f mousePos)

@@ -18,18 +18,13 @@ public:
 	//Modifiers
 	void setPosition(float x, float y) { this->button->setPosition(x, y); }
 	const bool isPressed();
-	void show() { 
-		this->button->show();
-	}
-	void hide() { 
-		this->button->hide();
-		for (auto& it : this->rectangles) {
-			it.second->hide();
-		}
-	}
+	void show() { this->hidden = false; }
+	void hide() { this->hidden = true; }
+	const bool& isHidden() { return this->hidden; }
 
 private:
 	std::map<std::string, Rectangle*> rectangles;
 	Button* button;
 	std::string tipMessage;
+	bool hidden;
 };

@@ -78,6 +78,8 @@ void CombatState::initRects()
         sf::Color::White, 1.f, false);
     this->rectangles["COMBATCONSOLE"] = new Rectangle(350, 830, 1250, 175, sf::Color::Transparent,
         sf::Color::White, 1.f, false);
+    this->rectangles["COMBATCONSOLE_BUTTONPANEL"] = new Rectangle(350, 800, 1250, 25, sf::Color::Transparent,
+        sf::Color::White, 1.f, false);
 }
 
 void CombatState::updateRects(const sf::Vector2f mousePos)
