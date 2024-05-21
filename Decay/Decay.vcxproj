@@ -159,6 +159,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="MapComponent.cpp" />
+    <ClCompile Include="MapViewer.cpp" />
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="State.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="MapComponent.h" />
+    <ClInclude Include="MapViewer.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="State.h" />

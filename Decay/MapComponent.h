@@ -1,4 +1,5 @@
 #pragma once
+#include"MapViewer.h"
 #include"EventModule.h"
 #include<fstream>
 class MapComponent
@@ -26,6 +27,7 @@ public:
 
 private:
 	EventModule* event;
+	MapViewer* mapView;
 	std::string file_input;
 	std::ifstream ifs;
 	std::string line;

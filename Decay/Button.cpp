@@ -30,6 +30,36 @@ Button::Button(float x, float y, float width, float height, float clicktime, sf:
     this->clickBlockDuration = 0.1; // Adjust as needed
 }
 
+Button::Button(sf::Vector2f pos, float width, float height, float clicktime, sf::Font font,
+    std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor,
+    bool hidden)
+{
+    this->buttonState = BTN_IDLE;
+
+    this->shape.setPosition(sf::Vector2f(pos));
+    this->shape.setSize(sf::Vector2f(width, height));
+    this->shape.setOutlineThickness(1.f);
+    this->shape.setOutlineColor(sf::Color::White);
+
+    this->font = font;
+    this->text.setFont(this->font);
+    this->text.setString(text);
+    this->text.setFillColor(sf::Color::White);
+    this->text.setCharacterSize(16);
+    this->text.setPosition(pos);
+
+    this->idleColor = idleColor;
+    this->hoverColor = hoverColor;
+    this->activeColor = activeColor;
+
+    this->shape.setFillColor(this->idleColor);
+    this->hidden = hidden;
+
+    // Initialize click blocking mechanism
+    this->clickBlocked = false;
+    this->clickBlockDuration = 0.1; // Adjust as needed
+}
+
 void Button::update(const sf::Vector2f mousePos)
 {
     /* Update the booleans for hover and pressed */

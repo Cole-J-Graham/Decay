@@ -68,7 +68,7 @@ void GameState::updateButtons()
 
     //Start the game
     if (this->buttons["EXPLORE"]->isPressed()) {
-        this->states->push(new CombatState(this->window, this->states));
+        this->states->push(new ForestState(this->window, this->states));
         std::cout << "Starting Travel State!";
     }
 

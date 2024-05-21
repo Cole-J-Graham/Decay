@@ -11,6 +11,7 @@ MapComponent::MapComponent(std::string file_input)
 
     //Initialization
     this->event = new EventModule();
+    this->mapView = new MapViewer();
     this->loadMap(file_input);
     this->initText();
     
@@ -20,6 +21,7 @@ MapComponent::~MapComponent()
 {
     //Delete Modules
     delete this->event;
+    delete this->mapView;
     //Delete Text
     auto it = this->text.begin();
     for (it = this->text.begin(); it != this->text.end(); ++it) {
@@ -32,12 +34,14 @@ void MapComponent::update(sf::Vector2f mousePos)
 {
     this->move();
     this->event->update(mousePos);
+    this->mapView->update(mousePos);
 }
 
 void MapComponent::render(sf::RenderTarget* target)
 {
     target->draw(this->map);
     this->event->render(target);
+    this->mapView->render(target);
     this->renderText(target);
 }
 

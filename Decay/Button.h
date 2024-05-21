@@ -10,6 +10,9 @@ public:
 	Button(float x, float y, float width, float height, float clicktime, sf::Font font,
 	std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor,
 		bool hidden);
+	Button(sf::Vector2f pos, float width, float height, float clicktime, sf::Font font,
+		std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor,
+		bool hidden);
 
 	//Core Functions
 	void update(const sf::Vector2f mousePos);
