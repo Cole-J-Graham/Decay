@@ -22,6 +22,7 @@ void ForestState::update()
 {
     this->updateMousePositions();
     this->map->update(this->getMousePosView());
+    this->map->detectNewArea("Assets/Wallpapers/forest.txt", "Assets/Wallpapers/castle.txt", "", "", "");
 }
 
 void ForestState::render(sf::RenderTarget* target)

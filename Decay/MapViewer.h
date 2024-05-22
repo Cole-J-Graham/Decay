@@ -1,5 +1,6 @@
 #pragma once
 #include<stack>
+#include<fstream>
 #include"Button.h"
 #include"Rectangle.h"
 class MapViewer
@@ -111,11 +112,17 @@ public:
 			this->mapContainer.push_back(input);
 		};
 
+		void clearMap()
+		{
+			this->mapContainer.clear();
+		};
+
 		//Modifiers
 		const bool& isHidden() { return this->hidden; };
 		bool& setHidden() { return this->hidden = true; };
 		bool& setShown() { return this->hidden = false; };
 		std::vector<sf::Texture>& getMapContainer() { return this->mapContainer; };
+		std::map<std::string, Button*>& getButtons() { return this->buttons; };
 
 	private:
 		sf::Vector2f buttonPosFirst;

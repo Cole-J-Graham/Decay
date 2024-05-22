@@ -64,16 +64,51 @@ void MapComponent::move()
     }
 }
 
+void MapComponent::detectNewArea(std::string pos1, std::string pos2, 
+    std::string pos3, std::string pos4, std::string pos5)
+{
+    if (this->mapView->maps.top()->getButtons()["POS1"]->isPressed()) {
+        this->loadMap(pos1);
+    }
+    if (this->mapView->maps.top()->getButtons()["POS2"]->isPressed()) {
+        this->loadMap(pos2);
+    }
+    if (this->mapView->maps.top()->getButtons()["POS3"]->isPressed()) {
+        this->loadMap(pos3);
+    }
+    if (this->mapView->maps.top()->getButtons()["POS4"]->isPressed()) {
+        this->loadMap(pos4);
+    }
+    if (this->mapView->maps.top()->getButtons()["POS5"]->isPressed()) {
+        this->loadMap(pos5);
+    }
+}
+
 //Asset Functions
 void MapComponent::loadMap(std::string file_input)
 {
     ifs.open(file_input);
     if (ifs.is_open()) {
+        // Clear the map outside the loop if necessary
+        this->mapView->maps.top()->clearMap();
+
+        std::string line;
         while (getline(ifs, line)) {
-            this->texture.loadFromFile(line);
-            this->mapView->maps.top()->loadMap(texture);
+            // Load texture from file
+            sf::Texture texture;
+            if (texture.loadFromFile(line)) {
+                // Assuming loadMap method in mapView->maps.top() takes sf::Texture&
+                this->mapView->maps.top()->loadMap(texture);
+            }
+            else {
+                // Handle error if texture loading fails
+                std::cerr << "Failed to load texture from file: " << line << std::endl;
+            }
         }
         ifs.close();
+    }
+    else {
+        std::cerr << "Failed to open file: " << file_input << std::endl;
     }
 }
 

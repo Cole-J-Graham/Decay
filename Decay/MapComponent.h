@@ -1,7 +1,6 @@
 #pragma once
 #include"MapViewer.h"
 #include"EventModule.h"
-#include<fstream>
 class MapComponent
 {
 public:
@@ -13,6 +12,8 @@ public:
 	void update(sf::Vector2f mousePos);
 	void render(sf::RenderTarget* target);
 	void move();
+	void detectNewArea(std::string pos1, std::string pos2,
+		std::string pos3, std::string pos4, std::string pos5);
 
 	//Asset Functions
 	void loadMap(std::string file_input);
