@@ -1,4 +1,5 @@
 #pragma once
+#include<stack>
 #include"Button.h"
 #include"Rectangle.h"
 class MapViewer
@@ -26,7 +27,6 @@ public:
 	void updateButtons(const sf::Vector2f mousePos);
 	void renderButtons(sf::RenderTarget* target);
 
-private:
 	class MapCore {
 	public:
 		//Constructors and Deconstructors
@@ -106,10 +106,16 @@ private:
 			}
 		}
 
+		void loadMap(sf::Texture& input) 
+		{ 
+			this->mapContainer.push_back(input);
+		};
+
 		//Modifiers
 		const bool& isHidden() { return this->hidden; };
-		bool& setHidden() { return this->hidden = true; }
-		bool& setShown() { return this->hidden = false; }
+		bool& setHidden() { return this->hidden = true; };
+		bool& setShown() { return this->hidden = false; };
+		std::vector<sf::Texture>& getMapContainer() { return this->mapContainer; };
 
 	private:
 		sf::Vector2f buttonPosFirst;
@@ -129,10 +135,27 @@ private:
 		sf::Font font;
 		sf::Sprite map;
 		std::map<std::string, Button*> buttons;
+		std::vector<sf::Texture> mapContainer;
 
 		bool hidden;
 
 	};
+
+	std::stack<MapCore*> maps;
+
+	void deleteTopElement(std::stack<MapCore*>& objectStack) {
+		if (!objectStack.empty()) {
+			MapCore* obj = objectStack.top();  // Get pointer to top element
+			objectStack.pop();  // Pop the element from the stack
+			delete obj;  // Delete the object pointed to by 'obj'
+		}
+		// Optionally handle case where stack is empty (if needed)
+		else {
+			std::cerr << "Stack is empty. Cannot delete top element." << std::endl;
+		}
+	}
+
+private:
 
 	float x;
 	float y;
@@ -140,7 +163,6 @@ private:
 	int map;
 
 	sf::Font font;
-	std::map<std::string, MapCore*> maps;
 	std::map<std::string, Button*> buttons;
 	std::map<std::string, Rectangle*> rectangles;
 };

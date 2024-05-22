@@ -22,9 +22,10 @@ MapViewer::~MapViewer()
         delete ir->second;
     }
     //Delete Maps
-    auto im = this->maps.begin();
-    for (im = this->maps.begin(); im != this->maps.end(); ++im) {
-        delete im->second;
+    while (!maps.empty()) {
+        MapCore* obj = maps.top();
+        maps.pop();
+        delete obj;
     }
 }
 
@@ -48,38 +49,22 @@ void MapViewer::render(sf::RenderTarget* target)
 //Map Functions
 void MapViewer::initMapCore()
 {
-    this->maps["FOREST"] = new MapCore( 0.395, "Assets/Wallpapers/Forest/forestmap.jpeg",
-        sf::Vector2f(10, 10), "Entrance",
-        sf::Vector2f(30, 50), "Dark Plains",
-        sf::Vector2f(50, 80), "Depths",
-        sf::Vector2f(75, 85), "Corruption",
-        sf::Vector2f(100, 100), "Deep Dark");
+    this->maps.push(new MapCore( 0.395, "Assets/Wallpapers/Forest/forestmap.jpeg",
+        sf::Vector2f(150, 150), "Entrance",
+        sf::Vector2f(150, 250), "Dark Plains",
+        sf::Vector2f(200,200), "Depths",
+        sf::Vector2f(300, 250), "Corruption",
+        sf::Vector2f(375, 400), "Deep Dark"));
 }
 
 void MapViewer::updateMaps(const sf::Vector2f mousePos)
 {
-    switch (this->map) {
-    case 0:
-        this->maps["FOREST"]->update(mousePos);
-        break;
-    case 1:
-        break;
-    case 2:
-        break;
-    }
+    this->maps.top()->update(mousePos);
 }
 
 void MapViewer::renderMaps(sf::RenderTarget* target)
 {
-    switch (this->map) {
-    case 0:
-        this->maps["FOREST"]->render(target);
-        break;
-    case 1:
-        break;
-    case 2:
-        break;
-    }
+    this->maps.top()->render(target);
 }
 
 //Rectangle Functions
@@ -111,12 +96,12 @@ void MapViewer::updateButtons(const sf::Vector2f mousePos)
 
     //Open Map Functionality
     if (this->buttons["OPENMAP"]->isPressed() && this->hidden) {
-        this->maps["FOREST"]->setShown();
+        this->maps.top()->setShown();
         this->rectangles["MAPVIEWER"]->show();
         this->hidden = false;
     }
     else if (this->buttons["OPENMAP"]->isPressed() && !this->hidden) {
-        this->maps["FOREST"]->setHidden();
+        this->maps.top()->setHidden();
         this->rectangles["MAPVIEWER"]->show();
         this->hidden = true;
     }

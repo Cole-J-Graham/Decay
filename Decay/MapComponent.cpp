@@ -4,10 +4,10 @@ MapComponent::MapComponent(std::string file_input)
 {
     //Variables
     this->file_input = file_input;
-    this->map.setPosition(580, 5);
-    this->map.setScale(0.75, 0.75);
+    this->map.setPosition(560, 5);
+    this->map.setScale(0.78, 0.78);
     this->mapMaxSize = 60;
-    this->move_time = 1.0f;
+    this->move_time = 0.5f;
 
     //Initialization
     this->event = new EventModule();
@@ -71,7 +71,7 @@ void MapComponent::loadMap(std::string file_input)
     if (ifs.is_open()) {
         while (getline(ifs, line)) {
             this->texture.loadFromFile(line);
-            this->mapContainer.push_back(texture);
+            this->mapView->maps.top()->loadMap(texture);
         }
         ifs.close();
     }

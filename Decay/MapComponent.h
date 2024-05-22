@@ -23,7 +23,7 @@ public:
 	int& getMapMaxSize() { return this->mapMaxSize; };
 
 	//Modifier Functions
-	void setMapFrame(int& frame) { this->map.setTexture(this->mapContainer[frame]);};
+	void setMapFrame(int& frame) { this->map.setTexture(this->mapView->maps.top()->getMapContainer()[frame]);};
 
 private:
 	EventModule* event;
@@ -34,7 +34,6 @@ private:
 
 	sf::Sprite map;
 	sf::Texture texture;
-	std::vector<sf::Texture> mapContainer;
 	std::map<std::string, Text*> text;
 
 	sf::Clock clock;
