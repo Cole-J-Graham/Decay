@@ -92,20 +92,13 @@ void MapComponent::loadMap(std::string file_input)
         // Clear the map outside the loop if necessary
         this->mapView->maps.top()->clearMap();
 
-        std::string line;
-        while (getline(ifs, line)) {
+        std::string input;
+        while (getline(ifs, input)) {
             // Load texture from file
-            sf::Texture texture;
-            if (texture.loadFromFile(line)) {
-                // Assuming loadMap method in mapView->maps.top() takes sf::Texture&
-                this->mapView->maps.top()->loadMap(texture);
-            }
-            else {
-                // Handle error if texture loading fails
-                std::cerr << "Failed to load texture from file: " << line << std::endl;
-            }
+            this->mapView->maps.top()->loadMap(input);
         }
         ifs.close();
+        this->setMapFrame(mapFrame);
     }
     else {
         std::cerr << "Failed to open file: " << file_input << std::endl;

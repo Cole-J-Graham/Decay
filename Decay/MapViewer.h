@@ -107,7 +107,7 @@ public:
 			}
 		}
 
-		void loadMap(sf::Texture& input) 
+		void loadMap(std::string& input) 
 		{ 
 			this->mapContainer.push_back(input);
 		};
@@ -121,8 +121,9 @@ public:
 		const bool& isHidden() { return this->hidden; };
 		bool& setHidden() { return this->hidden = true; };
 		bool& setShown() { return this->hidden = false; };
-		std::vector<sf::Texture>& getMapContainer() { return this->mapContainer; };
+		std::vector<std::string>& getMapContainer() { return this->mapContainer; };
 		std::map<std::string, Button*>& getButtons() { return this->buttons; };
+
 
 	private:
 		sf::Vector2f buttonPosFirst;
@@ -142,7 +143,7 @@ public:
 		sf::Font font;
 		sf::Sprite map;
 		std::map<std::string, Button*> buttons;
-		std::vector<sf::Texture> mapContainer;
+		std::vector<std::string> mapContainer;
 
 		bool hidden;
 

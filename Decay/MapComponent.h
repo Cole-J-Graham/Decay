@@ -24,7 +24,10 @@ public:
 	int& getMapMaxSize() { return this->mapMaxSize; };
 
 	//Modifier Functions
-	void setMapFrame(int& frame) { this->map.setTexture(this->mapView->maps.top()->getMapContainer()[frame]);};
+	void setMapFrame(int& frame) {
+		this->texture.loadFromFile(this->mapView->maps.top()->getMapContainer()[frame]);
+		this->map.setTexture(this->texture);
+	};
 
 private:
 	EventModule* event;

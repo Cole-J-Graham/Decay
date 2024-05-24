@@ -29,3 +29,8 @@ void ForestState::render(sf::RenderTarget* target)
 {
     this->map->render(target);
 }
+
+void ForestState::loadMapData(std::string input)
+{
+
+}

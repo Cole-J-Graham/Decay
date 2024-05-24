@@ -14,9 +14,12 @@ public:
 	void updateKeybinds();
 	void update();
 	void render(sf::RenderTarget* target = nullptr);
+	void loadMapData(std::string input);
 
 private:
 	
+	std::vector<sf::Texture> mapData;
+
 	MapComponent* map;
 	
 };
