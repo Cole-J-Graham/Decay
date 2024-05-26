@@ -31,9 +31,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>States</Filter>
     </ClCompile>
-    <ClCompile Include="CombatState.cpp">
-      <Filter>Combat</Filter>
-    </ClCompile>
     <ClCompile Include="CombatComponent.cpp">
       <Filter>Combat</Filter>
     </ClCompile>
@@ -60,6 +57,12 @@
     </ClCompile>
     <ClCompile Include="Move.cpp">
       <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="CombatState.cpp">
+      <Filter>PlayStates</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterManager.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -93,9 +96,6 @@
     <ClInclude Include="Text.h">
       <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="CombatState.h">
-      <Filter>Combat</Filter>
-    </ClInclude>
     <ClInclude Include="CombatComponent.h">
       <Filter>Combat</Filter>
     </ClInclude>
@@ -122,6 +122,12 @@
     </ClInclude>
     <ClInclude Include="Move.h">
       <Filter>Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="CombatState.h">
+      <Filter>PlayStates</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterManager.h">
+      <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +157,9 @@
     </Filter>
     <Filter Include="Map">
       <UniqueIdentifier>{f0ea415a-c034-468d-b19b-82e743865be1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{e63af495-d92c-403a-a137-167adf79d95e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

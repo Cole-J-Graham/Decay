@@ -47,12 +47,15 @@ private:
 	float x;
 	float y;
 	bool turnActive;
+
 	sf::Texture characterTexture;
 	sf::Sprite character;
 	std::string characterName;
+
 	std::map<std::string, Button*> buttons;
 	std::map<std::string, Text*> text;
 	std::map<std::string, Move*> moveButtons;
+
 	sf::Font font;
 };
 

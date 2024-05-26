@@ -1,7 +1,7 @@
 #pragma once
 #include<random>
 //Entities
-#include"Character.h"
+#include"CharacterManager.h"
 #include"Enemy.h"
 class CombatComponent
 {
@@ -45,7 +45,6 @@ public:
 	//Getters
 	const std::string& getEnemyId() { return this->enemyId; };
 
-	std::map<std::string, Character*> characters;
 	std::map<std::string, Enemy*> enemies;
 
 private:

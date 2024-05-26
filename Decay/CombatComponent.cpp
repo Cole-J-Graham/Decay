@@ -17,11 +17,6 @@ CombatComponent::CombatComponent()
 
 CombatComponent::~CombatComponent()
 {
-    //Delete Characters
-    auto ic = this->characters.begin();
-    for (ic = this->characters.begin(); ic != this->characters.end(); ++ic) {
-        delete ic->second;
-    }
     //Delete Text
     auto it = this->text.begin();
     for (it = this->text.begin(); it != this->text.end(); ++it) {
@@ -55,41 +50,39 @@ void CombatComponent::updateMoveSelect()
 
 void CombatComponent::initMoves()
 {
-    this->characters["PLAYER"]->createMove("Slash", "Players basic attack", 100, 25, 0.1, font, "Slash",
+    CharacterManager::getInstance().getCharacter("PLAYER")->createMove("Slash", "Players basic attack", 100, 25, 0.1, font, "Slash",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->characters["PLAYER"]->createMove("Cloak", "Players basic cloak", 100, 25, 0.1, font, "Cloak",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-
-    this->characters["ZIN"]->createMove("Protection", "Zin's basic barrier", 100, 25, 0.1, font, "Protection",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->characters["ZIN"]->createMove("Healing", "Zin's basic healing", 100, 25, 0.1, font, "Healing",
+    CharacterManager::getInstance().getCharacter("PLAYER")->createMove("Cloak", "Players basic cloak", 100, 25, 0.1, font, "Cloak",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 
-    this->characters["THOM"]->createMove("Harden", "Thom's defense boost", 100, 25, 0.1, font, "Harden",
+    CharacterManager::getInstance().getCharacter("ZIN")->createMove("Protection", "Zin's basic barrier", 100, 25, 0.1, font, "Protection",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->characters["THOM"]->createMove("Spiked", "Thom's thorn passive ability", 100, 25, 0.1, font, "Spiked",
+    CharacterManager::getInstance().getCharacter("ZIN")->createMove("Healing", "Zin's basic healing", 100, 25, 0.1, font, "Healing",
+        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+
+    CharacterManager::getInstance().getCharacter("THOM")->createMove("Harden", "Thom's defense boost", 100, 25, 0.1, font, "Harden",
+        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+    CharacterManager::getInstance().getCharacter("THOM")->createMove("Spiked", "Thom's thorn passive ability", 100, 25, 0.1, font, "Spiked",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 }
 
 //Character Functions
 void CombatComponent::initCharacters()
 {
-    this->characters["PLAYER"] = new Character("Player", 100, 100, 10, 10, 25.f, 150.f, 0.319f, "Assets/Sprites/Player.png", true);
-    this->characters["ZIN"] = new Character("Zin", 100, 100, 10, 10, 25.f, 420.f, 0.066f, "Assets/Sprites/zinSprite.png", false);
-    this->characters["THOM"] = new Character("Thom", 100, 100, 10, 10, 25.f, 690.f, 0.625f, "Assets/Sprites/thomNormal.png", false);
+    CharacterManager::getInstance().addCharacter("PLAYER", std::make_shared<Character>("Player", 100, 100, 10, 10, 25.f, 150.f, 0.319f, "Assets/Sprites/Player.png", true));
+    CharacterManager::getInstance().addCharacter("ZIN", std::make_shared<Character>("Zin", 100, 100, 10, 10, 25.f, 420.f, 0.066f, "Assets/Sprites/zinSprite.png", false));
+    CharacterManager::getInstance().addCharacter("THOM", std::make_shared<Character>("Thom", 100, 100, 10, 10, 25.f, 690.f, 0.625f, "Assets/Sprites/thomNormal.png", false));
 }
 
 void CombatComponent::renderCharacters(sf::RenderTarget* target)
 {
-    for (auto& it : this->characters) {
-        it.second->render(target);
-    }
+    CharacterManager::getInstance().renderAll(target);
 }
 
 //Player Functions
 void CombatComponent::playerMoveSelect()
 {
-    if (this->characters["PLAYER"]->getMoves()["Slash"]->isPressed()) {
+    if (CharacterManager::getInstance().getCharacter("PLAYER")->getMoves()["Slash"]->isPressed()) {
         this->strike();
     }
 }
@@ -113,10 +106,10 @@ void CombatComponent::guard()
 //Zin Functions
 void CombatComponent::zinMoveSelect()
 {
-    if (this->characters["ZIN"]->getMoves()["Protection"]->isPressed()) {
+    if (CharacterManager::getInstance().getCharacter("ZIN")->getMoves()["Protection"]->isPressed()) {
         this->protection();
     }
-    if (this->characters["ZIN"]->getMoves()["Healing"]->isPressed()) {
+    if (CharacterManager::getInstance().getCharacter("ZIN")->getMoves()["Healing"]->isPressed()) {
         this->healing();
     }
 }
