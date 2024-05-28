@@ -20,6 +20,9 @@ public:
 	void initButtons();
 	void updateButtons();
 	void renderButtons(sf::RenderTarget* target = nullptr);
+
+	//Character Functions
+	void initCharacters();
 		
 
 private:

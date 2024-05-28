@@ -1,3 +1,6 @@
+#ifndef CHARACTER_MANAGER_H
+#define CHARACTER_MANAGER_H
+
 #include"Character.h"
 #include <memory>
 #include <unordered_map>
@@ -49,3 +52,5 @@ public:
         }
     }
 };
+
+#endif

@@ -5,8 +5,9 @@ MainMenuState::MainMenuState(sf::RenderWindow* window, std::stack<State*>* state
 {
     font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
 
-    //Initialize Main Menu
+    //Initialization Functions
     this->initButtons();
+    this->initCharacters();
 }
 
 MainMenuState::~MainMenuState()
@@ -58,7 +59,7 @@ void MainMenuState::updateButtons()
 
     //Start the game
     if (this->buttons["GAME_STATE"]->isPressed()) {
-        this->states->push(new CombatState(this->window, this->states));
+        this->states->push(new ForestState(this->window, this->states));
         std::cout << "Starting gamestate!" << "\n";
     }
 
@@ -73,4 +74,12 @@ void MainMenuState::renderButtons(sf::RenderTarget* target)
     for (auto& it : this->buttons) {
         it.second->render(target);
     }
+}
+
+//Character Functions
+void MainMenuState::initCharacters()
+{
+    CharacterManager::getInstance().addCharacter("PLAYER", std::make_shared<Character>("Player", 100, 100, 10, 10, 25.f, 150.f, 0.319f, "Assets/Sprites/Player.png", true));
+    CharacterManager::getInstance().addCharacter("ZIN", std::make_shared<Character>("Zin", 100, 100, 10, 10, 25.f, 420.f, 0.066f, "Assets/Sprites/zinSprite.png", false));
+    CharacterManager::getInstance().addCharacter("THOM", std::make_shared<Character>("Thom", 100, 100, 10, 10, 25.f, 690.f, 0.625f, "Assets/Sprites/thomNormal.png", false));
 }

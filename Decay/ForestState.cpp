@@ -23,11 +23,13 @@ void ForestState::update()
     this->updateMousePositions();
     this->map->update(this->getMousePosView());
     this->map->detectNewArea("Assets/Wallpapers/forest.txt", "Assets/Wallpapers/castle.txt", "", "", "");
+    CharacterManager::getInstance().updateAll(this->getMousePosView());
 }
 
 void ForestState::render(sf::RenderTarget* target)
 {
     this->map->render(target);
+    CharacterManager::getInstance().getCharacter("PLAYER")->renderStats(target);
 }
 
 void ForestState::loadMapData(std::string input)

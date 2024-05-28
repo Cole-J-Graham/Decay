@@ -93,7 +93,7 @@ void StatsModule::increaseLevel()
 //Rectangle Functions
 void StatsModule::initRects()
 {
-    this->rectangles["STATSMENU"] = new Rectangle(1400, 100, 300, 800, sf::Color::Transparent,
+    this->rectangles["STATSMENU"] = new Rectangle(1400, 50, 300, 600, sf::Color::Transparent,
         sf::Color::White, 1.f, false);
 }
 
@@ -123,9 +123,9 @@ void StatsModule::updateButtons(const sf::Vector2f mousePos)
 
 void StatsModule::initButtons()
 {
-    this->buttons["OPENSTATS"] = new Button(400, 900, 100, 25, 0.5f, this->font, "Stats",
+    this->buttons["OPENSTATS"] = new Button(1370, 775, 100, 25, 0.5f, this->font, "Stats",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->buttons["LEVELUP"] = new Button(1402, 103, 100, 25, 0.5f, this->font, "LEVEL++",
+    this->buttons["LEVELUP"] = new Button(1402, 53, 100, 25, 0.5f, this->font, "LEVEL++",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 }
 
@@ -139,7 +139,7 @@ void StatsModule::renderButtons(sf::RenderTarget* target)
 //Text Functions
 void StatsModule::initText()
 {
-    this->text["LEVELTEXT"] = new Text(1504, 105, 16, std::to_string(this->exp) + "/" + std::to_string(this->expNext) + "              LVL: " + std::to_string(this->level) + "\n                         SP: " + std::to_string(this->sp),
+    this->text["LEVELTEXT"] = new Text(1504, 53, 16, std::to_string(this->exp) + "/" + std::to_string(this->expNext) + "              LVL: " + std::to_string(this->level) + "\n                         SP: " + std::to_string(this->sp),
         sf::Color::White, false);
 }
 

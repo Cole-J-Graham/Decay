@@ -17,7 +17,6 @@ public:
 	void initMoves();
 
 	//Character Functions
-	void initCharacters();
 	void renderCharacters(sf::RenderTarget* target);
 
 	//Player Functions

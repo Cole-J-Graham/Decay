@@ -25,10 +25,12 @@ Character::Character(std::string characterName, int hp, int hpMax, int damage, i
 	font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
 	this->initText();
 	this->initButtons();
+	this->stats = new StatsModule();
 }
 
 Character::~Character()
 {
+	delete this->stats;
 	//Delete Buttons
 	auto ib = this->buttons.begin();
 	for (ib = this->buttons.begin(); ib != this->buttons.end(); ++ib) {
@@ -51,17 +53,18 @@ void Character::update(const sf::Vector2f mousePos)
 {
 	this->updateText();
 	this->updateButtons(mousePos);
+	this->stats->update(mousePos);
 }
 
 void Character::render(sf::RenderTarget* target)
 {
+	//In combat
 	target->draw(this->character);
 	this->renderButtons(target);
 	this->renderText(target);
-
-	//Render all turn combat assets
-	if (this->turnActive) { 
-		this->renderMoveButtons(target); 
+	//Active Turn
+	if (this->turnActive) {
+		this->renderMoveButtons(target);
 	}
 }
 
@@ -137,6 +140,12 @@ void Character::renderMoveButtons(sf::RenderTarget* target)
 		it.second->render(target);
 		it.second->setPosition(350, y -= 25);
 	}
+}
+
+//Stat Functions
+void Character::renderStats(sf::RenderTarget* target)
+{
+	this->stats->render(target);
 }
 
 //Text Functions

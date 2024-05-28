@@ -3,6 +3,7 @@
 #include"State.h"
 //Componenets
 #include"MapComponent.h"
+#include"CharacterManager.h"
 class ForestState : public State
 {
 public:
