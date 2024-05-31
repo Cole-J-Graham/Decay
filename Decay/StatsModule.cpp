@@ -8,7 +8,7 @@ StatsModule::StatsModule()
     this->expNext = 100;
     this->sp = 5;
     
-    this->hidden = true;
+    this->currentInstance = false;
 
     //Initialization
     font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
@@ -29,6 +29,11 @@ StatsModule::~StatsModule()
     for (ir = this->rectangles.begin(); ir != this->rectangles.end(); ++ir) {
         delete ir->second;
     }
+    //Delete Buttons
+    auto ib = this->buttons.begin();
+    for (ib = this->buttons.begin(); ib != this->buttons.end(); ++ib) {
+        delete ib->second;
+    }
 }
 
 //Core Functions
@@ -41,14 +46,14 @@ void StatsModule::update(const sf::Vector2f mousePos)
 
 void StatsModule::render(sf::RenderTarget* target)
 {
-    if (!this->hidden) {
+    if (this->currentInstance) {
         this->renderRects(target);
         this->renderStats(target);
         this->renderButtons(target);
         this->renderText(target);
     }
-    else if (this->hidden){
-        this->buttons["OPENSTATS"]->render(target);
+    else {
+        this->buttons["INSTANCE"]->render(target);
     }
 }
 
@@ -111,11 +116,11 @@ void StatsModule::updateButtons(const sf::Vector2f mousePos)
         it.second->update(mousePos);
     }
 
-    if (this->buttons["OPENSTATS"]->isPressed() && this->hidden) {
-        this->hidden = false;
-    } 
-    else if (this->buttons["OPENSTATS"]->isPressed() && !this->hidden) {
-        this->hidden = true;
+    if (this->buttons["INSTANCE"]->isPressed() && this->currentInstance) {
+        this->currentInstance = false;
+    }
+    else if (this->buttons["INSTANCE"]->isPressed() && !this->currentInstance) {
+        this->currentInstance = true;
     }
 
     this->increaseLevel();
@@ -123,7 +128,7 @@ void StatsModule::updateButtons(const sf::Vector2f mousePos)
 
 void StatsModule::initButtons()
 {
-    this->buttons["OPENSTATS"] = new Button(1370, 775, 100, 25, 0.5f, this->font, "Stats",
+    this->buttons["INSTANCE"] = new Button(1505, 50, 100, 25, 0.5f, this->font, "Char",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
     this->buttons["LEVELUP"] = new Button(1402, 53, 100, 25, 0.5f, this->font, "LEVEL++",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);

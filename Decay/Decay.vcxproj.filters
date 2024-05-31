@@ -64,6 +64,9 @@
     <ClCompile Include="CharacterManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
+    <ClCompile Include="StatsManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
@@ -127,6 +130,9 @@
       <Filter>PlayStates</Filter>
     </ClInclude>
     <ClInclude Include="CharacterManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,4 +1,5 @@
 #pragma once
+#include<vector>
 #include"Rectangle.h"
 #include"Button.h"
 #include"Text.h"
@@ -35,10 +36,9 @@ public:
 	void renderText(sf::RenderTarget* target = nullptr);
 	void updateText();
 
-	//Modifiers
-	bool hidden;
-	void setHidden() { this->hidden = true; };
-	void setShown() { this->hidden = false; };
+	//Getters
+	bool& getCurrentInstance() { return this->currentInstance; }
+	std::map<std::string, Button*>& getButtons() { return this->buttons; };
 
 private:
 	class Stat
@@ -108,6 +108,7 @@ private:
 	int exp;
 	int expNext;
 	int sp;
+	bool currentInstance;
 
 	sf::Font font;
 	std::map<std::string, Stat*> stats;

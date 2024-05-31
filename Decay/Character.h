@@ -1,6 +1,6 @@
 #pragma once
 #include"Move.h"
-#include"StatsModule.h"
+#include"StatsManager.h"
 class Character
 {
 public:
@@ -26,9 +26,6 @@ public:
 		float clicktime, sf::Font font, std::string text, sf::Color idleColor, sf::Color hoverColor,
 		sf::Color activeColor, bool hidden);
 	void renderMoveButtons(sf::RenderTarget* target);
-
-	//Stat Functions
-	void renderStats(sf::RenderTarget* target);
 
 	//Text Functions
 	void initText();
@@ -60,7 +57,5 @@ private:
 	std::map<std::string, Move*> moveButtons;
 
 	sf::Font font;
-
-	StatsModule* stats;
 };
 

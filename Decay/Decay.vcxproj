@@ -164,6 +164,7 @@
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="State.cpp" />
+    <ClCompile Include="StatsManager.cpp" />
     <ClCompile Include="StatsModule.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="ForestState.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Move.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="State.h" />
+    <ClInclude Include="StatsManager.h" />
     <ClInclude Include="StatsModule.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="ForestState.h" />
