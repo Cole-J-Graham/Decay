@@ -23,6 +23,7 @@ public:
 	const bool isHovered() const;
 	//Modifiers
 	void setPosition(float x, float y) { this->shape.setPosition(x, y); this->text.setPosition(x, y); };
+	void setText(std::string& text) { this->text.setString(text); }
 	void show() { this->hidden = false; };
 	void hide() { this->hidden = true; };
 	void deActivate() { this->clickBlocked = true; this->shape.setFillColor(this->activeColor); }

@@ -36,7 +36,7 @@ void StatsManager::render(sf::RenderTarget* target) {
             if (!this->hidden) {
                pair.second->render(target);
             }
-            pair.second->getButtons()["INSTANCE"]->setPosition(1705, height += 30);
+            pair.second->getButtons()[pair.second->getButtonId()]->setPosition(1705, height += 30);
         }
     }
     this->buttons["OPENSTATS"]->render(target);
@@ -45,6 +45,7 @@ void StatsManager::render(sf::RenderTarget* target) {
 // Manager Functions
 void StatsManager::createInstance(std::string id) {
     stats[id] = std::make_unique<StatsModule>();
+    stats[id]->setId(id);
 }
 
 //Button Functions

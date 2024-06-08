@@ -22,7 +22,6 @@ void ForestState::update()
 {
     this->updateMousePositions();
     this->map->update(this->getMousePosView());
-    this->map->detectNewArea("Assets/Wallpapers/forest.txt", "Assets/Wallpapers/castle.txt", "", "", "");
     CharacterManager::getInstance().updateAll(this->getMousePosView());
     CharacterManager::getInstance().updateStats(this->getMousePosView());
 }

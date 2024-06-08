@@ -38,7 +38,14 @@ public:
 
 	//Getters
 	bool& getCurrentInstance() { return this->currentInstance; }
+	bool& getLastClicked() { return this->lastClicked; }
+	std::string& getId() { return this->id; }
+	std::string& getButtonId() { return this->buttonId; }
 	std::map<std::string, Button*>& getButtons() { return this->buttons; };
+
+	//Setters
+	void setId(std::string& id) { this->id = id; }
+	void setButtonId(std::string& id) { this->buttonId = id; }
 
 private:
 	class Stat
@@ -109,6 +116,10 @@ private:
 	int expNext;
 	int sp;
 	bool currentInstance;
+	bool lastClicked;
+
+	std::string id;
+	std::string buttonId;
 
 	sf::Font font;
 	std::map<std::string, Stat*> stats;

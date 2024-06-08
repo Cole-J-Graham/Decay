@@ -3,6 +3,7 @@
 #include<fstream>
 #include"Button.h"
 #include"Rectangle.h"
+#include"EventModule.h"
 class MapViewer
 {
 public:
@@ -15,9 +16,16 @@ public:
 	void render(sf::RenderTarget* target);
 
 	//Map Functions
-	void initMapCore();
 	void updateMaps(const sf::Vector2f mousePos);
 	void renderMaps(sf::RenderTarget* target);
+	void createMapCore(float scale, std::string mapInput,
+		sf::Vector2f pos1, std::string in1, std::string str1, sf::Vector2f pos2, std::string in2,
+		std::string str2, sf::Vector2f pos3, std::string in3, std::string str3, sf::Vector2f pos4,
+		std::string in4, std::string str4, sf::Vector2f pos5, std::string in5, std::string str5);
+	void detectNewArea(std::string in1, std::string in2,
+		std::string in3, std::string in4, std::string in5);
+	void move();
+
 
 	//Rectangle Functions
 	void initRects();
@@ -28,12 +36,19 @@ public:
 	void updateButtons(const sf::Vector2f mousePos);
 	void renderButtons(sf::RenderTarget* target);
 
+	//Asset Functions
+	void loadMap(std::string file_input);
+
+	//Getters
+	int& getMapMaxSize() { return this->mapMaxSize; };
+
 	class MapCore {
 	public:
 		//Constructors and Deconstructors
-		MapCore(float scale, std::string mapInput, sf::Vector2f posFirst, std::string strFirst, sf::Vector2f posSecond,
-			std::string strSecond, sf::Vector2f posThird, std::string strThird, sf::Vector2f posFourth,
-			std::string strFourth, sf::Vector2f posFifth, std::string strFifth) {
+		MapCore(float scale, std::string mapInput, 
+			sf::Vector2f pos1, std::string in1, std::string str1, sf::Vector2f pos2, std::string in2,
+			std::string str2, sf::Vector2f pos3, std::string in3, std::string str3, sf::Vector2f pos4,
+			std::string in4, std::string str4, sf::Vector2f pos5, std::string in5, std::string str5) {
 			//Init Map
 			font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
 			this->mapInput = mapInput;
@@ -43,18 +58,24 @@ public:
 			this->map.setScale(scale, scale);
 			this->hidden = true;
 
+			this->mapPositionInputs.push_back(in1);
+			this->mapPositionInputs.push_back(in2);
+			this->mapPositionInputs.push_back(in3);
+			this->mapPositionInputs.push_back(in4);
+			this->mapPositionInputs.push_back(in5);
+
 			//Init Button Positions
-			this->buttonPosFirst = posFirst;
-			this->buttonPosSecond = posSecond;
-			this->buttonPosThird = posThird;
-			this->buttonPosFourth = posFourth;
-			this->buttonPosFifth = posFifth;
+			this->buttonPosFirst = pos1;
+			this->buttonPosSecond = pos2;
+			this->buttonPosThird = pos3;
+			this->buttonPosFourth = pos4;
+			this->buttonPosFifth = pos5;
 			//Init Button Names
-			this->buttonNameFirst = strFirst;
-			this->buttonNameSecond = strSecond;
-			this->buttonNameThird = strThird;
-			this->buttonNameFourth = strFourth;
-			this->buttonNameFifth = strFifth;
+			this->buttonNameFirst = str1;
+			this->buttonNameSecond = str2;
+			this->buttonNameThird = str3;
+			this->buttonNameFourth = str4;
+			this->buttonNameFifth = str5;
 
 			//Init Functions
 			this->initButtons();
@@ -122,6 +143,7 @@ public:
 		bool& setHidden() { return this->hidden = true; };
 		bool& setShown() { return this->hidden = false; };
 		std::vector<std::string>& getMapContainer() { return this->mapContainer; };
+		std::vector<std::string>& getMapPositionsContainer() { return this->mapPositionInputs; };
 		std::map<std::string, Button*>& getButtons() { return this->buttons; };
 
 
@@ -138,6 +160,8 @@ public:
 		std::string buttonNameFourth;
 		std::string buttonNameFifth;
 
+		std::vector<std::string> mapPositionInputs;
+
 		sf::Texture mapTexture;
 		std::string mapInput;
 		sf::Font font;
@@ -150,6 +174,14 @@ public:
 	};
 
 	std::stack<MapCore*> maps;
+
+	void changeMap(MapCore* input);
+
+	//Modifier Functions
+	void setMapFrame(int& frame) {
+		this->texture.loadFromFile(this->maps.top()->getMapContainer()[frame]);
+		this->mapSprite.setTexture(this->texture);
+	};
 
 	void deleteTopElement(std::stack<MapCore*>& objectStack) {
 		if (!objectStack.empty()) {
@@ -165,13 +197,27 @@ public:
 
 private:
 
+	EventModule* event;
+
 	float x;
 	float y;
 	bool hidden;
 	int map;
+	int mapFrame;
+
+	sf::Clock clock;
+	sf::Time time;
+	float move_time;
+	int mapMaxSize;
+
+	sf::Sprite mapSprite;
+	sf::Texture texture;
+	std::ifstream ifs;
+	std::string line;
 
 	sf::Font font;
 	std::map<std::string, Button*> buttons;
 	std::map<std::string, Rectangle*> rectangles;
+
 };
 

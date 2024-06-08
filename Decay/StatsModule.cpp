@@ -9,6 +9,7 @@ StatsModule::StatsModule()
     this->sp = 5;
     
     this->currentInstance = false;
+    this->lastClicked = false;
 
     //Initialization
     font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
@@ -53,7 +54,7 @@ void StatsModule::render(sf::RenderTarget* target)
         this->renderText(target);
     }
     else {
-        this->buttons["INSTANCE"]->render(target);
+        this->buttons[this->buttonId]->render(target);
     }
 }
 
@@ -63,6 +64,7 @@ void StatsModule::updateStats(const sf::Vector2f mousePos)
     for (auto& it : this->stats) {
         it.second->update(mousePos);
         it.second->statUp(this->sp);
+        this->buttonId = this->id;
     }
 }
 
@@ -114,13 +116,16 @@ void StatsModule::updateButtons(const sf::Vector2f mousePos)
 {
     for (auto& it : this->buttons) {
         it.second->update(mousePos);
+        it.second->setText(this->id);
     }
 
-    if (this->buttons["INSTANCE"]->isPressed() && this->currentInstance) {
+    if (this->buttons[this->buttonId]->isPressed() && this->currentInstance) {
         this->currentInstance = false;
+        this->lastClicked = false;
     }
-    else if (this->buttons["INSTANCE"]->isPressed() && !this->currentInstance) {
+    else if (this->buttons[this->buttonId]->isPressed() && !this->currentInstance) {
         this->currentInstance = true;
+        this->lastClicked = true;
     }
 
     this->increaseLevel();
@@ -128,7 +133,7 @@ void StatsModule::updateButtons(const sf::Vector2f mousePos)
 
 void StatsModule::initButtons()
 {
-    this->buttons["INSTANCE"] = new Button(1505, 50, 100, 25, 0.5f, this->font, "Char",
+    this->buttons[this->buttonId] = new Button(1505, 50, 100, 25, 0.5f, this->font, this->id,
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
     this->buttons["LEVELUP"] = new Button(1402, 53, 100, 25, 0.5f, this->font, "LEVEL++",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
