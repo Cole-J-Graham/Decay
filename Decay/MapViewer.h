@@ -41,6 +41,7 @@ public:
 
 	//Getters
 	int& getMapMaxSize() { return this->mapMaxSize; };
+	bool& getHidden() { return this->hidden; };
 
 	class MapCore {
 	public:

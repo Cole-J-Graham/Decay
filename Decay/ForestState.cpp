@@ -4,7 +4,7 @@ ForestState::ForestState(sf::RenderWindow* window, std::stack<State*>* states)
     : State(window, states)
 {
     //Initialization
-    this->map = new MapComponent("Assets/Wallpapers/forest.txt");
+    this->map = new MapComponent();
 }
 
 ForestState::~ForestState()
