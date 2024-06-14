@@ -9,8 +9,10 @@ MapViewer::MapViewer()
     this->map = 0;
     this->mapSprite.setPosition(560, 5);
     this->mapSprite.setScale(0.78, 0.78);
-    this->mapMaxSize = 60;
-    this->move_time = 0.5f;
+    this->currentMapId = 0;
+    this->mapFramesMaxSize = 59;
+    this->mapIdMaxSize = -1;
+    this->move_time = 0.1f;
 
     //Initialization
     this->event = new EventModule();
@@ -41,11 +43,11 @@ void MapViewer::update(const sf::Vector2f mousePos)
     this->updateButtons(mousePos);
     this->updateMaps(mousePos);
     this->move();
-    this->detectNewArea(this->maps[currentMapId]->getMapPositionsContainer()[0],
-        this->maps[currentMapId]->getMapPositionsContainer()[1],
-        this->maps[currentMapId]->getMapPositionsContainer()[2],
-        this->maps[currentMapId]->getMapPositionsContainer()[3],
-        this->maps[currentMapId]->getMapPositionsContainer()[4]);
+    this->detectNewArea(this->maps[currentMapId]->getMapLoadAreaInputs()[0],
+        this->maps[currentMapId]->getMapLoadAreaInputs()[1],
+        this->maps[currentMapId]->getMapLoadAreaInputs()[2],
+        this->maps[currentMapId]->getMapLoadAreaInputs()[3],
+        this->maps[currentMapId]->getMapLoadAreaInputs()[4]);
 }
 
 void MapViewer::render(sf::RenderTarget* target)
@@ -81,7 +83,7 @@ void MapViewer::createMapCore(int mapId, float scale, std::string mapInput,
         sf::Vector2f(pos3), in3, str3,
         sf::Vector2f(pos4), in4, str4,
         sf::Vector2f(pos5), in5, str5);
-    this->currentMapId = mapId;
+    this->mapIdMaxSize++;
 }
 
 void MapViewer::detectNewArea(std::string in1, std::string in2,
@@ -89,18 +91,23 @@ void MapViewer::detectNewArea(std::string in1, std::string in2,
 {
     if (this->maps[currentMapId]->getButtons()["POS1"]->isPressed()) {
         this->loadMap(in1);
+        this->mapFrame = 0;
     }
     if (this->maps[currentMapId]->getButtons()["POS2"]->isPressed()) {
         this->loadMap(in2);
+        this->mapFrame = 0;
     }
     if (this->maps[currentMapId]->getButtons()["POS3"]->isPressed()) {
         this->loadMap(in3);
+        this->mapFrame = 0;
     }
     if (this->maps[currentMapId]->getButtons()["POS4"]->isPressed()) {
         this->loadMap(in4);
+        this->mapFrame = 0;
     }
     if (this->maps[currentMapId]->getButtons()["POS5"]->isPressed()) {
         this->loadMap(in5);
+        this->mapFrame = 0;
     }
 }
 
@@ -108,17 +115,15 @@ void MapViewer::move()
 {
     this->time = this->clock.getElapsedTime();
     if (this->time.asSeconds() >= this->move_time) {
-        if (this->mapFrame != this->getMapMaxSize() + 1) {
-            if (this->event->userInput->rightArrowClicked()) {
-                this->mapFrame++;
-                this->setMapFrame(mapFrame);
-                this->clock.restart();
-            }
-            if (this->event->userInput->leftArrowClicked()) {
-                this->mapFrame--;
-                this->setMapFrame(mapFrame);
-                this->clock.restart();
-            }
+        if (this->event->userInput->rightArrowClicked() && this->mapFrame < this->mapFramesMaxSize) {
+            this->mapFrame++;
+            this->setMapFrame(mapFrame);
+            this->clock.restart();
+        } 
+        else if (this->event->userInput->leftArrowClicked() && this->mapFrame > 0) {
+            this->mapFrame--;
+            this->setMapFrame(mapFrame);
+            this->clock.restart();
         }
     }
 }

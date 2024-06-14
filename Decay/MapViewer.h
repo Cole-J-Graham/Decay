@@ -41,9 +41,10 @@ public:
 	void loadMap(std::string file_input);
 
 	//Getters
-	int& getMapMaxSize() { return this->mapMaxSize; };
+	int& getMapFramesMaxSize() { return this->mapFramesMaxSize; };
 	bool& getHidden() { return this->hidden; };
 	int& getCurrentMapId() { return this->currentMapId; };
+	int& getMapIdMaxSize() { return this->mapIdMaxSize; };
 
 	class MapCore {
 	public:
@@ -61,24 +62,25 @@ public:
 			this->map.setScale(scale, scale);
 			this->hidden = true;
 
-			this->mapPositionInputs.push_back(in1);
-			this->mapPositionInputs.push_back(in2);
-			this->mapPositionInputs.push_back(in3);
-			this->mapPositionInputs.push_back(in4);
-			this->mapPositionInputs.push_back(in5);
+			this->mapLoadAreaInputs.push_back(in1);
+			this->mapLoadAreaInputs.push_back(in2);
+			this->mapLoadAreaInputs.push_back(in3);
+			this->mapLoadAreaInputs.push_back(in4);
+			this->mapLoadAreaInputs.push_back(in5);
 
 			//Init Button Positions
-			this->buttonPosFirst = pos1;
-			this->buttonPosSecond = pos2;
-			this->buttonPosThird = pos3;
-			this->buttonPosFourth = pos4;
-			this->buttonPosFifth = pos5;
+			this->buttonPos.push_back(pos1);
+			this->buttonPos.push_back(pos2);
+			this->buttonPos.push_back(pos3);
+			this->buttonPos.push_back(pos4);
+			this->buttonPos.push_back(pos5);
+
 			//Init Button Names
-			this->buttonNameFirst = str1;
-			this->buttonNameSecond = str2;
-			this->buttonNameThird = str3;
-			this->buttonNameFourth = str4;
-			this->buttonNameFifth = str5;
+			this->buttonNames.push_back(str1);
+			this->buttonNames.push_back(str2);
+			this->buttonNames.push_back(str3);
+			this->buttonNames.push_back(str4);
+			this->buttonNames.push_back(str5);
 
 			//Init Functions
 			this->initButtons();
@@ -105,15 +107,15 @@ public:
 		//Button Functions
 		void initButtons()
 		{
-			this->buttons["POS1"] = new Button(this->buttonPosFirst, 100, 25, 0.5f, this->font, this->buttonNameFirst,
+			this->buttons["POS1"] = new Button(this->buttonPos[0], 100, 25, 0.5f, this->font, this->buttonNames[0],
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-			this->buttons["POS2"] = new Button(this->buttonPosSecond, 100, 25, 0.5f, this->font, this->buttonNameSecond,
+			this->buttons["POS2"] = new Button(this->buttonPos[1], 100, 25, 0.5f, this->font, this->buttonNames[1],
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-			this->buttons["POS3"] = new Button(this->buttonPosThird, 100, 25, 0.5f, this->font, this->buttonNameThird,
+			this->buttons["POS3"] = new Button(this->buttonPos[2], 100, 25, 0.5f, this->font, this->buttonNames[2],
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-			this->buttons["POS4"] = new Button(this->buttonPosFourth, 100, 25, 0.5f, this->font, this->buttonNameFourth,
+			this->buttons["POS4"] = new Button(this->buttonPos[3], 100, 25, 0.5f, this->font, this->buttonNames[3],
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-			this->buttons["POS5"] = new Button(this->buttonPosFifth, 100, 25, 0.5f, this->font, this->buttonNameFifth,
+			this->buttons["POS5"] = new Button(this->buttonPos[4], 100, 25, 0.5f, this->font, this->buttonNames[4],
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 		}
 
@@ -145,25 +147,17 @@ public:
 		const bool& isHidden() { return this->hidden; };
 		bool& setHidden() { return this->hidden = true; };
 		bool& setShown() { return this->hidden = false; };
+		//Getters
+
 		std::vector<std::string>& getMapContainer() { return this->mapContainer; };
-		std::vector<std::string>& getMapPositionsContainer() { return this->mapPositionInputs; };
+		std::vector<std::string>& getMapLoadAreaInputs() { return this->mapLoadAreaInputs; };
 		std::map<std::string, Button*>& getButtons() { return this->buttons; };
 
-
 	private:
-		sf::Vector2f buttonPosFirst;
-		sf::Vector2f buttonPosSecond;
-		sf::Vector2f buttonPosThird;
-		sf::Vector2f buttonPosFourth;
-		sf::Vector2f buttonPosFifth;
-
-		std::string buttonNameFirst;
-		std::string buttonNameSecond;
-		std::string buttonNameThird;
-		std::string buttonNameFourth;
-		std::string buttonNameFifth;
-
-		std::vector<std::string> mapPositionInputs;
+		
+		std::vector<sf::Vector2f> buttonPos;
+		std::vector<std::string> buttonNames;
+		std::vector<std::string> mapLoadAreaInputs;
 
 		sf::Texture mapTexture;
 		std::string mapInput;
@@ -194,11 +188,12 @@ private:
 	int map;
 	int mapFrame;
 	int currentMapId;
+	int mapIdMaxSize;
 
 	sf::Clock clock;
 	sf::Time time;
 	float move_time;
-	int mapMaxSize;
+	int mapFramesMaxSize;
 
 	sf::Sprite mapSprite;
 	sf::Texture texture;

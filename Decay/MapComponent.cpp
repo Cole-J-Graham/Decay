@@ -67,11 +67,11 @@ void MapComponent::updateButtons(const sf::Vector2f mousePos)
         it.second->update(mousePos);
     }
 
-    if (this->buttons["BUTTON_RIGHT"]->isPressed()) {
+    if (this->buttons["BUTTON_RIGHT"]->isPressed() && this->mapView->getCurrentMapId() < this->mapView->getMapIdMaxSize()) {
         this->mapView->getCurrentMapId()++;
         this->mapView->maps[mapView->getCurrentMapId()]->setShown();
     }
-    else if (this->buttons["BUTTON_LEFT"]->isPressed()) {
+    else if (this->buttons["BUTTON_LEFT"]->isPressed() && this->mapView->getCurrentMapId() > 0) {
         this->mapView->getCurrentMapId()--;
         this->mapView->maps[mapView->getCurrentMapId()]->setShown();
     }
