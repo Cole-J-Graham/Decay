@@ -36,18 +36,18 @@ void MapComponent::render(sf::RenderTarget* target)
 //Map Functions
 void MapComponent::initMapCores()
 {
-    this->mapView->createMapCore(0.390, "Assets/Wallpapers/Forest/forestmap.jpeg",
+    this->mapView->createMapCore(0, 0.390, "Assets/Wallpapers/Forest/forestmap.jpeg",
         sf::Vector2f(150, 150), "Assets/Wallpapers/forest.txt", "Entrance",
         sf::Vector2f(150, 250), "", "Dark Plains",
         sf::Vector2f(200, 200), "", "Depths",
         sf::Vector2f(300, 250), "", "Corruption",
         sf::Vector2f(375, 400), "", "Deep Dark");
-    /*this->mapView->createMapCore(0.385, "Assets/Wallpapers/Castle/castleMap.jpeg",
+    this->mapView->createMapCore(1, 0.385, "Assets/Wallpapers/Castle/castleMap.jpeg",
         sf::Vector2f(150, 150), "Assets/Wallpapers/castle.txt", "Entrance",
         sf::Vector2f(150, 250), "", "Halls",
         sf::Vector2f(200, 200), "", "Corridors",
         sf::Vector2f(300, 250), "", "Dungeon",
-        sf::Vector2f(375, 400), "", "Labs");*/
+        sf::Vector2f(375, 400), "", "Labs");
 }
 
 //Button Functions
@@ -65,6 +65,15 @@ void MapComponent::updateButtons(const sf::Vector2f mousePos)
 {
     for (auto& it : this->buttons) {
         it.second->update(mousePos);
+    }
+
+    if (this->buttons["BUTTON_RIGHT"]->isPressed()) {
+        this->mapView->getCurrentMapId()++;
+        this->mapView->maps[mapView->getCurrentMapId()]->setShown();
+    }
+    else if (this->buttons["BUTTON_LEFT"]->isPressed()) {
+        this->mapView->getCurrentMapId()--;
+        this->mapView->maps[mapView->getCurrentMapId()]->setShown();
     }
 }
 

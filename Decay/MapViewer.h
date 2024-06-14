@@ -1,6 +1,7 @@
 #pragma once
 #include<stack>
 #include<fstream>
+#include<map>
 #include"Button.h"
 #include"Rectangle.h"
 #include"EventModule.h"
@@ -18,7 +19,7 @@ public:
 	//Map Functions
 	void updateMaps(const sf::Vector2f mousePos);
 	void renderMaps(sf::RenderTarget* target);
-	void createMapCore(float scale, std::string mapInput,
+	void createMapCore(int mapId, float scale, std::string mapInput,
 		sf::Vector2f pos1, std::string in1, std::string str1, sf::Vector2f pos2, std::string in2,
 		std::string str2, sf::Vector2f pos3, std::string in3, std::string str3, sf::Vector2f pos4,
 		std::string in4, std::string str4, sf::Vector2f pos5, std::string in5, std::string str5);
@@ -42,6 +43,7 @@ public:
 	//Getters
 	int& getMapMaxSize() { return this->mapMaxSize; };
 	bool& getHidden() { return this->hidden; };
+	int& getCurrentMapId() { return this->currentMapId; };
 
 	class MapCore {
 	public:
@@ -174,27 +176,13 @@ public:
 
 	};
 
-	std::stack<MapCore*> maps;
-
-	void changeMap(MapCore* input);
+	std::map<int, MapCore*> maps;
 
 	//Modifier Functions
 	void setMapFrame(int& frame) {
-		this->texture.loadFromFile(this->maps.top()->getMapContainer()[frame]);
+		this->texture.loadFromFile(this->maps[currentMapId]->getMapContainer()[frame]);
 		this->mapSprite.setTexture(this->texture);
 	};
-
-	void deleteTopElement(std::stack<MapCore*>& objectStack) {
-		if (!objectStack.empty()) {
-			MapCore* obj = objectStack.top();  // Get pointer to top element
-			objectStack.pop();  // Pop the element from the stack
-			delete obj;  // Delete the object pointed to by 'obj'
-		}
-		// Optionally handle case where stack is empty (if needed)
-		else {
-			std::cerr << "Stack is empty. Cannot delete top element." << std::endl;
-		}
-	}
 
 private:
 
@@ -205,6 +193,7 @@ private:
 	bool hidden;
 	int map;
 	int mapFrame;
+	int currentMapId;
 
 	sf::Clock clock;
 	sf::Time time;

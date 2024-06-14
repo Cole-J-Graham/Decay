@@ -26,11 +26,11 @@ MapViewer::~MapViewer()
     for (ir = this->rectangles.begin(); ir != this->rectangles.end(); ++ir) {
         delete ir->second;
     }
+
     //Delete Maps
-    while (!maps.empty()) {
-        MapCore* obj = maps.top();
-        maps.pop();
-        delete obj;
+    auto im = this->maps.begin();
+    for (im = this->maps.begin(); im != this->maps.end(); ++im) {
+        delete im->second;
     }
 }
 
@@ -41,11 +41,11 @@ void MapViewer::update(const sf::Vector2f mousePos)
     this->updateButtons(mousePos);
     this->updateMaps(mousePos);
     this->move();
-    this->detectNewArea(this->maps.top()->getMapPositionsContainer()[0],
-        this->maps.top()->getMapPositionsContainer()[1],
-        this->maps.top()->getMapPositionsContainer()[2],
-        this->maps.top()->getMapPositionsContainer()[3],
-        this->maps.top()->getMapPositionsContainer()[4]);
+    this->detectNewArea(this->maps[currentMapId]->getMapPositionsContainer()[0],
+        this->maps[currentMapId]->getMapPositionsContainer()[1],
+        this->maps[currentMapId]->getMapPositionsContainer()[2],
+        this->maps[currentMapId]->getMapPositionsContainer()[3],
+        this->maps[currentMapId]->getMapPositionsContainer()[4]);
 }
 
 void MapViewer::render(sf::RenderTarget* target)
@@ -62,52 +62,44 @@ void MapViewer::render(sf::RenderTarget* target)
 //Map Functions
 void MapViewer::updateMaps(const sf::Vector2f mousePos)
 {
-    this->maps.top()->update(mousePos);
+    this->maps[currentMapId]->update(mousePos);
 }
 
 void MapViewer::renderMaps(sf::RenderTarget* target)
 {
-    this->maps.top()->render(target);
+    this->maps[currentMapId]->render(target);
 }
 
-void MapViewer::createMapCore(float scale, std::string mapInput,
+void MapViewer::createMapCore(int mapId, float scale, std::string mapInput,
     sf::Vector2f pos1, std::string in1, std::string str1, sf::Vector2f pos2, std::string in2,
     std::string str2, sf::Vector2f pos3, std::string in3, std::string str3, sf::Vector2f pos4,
     std::string in4, std::string str4, sf::Vector2f pos5, std::string in5, std::string str5)
 {
-    this->maps.push(new MapCore(scale, mapInput,
+    this->maps[mapId] = new MapCore(scale, mapInput,
         sf::Vector2f(pos1), in1, str1,
         sf::Vector2f(pos2), in2, str2,
         sf::Vector2f(pos3), in3, str3,
         sf::Vector2f(pos4), in4, str4,
-        sf::Vector2f(pos5), in5, str5));
-}
-
-void MapViewer::changeMap(MapCore* input)
-{
-    if (!this->maps.empty()) {
-        delete this->maps.top();
-        this->maps.pop();
-    }
-    this->maps.push(input);
+        sf::Vector2f(pos5), in5, str5);
+    this->currentMapId = mapId;
 }
 
 void MapViewer::detectNewArea(std::string in1, std::string in2,
     std::string in3, std::string in4, std::string in5)
 {
-    if (this->maps.top()->getButtons()["POS1"]->isPressed()) {
+    if (this->maps[currentMapId]->getButtons()["POS1"]->isPressed()) {
         this->loadMap(in1);
     }
-    if (this->maps.top()->getButtons()["POS2"]->isPressed()) {
+    if (this->maps[currentMapId]->getButtons()["POS2"]->isPressed()) {
         this->loadMap(in2);
     }
-    if (this->maps.top()->getButtons()["POS3"]->isPressed()) {
+    if (this->maps[currentMapId]->getButtons()["POS3"]->isPressed()) {
         this->loadMap(in3);
     }
-    if (this->maps.top()->getButtons()["POS4"]->isPressed()) {
+    if (this->maps[currentMapId]->getButtons()["POS4"]->isPressed()) {
         this->loadMap(in4);
     }
-    if (this->maps.top()->getButtons()["POS5"]->isPressed()) {
+    if (this->maps[currentMapId]->getButtons()["POS5"]->isPressed()) {
         this->loadMap(in5);
     }
 }
@@ -160,12 +152,12 @@ void MapViewer::updateButtons(const sf::Vector2f mousePos)
 
     //Open Map Functionality
     if (this->buttons["OPENMAP"]->isPressed() && this->hidden) {
-        this->maps.top()->setShown();
+        this->maps[currentMapId]->setShown();
         this->rectangles["MAPVIEWER"]->show();
         this->hidden = false;
     }
     else if (this->buttons["OPENMAP"]->isPressed() && !this->hidden) {
-        this->maps.top()->setHidden();
+        this->maps[currentMapId]->setHidden();
         this->rectangles["MAPVIEWER"]->show();
         this->hidden = true;
     }
@@ -184,12 +176,12 @@ void MapViewer::loadMap(std::string file_input)
     ifs.open(file_input);
     if (ifs.is_open()) {
         // Clear the map outside the loop if necessary
-        this->maps.top()->clearMap();
+        this->maps[currentMapId]->clearMap();
 
         std::string input;
         while (getline(ifs, input)) {
             // Load texture from file
-            this->maps.top()->loadMap(input);
+            this->maps[currentMapId]->loadMap(input);
         }
         ifs.close();
         this->setMapFrame(mapFrame);
