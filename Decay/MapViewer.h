@@ -43,6 +43,7 @@ public:
 	//Getters
 	int& getMapFramesMaxSize() { return this->mapFramesMaxSize; };
 	bool& getHidden() { return this->hidden; };
+	bool& getMapSelected() { return this->mapSelected; };
 	int& getCurrentMapId() { return this->currentMapId; };
 	int& getMapIdMaxSize() { return this->mapIdMaxSize; };
 
@@ -189,6 +190,7 @@ private:
 	int mapFrame;
 	int currentMapId;
 	int mapIdMaxSize;
+	bool mapSelected;
 
 	sf::Clock clock;
 	sf::Time time;

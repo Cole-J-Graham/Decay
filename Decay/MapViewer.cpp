@@ -13,6 +13,7 @@ MapViewer::MapViewer()
     this->mapFramesMaxSize = 59;
     this->mapIdMaxSize = -1;
     this->move_time = 0.1f;
+    this->mapSelected = false;
 
     //Initialization
     this->event = new EventModule();
@@ -91,39 +92,36 @@ void MapViewer::detectNewArea(std::string in1, std::string in2,
 {
     if (this->maps[currentMapId]->getButtons()["POS1"]->isPressed()) {
         this->loadMap(in1);
-        this->mapFrame = 0;
     }
     if (this->maps[currentMapId]->getButtons()["POS2"]->isPressed()) {
         this->loadMap(in2);
-        this->mapFrame = 0;
     }
     if (this->maps[currentMapId]->getButtons()["POS3"]->isPressed()) {
         this->loadMap(in3);
-        this->mapFrame = 0;
     }
     if (this->maps[currentMapId]->getButtons()["POS4"]->isPressed()) {
         this->loadMap(in4);
-        this->mapFrame = 0;
     }
     if (this->maps[currentMapId]->getButtons()["POS5"]->isPressed()) {
         this->loadMap(in5);
-        this->mapFrame = 0;
     }
 }
 
 void MapViewer::move()
 {
-    this->time = this->clock.getElapsedTime();
-    if (this->time.asSeconds() >= this->move_time) {
-        if (this->event->userInput->rightArrowClicked() && this->mapFrame < this->mapFramesMaxSize) {
-            this->mapFrame++;
-            this->setMapFrame(mapFrame);
-            this->clock.restart();
-        } 
-        else if (this->event->userInput->leftArrowClicked() && this->mapFrame > 0) {
-            this->mapFrame--;
-            this->setMapFrame(mapFrame);
-            this->clock.restart();
+    if (this->mapSelected) {
+        this->time = this->clock.getElapsedTime();
+        if (this->time.asSeconds() >= this->move_time) {
+            if (this->event->userInput->rightArrowClicked() && this->mapFrame < this->mapFramesMaxSize) {
+                this->mapFrame++;
+                this->setMapFrame(mapFrame);
+                this->clock.restart();
+            }
+            else if (this->event->userInput->leftArrowClicked() && this->mapFrame > 0) {
+                this->mapFrame--;
+                this->setMapFrame(mapFrame);
+                this->clock.restart();
+            }
         }
     }
 }
@@ -182,6 +180,10 @@ void MapViewer::loadMap(std::string file_input)
     if (ifs.is_open()) {
         // Clear the map outside the loop if necessary
         this->maps[currentMapId]->clearMap();
+        //Reset map frame to make map flow more concise
+        this->mapFrame = 0;
+        //Set map to selected to safe guard vector subscript errors
+        this->getMapSelected() = true;
 
         std::string input;
         while (getline(ifs, input)) {
