@@ -4,7 +4,7 @@
 #include<map>
 #include"Button.h"
 #include"Rectangle.h"
-#include"EventModule.h"
+#include"UserInputComponent.h"
 class MapViewer
 {
 public:
@@ -181,7 +181,7 @@ public:
 
 private:
 
-	EventModule* event;
+	UserInputComponent* userInput;
 
 	float x;
 	float y;

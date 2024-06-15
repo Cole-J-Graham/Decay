@@ -1,7 +1,7 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 #include"State.h"
-#include"ForestState.h"
+#include"TravelState.h"
 #include"CombatState.h"
 
 #include"Button.h"

@@ -1,24 +1,24 @@
-#include "ForestState.h"
+#include "TravelState.h"
 //Constructors and Destructors
-ForestState::ForestState(sf::RenderWindow* window, std::stack<State*>* states)
+TravelState::TravelState(sf::RenderWindow* window, std::stack<State*>* states)
     : State(window, states)
 {
     //Initialization
     this->map = new MapComponent();
 }
 
-ForestState::~ForestState()
+TravelState::~TravelState()
 {
     delete this->map;
 }
 
 //State Functions
-void ForestState::updateKeybinds()
+void TravelState::updateKeybinds()
 {
 
 }
 
-void ForestState::update()
+void TravelState::update()
 {
     this->updateMousePositions();
     this->map->update(this->getMousePosView());
@@ -26,13 +26,13 @@ void ForestState::update()
     CharacterManager::getInstance().updateStats(this->getMousePosView());
 }
 
-void ForestState::render(sf::RenderTarget* target)
+void TravelState::render(sf::RenderTarget* target)
 {
     this->map->render(target);
     CharacterManager::getInstance().renderStats(target);
 }
 
-void ForestState::loadMapData(std::string input)
+void TravelState::loadMapData(std::string input)
 {
 
 }

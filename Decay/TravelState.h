@@ -4,12 +4,12 @@
 //Componenets
 #include"MapComponent.h"
 #include"CharacterManager.h"
-class ForestState : public State
+class TravelState : public State
 {
 public:
 	//Constructors and Destructors
-	ForestState(sf::RenderWindow* window, std::stack<State*>* states);
-	~ForestState();
+	TravelState(sf::RenderWindow* window, std::stack<State*>* states);
+	~TravelState();
 
 	//State Functions
 	void updateKeybinds();

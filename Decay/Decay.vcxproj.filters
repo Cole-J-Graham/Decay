@@ -19,7 +19,7 @@
     <ClCompile Include="MainMenuState.cpp">
       <Filter>PlayStates</Filter>
     </ClCompile>
-    <ClCompile Include="ForestState.cpp">
+    <ClCompile Include="TravelState.cpp">
       <Filter>PlayStates</Filter>
     </ClCompile>
     <ClCompile Include="UserInputComponent.cpp">
@@ -67,6 +67,9 @@
     <ClCompile Include="StatsManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
@@ -90,7 +93,7 @@
     <ClInclude Include="MainMenuState.h">
       <Filter>PlayStates</Filter>
     </ClInclude>
-    <ClInclude Include="ForestState.h">
+    <ClInclude Include="TravelState.h">
       <Filter>PlayStates</Filter>
     </ClInclude>
     <ClInclude Include="UserInputComponent.h">
@@ -133,6 +136,9 @@
       <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="StatsManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>

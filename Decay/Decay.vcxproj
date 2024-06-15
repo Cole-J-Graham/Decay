@@ -154,6 +154,7 @@
     <ClCompile Include="CombatComponent.cpp" />
     <ClCompile Include="CombatState.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="EventModule.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState.cpp" />
@@ -167,7 +168,7 @@
     <ClCompile Include="StatsManager.cpp" />
     <ClCompile Include="StatsModule.cpp" />
     <ClCompile Include="Text.cpp" />
-    <ClCompile Include="ForestState.cpp" />
+    <ClCompile Include="TravelState.cpp" />
     <ClCompile Include="UserInputComponent.cpp" />
     <ClCompile Include="ViewerModule.cpp" />
   </ItemGroup>
@@ -179,6 +180,7 @@
     <ClInclude Include="CombatComponent.h" />
     <ClInclude Include="CombatState.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EventManager.h" />
     <ClInclude Include="EventModule.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
@@ -191,7 +193,7 @@
     <ClInclude Include="StatsManager.h" />
     <ClInclude Include="StatsModule.h" />
     <ClInclude Include="Text.h" />
-    <ClInclude Include="ForestState.h" />
+    <ClInclude Include="TravelState.h" />
     <ClInclude Include="UserInputComponent.h" />
     <ClInclude Include="ViewerModule.h" />
   </ItemGroup>

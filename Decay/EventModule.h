@@ -16,6 +16,21 @@ public:
 	UserInputComponent* userInput;
 
 private:
+	class Event {
+	public:
+		//Constructors and Deconstructors
+		Event() {
 
+		}
+
+		~Event() {
+
+		}
+
+		//Core Functions
+
+	private:
+
+	};
 };
 

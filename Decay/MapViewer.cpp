@@ -16,14 +16,14 @@ MapViewer::MapViewer()
     this->mapSelected = false;
 
     //Initialization
-    this->event = new EventModule();
+    this->userInput = new UserInputComponent();
     this->initRects();
     this->initButtons();
 }
 
 MapViewer::~MapViewer()
 {
-    delete this->event;
+    delete this->userInput;
     //Delete Rectangles
     auto ir = this->rectangles.begin();
     for (ir = this->rectangles.begin(); ir != this->rectangles.end(); ++ir) {
@@ -40,7 +40,7 @@ MapViewer::~MapViewer()
 //Core Functions
 void MapViewer::update(const sf::Vector2f mousePos)
 {
-    this->event->update(mousePos);
+    this->userInput->update(mousePos);
     this->updateButtons(mousePos);
     this->updateMaps(mousePos);
     this->move();
@@ -58,7 +58,7 @@ void MapViewer::render(sf::RenderTarget* target)
         this->renderRects(target);
         this->renderMaps(target);
     }
-    this->event->render(target);
+    this->userInput->render(target);
     this->renderButtons(target);
 }
 
@@ -112,12 +112,12 @@ void MapViewer::move()
     if (this->mapSelected) {
         this->time = this->clock.getElapsedTime();
         if (this->time.asSeconds() >= this->move_time) {
-            if (this->event->userInput->rightArrowClicked() && this->mapFrame < this->mapFramesMaxSize) {
+            if (this->userInput->rightArrowClicked() && this->mapFrame < this->mapFramesMaxSize) {
                 this->mapFrame++;
                 this->setMapFrame(mapFrame);
                 this->clock.restart();
             }
-            else if (this->event->userInput->leftArrowClicked() && this->mapFrame > 0) {
+            else if (this->userInput->leftArrowClicked() && this->mapFrame > 0) {
                 this->mapFrame--;
                 this->setMapFrame(mapFrame);
                 this->clock.restart();
