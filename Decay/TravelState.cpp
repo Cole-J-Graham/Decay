@@ -5,11 +5,13 @@ TravelState::TravelState(sf::RenderWindow* window, std::stack<State*>* states)
 {
     //Initialization
     this->map = new MapComponent();
+    this->event = new EventManager();
 }
 
 TravelState::~TravelState()
 {
     delete this->map;
+    delete this->event;
 }
 
 //State Functions
@@ -22,6 +24,7 @@ void TravelState::update()
 {
     this->updateMousePositions();
     this->map->update(this->getMousePosView());
+    this->event->update();
     CharacterManager::getInstance().updateAll(this->getMousePosView());
     CharacterManager::getInstance().updateStats(this->getMousePosView());
 }
@@ -29,6 +32,7 @@ void TravelState::update()
 void TravelState::render(sf::RenderTarget* target)
 {
     this->map->render(target);
+    this->event->render(target);
     CharacterManager::getInstance().renderStats(target);
 }
 

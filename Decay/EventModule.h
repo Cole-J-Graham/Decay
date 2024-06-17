@@ -1,6 +1,7 @@
 #pragma once
 #include"UserInputComponent.h"
 #include<fstream>
+#include <sstream>
 class EventModule
 {
 public:
@@ -28,9 +29,15 @@ private:
 		}
 
 		//Core Functions
+		void loadEvent(std::string& input)
+		{
+			this->eventContainer.push_back(input);
+		};
+
+		std::vector<std::string>& getEventContainer() { return this->eventContainer; };
 
 	private:
-
+		std::vector<std::string> eventContainer;
 	};
 };
 

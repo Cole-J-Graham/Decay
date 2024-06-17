@@ -1,0 +1,4 @@
+*SPEAK_CHARACTER
+*HAPPY
+Hey, how are you doing? Are you well? Or no?
+*SPEAK_NPC

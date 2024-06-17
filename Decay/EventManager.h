@@ -19,9 +19,24 @@ public:
 
 	//Event Functions
 	void initEvents();
-	void loadEvent(std::string input);
+	void updateEvents();
+
+	//File Functions
+	bool processNextLine();
+	bool openFile(const std::string& file_input);
+	void closeFile();
+	void readLine(std::string& extractedLine);
+	void readCharacters(size_t numChars, std::string& extractedString);
 
 private:
+
+	bool isFileOpen;
+	
+	std::string valExpression;
+	std::string valTalk;
+
+	std::string valResponseOne;
+	std::string valResponseTwo;
 
 	std::ifstream ifs;
 	std::string line;

@@ -3,7 +3,9 @@
 #include"State.h"
 //Componenets
 #include"MapComponent.h"
+//Managers
 #include"CharacterManager.h"
+#include"EventManager.h"
 class TravelState : public State
 {
 public:
@@ -22,5 +24,6 @@ private:
 	std::vector<sf::Texture> mapData;
 
 	MapComponent* map;
+	EventManager* event;
 	
 };
