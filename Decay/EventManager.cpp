@@ -4,12 +4,16 @@ EventManager::EventManager()
 {
     //Variable Initialization
     this->isFileOpen = false;
+    this->eventRangeMin = 0;
 
     //Module Initialization
     this->eventModule = new EventModule();
 
     //Seed randomization
 	srand(time(NULL));
+
+    //Class Initialization
+    this->initEvents();
 }
 
 EventManager::~EventManager()
@@ -30,24 +34,25 @@ void EventManager::render(sf::RenderTarget* target)
     this->eventModule->render(target);
 }
 
-//Generation Functions
-void EventManager::generateEvents()
-{
-    //Insert random integers
-    //std::random_device dev;
-    //std::mt19937 rng(dev());
-    //std::uniform_int_distribution<std::mt19937::result_type> enemyRange(this->enemyRangeMin, this->enemyRangeMax);
-}
-
 //Event Functions
 void EventManager::initEvents()
 {
-    
+    this->getFileNamesInDirectory("Assets/Events");
+    for (int i = 0; i < eventsFilePaths.size(); i++) {
+        this->eventsFilePaths[i] = "Assets/Events/" + this->eventsFilePaths[i];
+        std::cout << "EVENT FILE LOADED:" << eventsFilePaths[i] << "\n";
+    }
+    this->eventRangeMax = this->eventsFilePaths.size() - 1;
 }
 
 void EventManager::updateEvents() {
-    if (!isFileOpen && this->openFile("Assets/Wallpapers/test.txt")) {
-        std::cout << "File opened successfully." << std::endl; // Debug statement
+    //Insert random integers
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> eventRange(this->eventRangeMin, this->eventRangeMax);
+
+    if (!isFileOpen && this->openFile(this->eventsFilePaths[eventRange(rng)])) {
+        std::cout << "File" << this->eventsFilePaths[eventRange(rng)] << "opened successfully." << std::endl; // Debug statement
     }
 
     if (isFileOpen) {
@@ -79,9 +84,10 @@ void EventManager::npcSpeak() {
     this->eventModule->userInput->showMainDialogue();
     // Additional processing for NPC speak
     this->updateState(PROCESSING_DIALOGUE);
-    std::cout << "NPC Speak processed" << std::endl; // Debug statement
+    std::cout << "Processing Dialogue: True (npcSpeak)" << std::endl; // Debug statement
 }
 
+//File Management Functions
 bool EventManager::processNextLine() {
     if (!isFileOpen) {
         std::cerr << "File is not open!" << std::endl;
@@ -157,6 +163,22 @@ void EventManager::readCharacters(size_t numChars, std::string& extractedString)
     extractedString = std::string(buffer);
 
     delete[] buffer;
+}
+
+std::vector<std::string> EventManager::getFileNamesInDirectory(const std::string& directoryPath) {
+
+    try {
+        for (const std::filesystem::directory_entry& entry : std::filesystem::directory_iterator(directoryPath)) {
+            if (entry.is_regular_file()) { // Ensure it is a file (not a directory or symlink)
+                this->eventsFilePaths.push_back(entry.path().filename().string());
+            }
+        }
+    }
+    catch (const std::filesystem::filesystem_error& e) {
+        std::cerr << "Filesystem error: " << e.what() << std::endl;
+    }
+
+    return this->eventsFilePaths;
 }
 
 void EventManager::updateState(State newState) {
