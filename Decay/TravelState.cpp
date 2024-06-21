@@ -24,7 +24,7 @@ void TravelState::update()
 {
     this->updateMousePositions();
     this->map->update(this->getMousePosView());
-    this->event->update();
+    this->event->update(this->getMousePosView());
     CharacterManager::getInstance().updateAll(this->getMousePosView());
     CharacterManager::getInstance().updateStats(this->getMousePosView());
 }

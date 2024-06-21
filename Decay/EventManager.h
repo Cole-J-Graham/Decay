@@ -3,15 +3,14 @@
 #include<random>
 #include"CombatState.h"
 #include"EventModule.h"
-class EventManager
-{
+class EventManager {
 public:
 	//Constructors and Deconstructors
 	EventManager();
 	~EventManager();
 
 	//Core Functions
-	void update();
+	void update(sf::Vector2f mousePos);
 	void render(sf::RenderTarget* target);
 
 	//Generation Functions
@@ -22,24 +21,33 @@ public:
 	void updateEvents();
 
 	//File Functions
+	void updateInput();
+
+private:
+	EventModule* eventModule;
+
+	bool isFileOpen;
+
+	std::ifstream ifs;
+	std::string inResponseOne, inResponseTwo, inExpression, inTalk;
+	std::string currentLine;
+
+	enum State {
+		IDLE,
+		PROCESSING_CHARACTER,
+		PROCESSING_NPC,
+		PROCESSING_DIALOGUE
+	};
+
+	State currentState = IDLE;
+
+	void characterSpeak();
+	void npcSpeak();
 	bool processNextLine();
 	bool openFile(const std::string& file_input);
 	void closeFile();
 	void readLine(std::string& extractedLine);
 	void readCharacters(size_t numChars, std::string& extractedString);
-
-private:
-
-	bool isFileOpen;
-	
-	std::string valExpression;
-	std::string valTalk;
-
-	std::string valResponseOne;
-	std::string valResponseTwo;
-
-	std::ifstream ifs;
-	std::string line;
-
+	void updateState(State newState);
 };
 

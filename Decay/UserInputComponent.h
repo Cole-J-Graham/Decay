@@ -31,7 +31,12 @@ public:
 	const bool topDialogueClicked()& { return this->top_dialogue_active; };
 	const bool bottomDialogueClicked()& { return this->bottom_dialogue_active; };
 
+	const bool getProcessingDialogue()& { return this->procressing_dialogue; };
+
 	//Modifiers
+	void setProcessingDialogueTrue() { this->procressing_dialogue = true; };
+	void setProcessingDialogueFalse() { this->procressing_dialogue = false; };
+	void setDialogueOptions(std::string& top, std::string& bottom);
 	void showDialogueOptions();
 	void hideDialogueOptions();
 	void showMoveArrows();
@@ -47,6 +52,7 @@ private:
 	bool left_active;
 	bool quit_active;
 
+	bool procressing_dialogue;
 	bool top_dialogue_active;
 	bool bottom_dialogue_active;
 

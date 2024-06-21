@@ -1,4 +1,6 @@
 *SPEAK_CHARACTER
-*HAPPY
-Hey, how are you doing? Are you well? Or no?
+"Hey, how are you?"
+"Are you doing well, or no?"
 *SPEAK_NPC
+*HAPPY
+"Yo, I'm an npc bro."

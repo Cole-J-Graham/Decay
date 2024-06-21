@@ -40,4 +40,3 @@ private:
 		std::vector<std::string> eventContainer;
 	};
 };
-
