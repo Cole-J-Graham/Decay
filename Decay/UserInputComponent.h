@@ -33,12 +33,7 @@ public:
 	const bool bottomDialogueClicked()& { return this->bottom_dialogue_active; };
 	const bool mainDialogueClicked()& { return this->main_dialogue_active; };
 
-	const bool getProcessingDialogue()& { return this->procressing_dialogue; };
-
 	//Modifiers
-	void setProcessingDialogueTrue() { this->procressing_dialogue = true; };
-	void setProcessingDialogueFalse() { this->procressing_dialogue = false; };
-
 	void setMainDialogueText(std::string& text) { this->buttons["DIALOGUEBOXCENTER"]->setText(text); };
 	void setDialogueOptions(std::string& top, std::string& bottom);
 	void showDialogueOptions();
@@ -59,7 +54,6 @@ private:
 	bool left_active;
 	bool quit_active;
 
-	bool procressing_dialogue;
 	bool top_dialogue_active;
 	bool bottom_dialogue_active;
 	bool main_dialogue_active;

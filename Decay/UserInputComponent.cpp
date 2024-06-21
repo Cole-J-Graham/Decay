@@ -3,7 +3,6 @@
 UserInputComponent::UserInputComponent()
 {
     font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
-    this->procressing_dialogue = false;
 
     //Initialization
     this->initButtons();
@@ -76,12 +75,10 @@ void UserInputComponent::updateButtons(sf::Vector2f mousePos)
     //Dialogue Options
     if (this->buttons["DIALOGUEBOXTOP"]->isPressed()) { 
         this->top_dialogue_active = true;
-        this->procressing_dialogue = true;
     }
     else { this->top_dialogue_active = false; }
     if (this->buttons["DIALOGUEBOXBOTTOM"]->isPressed()) { 
         this->bottom_dialogue_active = true;
-        this->procressing_dialogue = true;
     }
     else { this->bottom_dialogue_active = false; }
     //Center Dialogue Box
@@ -134,14 +131,12 @@ void UserInputComponent::setDialogueOptions(std::string& top, std::string& botto
 
 void UserInputComponent::showDialogueOptions()
 {
-    this->procressing_dialogue = true;
     this->buttons["DIALOGUEBOXTOP"]->show();
     this->buttons["DIALOGUEBOXBOTTOM"]->show();
 }
 
 void UserInputComponent::hideDialogueOptions()
 {
-    this->procressing_dialogue = false;
     this->buttons["DIALOGUEBOXTOP"]->hide();
     this->buttons["DIALOGUEBOXBOTTOM"]->hide();
 }

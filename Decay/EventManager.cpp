@@ -68,7 +68,6 @@ void EventManager::characterSpeak() {
     this->readLine(this->inResponseTwo);
     this->eventModule->userInput->showDialogueOptions();
     this->eventModule->userInput->setDialogueOptions(this->inResponseOne, this->inResponseTwo);
-    this->eventModule->userInput->setProcessingDialogueTrue();
     this->updateState(PROCESSING_DIALOGUE);
     std::cout << "Processing Dialogue: True (characterSpeak)" << std::endl; // Debug statement
 }
@@ -167,7 +166,6 @@ void EventManager::updateState(State newState) {
 void EventManager::updateInput() {
     if (this->eventModule->userInput->topDialogueClicked() || this->eventModule->userInput->bottomDialogueClicked()) {
         this->eventModule->userInput->hideDialogueOptions();
-        this->eventModule->userInput->setProcessingDialogueFalse();
         this->updateState(IDLE);
         std::cout << "Processing Dialogue: False (updateInput)" << std::endl; // Debug statement
     }
