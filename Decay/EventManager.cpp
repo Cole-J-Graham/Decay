@@ -76,6 +76,8 @@ void EventManager::characterSpeak() {
 void EventManager::npcSpeak() {
     this->readLine(this->inExpression);
     this->readLine(this->inTalk);
+    this->eventModule->userInput->setMainDialogueText(this->inTalk);
+    this->eventModule->userInput->showMainDialogue();
     // Additional processing for NPC speak
     this->updateState(PROCESSING_DIALOGUE);
     std::cout << "NPC Speak processed" << std::endl; // Debug statement
@@ -166,6 +168,14 @@ void EventManager::updateInput() {
     if (this->eventModule->userInput->topDialogueClicked() || this->eventModule->userInput->bottomDialogueClicked()) {
         this->eventModule->userInput->hideDialogueOptions();
         this->eventModule->userInput->setProcessingDialogueFalse();
+        this->updateState(IDLE);
+        std::cout << "Processing Dialogue: False (updateInput)" << std::endl; // Debug statement
+    }
+
+    if (this->eventModule->userInput->mainDialogueClicked()) {
+        std::string test = "";
+        this->eventModule->userInput->hideMainDialogue();
+        this->eventModule->userInput->setMainDialogueText(test);
         this->updateState(IDLE);
         std::cout << "Processing Dialogue: False (updateInput)" << std::endl; // Debug statement
     }

@@ -32,6 +32,7 @@ Rectangle::Rectangle(std::string text, sf::Color textColor, unsigned int textSiz
 	this->text.setCharacterSize(textSize);
 	this->text.setPosition(x, y);
 	this->hidden = hidden;
+	this->clicked = false;
 }
 
 Rectangle::~Rectangle()

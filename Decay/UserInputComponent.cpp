@@ -29,6 +29,7 @@ UserInputComponent::~UserInputComponent()
 void UserInputComponent::update(sf::Vector2f mousePos)
 {
     this->updateButtons(mousePos);
+    this->updateRects(mousePos);
 }
 
 void UserInputComponent::render(sf::RenderTarget* target)
@@ -50,6 +51,8 @@ void UserInputComponent::initButtons()
     this->buttons["DIALOGUEBOXTOP"] = new Button(0, 806, 1920, 140, 0.5f, this->font, "...",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), true);
     this->buttons["DIALOGUEBOXBOTTOM"] = new Button(0, 947, 1920, 140, 0.5f, this->font, "...",
+        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), true);
+    this->buttons["DIALOGUEBOXCENTER"] = new Button(1, 810, 1918, 275, 0.5f, this->font, "...",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), true);
 }
 
@@ -81,6 +84,11 @@ void UserInputComponent::updateButtons(sf::Vector2f mousePos)
         this->procressing_dialogue = true;
     }
     else { this->bottom_dialogue_active = false; }
+    //Center Dialogue Box
+    if (this->buttons["DIALOGUEBOXCENTER"]->isPressed()) {
+        this->main_dialogue_active = true;
+    }
+    else { this->main_dialogue_active = false; }
 }
 
 void UserInputComponent::renderButtons(sf::RenderTarget* target)
@@ -93,12 +101,21 @@ void UserInputComponent::renderButtons(sf::RenderTarget* target)
 //Rectangle Functions
 void UserInputComponent::initRects()
 {
+    this->rectangles["DIALOGUE_BOX"] = new Rectangle("", sf::Color::White, 16, 1, 810, 1918, 275, 
+        sf::Color::Transparent, sf::Color::White, 1.f, false);
     this->rectangles["BORDER"] = new Rectangle(560, 5, 800, 800, sf::Color::Transparent,
         sf::Color::White, 1.f, false);
     this->rectangles["LEFTBOX"] = new Rectangle(0, 5, 555, 800, sf::Color::Transparent,
         sf::Color::White, 1.f, false);
     this->rectangles["RIGHTBOX"] = new Rectangle(1365, 5, 555, 800, sf::Color::Transparent,
         sf::Color::White, 1.f, false);
+}
+
+void UserInputComponent::updateRects(sf::Vector2f mousePos)
+{
+    for (auto& it : this->rectangles) {
+        it.second->update(mousePos);
+    }
 }
 
 void UserInputComponent::renderRects(sf::RenderTarget* target)
