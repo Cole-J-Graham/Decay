@@ -1,0 +1,12 @@
+*SPEAK_CHARACTER
+"Hey, how are you?"
+"Are you doing well, or no?"
+*SPEAK_NPC
+*HAPPY
+"Yo, I'm an npc bro."
+*SPEAK_CHARACTER
+"Oh, well I mean that's cool I guess?"
+"So? I'm a player. That's better than you."
+*SPEAK_NPC
+*UNHAPPY
+"That's not very nice of you, man"

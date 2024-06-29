@@ -8,7 +8,7 @@
 class EventManager {
 public:
 	//Constructors and Deconstructors
-	EventManager();
+	EventManager(std::string& areaName);
 	~EventManager();
 
 	//Core Functions
@@ -18,18 +18,33 @@ public:
 	//Event Functions
 	void initEvents();
 	void updateEvents();
+	void eventChance();
 
 	//File Functions
 	void updateInput();
 
-private:
+	//Getters
+
 	EventModule* eventModule;
 
+	bool rightArrowClicked()& { return this->eventModule->userInput->rightArrowClicked(); }
+	bool leftArrowClicked()& { return this->eventModule->userInput->leftArrowClicked(); }
+
+private:
+
 	bool isFileOpen;
+	bool eventActivated;
+
+	float eventOdds;
+	float eventIncrease;
+	float eventThresholdMax;
+	float eventThresholdMin;
+
 	int eventRangeMin;
 	int eventRangeMax;
 
 	std::ifstream ifs;
+	std::string areaName;
 	std::string inResponseOne, inResponseTwo, inExpression, inTalk;
 	std::string currentLine;
 	std::vector<std::string> eventsFilePaths;

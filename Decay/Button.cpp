@@ -62,45 +62,47 @@ Button::Button(sf::Vector2f pos, float width, float height, float clicktime, sf:
 
 void Button::update(const sf::Vector2f mousePos)
 {
-    /* Update the booleans for hover and pressed */
-    if (!this->clickBlocked) {
-        this->elapsed = this->clock.getElapsedTime();
+    if (!this->hidden) {
+        /* Update the booleans for hover and pressed */
+        if (!this->clickBlocked) {
+            this->elapsed = this->clock.getElapsedTime();
 
-        // Idle
-        this->buttonState = BTN_IDLE;
-        if (this->shape.getGlobalBounds().contains(mousePos)) {
-            // Hover
-            this->buttonState = BTN_HOVER;
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                // Pressed
-                this->buttonState = BTN_ACTIVE;
-                this->clock.restart();
-                std::cout << "Clicked: " << this->text.getString().toAnsiString() << std::endl;
-                // Block further clicks temporarily
-                this->clickBlocked = true;
-                this->clickBlockTimer.restart();
+            // Idle
+            this->buttonState = BTN_IDLE;
+            if (this->shape.getGlobalBounds().contains(mousePos)) {
+                // Hover
+                this->buttonState = BTN_HOVER;
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                    // Pressed
+                    this->buttonState = BTN_ACTIVE;
+                    this->clock.restart();
+                    std::cout << "Clicked: " << this->text.getString().toAnsiString() << std::endl;
+                    // Block further clicks temporarily
+                    this->clickBlocked = true;
+                    this->clickBlockTimer.restart();
+                }
             }
         }
-    }
 
-    // Check and reset click blocking
-    if (this->clickBlocked && this->clickBlockTimer.getElapsedTime().asSeconds() >= this->clickBlockDuration) {
-        this->clickBlocked = false;
-    }
+        // Check and reset click blocking
+        if (this->clickBlocked && this->clickBlockTimer.getElapsedTime().asSeconds() >= this->clickBlockDuration) {
+            this->clickBlocked = false;
+        }
 
-    switch (this->buttonState) {
-    case BTN_IDLE:
-        this->shape.setFillColor(this->idleColor);
-        break;
-    case BTN_HOVER:
-        this->shape.setFillColor(this->hoverColor);
-        break;
-    case BTN_ACTIVE:
-        this->shape.setFillColor(this->activeColor);
-        break;
-    default:
-        this->shape.setFillColor(sf::Color::Red);
-        break;
+        switch (this->buttonState) {
+        case BTN_IDLE:
+            this->shape.setFillColor(this->idleColor);
+            break;
+        case BTN_HOVER:
+            this->shape.setFillColor(this->hoverColor);
+            break;
+        case BTN_ACTIVE:
+            this->shape.setFillColor(this->activeColor);
+            break;
+        default:
+            this->shape.setFillColor(sf::Color::Red);
+            break;
+        }
     }
 }
 
@@ -114,10 +116,12 @@ void Button::render(sf::RenderTarget* target)
 
 const bool Button::isPressed() const
 {
-    if (this->buttonState == BTN_ACTIVE && !this->clickBlocked && !this->hidden)
+    if (this->buttonState == BTN_ACTIVE && !this->clickBlocked && !this->hidden) {
         return true;
-
-    return false;
+    }
+    else {
+        return false;
+    }
 }
 
 const bool Button::isHovered() const

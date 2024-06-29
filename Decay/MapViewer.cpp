@@ -16,14 +16,12 @@ MapViewer::MapViewer()
     this->mapSelected = false;
 
     //Initialization
-    this->userInput = new UserInputComponent();
     this->initRects();
     this->initButtons();
 }
 
 MapViewer::~MapViewer()
 {
-    delete this->userInput;
     //Delete Rectangles
     auto ir = this->rectangles.begin();
     for (ir = this->rectangles.begin(); ir != this->rectangles.end(); ++ir) {
@@ -40,7 +38,6 @@ MapViewer::~MapViewer()
 //Core Functions
 void MapViewer::update(const sf::Vector2f mousePos)
 {
-    this->userInput->update(mousePos);
     this->updateButtons(mousePos);
     this->updateMaps(mousePos);
     this->move();
@@ -58,7 +55,6 @@ void MapViewer::render(sf::RenderTarget* target)
         this->renderRects(target);
         this->renderMaps(target);
     }
-    this->userInput->render(target);
     this->renderButtons(target);
 }
 
@@ -73,12 +69,12 @@ void MapViewer::renderMaps(sf::RenderTarget* target)
     this->maps[currentMapId]->render(target);
 }
 
-void MapViewer::createMapCore(int mapId, float scale, std::string mapInput,
+void MapViewer::createMapCore(std::string mapName, int mapId, float scale, std::string mapInput,
     sf::Vector2f pos1, std::string in1, std::string str1, sf::Vector2f pos2, std::string in2,
     std::string str2, sf::Vector2f pos3, std::string in3, std::string str3, sf::Vector2f pos4,
     std::string in4, std::string str4, sf::Vector2f pos5, std::string in5, std::string str5)
 {
-    this->maps[mapId] = new MapCore(scale, mapInput,
+    this->maps[mapId] = new MapCore(mapName, scale, mapInput,
         sf::Vector2f(pos1), in1, str1,
         sf::Vector2f(pos2), in2, str2,
         sf::Vector2f(pos3), in3, str3,
@@ -112,14 +108,16 @@ void MapViewer::move()
     if (this->mapSelected) {
         this->time = this->clock.getElapsedTime();
         if (this->time.asSeconds() >= this->move_time) {
-            if (this->userInput->rightArrowClicked() && this->mapFrame < this->mapFramesMaxSize) {
+            if (this->maps[currentMapId]->event->rightArrowClicked() && this->mapFrame < this->mapFramesMaxSize) {
                 this->mapFrame++;
                 this->setMapFrame(mapFrame);
+                this->maps[currentMapId]->event->eventChance();
                 this->clock.restart();
             }
-            else if (this->userInput->leftArrowClicked() && this->mapFrame > 0) {
+            else if (this->maps[currentMapId]->event->leftArrowClicked() && this->mapFrame > 0) {
                 this->mapFrame--;
                 this->setMapFrame(mapFrame);
+                this->maps[currentMapId]->event->eventChance();
                 this->clock.restart();
             }
         }

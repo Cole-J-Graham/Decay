@@ -1,10 +1,16 @@
 #include "EventManager.h"
 //Constructors and Deconstructors
-EventManager::EventManager()
+EventManager::EventManager(std::string& areaName)
 {
     //Variable Initialization
     this->isFileOpen = false;
+    this->eventActivated = false;
     this->eventRangeMin = 0;
+    this->eventOdds = 0;
+    this->eventIncrease = 1;
+    this->eventThresholdMax = 1000;
+    this->eventThresholdMin = 0;
+    this->areaName = areaName;
 
     //Module Initialization
     this->eventModule = new EventModule();
@@ -37,32 +43,36 @@ void EventManager::render(sf::RenderTarget* target)
 //Event Functions
 void EventManager::initEvents()
 {
-    this->getFileNamesInDirectory("Assets/Events");
+    this->getFileNamesInDirectory("Assets/Events/" + this->areaName);
     for (int i = 0; i < eventsFilePaths.size(); i++) {
-        this->eventsFilePaths[i] = "Assets/Events/" + this->eventsFilePaths[i];
+        this->eventsFilePaths[i] = "Assets/Events/" + this->areaName + "/" + this->eventsFilePaths[i];
         std::cout << "EVENT FILE LOADED:" << eventsFilePaths[i] << "\n";
     }
     this->eventRangeMax = this->eventsFilePaths.size() - 1;
 }
 
 void EventManager::updateEvents() {
-    //Insert random integers
-    std::random_device dev;
-    std::mt19937 rng(dev());
-    std::uniform_int_distribution<std::mt19937::result_type> eventRange(this->eventRangeMin, this->eventRangeMax);
+    if (this->eventActivated) {
+        this->eventModule->userInput->hideMoveArrows();
+        std::random_device dev;
+        std::mt19937 rng(dev());
+        std::uniform_int_distribution<std::mt19937::result_type> eventRange(this->eventRangeMin, this->eventRangeMax);
 
-    if (!isFileOpen && this->openFile(this->eventsFilePaths[eventRange(rng)])) {
-        std::cout << "File" << this->eventsFilePaths[eventRange(rng)] << "opened successfully." << std::endl; // Debug statement
-    }
+        if (!isFileOpen && this->openFile(this->eventsFilePaths[eventRange(rng)])) {
+            std::cout << "File" << this->eventsFilePaths[eventRange(rng)] << " opened successfully." << std::endl; // Debug statement
+        }
 
-    if (isFileOpen) {
-        while (true) {
-            if (currentState == IDLE && !this->processNextLine()) {
-                break; // End of file or error
-            }
+        if (isFileOpen) {
+            while (true) {
+                if (currentState == IDLE && !this->processNextLine()) {
+                    this->eventActivated = false;
+                    this->eventModule->userInput->showMoveArrows();
+                    break; // End of file or error
+                }
 
-            if (currentState != IDLE) {
-                break; // Stop processing to wait for further input
+                if (currentState != IDLE) {
+                    break; // Stop processing to wait for further input
+                }
             }
         }
     }
@@ -85,6 +95,27 @@ void EventManager::npcSpeak() {
     // Additional processing for NPC speak
     this->updateState(PROCESSING_DIALOGUE);
     std::cout << "Processing Dialogue: True (npcSpeak)" << std::endl; // Debug statement
+}
+
+void EventManager::eventChance()
+{
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> eventThreshold(this->eventThresholdMin, this->eventThresholdMax);
+
+    if (this->eventOdds > eventThreshold(rng)) {
+        //Activate event if eventodds are above the eventthreshold
+        std::cout << "Odds success..." << "\n";
+        this->eventActivated = true;
+        this->eventOdds = 0;
+        this->eventIncrease = 1;
+    }
+    else {
+        //Increase chance of odd happening if failed
+        std::cout << "Odds failed chances increased..." << "\n";
+        this->eventOdds += this->eventIncrease;
+        this->eventIncrease * 2;
+    }
 }
 
 //File Management Functions

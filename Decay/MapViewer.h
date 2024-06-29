@@ -4,7 +4,7 @@
 #include<map>
 #include"Button.h"
 #include"Rectangle.h"
-#include"UserInputComponent.h"
+#include"EventManager.h"
 class MapViewer
 {
 public:
@@ -19,7 +19,7 @@ public:
 	//Map Functions
 	void updateMaps(const sf::Vector2f mousePos);
 	void renderMaps(sf::RenderTarget* target);
-	void createMapCore(int mapId, float scale, std::string mapInput,
+	void createMapCore(std::string mapName, int mapId, float scale, std::string mapInput,
 		sf::Vector2f pos1, std::string in1, std::string str1, sf::Vector2f pos2, std::string in2,
 		std::string str2, sf::Vector2f pos3, std::string in3, std::string str3, sf::Vector2f pos4,
 		std::string in4, std::string str4, sf::Vector2f pos5, std::string in5, std::string str5);
@@ -50,12 +50,13 @@ public:
 	class MapCore {
 	public:
 		//Constructors and Deconstructors
-		MapCore(float scale, std::string mapInput, 
+		MapCore(std::string mapName, float scale, std::string mapInput, 
 			sf::Vector2f pos1, std::string in1, std::string str1, sf::Vector2f pos2, std::string in2,
 			std::string str2, sf::Vector2f pos3, std::string in3, std::string str3, sf::Vector2f pos4,
 			std::string in4, std::string str4, sf::Vector2f pos5, std::string in5, std::string str5) {
 			//Init Map
 			font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
+			this->mapName = mapName;
 			this->mapInput = mapInput;
 			this->mapTexture.loadFromFile(this->mapInput);
 			this->map.setTexture(this->mapTexture);
@@ -85,10 +86,13 @@ public:
 
 			//Init Functions
 			this->initButtons();
+
+			//Init Events
+			this->event = new EventManager(this->mapName);
 		}
 
 		~MapCore() {
-
+			delete this->event;
 		}
 
 		//Core Functions
@@ -96,6 +100,7 @@ public:
 			if (!this->hidden) {
 				this->updateButtons(mousePos);
 			}
+			this->event->update(mousePos);
 		}
 
 		void render(sf::RenderTarget* target) {
@@ -103,6 +108,7 @@ public:
 				target->draw(this->map);
 				this->renderButtons(target);
 			}
+			this->event->render(target);
 		}
 
 		//Button Functions
@@ -148,11 +154,13 @@ public:
 		const bool& isHidden() { return this->hidden; };
 		bool& setHidden() { return this->hidden = true; };
 		bool& setShown() { return this->hidden = false; };
-		//Getters
 
+		//Getters
 		std::vector<std::string>& getMapContainer() { return this->mapContainer; };
 		std::vector<std::string>& getMapLoadAreaInputs() { return this->mapLoadAreaInputs; };
 		std::map<std::string, Button*>& getButtons() { return this->buttons; };
+
+		EventManager* event;
 
 	private:
 		
@@ -161,6 +169,7 @@ public:
 		std::vector<std::string> mapLoadAreaInputs;
 
 		sf::Texture mapTexture;
+		std::string mapName;
 		std::string mapInput;
 		sf::Font font;
 		sf::Sprite map;
@@ -180,8 +189,6 @@ public:
 	};
 
 private:
-
-	UserInputComponent* userInput;
 
 	float x;
 	float y;

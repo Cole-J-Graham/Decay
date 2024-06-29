@@ -100,12 +100,6 @@ void UserInputComponent::initRects()
 {
     this->rectangles["DIALOGUE_BOX"] = new Rectangle("", sf::Color::White, 16, 1, 810, 1918, 275, 
         sf::Color::Transparent, sf::Color::White, 1.f, false);
-    this->rectangles["BORDER"] = new Rectangle(560, 5, 800, 800, sf::Color::Transparent,
-        sf::Color::White, 1.f, false);
-    this->rectangles["LEFTBOX"] = new Rectangle(0, 5, 555, 800, sf::Color::Transparent,
-        sf::Color::White, 1.f, false);
-    this->rectangles["RIGHTBOX"] = new Rectangle(1365, 5, 555, 800, sf::Color::Transparent,
-        sf::Color::White, 1.f, false);
 }
 
 void UserInputComponent::updateRects(sf::Vector2f mousePos)
