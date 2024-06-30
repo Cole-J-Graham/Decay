@@ -57,7 +57,7 @@ void MapComponent::initButtons()
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
     this->buttons["BUTTON_LEFT"] = new Button(100, 75, 20, 20, 0.5f, this->font, "<-",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->buttons["BUTTON_CENTER_IDLE"] = new Button(125, 75, 350, 20, 0.5f, this->font, "CURRENT MAP",
+    this->buttons["BUTTON_CENTER_IDLE"] = new Button(125, 75, 350, 20, 0.5f, this->font, this->mapView->getMapName(),
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 }
 
@@ -70,10 +70,12 @@ void MapComponent::updateButtons(const sf::Vector2f mousePos)
     if (this->buttons["BUTTON_RIGHT"]->isPressed() && this->mapView->getCurrentMapId() < this->mapView->getMapIdMaxSize()) {
         this->mapView->getCurrentMapId()++;
         this->mapView->maps[mapView->getCurrentMapId()]->setShown();
+        this->buttons["BUTTON_CENTER_IDLE"]->setText(this->mapView->maps[this->mapView->getCurrentMapId()]->getMapName());
     }
     else if (this->buttons["BUTTON_LEFT"]->isPressed() && this->mapView->getCurrentMapId() > 0) {
         this->mapView->getCurrentMapId()--;
         this->mapView->maps[mapView->getCurrentMapId()]->setShown();
+        this->buttons["BUTTON_CENTER_IDLE"]->setText(this->mapView->maps[this->mapView->getCurrentMapId()]->getMapName());
     }
 }
 

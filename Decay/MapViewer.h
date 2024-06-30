@@ -46,6 +46,7 @@ public:
 	bool& getMapSelected() { return this->mapSelected; };
 	int& getCurrentMapId() { return this->currentMapId; };
 	int& getMapIdMaxSize() { return this->mapIdMaxSize; };
+	std::string& getMapName() { return this->maps[currentMapId]->getMapName(); };
 
 	class MapCore {
 	public:
@@ -159,6 +160,7 @@ public:
 		std::vector<std::string>& getMapContainer() { return this->mapContainer; };
 		std::vector<std::string>& getMapLoadAreaInputs() { return this->mapLoadAreaInputs; };
 		std::map<std::string, Button*>& getButtons() { return this->buttons; };
+		std::string& getMapName() { return this->mapName; };
 
 		EventManager* event;
 
