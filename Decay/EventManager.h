@@ -2,6 +2,7 @@
 #include<filesystem>
 #include<fstream>
 #include<random>
+#include<deque>
 #include"CombatState.h"
 #include"EventModule.h"
 
@@ -27,8 +28,10 @@ public:
 
 	EventModule* eventModule;
 
-	bool rightArrowClicked()& { return this->eventModule->userInput->rightArrowClicked(); }
-	bool leftArrowClicked()& { return this->eventModule->userInput->leftArrowClicked(); }
+	bool rightArrowClicked() { return this->eventModule->userInput->rightArrowClicked(); }
+	bool leftArrowClicked() { return this->eventModule->userInput->leftArrowClicked(); }
+
+	bool getEventActivated() { return this->eventActivated; }
 
 private:
 
@@ -40,14 +43,13 @@ private:
 	float eventThresholdMax;
 	float eventThresholdMin;
 
-	int eventRangeMin;
-	int eventRangeMax;
+	int eventKey;
 
 	std::ifstream ifs;
 	std::string areaName;
 	std::string inResponseOne, inResponseTwo, inExpression, inTalk;
 	std::string currentLine;
-	std::vector<std::string> eventsFilePaths;
+	std::deque<std::string> eventsFilePaths;
 
 	enum State {
 		IDLE,
@@ -68,7 +70,7 @@ private:
 	void closeFile();
 	void readLine(std::string& extractedLine);
 	void readCharacters(size_t numChars, std::string& extractedString);
-	std::vector<std::string> getFileNamesInDirectory(const std::string& directoryPath);
+	std::deque<std::string> getFileNamesInDirectory(const std::string& directoryPath);
 	void updateState(State newState);
 };
 

@@ -5,11 +5,11 @@ EventManager::EventManager(std::string& areaName)
     //Variable Initialization
     this->isFileOpen = false;
     this->eventActivated = false;
-    this->eventRangeMin = 0;
     this->eventOdds = 0;
     this->eventIncrease = 1;
     this->eventThresholdMax = 1000;
     this->eventThresholdMin = 0;
+    this->eventKey = 0;
     this->areaName = areaName;
 
     //Module Initialization
@@ -41,14 +41,15 @@ void EventManager::render(sf::RenderTarget* target)
 }
 
 //Event Functions
-void EventManager::initEvents()
-{
+void EventManager::initEvents() {
+    // Load file names into the deque
     this->getFileNamesInDirectory("Assets/Events/" + this->areaName);
-    for (int i = 0; i < eventsFilePaths.size(); i++) {
-        this->eventsFilePaths[i] = "Assets/Events/" + this->areaName + "/" + this->eventsFilePaths[i];
-        std::cout << "EVENT FILE LOADED:" << eventsFilePaths[i] << "\n";
+
+    // Update file paths in the deque
+    for (auto& entry : eventsFilePaths) {
+        entry = "Assets/Events/" + areaName + "/" + entry;
+        std::cout << "EVENT FILE LOADED: " << entry << "\n";
     }
-    this->eventRangeMax = this->eventsFilePaths.size() - 1;
 }
 
 void EventManager::updateEvents() {
@@ -56,10 +57,18 @@ void EventManager::updateEvents() {
         this->eventModule->userInput->hideMoveArrows();
         std::random_device dev;
         std::mt19937 rng(dev());
-        std::uniform_int_distribution<std::mt19937::result_type> eventRange(this->eventRangeMin, this->eventRangeMax);
+        std::uniform_int_distribution<std::mt19937::result_type> eventRange(0, this->eventsFilePaths.size() - 1);
 
-        if (!isFileOpen && this->openFile(this->eventsFilePaths[eventRange(rng)])) {
-            std::cout << "File" << this->eventsFilePaths[eventRange(rng)] << " opened successfully." << std::endl; // Debug statement
+        if (!isFileOpen && !this->eventsFilePaths.empty()) {
+            int index = eventRange(rng);
+            std::string selectedFile = this->eventsFilePaths[index];
+            if (this->openFile(selectedFile)) {
+                std::cout << "File " << selectedFile << " opened successfully." << std::endl; // Debug statement
+                this->eventsFilePaths.erase(this->eventsFilePaths.begin() + index);
+            }
+        }
+        else if (!isFileOpen && this->eventsFilePaths.empty()) {
+            std::cout << "No events remaining in area..." << "\n";
         }
 
         if (isFileOpen) {
@@ -67,6 +76,7 @@ void EventManager::updateEvents() {
                 if (currentState == IDLE && !this->processNextLine()) {
                     this->eventActivated = false;
                     this->eventModule->userInput->showMoveArrows();
+                    this->closeFile();
                     break; // End of file or error
                 }
 
@@ -97,24 +107,23 @@ void EventManager::npcSpeak() {
     std::cout << "Processing Dialogue: True (npcSpeak)" << std::endl; // Debug statement
 }
 
-void EventManager::eventChance()
-{
+void EventManager::eventChance() {
     std::random_device dev;
     std::mt19937 rng(dev());
     std::uniform_int_distribution<std::mt19937::result_type> eventThreshold(this->eventThresholdMin, this->eventThresholdMax);
 
     if (this->eventOdds > eventThreshold(rng)) {
-        //Activate event if eventodds are above the eventthreshold
+        // Activate event if event odds are above the event threshold
         std::cout << "Odds success..." << "\n";
         this->eventActivated = true;
         this->eventOdds = 0;
         this->eventIncrease = 1;
     }
     else {
-        //Increase chance of odd happening if failed
+        // Increase chance of odd happening if failed
         std::cout << "Odds failed chances increased..." << "\n";
         this->eventOdds += this->eventIncrease;
-        this->eventIncrease * 2;
+        this->eventIncrease *= 2;
     }
 }
 
@@ -196,8 +205,7 @@ void EventManager::readCharacters(size_t numChars, std::string& extractedString)
     delete[] buffer;
 }
 
-std::vector<std::string> EventManager::getFileNamesInDirectory(const std::string& directoryPath) {
-
+std::deque<std::string> EventManager::getFileNamesInDirectory(const std::string& directoryPath) {
     try {
         for (const std::filesystem::directory_entry& entry : std::filesystem::directory_iterator(directoryPath)) {
             if (entry.is_regular_file()) { // Ensure it is a file (not a directory or symlink)
