@@ -4,7 +4,7 @@
 #include<random>
 #include<deque>
 #include"CombatState.h"
-#include"EventModule.h"
+#include"UserInputComponent.h"
 
 class EventManager {
 public:
@@ -26,10 +26,10 @@ public:
 
 	//Getters
 
-	EventModule* eventModule;
+	UserInputComponent* userInput;
 
-	bool rightArrowClicked() { return this->eventModule->userInput->rightArrowClicked(); }
-	bool leftArrowClicked() { return this->eventModule->userInput->leftArrowClicked(); }
+	bool rightArrowClicked() { return this->userInput->rightArrowClicked(); }
+	bool leftArrowClicked() { return this->userInput->leftArrowClicked(); }
 
 	bool getEventActivated() { return this->eventActivated; }
 
@@ -37,6 +37,7 @@ private:
 
 	bool isFileOpen;
 	bool eventActivated;
+	bool skipLine;
 
 	float eventOdds;
 	float eventIncrease;
@@ -47,7 +48,7 @@ private:
 
 	std::ifstream ifs;
 	std::string areaName;
-	std::string inResponseOne, inResponseTwo, inExpression, inTalk;
+	std::string inResponseOne, inResponseTwo, inExpression, inTalk, inChar;
 	std::string currentLine;
 	std::deque<std::string> eventsFilePaths;
 

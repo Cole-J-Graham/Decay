@@ -11,9 +11,11 @@ EventManager::EventManager(std::string& areaName)
     this->eventThresholdMin = 0;
     this->eventKey = 0;
     this->areaName = areaName;
+    this->inChar = "";
+    this->skipLine = false;
 
     //Module Initialization
-    this->eventModule = new EventModule();
+    this->userInput = new UserInputComponent();
 
     //Seed randomization
 	srand(time(NULL));
@@ -24,20 +26,21 @@ EventManager::EventManager(std::string& areaName)
 
 EventManager::~EventManager()
 {
-    delete this->eventModule;
+    delete this->userInput;
 }
 
 //Core Functions
 void EventManager::update(sf::Vector2f mousePos)
 {
-    this->eventModule->update(mousePos);
+    this->userInput->update(mousePos);
     this->updateEvents();
     this->updateInput();
 }
 
 void EventManager::render(sf::RenderTarget* target)
 {
-    this->eventModule->render(target);
+    this->userInput->render(target);
+    if (!this->inChar.empty()) { CharacterManager::getInstance().getCharacter(this->inChar)->render(target); };
 }
 
 //Event Functions
@@ -54,7 +57,7 @@ void EventManager::initEvents() {
 
 void EventManager::updateEvents() {
     if (this->eventActivated) {
-        this->eventModule->userInput->hideMoveArrows();
+        this->userInput->hideMoveArrows();
         std::random_device dev;
         std::mt19937 rng(dev());
         std::uniform_int_distribution<std::mt19937::result_type> eventRange(0, this->eventsFilePaths.size() - 1);
@@ -71,7 +74,7 @@ void EventManager::updateEvents() {
 
         else if (!isFileOpen && this->eventsFilePaths.empty()) {
             //If no events are left in the area
-            this->eventModule->userInput->showMoveArrows();
+            this->userInput->showMoveArrows();
             this->eventActivated = false;
             std::cout << "No events remaining in area..." << "\n";
         }
@@ -81,7 +84,8 @@ void EventManager::updateEvents() {
                 //Event triggered
                 if (currentState == IDLE && !this->processNextLine()) {
                     this->eventActivated = false;
-                    this->eventModule->userInput->showMoveArrows();
+                    this->inChar = "";
+                    this->userInput->showMoveArrows();
                     this->closeFile();
                     break; // End of file or error
                 }
@@ -97,17 +101,20 @@ void EventManager::updateEvents() {
 void EventManager::characterSpeak() {
     this->readLine(this->inResponseOne);
     this->readLine(this->inResponseTwo);
-    this->eventModule->userInput->showDialogueOptions();
-    this->eventModule->userInput->setDialogueOptions(this->inResponseOne, this->inResponseTwo);
+    this->userInput->showDialogueOptions();
+    this->userInput->setDialogueOptions(this->inResponseOne, this->inResponseTwo);
     this->updateState(PROCESSING_DIALOGUE);
     std::cout << "Processing Dialogue: True (characterSpeak)" << std::endl; // Debug statement
 }
 
 void EventManager::npcSpeak() {
+    std::string lineSkip;
+    this->readLine(this->inChar);
     this->readLine(this->inExpression);
+    if (this->skipLine) { this->readLine(lineSkip); this->skipLine = false; }
     this->readLine(this->inTalk);
-    this->eventModule->userInput->setMainDialogueText(this->inTalk);
-    this->eventModule->userInput->showMainDialogue();
+    this->userInput->setMainDialogueText(this->inTalk);
+    this->userInput->showMainDialogue();
     // Additional processing for NPC speak
     this->updateState(PROCESSING_DIALOGUE);
     std::cout << "Processing Dialogue: True (npcSpeak)" << std::endl; // Debug statement
@@ -231,16 +238,19 @@ void EventManager::updateState(State newState) {
 }
 
 void EventManager::updateInput() {
-    if (this->eventModule->userInput->topDialogueClicked() || this->eventModule->userInput->bottomDialogueClicked()) {
-        this->eventModule->userInput->hideDialogueOptions();
+    //Activate line skip boolean if bottom dialogue option is clicked
+    if (this->userInput->bottomDialogueClicked()) { std::cout << "LINE SKIP ACTIVATED" << "\n";  this->skipLine = true; }
+
+    if (this->userInput->topDialogueClicked() || this->userInput->bottomDialogueClicked()) {
+        this->userInput->hideDialogueOptions();
         this->updateState(IDLE);
         std::cout << "Processing Dialogue: False (updateInput)" << std::endl; // Debug statement
     }
 
-    if (this->eventModule->userInput->mainDialogueClicked()) {
+    if (this->userInput->mainDialogueClicked()) {
         std::string test = "";
-        this->eventModule->userInput->hideMainDialogue();
-        this->eventModule->userInput->setMainDialogueText(test);
+        this->userInput->hideMainDialogue();
+        this->userInput->setMainDialogueText(test);
         this->updateState(IDLE);
         std::cout << "Processing Dialogue: False (updateInput)" << std::endl; // Debug statement
     }

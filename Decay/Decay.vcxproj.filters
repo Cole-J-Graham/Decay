@@ -37,9 +37,6 @@
     <ClCompile Include="StatsModule.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="EventModule.cpp">
-      <Filter>Events</Filter>
-    </ClCompile>
     <ClCompile Include="Character.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
@@ -108,9 +105,6 @@
     <ClInclude Include="StatsModule.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="EventModule.h">
-      <Filter>Events</Filter>
-    </ClInclude>
     <ClInclude Include="Character.h">
       <Filter>Entities</Filter>
     </ClInclude>
@@ -160,9 +154,6 @@
     </Filter>
     <Filter Include="Modules">
       <UniqueIdentifier>{9850c770-ac1a-4b1d-9fa8-eab73f04c043}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Events">
-      <UniqueIdentifier>{8c5d17aa-9015-493b-b130-6e69b5e38afc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Entities">
       <UniqueIdentifier>{b4c5fe12-01fe-4e6a-9d0f-7d5d882d7c89}</UniqueIdentifier>
