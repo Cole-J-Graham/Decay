@@ -51,6 +51,7 @@ private:
 	sf::Texture characterTexture;
 	sf::Sprite character;
 	std::string characterName;
+	std::unique_ptr<Rectangle> border;
 
 	std::map<std::string, Button*> buttons;
 	std::map<std::string, Text*> text;

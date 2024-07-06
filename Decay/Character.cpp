@@ -18,6 +18,7 @@ Character::Character(std::string characterName, int hp, int hpMax, int damage, i
 	this->character.setPosition(x, y);
 	this->character.setScale(scale, scale);
 	this->characterName = characterName;
+	this->border = std::make_unique<Rectangle>(this->x, this->y, 200, 200, sf::Color::Transparent, sf::Color::White, 1.f, false);
 
 	this->turnActive = turnActive;
 
@@ -57,6 +58,7 @@ void Character::render(sf::RenderTarget* target)
 {
 	//In combat
 	target->draw(this->character);
+	this->border->render(target);
 	this->renderButtons(target);
 	this->renderText(target);
 	//Active Turn

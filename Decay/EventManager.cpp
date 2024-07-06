@@ -60,6 +60,7 @@ void EventManager::updateEvents() {
         std::uniform_int_distribution<std::mt19937::result_type> eventRange(0, this->eventsFilePaths.size() - 1);
 
         if (!isFileOpen && !this->eventsFilePaths.empty()) {
+            //Event trigger possiblity
             int index = eventRange(rng);
             std::string selectedFile = this->eventsFilePaths[index];
             if (this->openFile(selectedFile)) {
@@ -67,12 +68,17 @@ void EventManager::updateEvents() {
                 this->eventsFilePaths.erase(this->eventsFilePaths.begin() + index);
             }
         }
+
         else if (!isFileOpen && this->eventsFilePaths.empty()) {
+            //If no events are left in the area
+            this->eventModule->userInput->showMoveArrows();
+            this->eventActivated = false;
             std::cout << "No events remaining in area..." << "\n";
         }
 
         if (isFileOpen) {
             while (true) {
+                //Event triggered
                 if (currentState == IDLE && !this->processNextLine()) {
                     this->eventActivated = false;
                     this->eventModule->userInput->showMoveArrows();
