@@ -25,6 +25,7 @@ public:
 		std::string in4, std::string str4, sf::Vector2f pos5, std::string in5, std::string str5);
 	void detectNewArea(std::string in1, std::string in2,
 		std::string in3, std::string in4, std::string in5);
+	void detectAreaEnd();
 	void move();
 
 
@@ -47,6 +48,7 @@ public:
 	int& getCurrentMapId() { return this->currentMapId; };
 	int& getMapIdMaxSize() { return this->mapIdMaxSize; };
 	std::string& getMapName() { return this->maps[currentMapId]->getMapName(); };
+	void increaseButtonsShown() { this->maps[currentMapId]->increaseButtonsShown(); };
 
 	class MapCore {
 	public:
@@ -64,6 +66,7 @@ public:
 			this->map.setPosition(100, 100);
 			this->map.setScale(scale, scale);
 			this->hidden = true;
+			this->buttonsShown = 1;
 
 			this->mapLoadAreaInputs.push_back(in1);
 			this->mapLoadAreaInputs.push_back(in2);
@@ -100,6 +103,7 @@ public:
 		void update(const sf::Vector2f mousePos) {
 			if (!this->hidden) {
 				this->updateButtons(mousePos);
+				this->updateButtonView();
 			}
 			this->event->update(mousePos);
 		}
@@ -134,6 +138,19 @@ public:
 			}
 		}
 
+		void updateButtonView()
+		{
+			int maxButtons = 5;
+			for (int i = 1; i <= maxButtons; ++i) {
+				if (i <= this->buttonsShown) {
+					this->buttons["POS" + std::to_string(i)]->show();
+				}
+				else {
+					this->buttons["POS" + std::to_string(i)]->hide();
+				}
+			}
+		}
+
 		void renderButtons(sf::RenderTarget* target)
 		{
 			for (auto& it : this->buttons) {
@@ -155,6 +172,7 @@ public:
 		const bool& isHidden() { return this->hidden; };
 		bool& setHidden() { return this->hidden = true; };
 		bool& setShown() { return this->hidden = false; };
+		void increaseButtonsShown() { this->buttonsShown++; };
 
 		//Getters
 		std::vector<std::string>& getMapContainer() { return this->mapContainer; };
@@ -178,6 +196,7 @@ public:
 		std::map<std::string, Button*> buttons;
 		std::vector<std::string> mapContainer;
 
+		int buttonsShown;
 		bool hidden;
 
 	};
@@ -200,6 +219,8 @@ private:
 	int currentMapId;
 	int mapIdMaxSize;
 	bool mapSelected;
+	bool areaEnd;
+	bool areaReset;
 
 	sf::Clock clock;
 	sf::Time time;

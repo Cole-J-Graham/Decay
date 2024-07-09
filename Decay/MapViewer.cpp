@@ -14,6 +14,8 @@ MapViewer::MapViewer()
     this->mapIdMaxSize = -1;
     this->move_time = 0.1f;
     this->mapSelected = false;
+    this->areaEnd = false;
+    this->areaReset = false;
 
     //Initialization
     this->initRects();
@@ -41,6 +43,7 @@ void MapViewer::update(const sf::Vector2f mousePos)
     this->updateButtons(mousePos);
     this->updateMaps(mousePos);
     this->move();
+    this->detectAreaEnd();
     this->detectNewArea(this->maps[currentMapId]->getMapLoadAreaInputs()[0],
         this->maps[currentMapId]->getMapLoadAreaInputs()[1],
         this->maps[currentMapId]->getMapLoadAreaInputs()[2],
@@ -100,6 +103,21 @@ void MapViewer::detectNewArea(std::string in1, std::string in2,
     }
     if (this->maps[currentMapId]->getButtons()["POS5"]->isPressed()) {
         this->loadMap(in5);
+    }
+}
+
+void MapViewer::detectAreaEnd()
+{
+    if (this->areaReset) {
+        if (this->mapFrame == this->mapFramesMaxSize) {
+            this->areaEnd = true;
+            if (this->areaEnd) {
+                this->increaseButtonsShown();
+                std::cout << "HERE" << "\n";
+                this->areaEnd = false;
+                this->areaReset = false;
+            }
+        }
     }
 }
 
@@ -182,6 +200,8 @@ void MapViewer::loadMap(std::string file_input)
         this->mapFrame = 0;
         //Set map to selected to safe guard vector subscript errors
         this->getMapSelected() = true;
+        this->areaEnd = false;
+        this->areaReset = true;
 
         std::string input;
         while (getline(ifs, input)) {
