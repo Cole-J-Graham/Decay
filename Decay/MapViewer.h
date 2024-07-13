@@ -66,7 +66,8 @@ public:
 			this->map.setPosition(100, 100);
 			this->map.setScale(scale, scale);
 			this->hidden = true;
-			this->buttonsShown = 1;
+			this->activeButtonId = 0;
+			this->locationsExplored = 0;
 
 			this->mapLoadAreaInputs.push_back(in1);
 			this->mapLoadAreaInputs.push_back(in2);
@@ -87,6 +88,12 @@ public:
 			this->buttonNames.push_back(str3);
 			this->buttonNames.push_back(str4);
 			this->buttonNames.push_back(str5);
+
+			this->buttonIds.push_back(0);
+			this->buttonIds.push_back(1);
+			this->buttonIds.push_back(2);
+			this->buttonIds.push_back(3);
+			this->buttonIds.push_back(4);
 
 			//Init Functions
 			this->initButtons();
@@ -119,15 +126,15 @@ public:
 		//Button Functions
 		void initButtons()
 		{
-			this->buttons["POS1"] = new Button(this->buttonPos[0], 100, 25, 0.5f, this->font, this->buttonNames[0],
+			this->buttons[this->buttonIds[0]] = new Button(this->buttonPos[0], 100, 25, 0.5f, this->font, this->buttonNames[0],
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-			this->buttons["POS2"] = new Button(this->buttonPos[1], 100, 25, 0.5f, this->font, this->buttonNames[1],
+			this->buttons[this->buttonIds[1]] = new Button(this->buttonPos[1], 100, 25, 0.5f, this->font, this->buttonNames[1],
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-			this->buttons["POS3"] = new Button(this->buttonPos[2], 100, 25, 0.5f, this->font, this->buttonNames[2],
+			this->buttons[this->buttonIds[2]] = new Button(this->buttonPos[2], 100, 25, 0.5f, this->font, this->buttonNames[2],
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-			this->buttons["POS4"] = new Button(this->buttonPos[3], 100, 25, 0.5f, this->font, this->buttonNames[3],
+			this->buttons[this->buttonIds[3]] = new Button(this->buttonPos[3], 100, 25, 0.5f, this->font, this->buttonNames[3],
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-			this->buttons["POS5"] = new Button(this->buttonPos[4], 100, 25, 0.5f, this->font, this->buttonNames[4],
+			this->buttons[this->buttonIds[4]] = new Button(this->buttonPos[4], 100, 25, 0.5f, this->font, this->buttonNames[4],
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 		}
 
@@ -135,6 +142,9 @@ public:
 		{
 			for (auto& it : this->buttons) {
 				it.second->update(mousePos);
+				if (it.second->isPressed()) {
+					this->activeButtonId = it.first;
+				}
 			}
 		}
 
@@ -142,11 +152,14 @@ public:
 		{
 			int maxButtons = 5;
 			for (int i = 1; i <= maxButtons; ++i) {
-				if (i <= this->buttonsShown) {
-					this->buttons["POS" + std::to_string(i)]->show();
-				}
-				else {
-					this->buttons["POS" + std::to_string(i)]->hide();
+				auto it = this->buttons.find(i);
+				if (it != this->buttons.end()) {
+					if (i <= this->buttonsShown) {
+						it->second->show();
+					}
+					else {
+						it->second->hide();
+					}
 				}
 			}
 		}
@@ -173,12 +186,15 @@ public:
 		bool& setHidden() { return this->hidden = true; };
 		bool& setShown() { return this->hidden = false; };
 		void increaseButtonsShown() { this->buttonsShown++; };
+		void increaseLocationsExplored() { this->locationsExplored++; };
 
 		//Getters
 		std::vector<std::string>& getMapContainer() { return this->mapContainer; };
 		std::vector<std::string>& getMapLoadAreaInputs() { return this->mapLoadAreaInputs; };
-		std::map<std::string, Button*>& getButtons() { return this->buttons; };
+		std::map<int, Button*>& getButtons() { return this->buttons; };
 		std::string& getMapName() { return this->mapName; };
+		int& getActiveButtonId() { return this->activeButtonId; };
+		int& getLocationsExplored() { return this->locationsExplored; };
 
 		EventManager* event;
 
@@ -193,10 +209,13 @@ public:
 		std::string mapInput;
 		sf::Font font;
 		sf::Sprite map;
-		std::map<std::string, Button*> buttons;
+		std::map<int, Button*> buttons;
 		std::vector<std::string> mapContainer;
+		std::vector<int> buttonIds;
 
+		int activeButtonId;
 		int buttonsShown;
+		int locationsExplored;
 		bool hidden;
 
 	};

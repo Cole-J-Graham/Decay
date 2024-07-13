@@ -10,7 +10,7 @@ MapViewer::MapViewer()
     this->mapSprite.setPosition(560, 5);
     this->mapSprite.setScale(0.78, 0.78);
     this->currentMapId = 0;
-    this->mapFramesMaxSize = 59;
+    this->mapFramesMaxSize = -1;
     this->mapIdMaxSize = -1;
     this->move_time = 0.1f;
     this->mapSelected = false;
@@ -89,19 +89,19 @@ void MapViewer::createMapCore(std::string mapName, int mapId, float scale, std::
 void MapViewer::detectNewArea(std::string in1, std::string in2,
     std::string in3, std::string in4, std::string in5)
 {
-    if (this->maps[currentMapId]->getButtons()["POS1"]->isPressed()) {
+    if (this->maps[currentMapId]->getButtons()[0]->isPressed()) {
         this->loadMap(in1);
     }
-    if (this->maps[currentMapId]->getButtons()["POS2"]->isPressed()) {
+    if (this->maps[currentMapId]->getButtons()[1]->isPressed()) {
         this->loadMap(in2);
     }
-    if (this->maps[currentMapId]->getButtons()["POS3"]->isPressed()) {
+    if (this->maps[currentMapId]->getButtons()[2]->isPressed()) {
         this->loadMap(in3);
     }
-    if (this->maps[currentMapId]->getButtons()["POS4"]->isPressed()) {
+    if (this->maps[currentMapId]->getButtons()[3]->isPressed()) {
         this->loadMap(in4);
     }
-    if (this->maps[currentMapId]->getButtons()["POS5"]->isPressed()) {
+    if (this->maps[currentMapId]->getButtons()[4]->isPressed()) {
         this->loadMap(in5);
     }
 }
@@ -109,13 +109,18 @@ void MapViewer::detectNewArea(std::string in1, std::string in2,
 void MapViewer::detectAreaEnd()
 {
     if (this->areaReset) {
-        if (this->mapFrame == this->mapFramesMaxSize) {
+        if (mapFrame == this->mapFramesMaxSize) {
             this->areaEnd = true;
             if (this->areaEnd) {
-                this->increaseButtonsShown();
-                std::cout << "HERE" << "\n";
-                this->areaEnd = false;
-                this->areaReset = false;
+                if (this->maps[currentMapId]->getActiveButtonId() == this->maps[currentMapId]->getLocationsExplored()) {
+                    this->maps[currentMapId]->increaseButtonsShown();
+                    this->maps[currentMapId]->increaseLocationsExplored();
+                    this->areaEnd = false;
+                    this->areaReset = false;
+                }
+                else {
+                    std::cout << "# of Buttons Not Increased due to Area # != locations #" << "\n";
+                }
             }
         }
     }
@@ -192,6 +197,7 @@ void MapViewer::renderButtons(sf::RenderTarget* target)
 //Asset Functions
 void MapViewer::loadMap(std::string file_input)
 {
+    this->mapFramesMaxSize = -1;
     ifs.open(file_input);
     if (ifs.is_open()) {
         // Clear the map outside the loop if necessary
@@ -207,6 +213,7 @@ void MapViewer::loadMap(std::string file_input)
         while (getline(ifs, input)) {
             // Load texture from file
             this->maps[currentMapId]->loadMap(input);
+            this->mapFramesMaxSize++;
         }
         ifs.close();
         this->setMapFrame(mapFrame);

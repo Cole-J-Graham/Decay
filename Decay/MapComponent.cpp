@@ -37,13 +37,13 @@ void MapComponent::render(sf::RenderTarget* target)
 void MapComponent::initMapCores()
 {
     this->mapView->createMapCore("Forest", 0, 0.390, "Assets/Wallpapers/Forest/forestmap.jpeg",
-        sf::Vector2f(150, 150), "Assets/Wallpapers/forest.txt", "Entrance",
-        sf::Vector2f(150, 250), "", "Dark Plains",
-        sf::Vector2f(200, 200), "", "Depths",
-        sf::Vector2f(300, 250), "", "Corruption",
-        sf::Vector2f(375, 400), "", "Deep Dark");
+        sf::Vector2f(150, 150), "Assets/Wallpapers/ForestTextFiles/forest.txt", "Entrance",
+        sf::Vector2f(150, 250), "Assets/Wallpapers/ForestTextFiles/forestdepths.txt", "Dark Plains",
+        sf::Vector2f(200, 200), "Assets/Wallpapers/ForestTextFiles/abyssalwoods.txt", "Depths",
+        sf::Vector2f(300, 250), "Assets/Wallpapers/ForestTextFiles/abyssaldepths.txt", "Corruption",
+        sf::Vector2f(375, 400), "Assets/Wallpapers/ForestTextFiles/forest.txt", "Deep Dark");
     this->mapView->createMapCore("Castle", 1, 0.385, "Assets/Wallpapers/Castle/castleMap.jpeg",
-        sf::Vector2f(150, 150), "Assets/Wallpapers/castle.txt", "Entrance",
+        sf::Vector2f(150, 150), "Assets/Wallpapers/CastleTextFiles/castle.txt", "Entrance",
         sf::Vector2f(150, 250), "", "Halls",
         sf::Vector2f(200, 200), "", "Corridors",
         sf::Vector2f(300, 250), "", "Dungeon",
