@@ -13,18 +13,20 @@ public:
 	~MapViewer();
 
 	//Core Functions
-	void update(const sf::Vector2f mousePos);
+	void update(const sf::Vector2f& mousePos);
 	void render(sf::RenderTarget* target);
 
 	//Map Functions
-	void updateMaps(const sf::Vector2f mousePos);
+	void updateMaps(const sf::Vector2f& mousePos);
 	void renderMaps(sf::RenderTarget* target);
-	void createMapCore(std::string mapName, int mapId, float scale, std::string mapInput,
-		sf::Vector2f pos1, std::string in1, std::string str1, sf::Vector2f pos2, std::string in2,
-		std::string str2, sf::Vector2f pos3, std::string in3, std::string str3, sf::Vector2f pos4,
-		std::string in4, std::string str4, sf::Vector2f pos5, std::string in5, std::string str5);
-	void detectNewArea(std::string in1, std::string in2,
-		std::string in3, std::string in4, std::string in5);
+	void createMapCore(const std::string& mapName, int mapId, float scale, const std::string& mapInput,
+		const sf::Vector2f& pos1, const std::string& in1, const std::string& str1,
+		const sf::Vector2f& pos2, const std::string& in2, const std::string& str2,
+		const sf::Vector2f& pos3, const std::string& in3, const std::string& str3,
+		const sf::Vector2f& pos4, const std::string& in4, const std::string& str4,
+		const sf::Vector2f& pos5, const std::string& in5, const std::string& str5);
+	void detectNewArea(const std::string& in1, const std::string& in2,
+		const std::string& in3, const std::string& in4, const std::string& in5);
 	void detectAreaEnd();
 	void move();
 
@@ -35,11 +37,11 @@ public:
 
 	//Button Functions
 	void initButtons();
-	void updateButtons(const sf::Vector2f mousePos);
+	void updateButtons(const sf::Vector2f& mousePos);
 	void renderButtons(sf::RenderTarget* target);
 
 	//Asset Functions
-	void loadMap(std::string file_input);
+	void loadMap(const std::string& file_input);
 
 	//Getters
 	int& getMapFramesMaxSize() { return this->mapFramesMaxSize; };
@@ -220,7 +222,7 @@ public:
 
 	};
 
-	std::map<int, MapCore*> maps;
+	std::map<int, std::unique_ptr<MapCore>> maps;
 
 	//Modifier Functions
 	void setMapFrame(int& frame) {
@@ -252,8 +254,8 @@ private:
 	std::string line;
 
 	sf::Font font;
-	std::map<std::string, Button*> buttons;
-	std::map<std::string, Rectangle*> rectangles;
+	std::map<std::string, std::unique_ptr<Button>> buttons;
+	std::map<std::string, std::unique_ptr<Rectangle>> rectangles;
 
 };
 

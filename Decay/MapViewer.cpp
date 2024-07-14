@@ -1,122 +1,113 @@
 #include "MapViewer.h"
-//Constructor and Deconstructor
+#include <iostream>
+
+// Constructor and Destructor
 MapViewer::MapViewer()
+    : x(100),
+    y(100),
+    hidden(true),
+    map(0),
+    currentMapId(0),
+    mapFramesMaxSize(-1),
+    mapIdMaxSize(-1),
+    move_time(0.1f),
+    mapSelected(false),
+    areaEnd(false),
+    areaReset(false)
 {
-    font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
-    this->x = 100;
-    this->y = 100;
-    this->hidden = true;
-    this->map = 0;
-    this->mapSprite.setPosition(560, 5);
-    this->mapSprite.setScale(0.78, 0.78);
-    this->currentMapId = 0;
-    this->mapFramesMaxSize = -1;
-    this->mapIdMaxSize = -1;
-    this->move_time = 0.1f;
-    this->mapSelected = false;
-    this->areaEnd = false;
-    this->areaReset = false;
-
-    //Initialization
-    this->initRects();
-    this->initButtons();
-}
-
-MapViewer::~MapViewer()
-{
-    //Delete Rectangles
-    auto ir = this->rectangles.begin();
-    for (ir = this->rectangles.begin(); ir != this->rectangles.end(); ++ir) {
-        delete ir->second;
+    if (!font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf")) {
+        std::cerr << "Failed to load font" << std::endl;
     }
 
-    //Delete Maps
-    auto im = this->maps.begin();
-    for (im = this->maps.begin(); im != this->maps.end(); ++im) {
-        delete im->second;
-    }
+    mapSprite.setPosition(560, 5);
+    mapSprite.setScale(0.78f, 0.78f);
+
+    // Initialization
+    initRects();
+    initButtons();
 }
 
-//Core Functions
-void MapViewer::update(const sf::Vector2f mousePos)
+MapViewer::~MapViewer() 
 {
-    this->updateButtons(mousePos);
-    this->updateMaps(mousePos);
-    this->move();
-    this->detectAreaEnd();
-    this->detectNewArea(this->maps[currentMapId]->getMapLoadAreaInputs()[0],
-        this->maps[currentMapId]->getMapLoadAreaInputs()[1],
-        this->maps[currentMapId]->getMapLoadAreaInputs()[2],
-        this->maps[currentMapId]->getMapLoadAreaInputs()[3],
-        this->maps[currentMapId]->getMapLoadAreaInputs()[4]);
+
 }
 
-void MapViewer::render(sf::RenderTarget* target)
-{
-    target->draw(this->mapSprite);
-    if (!this->hidden) {
-        this->renderRects(target);
-        this->renderMaps(target);
-    }
-    this->renderButtons(target);
+// Core Functions
+void MapViewer::update(const sf::Vector2f& mousePos) {
+    updateButtons(mousePos);
+    updateMaps(mousePos);
+    move();
+    detectAreaEnd();
+    detectNewArea(
+        maps[currentMapId]->getMapLoadAreaInputs()[0],
+        maps[currentMapId]->getMapLoadAreaInputs()[1],
+        maps[currentMapId]->getMapLoadAreaInputs()[2],
+        maps[currentMapId]->getMapLoadAreaInputs()[3],
+        maps[currentMapId]->getMapLoadAreaInputs()[4]
+    );
 }
 
-//Map Functions
-void MapViewer::updateMaps(const sf::Vector2f mousePos)
-{
-    this->maps[currentMapId]->update(mousePos);
+void MapViewer::render(sf::RenderTarget* target) {
+    target->draw(mapSprite);
+    if (!hidden) {
+        renderRects(target);
+        renderMaps(target);
+    }
+    renderButtons(target);
 }
 
-void MapViewer::renderMaps(sf::RenderTarget* target)
-{
-    this->maps[currentMapId]->render(target);
+// Map Functions
+void MapViewer::updateMaps(const sf::Vector2f& mousePos) {
+    maps[currentMapId]->update(mousePos);
 }
 
-void MapViewer::createMapCore(std::string mapName, int mapId, float scale, std::string mapInput,
-    sf::Vector2f pos1, std::string in1, std::string str1, sf::Vector2f pos2, std::string in2,
-    std::string str2, sf::Vector2f pos3, std::string in3, std::string str3, sf::Vector2f pos4,
-    std::string in4, std::string str4, sf::Vector2f pos5, std::string in5, std::string str5)
-{
-    this->maps[mapId] = new MapCore(mapName, scale, mapInput,
-        sf::Vector2f(pos1), in1, str1,
-        sf::Vector2f(pos2), in2, str2,
-        sf::Vector2f(pos3), in3, str3,
-        sf::Vector2f(pos4), in4, str4,
-        sf::Vector2f(pos5), in5, str5);
-    this->mapIdMaxSize++;
+void MapViewer::renderMaps(sf::RenderTarget* target) {
+    maps[currentMapId]->render(target);
 }
 
-void MapViewer::detectNewArea(std::string in1, std::string in2,
-    std::string in3, std::string in4, std::string in5)
+void MapViewer::createMapCore(const std::string& mapName, int mapId, float scale, const std::string& mapInput,
+    const sf::Vector2f& pos1, const std::string& in1, const std::string& str1,
+    const sf::Vector2f& pos2, const std::string& in2, const std::string& str2,
+    const sf::Vector2f& pos3, const std::string& in3, const std::string& str3,
+    const sf::Vector2f& pos4, const std::string& in4, const std::string& str4,
+    const sf::Vector2f& pos5, const std::string& in5, const std::string& str5)
 {
-    if (this->maps[currentMapId]->getButtons()[0]->isPressed()) {
-        this->loadMap(in1);
+    maps[mapId] = std::make_unique<MapCore>(mapName, scale, mapInput,
+        pos1, in1, str1, pos2, in2, str2, pos3, in3, str3,
+        pos4, in4, str4, pos5, in5, str5);
+    mapIdMaxSize++;
+}
+
+void MapViewer::detectNewArea(const std::string& in1, const std::string& in2,
+    const std::string& in3, const std::string& in4, const std::string& in5)
+{
+    if (maps[currentMapId]->getButtons()[0]->isPressed()) {
+        loadMap(in1);
     }
-    if (this->maps[currentMapId]->getButtons()[1]->isPressed()) {
-        this->loadMap(in2);
+    if (maps[currentMapId]->getButtons()[1]->isPressed()) {
+        loadMap(in2);
     }
-    if (this->maps[currentMapId]->getButtons()[2]->isPressed()) {
-        this->loadMap(in3);
+    if (maps[currentMapId]->getButtons()[2]->isPressed()) {
+        loadMap(in3);
     }
-    if (this->maps[currentMapId]->getButtons()[3]->isPressed()) {
-        this->loadMap(in4);
+    if (maps[currentMapId]->getButtons()[3]->isPressed()) {
+        loadMap(in4);
     }
-    if (this->maps[currentMapId]->getButtons()[4]->isPressed()) {
-        this->loadMap(in5);
+    if (maps[currentMapId]->getButtons()[4]->isPressed()) {
+        loadMap(in5);
     }
 }
 
-void MapViewer::detectAreaEnd()
-{
-    if (this->areaReset) {
-        if (mapFrame == this->mapFramesMaxSize) {
-            this->areaEnd = true;
-            if (this->areaEnd) {
-                if (this->maps[currentMapId]->getActiveButtonId() == this->maps[currentMapId]->getLocationsExplored()) {
-                    this->maps[currentMapId]->increaseButtonsShown();
-                    this->maps[currentMapId]->increaseLocationsExplored();
-                    this->areaEnd = false;
-                    this->areaReset = false;
+void MapViewer::detectAreaEnd() {
+    if (areaReset) {
+        if (mapFrame == mapFramesMaxSize) {
+            areaEnd = true;
+            if (areaEnd) {
+                if (maps[currentMapId]->getActiveButtonId() == maps[currentMapId]->getLocationsExplored()) {
+                    maps[currentMapId]->increaseButtonsShown();
+                    maps[currentMapId]->increaseLocationsExplored();
+                    areaEnd = false;
+                    areaReset = false;
                 }
                 else {
                     std::cout << "# of Buttons Not Increased due to Area # != locations #" << "\n";
@@ -126,97 +117,90 @@ void MapViewer::detectAreaEnd()
     }
 }
 
-void MapViewer::move()
-{
-    if (this->mapSelected) {
-        this->time = this->clock.getElapsedTime();
-        if (this->time.asSeconds() >= this->move_time) {
-            if (this->maps[currentMapId]->event->rightArrowClicked() && this->mapFrame < this->mapFramesMaxSize) {
-                this->mapFrame++;
-                this->setMapFrame(mapFrame);
-                this->maps[currentMapId]->event->eventChance();
-                this->clock.restart();
+void MapViewer::move() {
+    if (mapSelected) {
+        time = clock.getElapsedTime();
+        if (time.asSeconds() >= move_time) {
+            if (maps[currentMapId]->event->rightArrowClicked() && mapFrame < mapFramesMaxSize) {
+                mapFrame++;
+                setMapFrame(mapFrame);
+                maps[currentMapId]->event->eventChance();
+                clock.restart();
             }
-            else if (this->maps[currentMapId]->event->leftArrowClicked() && this->mapFrame > 0) {
-                this->mapFrame--;
-                this->setMapFrame(mapFrame);
-                this->maps[currentMapId]->event->eventChance();
-                this->clock.restart();
+            else if (maps[currentMapId]->event->leftArrowClicked() && mapFrame > 0) {
+                mapFrame--;
+                setMapFrame(mapFrame);
+                maps[currentMapId]->event->eventChance();
+                clock.restart();
             }
         }
     }
 }
 
-//Rectangle Functions
-void MapViewer::initRects()
-{
-    this->rectangles["MAPVIEWER"] = new Rectangle(this->x, this->y, 400, 400,
+// Rectangle Functions
+void MapViewer::initRects() {
+    rectangles["MAPVIEWER"] = std::make_unique<Rectangle>(x, y, 400, 400,
         sf::Color::Transparent, sf::Color::White, 1.f, false);
 }
 
-void MapViewer::renderRects(sf::RenderTarget* target)
-{
-    for (auto& it : this->rectangles) {
+void MapViewer::renderRects(sf::RenderTarget* target) {
+    for (const auto& it : rectangles) {
         it.second->render(target);
     }
 }
 
-//Button Functions
-void MapViewer::initButtons()
-{
-    this->buttons["OPENMAP"] = new Button(450, 775, 100, 25, 0.5f, this->font, "Map",
+// Button Functions
+void MapViewer::initButtons() {
+    buttons["OPENMAP"] = std::make_unique<Button>(450, 775, 100, 25, 0.5f, font, "Map",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 }
 
-void MapViewer::updateButtons(const sf::Vector2f mousePos)
-{
-    for (auto& it : this->buttons) {
+void MapViewer::updateButtons(const sf::Vector2f& mousePos) {
+    for (const auto& it : buttons) {
         it.second->update(mousePos);
     }
 
-    //Open Map Functionality
-    if (this->buttons["OPENMAP"]->isPressed() && this->hidden) {
-        this->maps[currentMapId]->setShown();
-        this->rectangles["MAPVIEWER"]->show();
-        this->hidden = false;
+    // Open Map Functionality
+    if (buttons["OPENMAP"]->isPressed() && hidden) {
+        maps[currentMapId]->setShown();
+        rectangles["MAPVIEWER"]->show();
+        hidden = false;
     }
-    else if (this->buttons["OPENMAP"]->isPressed() && !this->hidden) {
-        this->maps[currentMapId]->setHidden();
-        this->rectangles["MAPVIEWER"]->show();
-        this->hidden = true;
+    else if (buttons["OPENMAP"]->isPressed() && !hidden) {
+        maps[currentMapId]->setHidden();
+        rectangles["MAPVIEWER"]->show();
+        hidden = true;
     }
 }
 
-void MapViewer::renderButtons(sf::RenderTarget* target)
-{
-    for (auto& it : this->buttons) {
+void MapViewer::renderButtons(sf::RenderTarget* target) {
+    for (const auto& it : buttons) {
         it.second->render(target);
     }
 }
 
-//Asset Functions
-void MapViewer::loadMap(std::string file_input)
-{
-    this->mapFramesMaxSize = -1;
-    ifs.open(file_input);
+// Asset Functions
+void MapViewer::loadMap(const std::string& file_input) {
+    mapFramesMaxSize = -1;
+    std::ifstream ifs(file_input);
     if (ifs.is_open()) {
         // Clear the map outside the loop if necessary
-        this->maps[currentMapId]->clearMap();
-        //Reset map frame to make map flow more concise
-        this->mapFrame = 0;
-        //Set map to selected to safe guard vector subscript errors
-        this->getMapSelected() = true;
-        this->areaEnd = false;
-        this->areaReset = true;
+        maps[currentMapId]->clearMap();
+        // Reset map frame to make map flow more concise
+        mapFrame = 0;
+        // Set map to selected to safeguard vector subscript errors
+        mapSelected = true;
+        areaEnd = false;
+        areaReset = true;
 
         std::string input;
-        while (getline(ifs, input)) {
+        while (std::getline(ifs, input)) {
             // Load texture from file
-            this->maps[currentMapId]->loadMap(input);
-            this->mapFramesMaxSize++;
+            maps[currentMapId]->loadMap(input);
+            mapFramesMaxSize++;
         }
         ifs.close();
-        this->setMapFrame(mapFrame);
+        setMapFrame(mapFrame);
     }
     else {
         std::cerr << "Failed to open file: " << file_input << std::endl;
