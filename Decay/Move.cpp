@@ -3,7 +3,7 @@ Move::Move(std::string key, std::string tipMessage, float width, float height,
 	float clicktime, sf::Font font, std::string text, sf::Color idleColor, sf::Color hoverColor,
 	sf::Color activeColor, bool hidden)
 {
-	this->button = new Button(350, 800, width, height, clicktime, font, text, idleColor,
+	this->button = std::make_unique<Button>(350, 800, width, height, clicktime, font, text, idleColor,
 		hoverColor, activeColor, hidden);
     this->tipMessage = tipMessage;
     this->hidden = hidden;
@@ -12,11 +12,7 @@ Move::Move(std::string key, std::string tipMessage, float width, float height,
 
 Move::~Move()
 {
-    //Delete Rectangles
-    auto ir = this->rectangles.begin();
-    for (ir = this->rectangles.begin(); ir != this->rectangles.end(); ++ir) {
-        delete ir->second;
-    }
+    
 }
 
 //Core Functions
@@ -47,7 +43,7 @@ const bool Move::isPressed()
 //Rectangle Functions
 void Move::initRects()
 {
-    this->rectangles["TIPBOX"] = new Rectangle(this->tipMessage, sf::Color::White, 16, 1700, 100, 200, 
+    this->rectangles["TIPBOX"] = std::make_unique<Rectangle>(this->tipMessage, sf::Color::White, 16, 1700, 100, 200, 
         200, sf::Color::Transparent, sf::Color::White, 1.f, true);
 }
 

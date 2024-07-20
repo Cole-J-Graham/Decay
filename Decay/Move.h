@@ -23,8 +23,8 @@ public:
 	const bool& isHidden() { return this->hidden; }
 
 private:
-	std::map<std::string, Rectangle*> rectangles;
-	Button* button;
+	std::map<std::string, std::unique_ptr<Rectangle>> rectangles;
+	std::unique_ptr<Button> button;
 	std::string tipMessage;
 	bool hidden;
 };

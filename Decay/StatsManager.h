@@ -23,7 +23,10 @@ public:
 
 private:
 
+    int passCount;
+    int passCountMax;
     bool hidden;
+    bool clicked;
 
     sf::Font font;
     std::map<std::string, Button*> buttons;

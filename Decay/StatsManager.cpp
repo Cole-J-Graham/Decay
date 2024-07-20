@@ -8,6 +8,7 @@ StatsManager::StatsManager()
     this->buttons["OPENSTATS"] = new Button(1370, 775, 100, 25, 0.5f, this->font, "Stats",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
     this->hidden = true;
+    this->clicked = false;
 }
 
 StatsManager::~StatsManager() {
@@ -60,5 +61,23 @@ void StatsManager::updateButtons(const sf::Vector2f mousePos)
     }
     else if (this->buttons["OPENSTATS"]->isPressed() && !this->hidden) {
         this->hidden = true;
+    }
+
+    //Select the button and display stats while hiding all other stats
+    this->passCountMax = static_cast<int>(stats.size());
+    for (auto& pair : stats) {
+        if (pair.second->getButtons()[pair.second->getButtonId()]->isPressed()) {
+            this->clicked = true;
+        }
+
+        if (this->passCount != this->passCountMax && this->clicked) {
+            pair.second->getCurrentInstance() = false;
+            this->passCount++;
+        }
+        else if (this->passCount == this->passCountMax) {
+            pair.second->getCurrentInstance() = true;
+            this->passCount = 0;
+            this->clicked = false;
+        }
     }
 }

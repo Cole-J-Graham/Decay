@@ -1,6 +1,7 @@
 #pragma once
 #include"Move.h"
 #include"StatsManager.h"
+#include<stack>
 class Character
 {
 public:
@@ -53,8 +54,10 @@ private:
 	std::string characterName;
 	std::unique_ptr<Rectangle> border;
 
-	std::map<std::string, Button*> buttons;
-	std::map<std::string, Text*> text;
+	std::stack<std::string> dialogue;
+
+	std::map<std::string, std::unique_ptr<Button>> buttons;
+	std::map<std::string, std::unique_ptr<Text>> text;
 	std::map<std::string, Move*> moveButtons;
 
 	sf::Font font;

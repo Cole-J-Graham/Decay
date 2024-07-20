@@ -35,7 +35,7 @@ public:
     // Create and add a new character
     void addCharacter(const std::string& id, const std::shared_ptr<Character>& character) {
         characters[id] = character;
-        stats->createInstance(id);  // Assuming StatsManager has a method like createInstance()
+        stats->createInstance(id);
     }
 
     // Get a character by ID

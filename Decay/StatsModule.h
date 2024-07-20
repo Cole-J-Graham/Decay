@@ -41,7 +41,7 @@ public:
 	bool& getLastClicked() { return this->lastClicked; }
 	std::string& getId() { return this->id; }
 	std::string& getButtonId() { return this->buttonId; }
-	std::map<std::string, Button*>& getButtons() { return this->buttons; };
+	std::map<std::string, std::unique_ptr<Button>>& getButtons() { return this->buttons; };
 
 	//Setters
 	void setId(std::string& id) { this->id = id; }
@@ -122,10 +122,10 @@ private:
 	std::string buttonId;
 
 	sf::Font font;
-	std::map<std::string, Stat*> stats;
-	std::map<std::string, Rectangle*> rectangles;
-	std::map<std::string, Text*> text;
-	std::map<std::string, Button*> buttons;
+	std::map<std::string, std::unique_ptr<Stat>> stats;
+	std::map<std::string, std::unique_ptr<Rectangle>> rectangles;
+	std::map<std::string, std::unique_ptr<Button>> buttons;
+	std::map<std::string, std::unique_ptr<Text>> text;
 
 };
 

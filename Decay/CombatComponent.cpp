@@ -74,7 +74,7 @@ void CombatComponent::renderCharacters(sf::RenderTarget* target)
 //Player Functions
 void CombatComponent::playerMoveSelect()
 {
-    if (CharacterManager::getInstance().getCharacter("PLAYER")->getMoves()["Slash"]->isPressed()) {
+    if (CharacterManager::getInstance().getCharacter("PLAYER")->getMoves().at("Slash")->isPressed()) {
         this->strike();
     }
 }
@@ -98,10 +98,10 @@ void CombatComponent::guard()
 //Zin Functions
 void CombatComponent::zinMoveSelect()
 {
-    if (CharacterManager::getInstance().getCharacter("ZIN")->getMoves()["Protection"]->isPressed()) {
+    if (CharacterManager::getInstance().getCharacter("ZIN")->getMoves().at("Protection")->isPressed()) {
         this->protection();
     }
-    if (CharacterManager::getInstance().getCharacter("ZIN")->getMoves()["Healing"]->isPressed()) {
+    if (CharacterManager::getInstance().getCharacter("ZIN")->getMoves().at("Healing")->isPressed()) {
         this->healing();
     }
 }
