@@ -54,8 +54,6 @@ private:
 	std::string characterName;
 	std::unique_ptr<Rectangle> border;
 
-	std::stack<std::string> dialogue;
-
 	std::map<std::string, std::unique_ptr<Button>> buttons;
 	std::map<std::string, std::unique_ptr<Text>> text;
 	std::map<std::string, Move*> moveButtons;
