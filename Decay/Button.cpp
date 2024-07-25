@@ -1,6 +1,6 @@
 #include "Button.h"
 
-Button::Button(float x, float y, float width, float height, float clicktime, sf::Font font,
+Button::Button(float x, float y, float width, float height, float clicktime,
     std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor,
     bool hidden)
 {
@@ -11,8 +11,9 @@ Button::Button(float x, float y, float width, float height, float clicktime, sf:
     this->shape.setOutlineThickness(1.f);
     this->shape.setOutlineColor(sf::Color::White);
 
-    this->font = font;
-    this->text.setFont(this->font);
+    if (this->font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf")) {
+        this->text.setFont(this->font);
+    }
     this->text.setString(text);
     this->text.setFillColor(sf::Color::White);
     this->text.setCharacterSize(16);
@@ -30,7 +31,7 @@ Button::Button(float x, float y, float width, float height, float clicktime, sf:
     this->clickBlockDuration = 0.1; // Adjust as needed
 }
 
-Button::Button(sf::Vector2f pos, float width, float height, float clicktime, sf::Font font,
+Button::Button(sf::Vector2f pos, float width, float height, float clicktime,
     std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor,
     bool hidden)
 {
@@ -41,8 +42,9 @@ Button::Button(sf::Vector2f pos, float width, float height, float clicktime, sf:
     this->shape.setOutlineThickness(1.f);
     this->shape.setOutlineColor(sf::Color::White);
 
-    this->font = font;
-    this->text.setFont(this->font);
+    if (this->font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf")) {
+        this->text.setFont(this->font);
+    }
     this->text.setString(text);
     this->text.setFillColor(sf::Color::White);
     this->text.setCharacterSize(16);

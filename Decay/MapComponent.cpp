@@ -3,7 +3,6 @@
 MapComponent::MapComponent()
 {
     //Initialization
-    font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
     this->mapView = new MapViewer();
     this->initMapCores();
     this->initButtons();
@@ -53,11 +52,11 @@ void MapComponent::initMapCores()
 //Button Functions
 void MapComponent::initButtons()
 {
-    this->buttons["BUTTON_RIGHT"] = new Button(480, 75, 20, 20, 0.5f, this->font, "->",
+    this->buttons["BUTTON_RIGHT"] = new Button(480, 75, 20, 20, 0.5f, "->",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->buttons["BUTTON_LEFT"] = new Button(100, 75, 20, 20, 0.5f, this->font, "<-",
+    this->buttons["BUTTON_LEFT"] = new Button(100, 75, 20, 20, 0.5f, "<-",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->buttons["BUTTON_CENTER_IDLE"] = new Button(125, 75, 350, 20, 0.5f, this->font, this->mapView->getMapName(),
+    this->buttons["BUTTON_CENTER_IDLE"] = new Button(125, 75, 350, 20, 0.5f, this->mapView->getMapName(),
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 }
 

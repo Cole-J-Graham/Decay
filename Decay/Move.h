@@ -3,7 +3,7 @@
 class Move {
 public:
 	Move(std::string key, std::string tipMessage, float width, float height, 
-		float clicktime, sf::Font font, std::string text, sf::Color idleColor, 
+		float clicktime, std::string text, sf::Color idleColor, 
 		sf::Color hoverColor, sf::Color activeColor, bool hidden);
 	~Move();
 

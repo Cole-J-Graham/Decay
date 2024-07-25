@@ -4,8 +4,6 @@
 GameState::GameState(sf::RenderWindow* window, std::stack<State*>* states)
 	: State(window, states)
 {
-	font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
-
     //Initialize Bonfire Assets
     this->initButtons();
     this->initRects();
@@ -53,9 +51,9 @@ void GameState::render(sf::RenderTarget* target)
 //Asset Functions
 void GameState::initButtons()
 {
-	this->buttons["EXPLORE"] = new Button(455, 755, 100, 25, 0.5f, this->font, "Explore",
+	this->buttons["EXPLORE"] = new Button(455, 755, 100, 25, 0.5f, "Explore",
 		sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->buttons["EXIT"] = new Button(455, 780, 100, 25, 0.5f, this->font, "Exit",
+    this->buttons["EXIT"] = new Button(455, 780, 100, 25, 0.5f, "Exit",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 }
 

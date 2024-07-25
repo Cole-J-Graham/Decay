@@ -60,7 +60,6 @@ public:
 			std::string str2, sf::Vector2f pos3, std::string in3, std::string str3, sf::Vector2f pos4,
 			std::string in4, std::string str4, sf::Vector2f pos5, std::string in5, std::string str5) {
 			//Init Map
-			font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
 			this->mapName = mapName;
 			this->mapInput = mapInput;
 			this->mapTexture.loadFromFile(this->mapInput);
@@ -128,15 +127,15 @@ public:
 		//Button Functions
 		void initButtons()
 		{
-			this->buttons[this->buttonIds[0]] = new Button(this->buttonPos[0], 100, 25, 0.5f, this->font, this->buttonNames[0],
+			this->buttons[this->buttonIds[0]] = new Button(this->buttonPos[0], 100, 25, 0.5f, this->buttonNames[0],
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-			this->buttons[this->buttonIds[1]] = new Button(this->buttonPos[1], 100, 25, 0.5f, this->font, this->buttonNames[1],
+			this->buttons[this->buttonIds[1]] = new Button(this->buttonPos[1], 100, 25, 0.5f, this->buttonNames[1],
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-			this->buttons[this->buttonIds[2]] = new Button(this->buttonPos[2], 100, 25, 0.5f, this->font, this->buttonNames[2],
+			this->buttons[this->buttonIds[2]] = new Button(this->buttonPos[2], 100, 25, 0.5f, this->buttonNames[2],
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-			this->buttons[this->buttonIds[3]] = new Button(this->buttonPos[3], 100, 25, 0.5f, this->font, this->buttonNames[3],
+			this->buttons[this->buttonIds[3]] = new Button(this->buttonPos[3], 100, 25, 0.5f, this->buttonNames[3],
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-			this->buttons[this->buttonIds[4]] = new Button(this->buttonPos[4], 100, 25, 0.5f, this->font, this->buttonNames[4],
+			this->buttons[this->buttonIds[4]] = new Button(this->buttonPos[4], 100, 25, 0.5f, this->buttonNames[4],
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 		}
 
@@ -209,7 +208,6 @@ public:
 		sf::Texture mapTexture;
 		std::string mapName;
 		std::string mapInput;
-		sf::Font font;
 		sf::Sprite map;
 		std::map<int, Button*> buttons;
 		std::vector<std::string> mapContainer;
@@ -253,7 +251,6 @@ private:
 	std::ifstream ifs;
 	std::string line;
 
-	sf::Font font;
 	std::map<std::string, std::unique_ptr<Button>> buttons;
 	std::map<std::string, std::unique_ptr<Rectangle>> rectangles;
 

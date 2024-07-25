@@ -1,6 +1,7 @@
 #pragma once
 #include"Move.h"
 #include"StatsManager.h"
+#include"InteractionManager.h"
 #include<stack>
 class Character
 {
@@ -24,7 +25,7 @@ public:
 
 	//Move Functions
 	void createMove(std::string key, std::string tipMessage, float width, float height,
-		float clicktime, sf::Font font, std::string text, sf::Color idleColor, sf::Color hoverColor,
+		float clicktime, std::string text, sf::Color idleColor, sf::Color hoverColor,
 		sf::Color activeColor, bool hidden);
 	void renderMoveButtons(sf::RenderTarget* target);
 
@@ -57,7 +58,5 @@ private:
 	std::map<std::string, std::unique_ptr<Button>> buttons;
 	std::map<std::string, std::unique_ptr<Text>> text;
 	std::map<std::string, Move*> moveButtons;
-
-	sf::Font font;
 };
 

@@ -12,7 +12,6 @@ StatsModule::StatsModule() {
     this->lastClicked = false;
 
     // Initialization
-    font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
     this->initRects();
     this->initText();
     this->initButtons();
@@ -103,9 +102,9 @@ void StatsModule::updateButtons(const sf::Vector2f mousePos) {
 }
 
 void StatsModule::initButtons() {
-    this->buttons[this->buttonId] = std::make_unique<Button>(1505, 50, 100, 25, 0.5f, this->font, this->id,
+    this->buttons[this->buttonId] = std::make_unique<Button>(1505, 50, 100, 25, 0.5f, this->id,
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->buttons["LEVELUP"] = std::make_unique<Button>(1402, 53, 100, 25, 0.5f, this->font, "LEVEL++",
+    this->buttons["LEVELUP"] = std::make_unique<Button>(1402, 53, 100, 25, 0.5f, "LEVEL++",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 }
 

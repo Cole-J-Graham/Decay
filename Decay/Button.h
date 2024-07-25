@@ -7,10 +7,10 @@ class Button
 {
 public:
 	//Constructors and Destructors
-	Button(float x, float y, float width, float height, float clicktime, sf::Font font,
+	Button(float x, float y, float width, float height, float clicktime,
 	std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor,
 		bool hidden);
-	Button(sf::Vector2f pos, float width, float height, float clicktime, sf::Font font,
+	Button(sf::Vector2f pos, float width, float height, float clicktime,
 		std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor,
 		bool hidden);
 

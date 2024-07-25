@@ -15,9 +15,6 @@ MapViewer::MapViewer()
     areaEnd(false),
     areaReset(false)
 {
-    if (!font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf")) {
-        std::cerr << "Failed to load font" << std::endl;
-    }
 
     mapSprite.setPosition(560, 5);
     mapSprite.setScale(0.78f, 0.78f);
@@ -151,7 +148,7 @@ void MapViewer::renderRects(sf::RenderTarget* target) {
 
 // Button Functions
 void MapViewer::initButtons() {
-    buttons["OPENMAP"] = std::make_unique<Button>(450, 775, 100, 25, 0.5f, font, "Map",
+    buttons["OPENMAP"] = std::make_unique<Button>(450, 775, 100, 25, 0.5f, "Map",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 }
 

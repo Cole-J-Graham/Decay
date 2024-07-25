@@ -48,7 +48,6 @@ public:
 
 private:
 
-	sf::Font font;
 	std::string combatMessage;
 	std::map<std::string, Text*> text;
 	std::string enemyId;

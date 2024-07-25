@@ -28,7 +28,6 @@ private:
     bool hidden;
     bool clicked;
 
-    sf::Font font;
     std::map<std::string, Button*> buttons;
     std::unordered_map<std::string, std::unique_ptr<StatsModule>> stats;
 };

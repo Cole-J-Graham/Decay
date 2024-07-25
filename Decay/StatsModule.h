@@ -59,8 +59,7 @@ private:
 			this->statName = stat_name;
 
 			//Initialization
-			font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
-			this->button = new Button(1402, 110, 25, 25, 0.5, this->font, "  +",
+			this->button = new Button(1402, 110, 25, 25, 0.5, "  +",
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 			this->text = new Text(1428, 110, 16, stat_name + " " + std::to_string(this->statCount),
 				sf::Color::White, false);
@@ -106,7 +105,6 @@ private:
 		//Assets
 		Button* button;
 		Text* text;
-		sf::Font font;
 		std::string statName;
 
 	};
@@ -121,7 +119,6 @@ private:
 	std::string id;
 	std::string buttonId;
 
-	sf::Font font;
 	std::map<std::string, std::unique_ptr<Stat>> stats;
 	std::map<std::string, std::unique_ptr<Rectangle>> rectangles;
 	std::map<std::string, std::unique_ptr<Button>> buttons;

@@ -3,7 +3,6 @@
 CombatComponent::CombatComponent()
 {
     //Initialization
-    font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
     this->initText();
     this->initMoves();
     srand(time(NULL));
@@ -49,19 +48,19 @@ void CombatComponent::updateMoveSelect()
 
 void CombatComponent::initMoves()
 {
-    CharacterManager::getInstance().getCharacter("PLAYER")->createMove("Slash", "Players basic attack", 100, 25, 0.1, font, "Slash",
+    CharacterManager::getInstance().getCharacter("PLAYER")->createMove("Slash", "Players basic attack", 100, 25, 0.1, "Slash",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    CharacterManager::getInstance().getCharacter("PLAYER")->createMove("Cloak", "Players basic cloak", 100, 25, 0.1, font, "Cloak",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-
-    CharacterManager::getInstance().getCharacter("ZIN")->createMove("Protection", "Zin's basic barrier", 100, 25, 0.1, font, "Protection",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    CharacterManager::getInstance().getCharacter("ZIN")->createMove("Healing", "Zin's basic healing", 100, 25, 0.1, font, "Healing",
+    CharacterManager::getInstance().getCharacter("PLAYER")->createMove("Cloak", "Players basic cloak", 100, 25, 0.1, "Cloak",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 
-    CharacterManager::getInstance().getCharacter("THOM")->createMove("Harden", "Thom's defense boost", 100, 25, 0.1, font, "Harden",
+    CharacterManager::getInstance().getCharacter("ZIN")->createMove("Protection", "Zin's basic barrier", 100, 25, 0.1, "Protection",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    CharacterManager::getInstance().getCharacter("THOM")->createMove("Spiked", "Thom's thorn passive ability", 100, 25, 0.1, font, "Spiked",
+    CharacterManager::getInstance().getCharacter("ZIN")->createMove("Healing", "Zin's basic healing", 100, 25, 0.1, "Healing",
+        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+
+    CharacterManager::getInstance().getCharacter("THOM")->createMove("Harden", "Thom's defense boost", 100, 25, 0.1, "Harden",
+        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+    CharacterManager::getInstance().getCharacter("THOM")->createMove("Spiked", "Thom's thorn passive ability", 100, 25, 0.1, "Spiked",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 }
 

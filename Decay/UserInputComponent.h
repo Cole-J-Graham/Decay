@@ -48,7 +48,6 @@ private:
 	//Assets
 	std::map<std::string, Rectangle*> rectangles;
 	std::map<std::string, Button*> buttons;
-	sf::Font font;
 
 	bool right_active;
 	bool left_active;

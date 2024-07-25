@@ -27,9 +27,7 @@ public:
 
 private:
 
-	//Button Assets
-	sf::Font font;
-	
+	//Button Assets	
 	std::map<std::string, Button*> buttons;
 };
 

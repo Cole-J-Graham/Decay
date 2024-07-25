@@ -32,7 +32,6 @@ public:
 private:
 
 	//Button Assets
-	sf::Font font;
 	std::map<std::string, Button*> buttons;
 	std::map<std::string, Rectangle*> rectangles;
 

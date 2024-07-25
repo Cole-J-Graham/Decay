@@ -21,7 +21,6 @@ public:
 
 private:
 	MapViewer* mapView;
-	sf::Font font;
 	std::ifstream ifs;
 	std::string line;
 

@@ -24,7 +24,6 @@ Character::Character(std::string characterName, int hp, int hpMax, int damage, i
     this->turnActive = turnActive;
 
     // Initialization
-    font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
     this->initText();
     this->initButtons();
 }
@@ -104,7 +103,7 @@ void Character::updateButtons(const sf::Vector2f mousePos) {
 }
 
 void Character::initButtons() {
-    this->buttons["ENDTURN"] = std::make_unique<Button>(450, 800, 150, 25, 0.5f, this->font, "End " + this->characterName + "'s Turn",
+    this->buttons["ENDTURN"] = std::make_unique<Button>(450, 800, 150, 25, 0.5f, "End " + this->characterName + "'s Turn",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), true);
 }
 
@@ -116,9 +115,9 @@ void Character::renderButtons(sf::RenderTarget* target) {
 
 // Move Functions
 void Character::createMove(std::string key, std::string tipMessage, float width, float height,
-    float clicktime, sf::Font font, std::string text, sf::Color idleColor, sf::Color hoverColor,
+    float clicktime, std::string text, sf::Color idleColor, sf::Color hoverColor,
     sf::Color activeColor, bool hidden) {
-    this->moveButtons[key] = new Move(key, tipMessage, width, height, clicktime, font, text,
+    this->moveButtons[key] = new Move(key, tipMessage, width, height, clicktime, text,
         idleColor, hoverColor, activeColor, hidden);
 }
 

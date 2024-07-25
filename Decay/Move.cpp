@@ -1,9 +1,9 @@
 #include "Move.h"
 Move::Move(std::string key, std::string tipMessage, float width, float height,
-	float clicktime, sf::Font font, std::string text, sf::Color idleColor, sf::Color hoverColor,
+	float clicktime, std::string text, sf::Color idleColor, sf::Color hoverColor,
 	sf::Color activeColor, bool hidden)
 {
-	this->button = std::make_unique<Button>(350, 800, width, height, clicktime, font, text, idleColor,
+	this->button = std::make_unique<Button>(350, 800, width, height, clicktime, text, idleColor,
 		hoverColor, activeColor, hidden);
     this->tipMessage = tipMessage;
     this->hidden = hidden;

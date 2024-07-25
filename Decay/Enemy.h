@@ -51,6 +51,4 @@ private:
 	ViewerModule* closeViewer;
 	std::map<std::string, Button*> buttons;
 	std::map<std::string, Text*> text;
-
-	sf::Font font;
 };

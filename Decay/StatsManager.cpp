@@ -4,15 +4,14 @@
 // Constructors and Destructors
 StatsManager::StatsManager() 
 {
-    font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
-    this->buttons["OPENSTATS"] = new Button(1370, 775, 100, 25, 0.5f, this->font, "Stats",
+    this->buttons["OPENSTATS"] = new Button(1370, 775, 100, 25, 0.5f, "Stats",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
     this->hidden = true;
     this->clicked = false;
 }
 
-StatsManager::~StatsManager() {
-    // No need to manually delete, unique_ptr handles it
+StatsManager::~StatsManager() 
+{
     //Delete Buttons
     auto ib = this->buttons.begin();
     for (ib = this->buttons.begin(); ib != this->buttons.end(); ++ib) {
