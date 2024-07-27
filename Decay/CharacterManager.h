@@ -69,11 +69,20 @@ public:
 
     // Character Stat Functions
     void updateStats(const sf::Vector2f mousePos) {
-        stats->update(mousePos);  // Assuming StatsManager has an update() method
+        stats->update(mousePos);
     }
 
     void renderStats(sf::RenderTarget* target) {
-        stats->render(target);  // Assuming StatsManager has a render() method
+        stats->render(target);
+    }
+
+    // Character Interaction Functions
+    void updateInteractions(const sf::Vector2f mousePos) {
+        interactions->update(mousePos);
+    }
+
+    void renderInteractions(sf::RenderTarget* target) {
+        interactions->render(target);
     }
 };
 

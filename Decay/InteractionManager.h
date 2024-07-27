@@ -1,4 +1,5 @@
 #pragma once
+#include"Rectangle.h"
 #include"Button.h"
 #include<unordered_map>
 #include<stack>
@@ -11,10 +12,13 @@ public:
 
 	//Core Functions
 	void update(const sf::Vector2f mousePos);
-	void render(sf::RenderTarget* target);	
+	void render(sf::RenderTarget* target);
+
+	//Buttons Functions
+	void updateButtons(const sf::Vector2f mousePos);
 
 	//Maanager Functions
-	void createInstance(std::string id);
+	void createInstance(const std::string& id);
 
 private:
 
@@ -22,8 +26,11 @@ private:
 	public:
 		//Constructions and Deconstructors
 		Interaction() {
-			this->buttons["INTERACT"] = new Button(1370, 775, 100, 25, 0.5f, this->id,
+			this->buttons[this->id] = new Button(1370, 775, 200, 25, 0.5f, this->id,
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+			this->rect = std::make_unique<Rectangle>(1400, 50, 400, 400, sf::Color::Transparent,
+				sf::Color::White, 1.f, false);
+			this->hidden = true;
 		};
 
 		~Interaction() {
@@ -37,27 +44,33 @@ private:
 		void update(const sf::Vector2f mousePos) {
 			for (auto& pair : this->buttons) {
 				pair.second->update(mousePos);
+				pair.second->setText(this->buttonName);
+				this->buttonName = "INTERACT WITH " + this->id;
+				std::cout << buttonName << "\n";
 			}
 		}
 
 		void render(sf::RenderTarget* target) {
 			for (auto& pair : this->buttons) {
 				pair.second->render(target);
+				this->rect->render(target);
 			}
 		}
 
 		//File Functions
 
 		//Getters
-		std::string& getButtonId() { return this->buttonId; }
+		std::string& getButtonId() { return this->buttonName; }
 		std::map<std::string, Button*>& getButtons() { return this->buttons; };
 
 		//Setters
-		void setId(std::string& id) { this->id = id; }
+		void setId(const std::string& id) { this->id = id; }
 
 	private:
-
-		std::string buttonId;
+		
+		bool hidden;
+		std::unique_ptr<Rectangle> rect;
+		std::string buttonName;
 		std::string id;
 		std::string dialogueFilePath;
 		std::stack<std::string> dialogue;
@@ -68,7 +81,7 @@ private:
 	bool hidden;
 
 	std::map<std::string, Button*> buttons;
-	std::unordered_map<std::string, std::unique_ptr<Interaction>> stats;
+	std::unordered_map<std::string, std::unique_ptr<Interaction>> interactions;
 
 };
 

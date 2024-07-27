@@ -2,10 +2,10 @@
 //Constructors and Deconstructors
 InteractionManager::InteractionManager()
 {
-    this->buttons["OPENINTERACTIONS"] = new Button(1370, 775, 100, 25, 0.5f, "Interact",
+    this->buttons["OPENINTERACTIONS"] = new Button(1475, 775, 100, 25, 0.5f, "Interact",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 
-    this->hidden = false;
+    this->hidden = true;
 }
 
 InteractionManager::~InteractionManager()
@@ -19,26 +19,44 @@ InteractionManager::~InteractionManager()
 //Core Functions
 void InteractionManager::update(const sf::Vector2f mousePos)
 {
-
+    for (auto& pair : interactions) {
+        pair.second->update(mousePos);
+    }
+    this->updateButtons(mousePos);
 }
 
 void InteractionManager::render(sf::RenderTarget* target)
 {
-    int height = 20;
-    for (auto& pair : stats) {
+    int height = 200;
+    for (auto& pair : interactions) {
         if (pair.second) { // Check if pointer is valid
             if (!this->hidden) {
                 pair.second->render(target);
             }
-            pair.second->getButtons()[pair.second->getButtonId()]->setPosition(1705, height += 30);
+            pair.second->getButtons()[""]->setPosition(1705, height += 30);
         }
     }
     this->buttons["OPENINTERACTIONS"]->render(target);
 }
 
-//Manager Functions
-void InteractionManager::createInstance(std::string id) 
+//Button Functions
+void InteractionManager::updateButtons(const sf::Vector2f mousePos) 
 {
-    stats[id] = std::make_unique<Interaction>();
-    stats[id]->setId(id);
+    for (auto& pair : buttons) {
+        pair.second->update(mousePos);
+    }
+
+    if (this->buttons["OPENINTERACTIONS"]->isPressed() && this->hidden) {
+        this->hidden = false;
+    }
+    else if (this->buttons["OPENINTERACTIONS"]->isPressed() && !this->hidden) {
+        this->hidden = true;
+    }
+}
+
+//Manager Functions
+void InteractionManager::createInstance(const std::string& id)
+{
+    interactions[id] = std::make_unique<Interaction>();
+    interactions[id]->setId(id);
 }

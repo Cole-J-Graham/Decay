@@ -30,6 +30,7 @@ void TravelState::update()
     this->map->update(this->getMousePosView());
     CharacterManager::getInstance().updateAll(this->getMousePosView());
     CharacterManager::getInstance().updateStats(this->getMousePosView());
+    CharacterManager::getInstance().updateInteractions(this->getMousePosView());
 }
 
 void TravelState::render(sf::RenderTarget* target)
@@ -37,6 +38,7 @@ void TravelState::render(sf::RenderTarget* target)
     this->map->render(target);
     this->renderRects(target);
     CharacterManager::getInstance().renderStats(target);
+    CharacterManager::getInstance().renderInteractions(target);
 }
 
 void TravelState::loadMapData(std::string input)
