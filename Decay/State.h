@@ -16,7 +16,6 @@ public:
 	~State();
 
 	//Core State Functionality
-	virtual void updateKeybinds() = 0;
 	virtual void render(sf::RenderTarget* target = nullptr) = 0;
 	virtual void update() = 0;
 	virtual void updateMousePositions();
