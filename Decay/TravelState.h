@@ -1,10 +1,13 @@
 #pragma once
+
 //States
 #include"State.h"
 //Componenets
 #include"MapComponent.h"
 //Managers
 #include"CharacterManager.h"
+//States
+#include"CombatState.h"
 class TravelState : public State
 {
 public:
@@ -12,11 +15,9 @@ public:
 	TravelState(sf::RenderWindow* window, std::stack<State*>* states);
 	~TravelState();
 
-	//State Functions
-	void updateKeybinds();
+	//Core Functions
 	void update();
 	void render(sf::RenderTarget* target = nullptr);
-	void loadMapData(std::string input);
 
 	//Rectangle Functions
 	void initRects();

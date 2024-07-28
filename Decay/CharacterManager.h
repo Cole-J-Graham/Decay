@@ -3,7 +3,6 @@
 
 // Forward declaration of StatsManager
 class StatsManager;
-class InteractionManager;
 
 #include "Character.h"
 #include <memory>
@@ -15,12 +14,10 @@ class CharacterManager {
 private:
     std::unordered_map<std::string, std::shared_ptr<Character>> characters;
     std::unique_ptr<StatsManager> stats;
-    std::unique_ptr<InteractionManager> interactions;
 
     // Private constructor for singleton pattern
     CharacterManager() : 
-        stats(std::make_unique<StatsManager>()),
-        interactions(std::make_unique<InteractionManager>()) 
+        stats(std::make_unique<StatsManager>())
     {}
 
     // Destructor to clean up resources
@@ -41,7 +38,6 @@ public:
     void addCharacter(const std::string& id, const std::shared_ptr<Character>& character) {
         characters[id] = character;
         stats->createInstance(id);
-        interactions->createInstance(id);
     }
 
     // Get a character by ID
@@ -74,15 +70,6 @@ public:
 
     void renderStats(sf::RenderTarget* target) {
         stats->render(target);
-    }
-
-    // Character Interaction Functions
-    void updateInteractions(const sf::Vector2f mousePos) {
-        interactions->update(mousePos);
-    }
-
-    void renderInteractions(sf::RenderTarget* target) {
-        interactions->render(target);
     }
 };
 

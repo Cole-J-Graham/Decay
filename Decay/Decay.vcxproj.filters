@@ -64,9 +64,6 @@
     <ClCompile Include="StatsManager.cpp">
       <Filter>Character</Filter>
     </ClCompile>
-    <ClCompile Include="InteractionManager.cpp">
-      <Filter>Character</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
@@ -133,9 +130,6 @@
       <Filter>Character</Filter>
     </ClInclude>
     <ClInclude Include="StatsManager.h">
-      <Filter>Character</Filter>
-    </ClInclude>
-    <ClInclude Include="InteractionManager.h">
       <Filter>Character</Filter>
     </ClInclude>
   </ItemGroup>

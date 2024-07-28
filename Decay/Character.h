@@ -1,7 +1,6 @@
 #pragma once
 #include"Move.h"
 #include"StatsManager.h"
-#include"InteractionManager.h"
 #include<stack>
 class Character
 {
