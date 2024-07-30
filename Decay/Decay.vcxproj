@@ -163,6 +163,7 @@
     <ClCompile Include="MapComponent.cpp" />
     <ClCompile Include="MapViewer.cpp" />
     <ClCompile Include="Move.cpp" />
+    <ClCompile Include="MusicPlayer.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StatsManager.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="MapComponent.h" />
     <ClInclude Include="MapViewer.h" />
     <ClInclude Include="Move.h" />
+    <ClInclude Include="MusicPlayer.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StatsManager.h" />

@@ -1,0 +1,3 @@
+Decay/Assets/Music/Tracks/Accolade.wav
+Decay/Assets/Music/Tracks/ANocturneForAll.wav
+Decay/Assets/Music/Tracks/Communication.wav

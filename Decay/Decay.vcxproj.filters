@@ -64,6 +64,9 @@
     <ClCompile Include="StatsManager.cpp">
       <Filter>Character</Filter>
     </ClCompile>
+    <ClCompile Include="MusicPlayer.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
@@ -131,6 +134,9 @@
     </ClInclude>
     <ClInclude Include="StatsManager.h">
       <Filter>Character</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicPlayer.h">
+      <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

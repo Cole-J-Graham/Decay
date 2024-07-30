@@ -6,6 +6,15 @@ TravelState::TravelState(sf::RenderWindow* window, std::stack<State*>* states)
     //Initialization
     this->initRects();
     this->map = new MapComponent();
+    this->combat = new CombatState(window, states);
+    this->music = std::make_unique<MusicPlayer>();
+    this->userInput = std::make_unique<UserInputComponent>();
+
+    this->combatChanceMin = 1;
+    this->combatChanceMax = 11;
+    this->combatOdds = 1;
+
+    srand(time(NULL));
 }
 
 TravelState::~TravelState()
@@ -21,8 +30,12 @@ TravelState::~TravelState()
 //Core Functions
 void TravelState::update()
 {
+    //this->checkFPS(clock, fpsClock, frameCount);
+    this->music->readFile("Assets/Music/music_list.txt");
     this->updateMousePositions();
+    this->updateEventsFromMovement();
     this->map->update(this->getMousePosView());
+    this->userInput->update(this->getMousePosView());
     CharacterManager::getInstance().updateAll(this->getMousePosView());
     CharacterManager::getInstance().updateStats(this->getMousePosView());
 }
@@ -32,6 +45,20 @@ void TravelState::render(sf::RenderTarget* target)
     this->map->render(target);
     this->renderRects(target);
     CharacterManager::getInstance().renderStats(target);
+}
+
+//Travel Functions
+void TravelState::updateEventsFromMovement()
+{
+    //Push in combat based off random chance of each movement
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> combatRange(this->combatChanceMin, this->combatChanceMax);
+    if (this->userInput->rightArrowClicked() || this->userInput->leftArrowClicked()) {
+        if (this->combatOdds == combatRange(rng)) {
+            this->states->push(this->combat);
+        }
+    }
 }
 
 //Rectangle Functions

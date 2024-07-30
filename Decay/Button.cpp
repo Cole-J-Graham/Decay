@@ -78,7 +78,7 @@ void Button::update(const sf::Vector2f mousePos)
                     // Pressed
                     this->buttonState = BTN_ACTIVE;
                     this->clock.restart();
-                    std::cout << "Clicked: " << this->text.getString().toAnsiString() << std::endl;
+                    //std::cout << "Clicked: " << this->text.getString().toAnsiString() << std::endl;
                     // Block further clicks temporarily
                     this->clickBlocked = true;
                     this->clickBlockTimer.restart();
