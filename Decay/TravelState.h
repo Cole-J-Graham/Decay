@@ -44,6 +44,7 @@ public:
 	sf::Clock clock;
 	sf::Clock fpsClock;
 	int frameCount = 0;
+	//this->checkFPS(clock, fpsClock, frameCount);
 
 private:
 	int combatChanceMin;

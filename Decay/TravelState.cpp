@@ -30,8 +30,8 @@ TravelState::~TravelState()
 //Core Functions
 void TravelState::update()
 {
-    //this->checkFPS(clock, fpsClock, frameCount);
     this->music->readFile("Assets/Music/music_list.txt");
+    this->music->update(this->getMousePosView());
     this->updateMousePositions();
     this->updateEventsFromMovement();
     this->map->update(this->getMousePosView());
@@ -45,6 +45,7 @@ void TravelState::render(sf::RenderTarget* target)
     this->map->render(target);
     this->renderRects(target);
     CharacterManager::getInstance().renderStats(target);
+    this->music->render(target);
 }
 
 //Travel Functions
