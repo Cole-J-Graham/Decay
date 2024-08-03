@@ -7,7 +7,7 @@ TravelState::TravelState(sf::RenderWindow* window, std::stack<State*>* states)
     this->initRects();
     this->map = new MapComponent();
     this->combat = new CombatState(window, states);
-    this->music = std::make_unique<MusicPlayer>();
+    this->music = std::make_unique<MusicPlayer>("Assets/Music/music_list.txt");
     this->userInput = std::make_unique<UserInputComponent>();
 
     this->combatChanceMin = 1;
@@ -30,7 +30,6 @@ TravelState::~TravelState()
 //Core Functions
 void TravelState::update()
 {
-    this->music->readFile("Assets/Music/music_list.txt");
     this->music->update(this->getMousePosView());
     this->updateMousePositions();
     this->updateEventsFromMovement();
