@@ -3,23 +3,17 @@
 CombatComponent::CombatComponent()
 {
     //Initialization
-    this->initText();
-    this->initMoves();
     srand(time(NULL));
 
     //Variables
     this->enemyRangeMin = 0;
     this->enemyRangeMax = 2;
     this->enemyId = "";
+    this->movesInitialized = false;
 }
 
 CombatComponent::~CombatComponent()
 {
-    //Delete Text
-    auto it = this->text.begin();
-    for (it = this->text.begin(); it != this->text.end(); ++it) {
-        delete it->second;
-    }
     //Delete Enemies
     auto ie = this->enemies.begin();
     for (ie = this->enemies.begin(); ie != this->enemies.end(); ++ie) {
@@ -30,90 +24,37 @@ CombatComponent::~CombatComponent()
 //Core Functions
 void CombatComponent::updateCombat(const sf::Vector2f mousePos)
 {
-    this->updateMoveSelect();
+    if (!this->enemyId.empty() && !this->movesInitialized) { 
+        this->initMoves(); 
+        this->movesInitialized = true;
+    }
+    this->enemies[this->enemyId]->updateText();
 }
 
 void CombatComponent::renderCombat(sf::RenderTarget* target)
 {
-    this->renderText(target);
     this->renderCharacters(target);
     this->renderEnemies(target);
 }
 
-void CombatComponent::updateMoveSelect()
-{
-    this->playerMoveSelect();
-    this->zinMoveSelect();
-}
-
 void CombatComponent::initMoves()
 {
-    CharacterManager::getInstance().getCharacter("PLAYER")->createMove("Slash", "Players basic attack", 100, 25, 0.1, "Slash",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    CharacterManager::getInstance().getCharacter("PLAYER")->createMove("Cloak", "Players basic cloak", 100, 25, 0.1, "Cloak",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+    CharacterManager::getInstance().getCharacter("PLAYER")->createMove("Slash", "The player slashes at the opponent with all his might!", 
+        "Players basic attack", "Slash", Move::Subtractor(), this->enemies[this->enemyId]->getHp(), CharacterManager::getInstance().getCharacter("PLAYER")->getDamage());
+    CharacterManager::getInstance().getCharacter("PLAYER")->createMove("Hefty Blow", "The player charges up a heavy attack for maximum damage!",
+        "Players heavy attack", "Hefty Blow", Move::Subcooldown(), this->enemies[this->enemyId]->getHp(), CharacterManager::getInstance().getCharacter("PLAYER")->getDamage());
 
-    CharacterManager::getInstance().getCharacter("ZIN")->createMove("Protection", "Zin's basic barrier", 100, 25, 0.1, "Protection",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    CharacterManager::getInstance().getCharacter("ZIN")->createMove("Healing", "Zin's basic healing", 100, 25, 0.1, "Healing",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+    //CharacterManager::getInstance().getCharacter("ZIN")->createMove("Protection", "Zin's basic barrier", "Protection");
+    //CharacterManager::getInstance().getCharacter("ZIN")->createMove("Healing", "Zin's basic healing", "Healing");
 
-    CharacterManager::getInstance().getCharacter("THOM")->createMove("Harden", "Thom's defense boost", 100, 25, 0.1, "Harden",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    CharacterManager::getInstance().getCharacter("THOM")->createMove("Spiked", "Thom's thorn passive ability", 100, 25, 0.1, "Spiked",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+    //CharacterManager::getInstance().getCharacter("THOM")->createMove("Harden", "Thom's defense boost", "Harden");
+    //CharacterManager::getInstance().getCharacter("THOM")->createMove("Spiked", "Thom's thorn passive ability", "Spiked");
 }
 
 //Character Functions
 void CombatComponent::renderCharacters(sf::RenderTarget* target)
 {
     CharacterManager::getInstance().renderAll(target);
-}
-
-//Player Functions
-void CombatComponent::playerMoveSelect()
-{
-    if (CharacterManager::getInstance().getCharacter("PLAYER")->getMoves().at("Slash")->isPressed()) {
-        this->strike();
-    }
-}
-
-void CombatComponent::strike()
-{
-    //hostileHp -= playerDamage() * 2;
-    this->updateText("The player slashes at the opponent with all his might!");
-}
-
-void CombatComponent::cloak()
-{
-    this->updateText("The player cloaks himself!");
-}
-
-void CombatComponent::guard()
-{
-    this->updateText("The player prepares to protect Zin...");
-}
-
-//Zin Functions
-void CombatComponent::zinMoveSelect()
-{
-    if (CharacterManager::getInstance().getCharacter("ZIN")->getMoves().at("Protection")->isPressed()) {
-        this->protection();
-    }
-    if (CharacterManager::getInstance().getCharacter("ZIN")->getMoves().at("Healing")->isPressed()) {
-        this->healing();
-    }
-}
-
-void CombatComponent::protection()
-{
-    //hostileHp -= playerDamage() * 2;
-    this->updateText("Zin casts a barrier around you!");
-}
-
-void CombatComponent::healing()
-{
-    this->updateText("Zin casts healing on you!");
 }
 
 //Enemy Functions
@@ -148,24 +89,6 @@ void CombatComponent::enemyPool()
 }
 
 //Text Functions
-void CombatComponent::initText()
-{
-    this->text["COMBATTEXT"] = new Text(355, 835, 16, this->combatMessage,
-        sf::Color::White, false);
-}
-
-void CombatComponent::renderText(sf::RenderTarget* target)
-{
-    for (auto& it : this->text) {
-        it.second->render(target);
-    }
-}
-
-void CombatComponent::updateText(std::string text)
-{
-    this->text["COMBATTEXT"]->setString(text);
-}
-
 void CombatComponent::setEnemyId(std::string text)
 {
     this->enemyId = text;

@@ -10,6 +10,7 @@ Character::Character(std::string characterName, int hp, int hpMax, int damage, i
     this->damage = damage;
     this->defense = defense;
     this->characterFrame = 0;
+    this->coolDown = 1;
     this->x = x;
     this->y = y;
 
@@ -50,7 +51,7 @@ void Character::render(sf::RenderTarget* target) {
     this->renderButtons(target);
     this->renderText(target);
     // Active Turn
-    if (this->turnActive) {
+    if (this->turnActive && this->coolDown <= 0) {
         this->renderMoveButtons(target);
     }
 }
@@ -59,15 +60,16 @@ void Character::characterTurn(int& combatFrame, const sf::Vector2f mousePos) {
     this->update(mousePos);
     switch (this->characterFrame) {
     case 0:
-        this->turnActive = true;
-        for (auto& it : this->moveButtons) {
-            it.second->show();
+        if (this->coolDown <= 0) {
+            this->turnActive = true;
+            for (auto& it : this->moveButtons) { it.second->show(); }
+        }
+        else if (this->coolDown > 0) {
+            this->characterFrame = 1;
         }
         break;
     case 1:
-        for (auto& it : this->moveButtons) {
-            it.second->hide();
-        }
+        for (auto& it : this->moveButtons) { it.second->hide(); }
         this->endTurn(combatFrame);
         break;
     }
@@ -83,13 +85,15 @@ void Character::endTurn(int& combatFrame) {
         this->resetTurn();
         combatFrame++;
         this->buttons["ENDTURN"]->hide();
+        this->coolDown--;
+        for (auto& it : this->moveButtons) { it.second->hideAttackMessage(); }
     }
 }
 
 // Button Functions
 void Character::updateButtons(const sf::Vector2f mousePos) {
     for (auto& it : this->moveButtons) {
-        it.second->update(mousePos);
+        if(!it.second->isHidden()) { it.second->update(mousePos); }
     }
     for (auto& it : this->buttons) {
         it.second->update(mousePos);
@@ -114,11 +118,9 @@ void Character::renderButtons(sf::RenderTarget* target) {
 }
 
 // Move Functions
-void Character::createMove(std::string key, std::string tipMessage, float width, float height,
-    float clicktime, std::string text, sf::Color idleColor, sf::Color hoverColor,
-    sf::Color activeColor, bool hidden) {
-    this->moveButtons[key] = new Move(key, tipMessage, width, height, clicktime, text,
-        idleColor, hoverColor, activeColor, hidden);
+void Character::createMove(std::string key, std::string moveMessage, std::string tipMessage, 
+    std::string text, Move::Operation op, int& a, int& b) {
+    this->moveButtons[key] = new Move(key, moveMessage, tipMessage, text, op, a, b, this->coolDown);
 }
 
 void Character::renderMoveButtons(sf::RenderTarget* target) {

@@ -61,7 +61,6 @@ void CombatState::update()
 void CombatState::render(sf::RenderTarget* target)
 {
     this->renderRects(target);
-    this->renderText(target);
     this->renderCombat(target);
 }
 

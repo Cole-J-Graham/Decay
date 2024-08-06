@@ -28,7 +28,10 @@ public:
 	void renderText(sf::RenderTarget* target = nullptr);
 	void updateText();
 
+	//Getters
 	int& getEnemyFrame() { return this->enemyFrame; };
+	int& getDamage() { return this->damage; };
+	int& getHp() { return this->hp; }
 
 private:
 

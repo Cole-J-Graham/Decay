@@ -1,30 +1,75 @@
-#include"Button.h"
-#include"Rectangle.h"
+#include "Button.h"
+#include "Rectangle.h"
+#include "Text.h"
+#include <functional>
+#include <map>
+#include <memory>
+#include <string>
+
 class Move {
 public:
-	Move(std::string key, std::string tipMessage, float width, float height, 
-		float clicktime, std::string text, sf::Color idleColor, 
-		sf::Color hoverColor, sf::Color activeColor, bool hidden);
-	~Move();
+    using Operation = std::function<void(int&, int&, int&)>;
 
-	//Core Functions
-	void render(sf::RenderTarget* target);
-	void update(const sf::Vector2f mousePos);
+    Move(std::string key, std::string moveMessage, std::string tipMessage, 
+        std::string text, Operation op, int& a, int& b, int& coolDown);
+    ~Move();
 
-	//Rectangle Functions
-	void initRects();
-	void renderRects(sf::RenderTarget* target);
+    //Core Functions
+    void render(sf::RenderTarget* target);
+    void update(const sf::Vector2f mousePos);
+    void useMove();
 
-	//Modifiers
-	void setPosition(float x, float y) { this->button->setPosition(x, y); }
-	const bool isPressed();
-	void show() { this->hidden = false; }
-	void hide() { this->hidden = true; }
-	const bool& isHidden() { return this->hidden; }
+    //Rectangle Functions
+    void initRects();
+    void renderRects(sf::RenderTarget* target);
+
+    //Modifiers
+    void setPosition(float x, float y) { this->button->setPosition(x, y); }
+    const bool isPressed() { return this->button->isPressed(); }
+    void show() { this->hidden = false; }
+    void hide() { this->hidden = true; }
+    void showAttackMessage() { this->message->setShown(); }
+    void hideAttackMessage() { this->message->setHidden(); }
+    const bool& isHidden() { return this->hidden; }
+
+    //Getters
+    std::string& getMoveMessage() { return this->moveMessage; }
+
+    struct Adder {
+        void operator()(int& a, int& b, int&) const {
+            a += b;
+        }
+    };
+
+    struct Subtractor {
+        void operator()(int& a, int& b, int&) const {
+            a -= b;
+        }
+    };
+
+    struct Subcooldown {
+        void operator()(int& a, int& b, int& c) const {
+            a -= b;
+            c++;
+        }
+    };
 
 private:
-	std::map<std::string, std::unique_ptr<Rectangle>> rectangles;
-	std::unique_ptr<Button> button;
-	std::string tipMessage;
-	bool hidden;
+
+    Operation operation;
+
+    int& a;
+    int& b;
+    int& coolDown;
+
+    bool active;
+    bool hidden;
+
+    std::map<std::string, std::unique_ptr<Rectangle>> rectangles;
+    std::unique_ptr<Button> button;
+
+    Text* message;
+
+    std::string moveMessage;
+    std::string tipMessage;
 };

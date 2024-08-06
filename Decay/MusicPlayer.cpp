@@ -42,7 +42,6 @@ void MusicPlayer::update(const sf::Vector2f mousePos)
         this->buttons["OPEN"]->update(mousePos);
         this->updateOpenButton(mousePos);
     }
-    std::cout << this->currentBufferId << "\n";
 }
 
 void MusicPlayer::render(sf::RenderTarget* target)
@@ -90,8 +89,6 @@ bool MusicPlayer::readFile(const std::string& input) {
     return true;
 }
 
-
-
 void MusicPlayer::loadSoundAsync(int id, const std::string& filename) {
     sf::SoundBuffer buffer;
     if (buffer.loadFromFile(filename)) {
@@ -127,7 +124,6 @@ void MusicPlayer::nextSong() {
     }
 }
 
-
 // Button Functions
 void MusicPlayer::initButtons()
 {
@@ -137,7 +133,7 @@ void MusicPlayer::initButtons()
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
     this->buttons["CLOSE"] = std::make_unique<Button>(1555, 74, 20, 25, 0.5f, " x ",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->buttons["OPEN"] = std::make_unique<Button>(1370, 10, 45, 25, 0.5f, "OPEN",
+    this->buttons["OPEN"] = std::make_unique<Button>(1370, 10, 55, 25, 0.5f, "MUSIC",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 }
 

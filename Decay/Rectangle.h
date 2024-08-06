@@ -23,7 +23,6 @@ public:
 	void show() { this->hidden = false; };
 	void hide() { this->hidden = true; };
 	void setText(const std::string& input) { this->text.setString(input); };
-	void setTextSubString(const std::string& input, const int& sub) { this->text.setString(input.substr(sub)); };
 
 	//Getters
 	bool& isClicked() { return this->clicked; }

@@ -23,9 +23,8 @@ public:
 	void renderButtons(sf::RenderTarget* target);
 
 	//Move Functions
-	void createMove(std::string key, std::string tipMessage, float width, float height,
-		float clicktime, std::string text, sf::Color idleColor, sf::Color hoverColor,
-		sf::Color activeColor, bool hidden);
+	void createMove(std::string key, std::string moveMessage, 
+		std::string tipMessage, std::string text, Move::Operation op, int& a, int& b);
 	void renderMoveButtons(sf::RenderTarget* target);
 
 	//Text Functions
@@ -33,7 +32,15 @@ public:
 	void renderText(sf::RenderTarget* target = nullptr);
 	void updateText();
 
-	std::map<std::string, Move*> getMoves()& { return this->moveButtons; }
+	//Setters
+	int& setHp(int& hp) { this->hp = hp; };
+
+	//Getters
+	int& getDamage() { return this->damage; };
+	int& getHp() { return this->hp; };
+	int& getCoolDown() { return this->coolDown; };
+
+	std::map<std::string, Move*> getMoves()& { return this->moveButtons; };
 
 private:
 
@@ -42,6 +49,7 @@ private:
 	int hpMax;
 	int damage;
 	int defense;
+	int coolDown;
 
 	//Asset Variables
 	int characterFrame;
