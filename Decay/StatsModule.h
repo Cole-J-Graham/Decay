@@ -7,7 +7,7 @@ class StatsModule
 {
 public:
 	//Constructors and Deconstructors
-	StatsModule();
+	StatsModule(const std::string& id);
 	~StatsModule();
 
 	//Core Functions
@@ -16,7 +16,7 @@ public:
 
 	//Stat Functions
 	void updateStats(const sf::Vector2f mousePos);
-	void createStat(std::string key, std::string stat);
+	void createStat(const std::string& key, const std::string& stat_name);
 	void renderStats(sf::RenderTarget* target);
 
 	//Stat Modifiers
@@ -39,74 +39,65 @@ public:
 	//Getters
 	bool& getCurrentInstance() { return this->currentInstance; }
 	bool& getLastClicked() { return this->lastClicked; }
-	std::string& getId() { return this->id; }
+	const std::string& getId() { return this->id; }
 	std::string& getButtonId() { return this->buttonId; }
-	std::map<std::string, std::unique_ptr<Button>>& getButtons() { return this->buttons; };
+	std::map<std::string, Button*>& getButtons() { return this->buttons; };
 
 	//Setters
-	void setId(std::string& id) { this->id = id; }
 	void setButtonId(std::string& id) { this->buttonId = id; }
 
 private:
 	class Stat
 	{
 	public:
-		//Constructors and Deconstructors
-		Stat(std::string stat_name)
+		// Constructors and Destructors
+		Stat(const std::string& stat_name)
+			: statName(stat_name), statCount(0)
 		{
-			//Variables
-			this->statCount = 0;
-			this->statName = stat_name;
-
 			//Initialization
-			this->button = new Button(1402, 110, 25, 25, 0.5, "  +",
+			button = std::make_unique<Button>(1402, 110, 25, 25, 0.5f, "++",
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-			this->text = new Text(1428, 110, 16, stat_name + " " + std::to_string(this->statCount),
+			text = std::make_unique<Text>(1428, 110, 16, stat_name + " " + std::to_string(statCount),
 				sf::Color::White, false);
 		}
-		~Stat()
-		{
-			delete this->button;
-			delete this->text;
-		}
 
-		//Core Functions
+		~Stat() = default;
+
+		// Core Functions
 		void update(const sf::Vector2f mousePos)
 		{
-			this->button->update(mousePos);
+			button->update(mousePos);
 		}
+
 		void render(sf::RenderTarget* target)
 		{
-			this->button->render(target);
-			this->text->render(target);
+			button->render(target);
+			text->render(target);
 		}
+
 		void statUp(int& sp)
 		{
-			if (this->button->isPressed()) {
+			if (button->isPressed()) {
 				if (sp > 0) {
-					this->statCount++;
-					this->text->setString(this->statName + " " + std::to_string(this->statCount));
+					statCount++;
+					text->setString(statName + " " + std::to_string(statCount));
 					sp--;
 				}
 			}
 		}
 
-		//Modifiers
+		// Modifiers
 		void setPosition(float x, float y)
 		{
-			this->button->setPosition(x, y);
-			this->text->setPosition(x + 26, y);
+			button->setPosition(x, y);
+			text->setPosition(x + 26, y);
 		}
 
 	private:
-		//Variables
 		int statCount;
-
-		//Assets
-		Button* button;
-		Text* text;
 		std::string statName;
-
+		std::unique_ptr<Button> button;
+		std::unique_ptr<Text> text;
 	};
 
 	int level;
@@ -116,12 +107,12 @@ private:
 	bool currentInstance;
 	bool lastClicked;
 
-	std::string id;
+	const std::string& id;
 	std::string buttonId;
 
-	std::map<std::string, std::unique_ptr<Stat>> stats;
+	std::map<std::string, Button*> buttons;
+	std::map<std::string, std::shared_ptr<Stat>> stats;
 	std::map<std::string, std::unique_ptr<Rectangle>> rectangles;
-	std::map<std::string, std::unique_ptr<Button>> buttons;
 	std::map<std::string, std::unique_ptr<Text>> text;
 
 };

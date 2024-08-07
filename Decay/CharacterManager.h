@@ -16,7 +16,7 @@ private:
     std::unique_ptr<StatsManager> stats;
 
     // Private constructor for singleton pattern
-    CharacterManager() : 
+    CharacterManager() :
         stats(std::make_unique<StatsManager>())
     {}
 
@@ -64,6 +64,15 @@ public:
     }
 
     // Character Stat Functions
+    StatsModule* getStatsModule(const std::string& id) {
+        auto& statsMap = stats->getStats();
+        auto it = statsMap.find(id);
+        if (it != statsMap.end()) {
+            return it->second.get();
+        }
+        return nullptr;
+    }
+
     void updateStats(const sf::Vector2f mousePos) {
         stats->update(mousePos);
     }

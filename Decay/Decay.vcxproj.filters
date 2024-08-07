@@ -34,38 +34,38 @@
     <ClCompile Include="CombatComponent.cpp">
       <Filter>Combat</Filter>
     </ClCompile>
-    <ClCompile Include="StatsModule.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewerModule.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="MapViewer.cpp">
       <Filter>Map</Filter>
     </ClCompile>
     <ClCompile Include="MapComponent.cpp">
       <Filter>Map</Filter>
     </ClCompile>
-    <ClCompile Include="Move.cpp">
-      <Filter>Combat</Filter>
-    </ClCompile>
-    <ClCompile Include="CombatState.cpp">
-      <Filter>PlayStates</Filter>
-    </ClCompile>
-    <ClCompile Include="EventManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
     <ClCompile Include="Character.cpp">
-      <Filter>Character</Filter>
-    </ClCompile>
-    <ClCompile Include="StatsManager.cpp">
       <Filter>Character</Filter>
     </ClCompile>
     <ClCompile Include="MusicPlayer.cpp">
       <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsManager.cpp">
+      <Filter>Character\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="StatsModule.cpp">
+      <Filter>Character\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="Move.cpp">
+      <Filter>Combat\Moves</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Combat\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewerModule.cpp">
+      <Filter>Combat\Entities\EntityResources</Filter>
+    </ClCompile>
+    <ClCompile Include="CombatState.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -102,29 +102,11 @@
     <ClInclude Include="CombatComponent.h">
       <Filter>Combat</Filter>
     </ClInclude>
-    <ClInclude Include="StatsModule.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewerModule.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="MapViewer.h">
       <Filter>Map</Filter>
     </ClInclude>
     <ClInclude Include="MapComponent.h">
       <Filter>Map</Filter>
-    </ClInclude>
-    <ClInclude Include="Move.h">
-      <Filter>Combat</Filter>
-    </ClInclude>
-    <ClInclude Include="CombatState.h">
-      <Filter>PlayStates</Filter>
-    </ClInclude>
-    <ClInclude Include="EventManager.h">
-      <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="Character.h">
       <Filter>Character</Filter>
@@ -132,11 +114,29 @@
     <ClInclude Include="CharacterManager.h">
       <Filter>Character</Filter>
     </ClInclude>
-    <ClInclude Include="StatsManager.h">
-      <Filter>Character</Filter>
-    </ClInclude>
     <ClInclude Include="MusicPlayer.h">
       <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsManager.h">
+      <Filter>Character\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="StatsModule.h">
+      <Filter>Character\Stats</Filter>
+    </ClInclude>
+    <ClInclude Include="Move.h">
+      <Filter>Combat\Moves</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Combat\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewerModule.h">
+      <Filter>Combat\Entities\EntityResources</Filter>
+    </ClInclude>
+    <ClInclude Include="CombatState.h">
+      <Filter>Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -155,20 +155,26 @@
     <Filter Include="Combat">
       <UniqueIdentifier>{a25bae97-28ea-4d9a-903b-8ef709bd37e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Modules">
-      <UniqueIdentifier>{9850c770-ac1a-4b1d-9fa8-eab73f04c043}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities">
-      <UniqueIdentifier>{b4c5fe12-01fe-4e6a-9d0f-7d5d882d7c89}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Map">
       <UniqueIdentifier>{f0ea415a-c034-468d-b19b-82e743865be1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Managers">
-      <UniqueIdentifier>{e63af495-d92c-403a-a137-167adf79d95e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Character">
       <UniqueIdentifier>{f97525e9-b506-4c74-af78-ca5b21dd1181}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Character\Stats">
+      <UniqueIdentifier>{5e92c931-a2ba-41ca-af14-c69aae1fcdec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Combat\Moves">
+      <UniqueIdentifier>{46605f19-6387-4b96-953b-740f3268ced6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Combat\Entities">
+      <UniqueIdentifier>{ec306d54-e317-47a8-b874-c2de0cabf3e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Combat\Entities\EntityResources">
+      <UniqueIdentifier>{0742e55f-005f-4122-9101-6991c3af2e2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Events">
+      <UniqueIdentifier>{f52aaa81-6171-4f17-9b51-dbeeb7ece455}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

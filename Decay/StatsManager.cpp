@@ -1,5 +1,4 @@
 #include "StatsManager.h"
-#include "StatsModule.h"
 
 // Constructors and Destructors
 StatsManager::StatsManager() 
@@ -12,10 +11,9 @@ StatsManager::StatsManager()
 
 StatsManager::~StatsManager() 
 {
-    //Delete Buttons
-    auto ib = this->buttons.begin();
-    for (ib = this->buttons.begin(); ib != this->buttons.end(); ++ib) {
-        delete ib->second;
+    // Delete Buttons
+    for (auto& pair : this->buttons) {
+        delete pair.second;
     }
 }
 
@@ -32,48 +30,51 @@ void StatsManager::update(const sf::Vector2f mousePos) {
 void StatsManager::render(sf::RenderTarget* target) {
     int height = 20;
     for (auto& pair : stats) {
-        if (pair.second) { // Check if pointer is valid
-            if (!this->hidden) {
-               pair.second->render(target);
+        if (pair.second && !this->hidden) { // Check if pointer is valid
+            pair.second->render(target);
+            auto button = pair.second->getButtons()[pair.second->getButtonId()];
+            if (button) {
+                button->setPosition(1705, height += 30);
+            } else {
+                std::cerr << "Button not found for ID: " << pair.second->getButtonId() << std::endl;
             }
-            pair.second->getButtons()[pair.second->getButtonId()]->setPosition(1705, height += 30);
         }
     }
     this->buttons["OPENSTATS"]->render(target);
 }
 
 // Manager Functions
-void StatsManager::createInstance(std::string id) {
-    stats[id] = std::make_unique<StatsModule>();
-    stats[id]->setId(id);
+void StatsManager::createInstance(const std::string& id) 
+{
+    stats[id] = std::make_unique<StatsModule>(id);
+    //stats[id]->setId(id);
 }
 
-//Button Functions
+// Button Functions
 void StatsManager::updateButtons(const sf::Vector2f mousePos)
 {
     for (auto& it : this->buttons) {
-        it.second->update(mousePos);
+        if (it.second) { // Ensure button is valid
+            it.second->update(mousePos);
+        }
     }
 
-    if (this->buttons["OPENSTATS"]->isPressed() && this->hidden) {
-        this->hidden = false;
-    }
-    else if (this->buttons["OPENSTATS"]->isPressed() && !this->hidden) {
-        this->hidden = true;
+    if (this->buttons["OPENSTATS"] && this->buttons["OPENSTATS"]->isPressed()) {
+        this->hidden = !this->hidden;
     }
 
-    //Select the button and display stats while hiding all other stats
+    // Select the button and display stats while hiding all other stats
     this->passCountMax = static_cast<int>(stats.size());
     for (auto& pair : stats) {
-        if (pair.second->getButtons()[pair.second->getButtonId()]->isPressed()) {
+        auto button = pair.second->getButtons()[pair.second->getButtonId()];
+        if (button && button->isPressed()) {
             this->clicked = true;
         }
 
         if (this->passCount != this->passCountMax && this->clicked) {
             pair.second->getCurrentInstance() = false;
             this->passCount++;
-        }
-        else if (this->passCount == this->passCountMax) {
+        } else if (this->passCount == this->passCountMax) {
             pair.second->getCurrentInstance() = true;
             this->passCount = 0;
             this->clicked = false;

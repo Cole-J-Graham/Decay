@@ -1,12 +1,14 @@
 #include "StatsModule.h"
 
 // Constructors and Destructors
-StatsModule::StatsModule() {
+StatsModule::StatsModule(const std::string& id) 
+    : id(id) {
     // Variables
     this->level = 0;
     this->exp = 0;
     this->expNext = 100;
     this->sp = 5;
+    this->buttonId = id;
 
     this->currentInstance = false;
     this->lastClicked = false;
@@ -17,9 +19,12 @@ StatsModule::StatsModule() {
     this->initButtons();
 }
 
-StatsModule::~StatsModule() 
+StatsModule::~StatsModule()
 {
-
+    //Delete Buttons
+    for (auto& pair : this->buttons) {
+        delete pair.second;
+    }
 }
 
 // Core Functions
@@ -36,7 +41,7 @@ void StatsModule::render(sf::RenderTarget* target) {
         this->renderButtons(target);
         this->renderText(target);
     }
-    else {
+    else if (this->buttons.count(this->buttonId)) { // Ensure button exists
         this->buttons[this->buttonId]->render(target);
     }
 }
@@ -44,14 +49,17 @@ void StatsModule::render(sf::RenderTarget* target) {
 // Stat Functions
 void StatsModule::updateStats(const sf::Vector2f mousePos) {
     for (auto& it : this->stats) {
-        it.second->update(mousePos);
-        it.second->statUp(this->sp);
-        this->buttonId = this->id;
+        if (it.second) { // Check if pointer is valid
+            it.second->update(mousePos);
+            it.second->statUp(this->sp);
+        }
     }
 }
 
-void StatsModule::createStat(std::string key, std::string stat_name) {
-    this->stats[key] = std::make_unique<Stat>(stat_name);
+void StatsModule::createStat(const std::string& key, const std::string& stat_name) {
+    if (this->stats.find(key) == this->stats.end()) {
+        this->stats[key] = std::make_shared<Stat>(stat_name);
+    }
 }
 
 void StatsModule::renderStats(sf::RenderTarget* target) {
@@ -64,7 +72,7 @@ void StatsModule::renderStats(sf::RenderTarget* target) {
 
 // Stat Modifiers
 void StatsModule::increaseLevel() {
-    if (this->buttons["LEVELUP"]->isPressed()) {
+    if (this->buttons.count("LEVELUP") && this->buttons["LEVELUP"]->isPressed()) {
         if (this->exp >= this->expNext) {
             this->exp -= this->expNext;
             this->level++;
@@ -90,10 +98,11 @@ void StatsModule::renderRects(sf::RenderTarget* target) {
 
 // Button Functions
 void StatsModule::updateButtons(const sf::Vector2f mousePos) {
-
     for (auto& it : this->buttons) {
-        it.second->update(mousePos);
-        it.second->setText(this->id);
+        if (it.second) { // Ensure button is valid
+            it.second->update(mousePos);
+            //it.second->setTextConst(this->id);
+        }
     }
 
     if (this->currentInstance) {
@@ -102,9 +111,13 @@ void StatsModule::updateButtons(const sf::Vector2f mousePos) {
 }
 
 void StatsModule::initButtons() {
-    this->buttons[this->buttonId] = std::make_unique<Button>(1505, 50, 100, 25, 0.5f, this->id,
+    if (this->buttonId.empty()) {
+        this->buttonId = this->id;
+    }
+
+    this->buttons[this->buttonId] = new Button(1505, 50, 100, 25, 0.5f, this->id,
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->buttons["LEVELUP"] = std::make_unique<Button>(1402, 53, 100, 25, 0.5f, "LEVEL++",
+    this->buttons["LEVELUP"] = new Button(1402, 53, 100, 25, 0.5f, "LEVEL++",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
 }
 
