@@ -129,7 +129,7 @@ void StatsModule::renderButtons(sf::RenderTarget* target) {
 
 // Text Functions
 void StatsModule::initText() {
-    this->text["LEVELTEXT"] = std::make_unique<Text>(1504, 53, 16, std::to_string(this->exp) + "/" + std::to_string(this->expNext) + "              LVL: " + std::to_string(this->level) + "\n                         SP: " + std::to_string(this->sp),
+    this->text["LEVELTEXT"] = std::make_unique<Text>(1504, 53, 16, toStringWithPrecision(this->exp) + "/" + toStringWithPrecision(this->expNext) + "              LVL: " + std::to_string(this->level) + "\n                         SP: " + std::to_string(this->sp),
         sf::Color::White, false);
 }
 
@@ -140,5 +140,5 @@ void StatsModule::renderText(sf::RenderTarget* target) {
 }
 
 void StatsModule::updateText() {
-    this->text["LEVELTEXT"]->setString(std::to_string(this->exp) + "/" + std::to_string(this->expNext) + "              LVL: " + std::to_string(this->level) + "\n                         SP: " + std::to_string(this->sp));
+    this->text["LEVELTEXT"]->setString(toStringWithPrecision(this->exp) + "/" + toStringWithPrecision(this->expNext) + "    LVL: " + std::to_string(this->level) + "\n                         SP: " + std::to_string(this->sp));
 }

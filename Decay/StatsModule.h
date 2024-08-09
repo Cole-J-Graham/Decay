@@ -1,8 +1,11 @@
 #pragma once
 #include<vector>
+#include<iomanip>
+#include<sstream>
 #include"Rectangle.h"
 #include"Button.h"
 #include"Text.h"
+
 class StatsModule
 {
 public:
@@ -46,6 +49,11 @@ public:
 
 	//Setters
 	void setButtonId(std::string& id) { this->buttonId = id; }
+	std::string toStringWithPrecision(double value, int precision = 2) {
+		std::ostringstream out;
+		out << std::fixed << std::setprecision(precision) << value;
+		return out.str();
+	}
 
 private:
 	class Stat
