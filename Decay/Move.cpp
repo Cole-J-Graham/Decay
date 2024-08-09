@@ -1,7 +1,7 @@
 #include "Move.h"
 
 Move::Move(std::string key, std::string moveMessage, std::string tipMessage,
-    std::string text, Operation op, int& a, int& b, int& coolDown)
+    std::string text, Operation op, float& a, float& b, int& coolDown)
     : operation(op), a(a), b(b), coolDown(coolDown)
 {
     this->button = std::make_unique<Button>(350, 800, 100, 25, 0.1, text,

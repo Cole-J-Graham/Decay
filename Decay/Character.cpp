@@ -1,7 +1,7 @@
 #include "Character.h"
 
 // Constructors and Deconstructors
-Character::Character(std::string characterName, int hp, int hpMax, int damage, int defense,
+Character::Character(std::string characterName, float hp, float hpMax, float damage, float defense,
     float x, float y, float scale, std::string characterTexture, bool turnActive)
 {
     // Player Variables
@@ -119,7 +119,7 @@ void Character::renderButtons(sf::RenderTarget* target) {
 
 // Move Functions
 void Character::createMove(std::string key, std::string moveMessage, std::string tipMessage, 
-    std::string text, Move::Operation op, int& a, int& b) {
+    std::string text, Move::Operation op, float& a, float& b) {
     this->moveButtons[key] = new Move(key, moveMessage, tipMessage, text, op, a, b, this->coolDown);
 }
 

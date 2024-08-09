@@ -47,7 +47,6 @@ void StatsManager::render(sf::RenderTarget* target) {
 void StatsManager::createInstance(const std::string& id) 
 {
     stats[id] = std::make_unique<StatsModule>(id);
-    //stats[id]->setId(id);
 }
 
 // Button Functions

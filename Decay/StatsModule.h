@@ -16,7 +16,8 @@ public:
 
 	//Stat Functions
 	void updateStats(const sf::Vector2f mousePos);
-	void createStat(const std::string& key, const std::string& stat_name);
+	void createStat(const std::string& key, const std::string& stat_name,
+		float& stat, float statModifier);
 	void renderStats(sf::RenderTarget* target);
 
 	//Stat Modifiers
@@ -51,8 +52,8 @@ private:
 	{
 	public:
 		// Constructors and Destructors
-		Stat(const std::string& stat_name)
-			: statName(stat_name), statCount(0)
+		Stat(const std::string& stat_name, float& stat, float statModifier)
+			: statName(stat_name), stat(stat), statModifier(statModifier), statCount(0)
 		{
 			//Initialization
 			button = std::make_unique<Button>(1402, 110, 25, 25, 0.5f, "++",
@@ -80,6 +81,7 @@ private:
 			if (button->isPressed()) {
 				if (sp > 0) {
 					statCount++;
+					this->stat += this->statModifier;
 					text->setString(statName + " " + std::to_string(statCount));
 					sp--;
 				}
@@ -94,15 +96,18 @@ private:
 		}
 
 	private:
+
 		int statCount;
+		float& stat;
+		float statModifier;
 		std::string statName;
 		std::unique_ptr<Button> button;
 		std::unique_ptr<Text> text;
 	};
 
 	int level;
-	int exp;
-	int expNext;
+	float exp;
+	float expNext;
 	int sp;
 	bool currentInstance;
 	bool lastClicked;

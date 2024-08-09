@@ -6,7 +6,7 @@ class Character
 {
 public:
 	//Constructors and Deconstructors
-	Character(std::string characterName, int hp, int hpMax, int damage, int defense, 
+	Character(std::string characterName, float hp, float hpMax, float damage, float defense,
 		float x, float y, float scale, std::string characterTexture, bool turnActive);
 	~Character();
 
@@ -24,7 +24,7 @@ public:
 
 	//Move Functions
 	void createMove(std::string key, std::string moveMessage, 
-		std::string tipMessage, std::string text, Move::Operation op, int& a, int& b);
+		std::string tipMessage, std::string text, Move::Operation op, float& a, float& b);
 	void renderMoveButtons(sf::RenderTarget* target);
 
 	//Text Functions
@@ -33,11 +33,11 @@ public:
 	void updateText();
 
 	//Setters
-	int& setHp(int& hp) { this->hp = hp; };
+	float& setHp(float& hp) { this->hp = hp; };
 
 	//Getters
-	int& getDamage() { return this->damage; };
-	int& getHp() { return this->hp; };
+	float& getDamage() { return this->damage; };
+	float& getHp() { return this->hp; };
 	int& getCoolDown() { return this->coolDown; };
 
 	std::map<std::string, Move*> getMoves()& { return this->moveButtons; };
@@ -45,10 +45,10 @@ public:
 private:
 
 	//Player Variables
-	int hp;
-	int hpMax;
-	int damage;
-	int defense;
+	float hp;
+	float hpMax;
+	float damage;
+	float defense;
 	int coolDown;
 
 	//Asset Variables

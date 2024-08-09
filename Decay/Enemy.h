@@ -7,7 +7,7 @@ class Enemy
 public:
 	//Constructors and Deconstructors
 	Enemy() {};
-	Enemy(std::string enemyName, int hp, int hpMax, int damage, int defense, 
+	Enemy(std::string enemyName, float hp, float hpMax, float damage, float defense,
 		float scale, std::string enemyTexture, std::string enemyView, bool turnActive);
 	~Enemy();
 
@@ -30,16 +30,16 @@ public:
 
 	//Getters
 	int& getEnemyFrame() { return this->enemyFrame; };
-	int& getDamage() { return this->damage; };
-	int& getHp() { return this->hp; }
+	float& getDamage() { return this->damage; };
+	float& getHp() { return this->hp; }
 
 private:
 
 	//Player Variables
-	int hp;
-	int hpMax;
-	int damage;
-	int defense;
+	float hp;
+	float hpMax;
+	float damage;
+	float defense;
 
 	//Asset Variables
 	int enemyFrame;

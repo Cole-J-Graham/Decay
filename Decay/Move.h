@@ -8,10 +8,10 @@
 
 class Move {
 public:
-    using Operation = std::function<void(int&, int&, int&)>;
+    using Operation = std::function<void(float&, float&, int&)>;
 
     Move(std::string key, std::string moveMessage, std::string tipMessage, 
-        std::string text, Operation op, int& a, int& b, int& coolDown);
+        std::string text, Operation op, float& a, float& b, int& coolDown);
     ~Move();
 
     //Core Functions
@@ -36,19 +36,19 @@ public:
     std::string& getMoveMessage() { return this->moveMessage; }
 
     struct Adder {
-        void operator()(int& a, int& b, int&) const {
+        void operator()(float& a, float& b, int&) const {
             a += b;
         }
     };
 
     struct Subtractor {
-        void operator()(int& a, int& b, int&) const {
+        void operator()(float& a, float& b, int&) const {
             a -= b;
         }
     };
 
     struct Subcooldown {
-        void operator()(int& a, int& b, int& c) const {
+        void operator()(float& a, float& b, int& c) const {
             a -= b;
             c++;
         }
@@ -58,8 +58,8 @@ private:
 
     Operation operation;
 
-    int& a;
-    int& b;
+    float& a;
+    float& b;
     int& coolDown;
 
     bool active;

@@ -1,6 +1,6 @@
 #include "Enemy.h"
 //Constructors and Deconstructors
-Enemy::Enemy(std::string enemyName, int hp, int hpMax, int damage, int defense, 
+Enemy::Enemy(std::string enemyName, float hp, float hpMax, float damage, float defense,
 	float scale, std::string enemyTexture, std::string enemyView, bool turnActive)
 {
 	//Player Variables
