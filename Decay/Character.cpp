@@ -2,27 +2,17 @@
 
 // Constructors and Deconstructors
 Character::Character(std::string characterName, float hp, float hpMax, float damage, float defense,
-    float x, float y, float scale, std::string characterTexture, bool turnActive)
+    float healing, float x, float y, float scale, std::string characterTexture, bool turnActive)
+    : hp(hp), hpMax(hpMax), damage(damage), defense(defense), healing(healing),
+    x(x), y(y), turnActive(turnActive), characterName(characterName),
+    characterFrame(0), coolDown(1)
 {
-    // Player Variables
-    this->hp = hp;
-    this->hpMax = hpMax;
-    this->damage = damage;
-    this->defense = defense;
-    this->characterFrame = 0;
-    this->coolDown = 1;
-    this->x = x;
-    this->y = y;
-
     // Asset Variables
     this->characterTexture.loadFromFile(characterTexture);
     this->character.setTexture(this->characterTexture);
     this->character.setPosition(x, y);
     this->character.setScale(scale, scale);
-    this->characterName = characterName;
-    this->border = std::make_unique<Rectangle>(this->x, this->y, 200, 200, sf::Color::Transparent, sf::Color::White, 1.f, false);
-
-    this->turnActive = turnActive;
+    this->border = std::make_unique<Rectangle>(this->x, this->y, BORDER_WIDTH, BORDER_HEIGHT, sf::Color::Transparent, sf::Color::White, 1.f, false);
 
     // Initialization
     this->initText();
@@ -124,10 +114,12 @@ void Character::createMove(std::string key, std::string moveMessage, std::string
 }
 
 void Character::renderMoveButtons(sf::RenderTarget* target) {
-    int y = 825;
+    int tempButtonY = 825;
     for (auto& it : this->moveButtons) {
-        it.second->render(target);
-        it.second->setPosition(350, y -= 25);
+        if (!it.second->isHidden()) {
+            it.second->render(target);
+            it.second->setPosition(BUTTON_X_OFFSET, tempButtonY -= BUTTON_Y_OFFSET);
+        }
     }
 }
 
@@ -144,5 +136,8 @@ void Character::renderText(sf::RenderTarget* target) {
 }
 
 void Character::updateText() {
-    this->text["HP"]->setString("HP: " + std::to_string(this->hp) + "/" + std::to_string(this->hpMax));
+    std::string newHpString = "HP: " + std::to_string(this->hp) + "/" + std::to_string(this->hpMax);
+    if (this->text["HP"]->getString() != newHpString) {
+        this->text["HP"]->setString(newHpString);
+    }
 }

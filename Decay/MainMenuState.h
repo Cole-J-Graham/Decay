@@ -1,5 +1,6 @@
 #ifndef MAINMENU_STATE_H
 #define MAINMENU_STATE_H
+#include"InitializeCharacters.h"
 #include"GameState.h"
 #include"Button.h"
 

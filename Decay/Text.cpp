@@ -5,14 +5,15 @@ Text::Text()
 
 }
 
-Text::Text(float x, float y, int text_size, std::string text, sf::Color text_color, bool hidden)
+Text::Text(float x, float y, int text_size, std::string textString, sf::Color text_color, bool hidden)
 {
 	//Text Variables
-	this->text.setString(text);
+	this->text.setString(textString);
 	this->text.setFillColor(text_color);
 	this->text.setFont(font);
 	this->text.setCharacterSize(text_size);
 	this->text.setPosition(x, y);
+	this->textString = this->textString;
 	this->hidden = hidden;
 
 	font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");

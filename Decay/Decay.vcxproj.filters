@@ -67,6 +67,9 @@
     <ClCompile Include="EventManager.cpp">
       <Filter>Events</Filter>
     </ClCompile>
+    <ClCompile Include="InitializeCharacters.cpp">
+      <Filter>Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
@@ -137,6 +140,9 @@
     </ClInclude>
     <ClInclude Include="EventManager.h">
       <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="InitializeCharacters.h">
+      <Filter>Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

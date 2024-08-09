@@ -77,7 +77,5 @@ void MainMenuState::renderButtons(sf::RenderTarget* target)
 //Character Functions
 void MainMenuState::initCharacters()
 {
-    CharacterManager::getInstance().addCharacter("PLAYER", std::make_shared<Character>("Player", 100, 100, 10, 10, 25.f, 150.f, 0.319f, "Assets/Sprites/Player.png", true));
-    CharacterManager::getInstance().addCharacter("ZIN", std::make_shared<Character>("Zin", 100, 100, 10, 10, 25.f, 420.f, 0.066f, "Assets/Sprites/zinSprite.png", false));
-    CharacterManager::getInstance().addCharacter("THOM", std::make_shared<Character>("Thom", 100, 100, 10, 10, 25.f, 690.f, 0.625f, "Assets/Sprites/thomNormal.png", false));
+    InitializeCharacters::getInstance().initialize();
 }
