@@ -19,8 +19,8 @@ public:
 
 	//Stat Functions
 	void updateStats(const sf::Vector2f mousePos);
-	void createStat(const std::string& key, const std::string& stat_name,
-		float& stat, float statModifier);
+	void createStat(const std::string& key, const std::string& statName,
+		const std::string& modifiedStatName, float& stat, float statModifier);
 	void renderStats(sf::RenderTarget* target);
 
 	//Stat Modifiers
@@ -60,13 +60,15 @@ private:
 	{
 	public:
 		// Constructors and Destructors
-		Stat(const std::string& stat_name, float& stat, float statModifier)
-			: statName(stat_name), stat(stat), statModifier(statModifier), statCount(0)
+		Stat(const std::string& statName, const std::string& modifiedStatName, float& stat, float statModifier)
+			: statName(statName), stat(stat), modifiedStatName(modifiedStatName), statModifier(statModifier), statCount(0)
 		{
 			//Initialization
 			button = std::make_unique<Button>(1402, 110, 25, 25, 0.5f, "++",
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-			text = std::make_unique<Text>(1428, 110, 16, stat_name + " " + std::to_string(statCount),
+			text = std::make_unique<Text>(1428, 110, 16, statName + " " + std::to_string(statCount),
+				sf::Color::White, false);
+			statText = std::make_unique<Text>(1428, 500, 12, modifiedStatName + " " + std::to_string(stat),
 				sf::Color::White, false);
 		}
 
@@ -82,6 +84,7 @@ private:
 		{
 			button->render(target);
 			text->render(target);
+			statText->render(target);
 		}
 
 		void statUp(int& sp)
@@ -91,6 +94,7 @@ private:
 					statCount++;
 					this->stat += this->statModifier;
 					text->setString(statName + " " + std::to_string(statCount));
+					statText->setString(modifiedStatName + " " + std::to_string(stat));
 					sp--;
 				}
 			}
@@ -101,6 +105,7 @@ private:
 		{
 			button->setPosition(x, y);
 			text->setPosition(x + 26, y);
+			statText->setPosition(x, y + 420);
 		}
 
 	private:
@@ -109,8 +114,10 @@ private:
 		float& stat;
 		float statModifier;
 		std::string statName;
+		std::string modifiedStatName;
 		std::unique_ptr<Button> button;
 		std::unique_ptr<Text> text;
+		std::unique_ptr<Text> statText;
 	};
 
 	int level;

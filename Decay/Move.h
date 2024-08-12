@@ -10,12 +10,13 @@ class Move {
 public:
     using Operation = std::function<void(float&, float&, int&)>;
 
-    Move(std::string key, std::string moveMessage, std::string tipMessage, 
-        std::string text, Operation op, float& a, float& b, int& coolDown);
+    Move(std::string moveMessage, std::string tipMessage, 
+        std::string text, Operation op, float& a, float& b, int coolDown);
     ~Move();
 
     //Core Functions
     void render(sf::RenderTarget* target);
+    void renderMoveMessage(sf::RenderTarget* target) { this->message->render(target); }
     void update(const sf::Vector2f mousePos);
     void useMove();
 
@@ -25,7 +26,7 @@ public:
 
     //Modifiers
     void setPosition(float x, float y) { this->button->setPosition(x, y); }
-    const bool isPressed() { return this->button->isPressed(); }
+    bool isPressed() const { return this->button->isPressed(); }
     void show() { this->hidden = false; }
     void hide() { this->hidden = true; }
     void showAttackMessage() { this->message->setShown(); }
@@ -34,6 +35,7 @@ public:
 
     //Getters
     std::string& getMoveMessage() { return this->moveMessage; }
+    std::unique_ptr<Button>& getButton() { return this->button; }
 
     struct Adder {
         void operator()(float& a, float& b, int&) const {
@@ -60,7 +62,7 @@ private:
 
     float& a;
     float& b;
-    int& coolDown;
+    int coolDown;
 
     bool active;
     bool hidden;

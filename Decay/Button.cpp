@@ -133,3 +133,8 @@ const bool Button::isHovered() const
 
     return false;
 }
+
+void Button::setIdle() {
+    this->buttonState = BTN_IDLE;
+    this->shape.setFillColor(this->idleColor);
+}

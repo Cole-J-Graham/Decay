@@ -21,6 +21,8 @@ public:
 	//Accessors
 	const bool isPressed() const;
 	const bool isHovered() const;
+	void setIdle();
+
 	//Modifiers
 	void setPosition(float x, float y) { this->shape.setPosition(x, y); this->text.setPosition(x, y); };
 	void setText(std::string& text) { this->text.setString(text); }

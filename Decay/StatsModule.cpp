@@ -56,10 +56,10 @@ void StatsModule::updateStats(const sf::Vector2f mousePos) {
     }
 }
 
-void StatsModule::createStat(const std::string& key, const std::string& stat_name,
-    float& stat, float statModifier) {
+void StatsModule::createStat(const std::string& key, const std::string& statName,
+    const std::string& modifiedStatName, float& stat, float statModifier) {
     if (this->stats.find(key) == this->stats.end()) {
-        this->stats[key] = std::make_shared<Stat>(stat_name, stat, statModifier);
+        this->stats[key] = std::make_shared<Stat>(statName, modifiedStatName, stat, statModifier);
     }
 }
 

@@ -6,6 +6,7 @@ CombatState::CombatState(sf::RenderWindow* window, std::stack<State*>* states)
     //Initialization
     this->initRects();
     this->enemyPool();
+    this->combatFrame = 0;
 }
 
 CombatState::~CombatState()
@@ -39,6 +40,7 @@ void CombatState::combatLoop(const sf::Vector2f mousePos)
         break;
     case 4:
         //Detect and Loop
+        this->resetAllCharacterTurns();
         this->combatFrame = 0;
         break;
     }
@@ -62,6 +64,15 @@ void CombatState::render(sf::RenderTarget* target)
 {
     this->renderRects(target);
     this->renderCombat(target);
+}
+
+//Character Functions
+void CombatState::resetAllCharacterTurns() {
+    auto& allCharacters = CharacterManager::getInstance().getAllCharacters();
+
+    for (auto& pair : allCharacters) {
+        pair.second->resetTurn();
+    }
 }
 
 //Rectangle Functions

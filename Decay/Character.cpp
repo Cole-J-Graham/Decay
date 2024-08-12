@@ -5,7 +5,7 @@ Character::Character(std::string characterName, float hp, float hpMax, float dam
     float healing, float x, float y, float scale, std::string characterTexture, bool turnActive)
     : hp(hp), hpMax(hpMax), damage(damage), defense(defense), healing(healing),
     x(x), y(y), turnActive(turnActive), characterName(characterName),
-    characterFrame(0), coolDown(1)
+    characterFrame(0), coolDown(0)
 {
     // Asset Variables
     this->characterTexture.loadFromFile(characterTexture);
@@ -41,8 +41,9 @@ void Character::render(sf::RenderTarget* target) {
     this->renderButtons(target);
     this->renderText(target);
     // Active Turn
-    if (this->turnActive && this->coolDown <= 0) {
+    if (this->turnActive) {
         this->renderMoveButtons(target);
+        for (auto& it : this->moveButtons) { it.second->renderMoveMessage(target); }
     }
 }
 
@@ -50,13 +51,9 @@ void Character::characterTurn(int& combatFrame, const sf::Vector2f mousePos) {
     this->update(mousePos);
     switch (this->characterFrame) {
     case 0:
-        if (this->coolDown <= 0) {
-            this->turnActive = true;
-            for (auto& it : this->moveButtons) { it.second->show(); }
-        }
-        else if (this->coolDown > 0) {
-            this->characterFrame = 1;
-        }
+        this->turnActive = true;
+        for (auto& it : this->moveButtons) { it.second->show(); }
+        this->updateMoveButtons(mousePos);
         break;
     case 1:
         for (auto& it : this->moveButtons) { it.second->hide(); }
@@ -67,16 +64,16 @@ void Character::characterTurn(int& combatFrame, const sf::Vector2f mousePos) {
 
 void Character::resetTurn() {
     this->characterFrame = 0;
+    this->buttons["ENDTURN"]->setIdle();
 }
 
 void Character::endTurn(int& combatFrame) {
     this->buttons["ENDTURN"]->show();
     if (this->buttons["ENDTURN"]->isPressed()) {
-        this->resetTurn();
-        combatFrame++;
         this->buttons["ENDTURN"]->hide();
         this->coolDown--;
         for (auto& it : this->moveButtons) { it.second->hideAttackMessage(); }
+        combatFrame++;
     }
 }
 
@@ -85,13 +82,17 @@ void Character::updateButtons(const sf::Vector2f mousePos) {
     for (auto& it : this->moveButtons) {
         if(!it.second->isHidden()) { it.second->update(mousePos); }
     }
+
     for (auto& it : this->buttons) {
         it.second->update(mousePos);
     }
+}
 
+void Character::updateMoveButtons(const sf::Vector2f mousePos)
+{
     for (auto& it : this->moveButtons) {
         if (it.second->isPressed()) {
-            this->characterFrame++;
+            this->characterFrame = 1;
         }
     }
 }
@@ -109,8 +110,8 @@ void Character::renderButtons(sf::RenderTarget* target) {
 
 // Move Functions
 void Character::createMove(std::string key, std::string moveMessage, std::string tipMessage, 
-    std::string text, Move::Operation op, float& a, float& b) {
-    this->moveButtons[key] = new Move(key, moveMessage, tipMessage, text, op, a, b, this->coolDown);
+    std::string text, Move::Operation op, float& a, float& b, int coolDown) {
+    this->moveButtons[key] = new Move(moveMessage, tipMessage, text, op, a, b, coolDown);
 }
 
 void Character::renderMoveButtons(sf::RenderTarget* target) {

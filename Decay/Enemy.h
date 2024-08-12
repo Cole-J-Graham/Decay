@@ -2,6 +2,8 @@
 #include"Text.h"
 #include"Button.h"
 #include"ViewerModule.h"
+#include"EntityMove.h"
+
 class Enemy
 {
 public:
@@ -23,12 +25,36 @@ public:
 	void initButtons();
 	void renderButtons(sf::RenderTarget* target);
 
+	//Move Functions
+	void createMove(int key, const std::string& moveMessage, EntityMove::Operation op,
+		float& a, float& b, int coolDown) {
+		this->moves[key] = std::make_unique<EntityMove>(moveMessage, op, a, b, coolDown);
+		this->enemyMoveRangeMax = this->moves.size();
+	}
+
+	void detectMove() {
+		std::random_device dev;
+		std::mt19937 rng(dev());
+		std::uniform_int_distribution<std::mt19937::result_type> enemyMoveRange(this->enemyMoveRangeMin, this->enemyMoveRangeMax);
+
+		int selectedMoveIndex = enemyMoveRange(rng);
+
+		// Assuming `this->moves` is a map with integer keys
+		auto it = this->moves.find(selectedMoveIndex);
+		//std::cout << enemyMoveRange(rng) << "\n";
+		if (it != this->moves.end() && it->second) {
+			it->second->useMove();  // Example usage
+		}
+		this->enemyFrame = 1;
+	}
+
 	//Text Functions
 	void initText();
 	void renderText(sf::RenderTarget* target = nullptr);
 	void updateText();
 
 	//Getters
+	bool& isTurnActive() { return this->turnActive; };
 	int& getEnemyFrame() { return this->enemyFrame; };
 	float& getDamage() { return this->damage; };
 	float& getHp() { return this->hp; }
@@ -42,6 +68,8 @@ private:
 	float defense;
 
 	//Asset Variables
+	int enemyMoveRangeMin;
+	int enemyMoveRangeMax;
 	int enemyFrame;
 	float x;
 	float y;
@@ -52,6 +80,8 @@ private:
 	std::string enemyName;
 
 	ViewerModule* closeViewer;
+
+	std::map<int, std::unique_ptr<EntityMove>> moves;
 	std::map<std::string, Button*> buttons;
 	std::map<std::string, Text*> text;
 };

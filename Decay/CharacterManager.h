@@ -49,6 +49,11 @@ public:
         return nullptr;
     }
 
+    const std::unordered_map<std::string, std::shared_ptr<Character>>& getAllCharacters() const {
+        return characters;
+    }
+
+
     // Update all characters
     void updateAll(const sf::Vector2f mousePos) {
         for (auto& pair : characters) {

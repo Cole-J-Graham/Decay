@@ -9,6 +9,8 @@ Enemy::Enemy(std::string enemyName, float hp, float hpMax, float damage, float d
 	this->damage = damage;
 	this->defense = defense;
 	this->enemyName = enemyName;
+	this->enemyMoveRangeMin = 0;
+	this->enemyMoveRangeMax = this->moves.size();
 	this->enemyFrame = 0;
 	this->x = 1695;
 	this->y = 420;
@@ -36,6 +38,11 @@ Enemy::~Enemy()
 	for (ib = this->buttons.begin(); ib != this->buttons.end(); ++ib) {
 		delete ib->second;
 	}
+	//Delete Text
+	auto it = this->text.begin();
+	for (it = this->text.begin(); it != this->text.end(); ++it) {
+		delete it->second;
+	}
 }
 
 //Core Functions
@@ -52,6 +59,10 @@ void Enemy::render(sf::RenderTarget* target)
 	target->draw(this->enemy);
 	this->renderButtons(target);
 	this->renderText(target);
+
+	if (this->turnActive) {
+		for (auto& it : this->moves) { it.second->renderMoveMessage(target); }
+	}
 }
 
 void Enemy::enemyTurn(int& combatFrame, const sf::Vector2f mousePos)
@@ -59,8 +70,11 @@ void Enemy::enemyTurn(int& combatFrame, const sf::Vector2f mousePos)
 	this->update(mousePos);
 	switch (this->enemyFrame) {
 	case 0:
-		this->buttons["CONTINUE"]->show();
 		this->turnActive = true;
+		this->detectMove();
+		this->buttons["CONTINUE"]->show();
+		break;
+	case 1:
 		this->endTurn(combatFrame);
 		break;
 	}
@@ -68,6 +82,7 @@ void Enemy::enemyTurn(int& combatFrame, const sf::Vector2f mousePos)
 
 void Enemy::resetTurn()
 {
+	this->turnActive = false;
 	this->enemyFrame = 0;
 }
 
@@ -75,8 +90,8 @@ void Enemy::endTurn(int& combatFrame)
 {
 	if (this->buttons["CONTINUE"]->isPressed()) {
 		this->resetTurn();
-		combatFrame++;
 		this->buttons["CONTINUE"]->hide();
+		combatFrame++;
 	}
 }
 

@@ -52,9 +52,6 @@
     <ClCompile Include="StatsModule.cpp">
       <Filter>Character\Stats</Filter>
     </ClCompile>
-    <ClCompile Include="Move.cpp">
-      <Filter>Combat\Moves</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>Combat\Entities</Filter>
     </ClCompile>
@@ -69,6 +66,12 @@
     </ClCompile>
     <ClCompile Include="InitializeCharacters.cpp">
       <Filter>Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Move.cpp">
+      <Filter>Character\CharacterResources</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityMove.cpp">
+      <Filter>Combat\Entities\EntityResources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -126,9 +129,6 @@
     <ClInclude Include="StatsModule.h">
       <Filter>Character\Stats</Filter>
     </ClInclude>
-    <ClInclude Include="Move.h">
-      <Filter>Combat\Moves</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Combat\Entities</Filter>
     </ClInclude>
@@ -143,6 +143,12 @@
     </ClInclude>
     <ClInclude Include="InitializeCharacters.h">
       <Filter>Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Move.h">
+      <Filter>Character\CharacterResources</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityMove.h">
+      <Filter>Combat\Entities\EntityResources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -170,9 +176,6 @@
     <Filter Include="Character\Stats">
       <UniqueIdentifier>{5e92c931-a2ba-41ca-af14-c69aae1fcdec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Combat\Moves">
-      <UniqueIdentifier>{46605f19-6387-4b96-953b-740f3268ced6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Combat\Entities">
       <UniqueIdentifier>{ec306d54-e317-47a8-b874-c2de0cabf3e7}</UniqueIdentifier>
     </Filter>
@@ -181,6 +184,9 @@
     </Filter>
     <Filter Include="Events">
       <UniqueIdentifier>{f52aaa81-6171-4f17-9b51-dbeeb7ece455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Character\CharacterResources">
+      <UniqueIdentifier>{145fed09-300a-414f-a105-fc6aa2d8fbdf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -19,12 +19,13 @@ public:
 
 	//Button Functions
 	void updateButtons(const sf::Vector2f mousePos);
+	void updateMoveButtons(const sf::Vector2f mousePos);
 	void initButtons();
 	void renderButtons(sf::RenderTarget* target);
 
 	//Move Functions
 	void createMove(std::string key, std::string moveMessage, 
-		std::string tipMessage, std::string text, Move::Operation op, float& a, float& b);
+		std::string tipMessage, std::string text, Move::Operation op, float& a, float& b, int coolDown);
 	void renderMoveButtons(sf::RenderTarget* target);
 
 	//Text Functions
@@ -34,13 +35,16 @@ public:
 
 	//Setters
 	float& setHp(float& hp) { this->hp = hp; };
-
+	void resetCharacterFrame() { this->characterFrame = 0; };
+	
 	//Getters
 	float& getDamage() { return this->damage; };
 	float& getHp() { return this->hp; };
 	float& getDefense() { return this->defense; };
 	float& getHealing() { return this->healing; };
 	int& getCoolDown() { return this->coolDown; };
+	int& getCharacterFrame() { return this->characterFrame; };
+	bool& isTurnActive() { return this->turnActive; };
 
 	std::map<std::string, Move*> getMoves()& { return this->moveButtons; };
 

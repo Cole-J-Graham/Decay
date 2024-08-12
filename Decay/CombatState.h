@@ -18,6 +18,9 @@ public:
 	void update();
 	void render(sf::RenderTarget* target = nullptr);
 
+	//Character Functions
+	void resetAllCharacterTurns();
+
 	//Rectangle Functions
 	void initRects();
 	void updateRects(const sf::Vector2f mousePos);

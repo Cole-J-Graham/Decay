@@ -19,13 +19,20 @@ CombatComponent::~CombatComponent()
     for (ie = this->enemies.begin(); ie != this->enemies.end(); ++ie) {
         delete ie->second;
     }
+
+    //Delete Moves
+    auto im = this->enemies.begin();
+    for (im = this->enemies.begin(); im != this->enemies.end(); ++im) {
+        delete im->second;
+    }
 }
 
 //Core Functions
 void CombatComponent::updateCombat(const sf::Vector2f mousePos)
 {
     if (!this->enemyId.empty() && !this->movesInitialized) { 
-        this->initMoves(); 
+        this->initMoves();
+        this->initEnemyMoves();
         this->movesInitialized = true;
     }
     this->enemies[this->enemyId]->updateText();
@@ -39,16 +46,45 @@ void CombatComponent::renderCombat(sf::RenderTarget* target)
 
 void CombatComponent::initMoves()
 {
-    CharacterManager::getInstance().getCharacter("PLAYER")->createMove("Slash", "The player slashes at the opponent with all his might!", 
-        "Players basic attack", "Slash", Move::Subtractor(), this->enemies[this->enemyId]->getHp(), CharacterManager::getInstance().getCharacter("PLAYER")->getDamage());
-    CharacterManager::getInstance().getCharacter("PLAYER")->createMove("Hefty Blow", "The player charges up a heavy attack for maximum damage!",
-        "Players heavy attack", "Hefty Blow", Move::Subcooldown(), this->enemies[this->enemyId]->getHp(), CharacterManager::getInstance().getCharacter("PLAYER")->getDamage());
+    CharacterManager::getInstance().getCharacter("PLAYER")->createMove(
+        "Slash", 
+        "The player slashes at the opponent with all his might!",
+        "Players basic attack", 
+        "Slash", 
+        Move::Subtractor(), 
+        this->enemies[this->enemyId]->getHp(), 
+        CharacterManager::getInstance().getCharacter("PLAYER")->getDamage(), 
+        0);
 
-    //CharacterManager::getInstance().getCharacter("ZIN")->createMove("Protection", "Zin's basic barrier", "Protection");
-    //CharacterManager::getInstance().getCharacter("ZIN")->createMove("Healing", "Zin's basic healing", "Healing");
+    CharacterManager::getInstance().getCharacter("PLAYER")->createMove(
+        "Hefty Blow", 
+        "The player charges up a heavy attack for maximum damage!",
+        "Players heavy attack", 
+        "Hefty Blow", 
+        Move::Subcooldown(), 
+        this->enemies[this->enemyId]->getHp(), 
+        CharacterManager::getInstance().getCharacter("PLAYER")->getDamage(), 
+        1);
 
-    //CharacterManager::getInstance().getCharacter("THOM")->createMove("Harden", "Thom's defense boost", "Harden");
-    //CharacterManager::getInstance().getCharacter("THOM")->createMove("Spiked", "Thom's thorn passive ability", "Spiked");
+    CharacterManager::getInstance().getCharacter("ZIN")->createMove(
+        "Heal", 
+        "Zin casts a healing circle around the party!",
+        "Zin's basic healing spell", 
+        "Heal", 
+        Move::Adder(), 
+        CharacterManager::getInstance().getCharacter("ZIN")->getHealing(),
+        CharacterManager::getInstance().getCharacter("ZIN")->getHealing(), 
+        0);
+
+    CharacterManager::getInstance().getCharacter("THOM")->createMove(
+        "Harden",
+        "Thom hardens his hide!",
+        "Thom's defensive ability.",
+        "Harden",
+        Move::Adder(),
+        CharacterManager::getInstance().getCharacter("THOM")->getDefense(),
+        CharacterManager::getInstance().getCharacter("THOM")->getDefense(),
+        0);
 }
 
 //Character Functions
@@ -86,6 +122,12 @@ void CombatComponent::enemyPool()
         this->setEnemyId("PHANTOM");
         break;
     }
+}
+
+void CombatComponent::initEnemyMoves()
+{
+    this->enemies[this->enemyId]->createMove(0, "The creature uses its razor sharp claws to attack!",
+        Move::Subtractor(), this->enemies[this->enemyId]->getDamage(), CharacterManager::getInstance().getCharacter("PLAYER")->getHp(), 0);
 }
 
 //Text Functions

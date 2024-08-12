@@ -37,11 +37,11 @@ void InitializeCharacters::initCharacters()
 //Stat Functions
 void InitializeCharacters::initStats()
 {
-    CharacterManager::getInstance().getStatsModule("PLAYER")->createStat("STRENGTH", "STR", CharacterManager::getInstance().getCharacter("PLAYER")->getDamage(), 1.4);
-    CharacterManager::getInstance().getStatsModule("PLAYER")->createStat("VITALITY", "VIT", CharacterManager::getInstance().getCharacter("PLAYER")->getHp(), 1.5);
-    CharacterManager::getInstance().getStatsModule("PLAYER")->createStat("DEFENSE", "DEF", CharacterManager::getInstance().getCharacter("PLAYER")->getDefense(), 1.5);
+    CharacterManager::getInstance().getStatsModule("PLAYER")->createStat("STRENGTH", "STR", "Damage", CharacterManager::getInstance().getCharacter("PLAYER")->getDamage(), 1.4);
+    CharacterManager::getInstance().getStatsModule("PLAYER")->createStat("VITALITY", "VIT", "Health", CharacterManager::getInstance().getCharacter("PLAYER")->getHp(), 1.5);
+    CharacterManager::getInstance().getStatsModule("PLAYER")->createStat("DEFENSE", "DEF", "Defense", CharacterManager::getInstance().getCharacter("PLAYER")->getDefense(), 1.5);
 
-    CharacterManager::getInstance().getStatsModule("ZIN")->createStat("STRENGTH", "STR", CharacterManager::getInstance().getCharacter("ZIN")->getDamage(), 1.4);
-    CharacterManager::getInstance().getStatsModule("ZIN")->createStat("VITALITY", "VIT", CharacterManager::getInstance().getCharacter("ZIN")->getHp(), 1.5);
-    CharacterManager::getInstance().getStatsModule("ZIN")->createStat("HEALING", "HEA", CharacterManager::getInstance().getCharacter("ZIN")->getHealing(), 1.5);
+    CharacterManager::getInstance().getStatsModule("ZIN")->createStat("STRENGTH", "STR", "Damage", CharacterManager::getInstance().getCharacter("ZIN")->getDamage(), 1.4);
+    CharacterManager::getInstance().getStatsModule("ZIN")->createStat("VITALITY", "VIT", "Health", CharacterManager::getInstance().getCharacter("ZIN")->getHp(), 1.5);
+    CharacterManager::getInstance().getStatsModule("ZIN")->createStat("HEALING", "HEA", "Healing", CharacterManager::getInstance().getCharacter("ZIN")->getHealing(), 1.5);
 }

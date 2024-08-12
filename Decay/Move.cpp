@@ -1,7 +1,7 @@
 #include "Move.h"
 
-Move::Move(std::string key, std::string moveMessage, std::string tipMessage,
-    std::string text, Operation op, float& a, float& b, int& coolDown)
+Move::Move(std::string moveMessage, std::string tipMessage,
+    std::string text, Operation op, float& a, float& b, int coolDown)
     : operation(op), a(a), b(b), coolDown(coolDown)
 {
     this->button = std::make_unique<Button>(350, 800, 100, 25, 0.1, text,
@@ -10,7 +10,6 @@ Move::Move(std::string key, std::string moveMessage, std::string tipMessage,
     this->moveMessage = moveMessage;
     this->tipMessage = tipMessage;
     this->hidden = hidden;
-    this->moveMessage = moveMessage;
     this->initRects();
 }
 
@@ -39,12 +38,6 @@ void Move::update(const sf::Vector2f mousePos) {
 
     if (this->button->isPressed()) {
         this->useMove();
-    }
-
-    if (this->coolDown > 0) {
-        this->message->setString("Too tired to move this turn!");
-        this->message->setShown();
-        //this->coolDown--;
     }
 }
 

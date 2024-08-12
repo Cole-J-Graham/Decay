@@ -22,6 +22,7 @@ public:
 	//Enemy Functions
 	void renderEnemies(sf::RenderTarget* target);
 	void enemyPool();
+	void initEnemyMoves();
 
 	//Text Functions
 	void setEnemyId(std::string text);
