@@ -73,7 +73,7 @@ void CombatComponent::initMoves()
         "Heal", 
         Move::Adder(), 
         CharacterManager::getInstance().getCharacter("ZIN")->getHealing(),
-        CharacterManager::getInstance().getCharacter("ZIN")->getHealing(), 
+        CharacterManager::getInstance().getCharacter("ZIN")->getHealing(),
         0);
 
     CharacterManager::getInstance().getCharacter("THOM")->createMove(
@@ -124,6 +124,27 @@ void CombatComponent::enemyPool()
     }
 }
 
+void CombatComponent::resetEnemy()
+{
+    // Find the enemy in the container
+    auto it = enemies.find(this->enemyId);
+
+    if (it != enemies.end()) {
+        //Delete the enemy object to free memory
+        delete it->second;
+
+        //Remove the enemy from the container
+        enemies.erase(it);
+
+        this->enemyPool();
+
+        std::cout << "Enemy " << this->enemyId << " has been deleted." << std::endl;
+    }
+    else {
+        std::cout << "Enemy " << this->enemyId << " not found." << std::endl;
+    }
+}
+
 void CombatComponent::initEnemyMoves()
 {
     this->enemies[this->enemyId]->createMove(0, "The creature uses its razor sharp claws to attack!",
@@ -131,7 +152,8 @@ void CombatComponent::initEnemyMoves()
 }
 
 //Text Functions
-void CombatComponent::setEnemyId(std::string text)
+void CombatComponent::setEnemyId(const std::string& text)
 {
     this->enemyId = text;
+    std::cout << "--------------------ENEMY ID SET TO: " << this->enemyId << "\n";
 }

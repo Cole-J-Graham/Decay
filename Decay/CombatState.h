@@ -12,6 +12,8 @@ public:
 
 	//Core Functions
 	void combatLoop(const sf::Vector2f mousePos);
+	bool detectEnemyDeath();
+	void resetCombat();
 
 	//State Functions
 	void updateKeybinds();
@@ -28,6 +30,7 @@ public:
 
 private:
 
+	bool stateEnd;
 	int combatFrame;
 	std::map<std::string, Rectangle*> rectangles;
 };

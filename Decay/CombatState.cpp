@@ -7,6 +7,7 @@ CombatState::CombatState(sf::RenderWindow* window, std::stack<State*>* states)
     this->initRects();
     this->enemyPool();
     this->combatFrame = 0;
+    this->stateEnd = false;
 }
 
 CombatState::~CombatState()
@@ -21,6 +22,7 @@ CombatState::~CombatState()
 //Core Functions
 void CombatState::combatLoop(const sf::Vector2f mousePos)
 {
+    this->detectEnemyDeath();
     switch (this->combatFrame) {
     case 0:
         //Players Turn
@@ -44,6 +46,30 @@ void CombatState::combatLoop(const sf::Vector2f mousePos)
         this->combatFrame = 0;
         break;
     }
+}
+
+bool CombatState::detectEnemyDeath()
+{
+    //If the enemies health reaches zero or below, pop the combat state to end it and refresh enemy pool
+    if (this->enemies[this->getEnemyId()]->getHp() <= 0) {
+       if (!states->empty()) {
+            states->pop();
+            this->resetCombat();
+            return true;
+       }
+    }
+    else {
+        return false;
+    }
+}
+
+void CombatState::resetCombat()
+{
+    //Refresh enemy
+    this->resetEnemy();
+    //Reset combat flow
+    this->resetAllCharacterTurns();
+    this->combatFrame = 0;
 }
 
 //State Functions

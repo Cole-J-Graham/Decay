@@ -19,6 +19,7 @@ TravelState::TravelState(sf::RenderWindow* window, std::stack<State*>* states)
 
 TravelState::~TravelState()
 {
+    delete this->combat;
     delete this->map;
     //Delete Rectangles
     auto ir = this->rectangles.begin();
@@ -58,6 +59,9 @@ void TravelState::updateEventsFromMovement()
         if (this->combatOdds == combatRange(rng)) {
             this->states->push(this->combat);
         }
+    }
+    if (this->combat->detectEnemyDeath()) {
+        std::cout << "Enemy Death Detected" << "\n";
     }
 }
 

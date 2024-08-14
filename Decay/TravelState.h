@@ -6,8 +6,8 @@
 //Managers
 #include"CharacterManager.h"
 //States
-#include"CombatState.h"
 #include"MusicPlayer.h"
+#include"CombatState.h"
 class TravelState : public State
 {
 public:

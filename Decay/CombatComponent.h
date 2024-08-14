@@ -22,10 +22,11 @@ public:
 	//Enemy Functions
 	void renderEnemies(sf::RenderTarget* target);
 	void enemyPool();
+	void resetEnemy();
 	void initEnemyMoves();
 
 	//Text Functions
-	void setEnemyId(std::string text);
+	void setEnemyId(const std::string& text);
 
 	//Getters
 	const std::string& getEnemyId() { return this->enemyId; };

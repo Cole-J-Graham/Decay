@@ -65,6 +65,7 @@ void Character::characterTurn(int& combatFrame, const sf::Vector2f mousePos) {
 void Character::resetTurn() {
     this->characterFrame = 0;
     this->buttons["ENDTURN"]->setIdle();
+    for (auto& it : this->moveButtons) { it.second->hideAttackMessage(); }
 }
 
 void Character::endTurn(int& combatFrame) {
