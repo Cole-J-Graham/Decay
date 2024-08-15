@@ -8,10 +8,10 @@
 
 class Move {
 public:
-    using Operation = std::function<void(float&, float&, int&)>;
+    using Operation = std::function<void(float&, float&, float&, int&)>;
 
     Move(std::string moveMessage, std::string tipMessage, 
-        std::string text, Operation op, float& a, float& b, int coolDown);
+        std::string text, Operation op, float& a, float& b, float& c, int coolDown);
     ~Move();
 
     //Core Functions
@@ -38,21 +38,32 @@ public:
     std::unique_ptr<Button>& getButton() { return this->button; }
 
     struct Adder {
-        void operator()(float& a, float& b, int&) const {
+        void operator()(float& a, float& b, float&, int&) const {
             a += b;
         }
     };
 
     struct Subtractor {
-        void operator()(float& a, float& b, int&) const {
+        void operator()(float& a, float& b, float&, int&) const {
             a -= b;
         }
     };
 
     struct Subcooldown {
-        void operator()(float& a, float& b, int& c) const {
+        void operator()(float& a, float& b, float& c, int&) const {
             a -= b;
             c++;
+        }
+    };
+
+    struct Healer {
+        void operator()(float& a, float& b, float& c, int& d) const {
+            if (c >= a) {
+                std::cout << "Skipped healing. Hp is full..." << "\n";
+            }
+            else {
+                a += b;
+            }
         }
     };
 
@@ -62,6 +73,7 @@ private:
 
     float& a;
     float& b;
+    float& c;
     int coolDown;
 
     bool active;

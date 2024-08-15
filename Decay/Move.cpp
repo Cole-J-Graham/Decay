@@ -1,15 +1,15 @@
 #include "Move.h"
 
 Move::Move(std::string moveMessage, std::string tipMessage,
-    std::string text, Operation op, float& a, float& b, int coolDown)
-    : operation(op), a(a), b(b), coolDown(coolDown)
+    std::string text, Operation op, float& a, float& b, float& c, int coolDown)
+    : operation(op), a(a), b(b), c(c), coolDown(coolDown)
 {
     this->button = std::make_unique<Button>(350, 800, 100, 25, 0.1, text,
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
     this->message = new Text(355, 835, 16, moveMessage, sf::Color::White, true);
     this->moveMessage = moveMessage;
     this->tipMessage = tipMessage;
-    this->hidden = hidden;
+    this->hidden = true;
     this->initRects();
 }
 
@@ -43,7 +43,7 @@ void Move::update(const sf::Vector2f mousePos) {
 
 void Move::useMove() 
 {
-    this->operation(a, b, this->coolDown);
+    this->operation(this->a, this->b, this->c, this->coolDown);
     this->message->setShown();
     std::cout << "Operation applied: a = " << a << ", b = " << b << std::endl;
 }

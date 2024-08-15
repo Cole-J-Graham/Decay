@@ -85,6 +85,12 @@ public:
     void renderStats(sf::RenderTarget* target) {
         stats->render(target);
     }
+
+    void clearAllCharacterMoves() {
+        for (auto& pair : characters) {
+            pair.second->clearMoves();
+        }
+    }
 };
 
 #endif // CHARACTER_MANAGER_H

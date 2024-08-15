@@ -19,12 +19,6 @@ CombatComponent::~CombatComponent()
     for (ie = this->enemies.begin(); ie != this->enemies.end(); ++ie) {
         delete ie->second;
     }
-
-    //Delete Moves
-    auto im = this->enemies.begin();
-    for (im = this->enemies.begin(); im != this->enemies.end(); ++im) {
-        delete im->second;
-    }
 }
 
 //Core Functions
@@ -46,14 +40,16 @@ void CombatComponent::renderCombat(sf::RenderTarget* target)
 
 void CombatComponent::initMoves()
 {
+    std::cout << "INIT MOVES" << "\n";
     CharacterManager::getInstance().getCharacter("PLAYER")->createMove(
         "Slash", 
         "The player slashes at the opponent with all his might!",
         "Players basic attack", 
         "Slash", 
-        Move::Subtractor(), 
-        this->enemies[this->enemyId]->getHp(), 
-        CharacterManager::getInstance().getCharacter("PLAYER")->getDamage(), 
+        Move::Subtractor(),
+        this->enemies[this->enemyId]->getHp(),
+        CharacterManager::getInstance().getCharacter("PLAYER")->getDamage(),
+        CharacterManager::getInstance().getCharacter("PLAYER")->getDamage(),
         0);
 
     CharacterManager::getInstance().getCharacter("PLAYER")->createMove(
@@ -62,8 +58,9 @@ void CombatComponent::initMoves()
         "Players heavy attack", 
         "Hefty Blow", 
         Move::Subcooldown(), 
-        this->enemies[this->enemyId]->getHp(), 
-        CharacterManager::getInstance().getCharacter("PLAYER")->getDamage(), 
+        this->enemies[this->enemyId]->getHp(),
+        CharacterManager::getInstance().getCharacter("PLAYER")->getDamage(),
+        CharacterManager::getInstance().getCharacter("PLAYER")->getDamage(),
         1);
 
     CharacterManager::getInstance().getCharacter("ZIN")->createMove(
@@ -71,9 +68,10 @@ void CombatComponent::initMoves()
         "Zin casts a healing circle around the party!",
         "Zin's basic healing spell", 
         "Heal", 
-        Move::Adder(), 
+        Move::Healer(),
         CharacterManager::getInstance().getCharacter("ZIN")->getHealing(),
-        CharacterManager::getInstance().getCharacter("ZIN")->getHealing(),
+        CharacterManager::getInstance().getCharacter("PLAYER")->getHp(),
+        CharacterManager::getInstance().getCharacter("PLAYER")->getHpMax(),
         0);
 
     CharacterManager::getInstance().getCharacter("THOM")->createMove(
@@ -82,6 +80,7 @@ void CombatComponent::initMoves()
         "Thom's defensive ability.",
         "Harden",
         Move::Adder(),
+        CharacterManager::getInstance().getCharacter("THOM")->getDefense(),
         CharacterManager::getInstance().getCharacter("THOM")->getDefense(),
         CharacterManager::getInstance().getCharacter("THOM")->getDefense(),
         0);
@@ -114,11 +113,11 @@ void CombatComponent::enemyPool()
         this->setEnemyId("WOLF");
         break;
     case 1:
-        this->enemies["WALKER"] = new Enemy("Walker", 25, 25, 5, 5, 0.195, "Assets/HostileSprites/decaywalkersprite.jpeg", "Assets/Entities/decayEntity.jpeg", false);
+        this->enemies["WALKER"] = new Enemy("Walker", 35, 35, 5, 5, 0.195, "Assets/HostileSprites/decaywalkersprite.jpeg", "Assets/Entities/decayEntity.jpeg", false);
         this->setEnemyId("WALKER");
         break;
     case 2:
-        this->enemies["PHANTOM"] = new Enemy("Phantom", 25, 25, 5, 5, 0.195, "Assets/HostileSprites/phantomSprite.jpeg", "Assets/Entities/phantomEntity.jpeg", false);
+        this->enemies["PHANTOM"] = new Enemy("Phantom", 40, 40, 5, 5, 0.195, "Assets/HostileSprites/phantomSprite.jpeg", "Assets/Entities/phantomEntity.jpeg", false);
         this->setEnemyId("PHANTOM");
         break;
     }
@@ -135,10 +134,19 @@ void CombatComponent::resetEnemy()
 
         //Remove the enemy from the container
         enemies.erase(it);
+        std::cout << "Enemy " << this->enemyId << " has been deleted." << std::endl;
 
         this->enemyPool();
 
-        std::cout << "Enemy " << this->enemyId << " has been deleted." << std::endl;
+        //Clear all moves to allow reinitialization
+        CharacterManager::getInstance().clearAllCharacterMoves();
+        std::cout << "PLAYER: " << CharacterManager::getInstance().getCharacter("PLAYER")->getMoves().size() << "\n";
+        std::cout << "ZIN: " << CharacterManager::getInstance().getCharacter("ZIN")->getMoves().size() << "\n";
+        std::cout << "THOM: " << CharacterManager::getInstance().getCharacter("THOM")->getMoves().size() << "\n";
+        this->initMoves();
+        std::cout << "PLAYER: " << CharacterManager::getInstance().getCharacter("PLAYER")->getMoves().size() << "\n";
+        std::cout << "ZIN: " << CharacterManager::getInstance().getCharacter("ZIN")->getMoves().size() << "\n";
+        std::cout << "THOM: " << CharacterManager::getInstance().getCharacter("THOM")->getMoves().size() << "\n";
     }
     else {
         std::cout << "Enemy " << this->enemyId << " not found." << std::endl;
@@ -148,7 +156,7 @@ void CombatComponent::resetEnemy()
 void CombatComponent::initEnemyMoves()
 {
     this->enemies[this->enemyId]->createMove(0, "The creature uses its razor sharp claws to attack!",
-        Move::Subtractor(), this->enemies[this->enemyId]->getDamage(), CharacterManager::getInstance().getCharacter("PLAYER")->getHp(), 0);
+        EntityMove::Subtractor(), this->enemies[this->enemyId]->getDamage(), CharacterManager::getInstance().getCharacter("PLAYER")->getHp(), 0);
 }
 
 //Text Functions

@@ -25,8 +25,18 @@ public:
 
 	//Move Functions
 	void createMove(std::string key, std::string moveMessage, 
-		std::string tipMessage, std::string text, Move::Operation op, float& a, float& b, int coolDown);
+		std::string tipMessage, std::string text, Move::Operation op, float& a, float& b, 
+		float& c, int coolDown);
 	void renderMoveButtons(sf::RenderTarget* target);
+	void clearMoves() {
+		for (auto& pair : moveButtons) {
+			if (pair.second) {
+				delete pair.second; // Safe deletion
+				pair.second = nullptr; // Avoid double deletion
+			}
+		}
+		moveButtons.clear(); // Clear the map after deletion
+	}
 
 	//Text Functions
 	void initText();
@@ -40,6 +50,7 @@ public:
 	//Getters
 	float& getDamage() { return this->damage; };
 	float& getHp() { return this->hp; };
+	float& getHpMax() { return this->hpMax; };
 	float& getDefense() { return this->defense; };
 	float& getHealing() { return this->healing; };
 	int& getCoolDown() { return this->coolDown; };

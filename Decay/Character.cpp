@@ -111,8 +111,8 @@ void Character::renderButtons(sf::RenderTarget* target) {
 
 // Move Functions
 void Character::createMove(std::string key, std::string moveMessage, std::string tipMessage, 
-    std::string text, Move::Operation op, float& a, float& b, int coolDown) {
-    this->moveButtons[key] = new Move(moveMessage, tipMessage, text, op, a, b, coolDown);
+    std::string text, Move::Operation op, float& a, float& b, float& c, int coolDown) {
+    this->moveButtons[key] = new Move(moveMessage, tipMessage, text, op, a, b, c, coolDown);
 }
 
 void Character::renderMoveButtons(sf::RenderTarget* target) {
