@@ -42,6 +42,7 @@ public:
 	void initText();
 	void renderText(sf::RenderTarget* target = nullptr);
 	void updateText();
+	std::string toStringWithPrecision(double value, int precision = 2);
 
 	//Setters
 	float& setHp(float& hp) { this->hp = hp; };

@@ -142,3 +142,9 @@ void StatsModule::renderText(sf::RenderTarget* target) {
 void StatsModule::updateText() {
     this->text["LEVELTEXT"]->setString(toStringWithPrecision(this->exp) + "/" + toStringWithPrecision(this->expNext) + "    LVL: " + std::to_string(this->level) + "\n                         SP: " + std::to_string(this->sp));
 }
+
+std::string StatsModule::toStringWithPrecision(double value, int precision) {
+    std::ostringstream out;
+    out << std::fixed << std::setprecision(precision) << value;
+    return out.str();
+}

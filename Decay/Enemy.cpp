@@ -130,5 +130,11 @@ void Enemy::renderText(sf::RenderTarget* target)
 
 void Enemy::updateText()
 {
-	this->text["HP"]->setString("HP: " + std::to_string(this->hp) + "/" + std::to_string(this->hpMax));
+	this->text["HP"]->setString("HP: " + toStringWithPrecision(this->hp) + "/" + toStringWithPrecision(this->hpMax));
+}
+
+std::string Enemy::toStringWithPrecision(double value, int precision) {
+	std::ostringstream out;
+	out << std::fixed << std::setprecision(precision) << value;
+	return out.str();
 }

@@ -1,4 +1,6 @@
 #pragma once
+#include<iomanip>
+#include<sstream>
 #include"Text.h"
 #include"Button.h"
 #include"ViewerModule.h"
@@ -52,6 +54,7 @@ public:
 	void initText();
 	void renderText(sf::RenderTarget* target = nullptr);
 	void updateText();
+	std::string toStringWithPrecision(double value, int precision = 2);
 
 	//Getters
 	bool& isTurnActive() { return this->turnActive; };

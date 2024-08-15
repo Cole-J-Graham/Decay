@@ -39,6 +39,7 @@ public:
 	void initText();
 	void renderText(sf::RenderTarget* target = nullptr);
 	void updateText();
+	std::string toStringWithPrecision(double value, int precision = 2);
 
 	//Getters
 	bool& getCurrentInstance() { return this->currentInstance; }
@@ -49,11 +50,6 @@ public:
 
 	//Setters
 	void setButtonId(std::string& id) { this->buttonId = id; }
-	std::string toStringWithPrecision(double value, int precision = 2) {
-		std::ostringstream out;
-		out << std::fixed << std::setprecision(precision) << value;
-		return out.str();
-	}
 
 private:
 	class Stat
