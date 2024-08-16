@@ -46,9 +46,6 @@
     <ClCompile Include="MusicPlayer.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="StatsManager.cpp">
-      <Filter>Character\Stats</Filter>
-    </ClCompile>
     <ClCompile Include="StatsModule.cpp">
       <Filter>Character\Stats</Filter>
     </ClCompile>
@@ -72,6 +69,9 @@
     </ClCompile>
     <ClCompile Include="EntityMove.cpp">
       <Filter>Combat\Entities\EntityResources</Filter>
+    </ClCompile>
+    <ClCompile Include="Party.cpp">
+      <Filter>Character\CharacterManagement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,14 +117,8 @@
     <ClInclude Include="Character.h">
       <Filter>Character</Filter>
     </ClInclude>
-    <ClInclude Include="CharacterManager.h">
-      <Filter>Character</Filter>
-    </ClInclude>
     <ClInclude Include="MusicPlayer.h">
       <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="StatsManager.h">
-      <Filter>Character\Stats</Filter>
     </ClInclude>
     <ClInclude Include="StatsModule.h">
       <Filter>Character\Stats</Filter>
@@ -149,6 +143,12 @@
     </ClInclude>
     <ClInclude Include="EntityMove.h">
       <Filter>Combat\Entities\EntityResources</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterManager.h">
+      <Filter>Character\CharacterManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="Party.h">
+      <Filter>Character\CharacterManagement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +187,9 @@
     </Filter>
     <Filter Include="Character\CharacterResources">
       <UniqueIdentifier>{145fed09-300a-414f-a105-fc6aa2d8fbdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Character\CharacterManagement">
+      <UniqueIdentifier>{e6e79a27-b6c9-444c-963d-1103ca118912}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

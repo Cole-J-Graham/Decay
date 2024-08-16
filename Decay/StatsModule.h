@@ -117,9 +117,10 @@ private:
 	};
 
 	int level;
+	int sp;
 	float exp;
 	float expNext;
-	int sp;
+
 	bool currentInstance;
 	bool lastClicked;
 
@@ -132,4 +133,3 @@ private:
 	std::map<std::string, std::unique_ptr<Text>> text;
 
 };
-

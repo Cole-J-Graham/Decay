@@ -37,14 +37,13 @@ void TravelState::update()
     this->map->update(this->getMousePosView());
     this->userInput->update(this->getMousePosView());
     CharacterManager::getInstance().updateAll(this->getMousePosView());
-    CharacterManager::getInstance().updateStats(this->getMousePosView());
 }
 
 void TravelState::render(sf::RenderTarget* target)
 {
+    CharacterManager::getInstance().renderAllStats(target);
     this->map->render(target);
     this->renderRects(target);
-    CharacterManager::getInstance().renderStats(target);
     this->music->render(target);
 }
 

@@ -1,9 +1,9 @@
 #include "Character.h"
 
 // Constructors and Deconstructors
-Character::Character(std::string characterName, float hp, float hpMax, float damage, float defense,
+Character::Character(const std::string id, std::string characterName, float hp, float hpMax, float damage, float defense,
     float healing, float x, float y, float scale, std::string characterTexture, bool turnActive)
-    : hp(hp), hpMax(hpMax), damage(damage), defense(defense), healing(healing),
+    : id(id), hp(hp), hpMax(hpMax), damage(damage), defense(defense), healing(healing),
     x(x), y(y), turnActive(turnActive), characterName(characterName),
     characterFrame(0), coolDown(0)
 {
@@ -13,6 +13,7 @@ Character::Character(std::string characterName, float hp, float hpMax, float dam
     this->character.setPosition(x, y);
     this->character.setScale(scale, scale);
     this->border = std::make_unique<Rectangle>(this->x, this->y, BORDER_WIDTH, BORDER_HEIGHT, sf::Color::Transparent, sf::Color::White, 1.f, false);
+    this->stats = std::make_unique<StatsModule>(id);
 
     //Initialization
     this->initText();
@@ -37,12 +38,11 @@ void Character::update(const sf::Vector2f mousePos)
 
 void Character::render(sf::RenderTarget* target) 
 {
-    // In combat
     target->draw(this->character);
     this->border->render(target);
     this->renderButtons(target);
     this->renderText(target);
-    // Active Turn
+    //Active Turn
     if (this->turnActive) {
         this->renderMoveButtons(target);
         for (auto& it : this->moveButtons) { it.second->renderMoveMessage(target); }

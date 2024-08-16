@@ -65,6 +65,7 @@ void Enemy::render(sf::RenderTarget* target)
 	}
 }
 
+//Combat Functions
 void Enemy::enemyTurn(int& combatFrame, const sf::Vector2f mousePos)
 {
 	this->update(mousePos);

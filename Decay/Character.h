@@ -1,12 +1,12 @@
 #pragma once
 #include"Move.h"
-#include"StatsManager.h"
+#include"StatsModule.h"
 #include<stack>
 class Character
 {
 public:
 	//Constructors and Deconstructors
-	Character(std::string characterName, float hp, float hpMax, float damage, float defense,
+	Character(const std::string id, std::string characterName, float hp, float hpMax, float damage, float defense,
 		float healing, float x, float y, float scale, std::string characterTexture, bool turnActive);
 	~Character();
 
@@ -58,11 +58,59 @@ public:
 	int& getCharacterFrame() { return this->characterFrame; };
 	bool& isTurnActive() { return this->turnActive; };
 
+	const std::string& getId() { return this->id; };
 	std::map<std::string, Move*> getMoves()& { return this->moveButtons; };
+	std::unique_ptr<StatsModule>& getStats() { return this->stats; }
 
 private:
 
+	class Party {
+	private:
+		std::vector<std::shared_ptr<Character>> characters;
+		static const int maxPartySize = 3;
+
+	public:
+		// Adds a character to the party if there is space
+		bool addCharacter(const std::shared_ptr<Character>& character) {
+			if (characters.size() < maxPartySize) {
+				characters.push_back(character);
+				return true;
+			}
+			return false; // Party is full
+		}
+
+		// Removes a character from the party
+		bool removeCharacter(const std::shared_ptr<Character>& character) {
+			auto it = std::find(characters.begin(), characters.end(), character);
+			if (it != characters.end()) {
+				characters.erase(it);
+				return true;
+			}
+			return false; // Character not found
+		}
+
+		// Accessor to get a character at a specific index
+		std::shared_ptr<Character> getCharacter(int index) const {
+			if (index >= 0 && index < characters.size()) {
+				return characters[index];
+			}
+			return nullptr; // Invalid index
+		}
+
+		// Function to check if the party is full
+		bool isFull() const {
+			return characters.size() == maxPartySize;
+		}
+
+		// Function to get the current size of the party
+		int size() const {
+			return characters.size();
+		}
+	};
+
+
 	//Consts
+	const std::string id;
 	const int BORDER_WIDTH = 200;
 	const int BORDER_HEIGHT = 200;
 	const int BUTTON_X_OFFSET = 350;
@@ -87,6 +135,7 @@ private:
 	std::string characterName;
 	std::unique_ptr<Rectangle> border;
 
+	std::unique_ptr<StatsModule> stats;
 	std::map<std::string, std::unique_ptr<Button>> buttons;
 	std::map<std::string, std::unique_ptr<Text>> text;
 	std::map<std::string, Move*> moveButtons;

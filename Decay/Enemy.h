@@ -18,10 +18,12 @@ public:
 	//Core Functions
 	void update(const sf::Vector2f mousePos);
 	void render(sf::RenderTarget* target);
+
+	//Combat Functions
 	void enemyTurn(int& combatFrame, const sf::Vector2f mousePos);
 	void resetTurn();
 	void endTurn(int& combatFrame);
-
+	
 	//Button Functions
 	void updateButtons(const sf::Vector2f mousePos);
 	void initButtons();
@@ -64,11 +66,12 @@ public:
 
 private:
 
-	//Player Variables
+	//Enemy Variables
 	float hp;
 	float hpMax;
 	float damage;
 	float defense;
+	float rewardModifier;
 
 	//Asset Variables
 	int enemyMoveRangeMin;

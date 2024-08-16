@@ -4,6 +4,7 @@
 // Forward declaration of StatsManager
 class StatsManager;
 
+#include "Party.h"
 #include "Character.h"
 #include <memory>
 #include <unordered_map>
@@ -12,35 +13,43 @@ class StatsManager;
 
 class CharacterManager {
 private:
+    std::map<std::string, std::unique_ptr<Button>> buttons;
     std::unordered_map<std::string, std::shared_ptr<Character>> characters;
-    std::unique_ptr<StatsManager> stats;
+    Party party;
+
+    int passCount;
+    int passCountMax;
+    bool hidden;
+    bool clicked;
 
     // Private constructor for singleton pattern
     CharacterManager() :
-        stats(std::make_unique<StatsManager>())
-    {}
+        party()
+    {
+        this->initButtons();
+        this->hidden = true;
+        this->clicked = false;
+    }
 
-    // Destructor to clean up resources
+    //Destructor to clean up resources
     ~CharacterManager() = default;
 
 public:
-    // Disable copy constructor and assignment operator
+    //Disable copy constructor and assignment operator
     CharacterManager(const CharacterManager&) = delete;
     CharacterManager& operator=(const CharacterManager&) = delete;
 
-    // Access the singleton instance
+    //Core Functions
     static CharacterManager& getInstance() {
         static CharacterManager instance;
         return instance;
     }
 
-    // Create and add a new character
+    //Character Functions
     void addCharacter(const std::string& id, const std::shared_ptr<Character>& character) {
         characters[id] = character;
-        stats->createInstance(id);
     }
 
-    // Get a character by ID
     std::shared_ptr<Character> getCharacter(const std::string& id) {
         auto it = characters.find(id);
         if (it != characters.end()) {
@@ -53,42 +62,147 @@ public:
         return characters;
     }
 
-
-    // Update all characters
     void updateAll(const sf::Vector2f mousePos) {
         for (auto& pair : characters) {
             pair.second->update(mousePos);
+            if (!this->hidden) { pair.second->getStats()->update(mousePos); }
         }
+        this->updateButtons(mousePos);
     }
 
-    // Render all characters
     void renderAll(sf::RenderTarget* target) {
         for (auto& pair : characters) {
             pair.second->render(target);
+            if (!this->hidden) { pair.second->getStats()->render(target); }
         }
     }
 
-    // Character Stat Functions
-    StatsModule* getStatsModule(const std::string& id) {
-        auto& statsMap = stats->getStats();
-        auto it = statsMap.find(id);
-        if (it != statsMap.end()) {
-            return it->second.get();
+    //Character Stat Functions
+    std::unordered_map<std::string, StatsModule*> getAllStats() const {
+        std::unordered_map<std::string, StatsModule*> allStats;
+
+        for (const auto& pair : characters) {
+            const auto& character = pair.second;
+            if (character) {
+                // Extract the raw pointer from the unique_ptr
+                allStats[pair.first] = character->getStats().get();
+            }
         }
-        return nullptr;
-    }
 
-    void updateStats(const sf::Vector2f mousePos) {
-        stats->update(mousePos);
-    }
-
-    void renderStats(sf::RenderTarget* target) {
-        stats->render(target);
+        return allStats;
     }
 
     void clearAllCharacterMoves() {
         for (auto& pair : characters) {
             pair.second->clearMoves();
+        }
+    }
+
+    void renderAllStats(sf::RenderTarget* target) {
+        for (auto& pair : characters) {
+            if (!this->hidden) { pair.second->getStats()->render(target); }
+        }
+        this->renderButtons(target);
+    }
+
+    //Character Party Functions
+    bool addCharacterToParty(const std::string& id) {
+        auto character = getCharacter(id);
+        if (character) {
+            return party.addCharacter(character);
+        }
+        return false;
+    }
+
+    bool removeCharacterFromParty(const std::string& id) {
+        auto character = getCharacter(id);
+        if (character) {
+            return party.removeCharacter(character);
+        }
+        return false;
+    }
+
+    Party& getParty() {
+        return party;
+    }
+
+    const std::vector<std::shared_ptr<Character>>& getAllPartyMembers() const {
+        return party.getAllCharacters();
+    }
+
+    //Button Functions
+    void initButtons() {
+        this->buttons["OPENSTATS"] = std::make_unique<Button>(1370, 775, 100, 25, 0.5f, "Stats",
+        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+    }
+
+    void renderButtons(sf::RenderTarget* target) {
+        int height = 20;
+        for (auto& pair : characters) {
+            if (pair.second) { // Check if pointer is valid
+                auto button = pair.second->getStats()->getButtons()[pair.second->getStats()->getButtonId()];
+                if (button) {
+                    button->setPosition(1705, height += 30);
+                }
+                else {
+                    std::cerr << "Button not found for ID: " << pair.second->getStats()->getButtonId() << std::endl;
+                }
+            }
+        }
+        this->buttons["OPENSTATS"]->render(target);
+    }
+
+    void updateButtons(const sf::Vector2f mousePos) {
+        for (auto& it : this->buttons) {
+        if (it.second) { // Ensure button is valid
+            it.second->update(mousePos);
+            }
+        }
+
+        if (this->buttons["OPENSTATS"] && this->buttons["OPENSTATS"]->isPressed()) {
+            this->hidden = !this->hidden;
+
+            for (auto& pair : characters) {
+                if (this->hidden) {
+                    //pair.second->setHidden();  // Hide character stats
+                    this->hidden = true;
+                }
+                else {
+                    //pair.second->setShown();   // Show character stats
+                    this->hidden = false;
+                }
+            }
+        }
+
+    // Select the button and display stats while hiding all other stats
+    this->passCountMax = static_cast<int>(characters.size());
+        for (auto& pair : characters) {
+            auto button = pair.second->getStats()->getButtons()[pair.second->getStats()->getButtonId()];
+            if (button && button->isPressed()) {
+                this->clicked = true;
+            }
+
+            if (this->passCount != this->passCountMax && this->clicked) {
+                pair.second->getStats()->getCurrentInstance() = false;
+                this->passCount++;
+            } else if (this->passCount == this->passCountMax) {
+                pair.second->getStats()->getCurrentInstance() = true;
+                this->passCount = 0;
+                this->clicked = false;
+            }
+        }
+    }
+
+    //Setters
+    void setAllCharactersShown() {
+        for (auto& pair : characters) {
+            pair.second->setShown();
+        }
+    }
+
+    void setAllCharactersHidden() {
+        for (auto& pair : characters) {
+            pair.second->setHidden();
         }
     }
 };
