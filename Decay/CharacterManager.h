@@ -73,7 +73,6 @@ public:
     void renderAll(sf::RenderTarget* target) {
         for (auto& pair : characters) {
             pair.second->render(target);
-            if (!this->hidden) { pair.second->getStats()->render(target); }
         }
     }
 
@@ -190,19 +189,6 @@ public:
                 this->passCount = 0;
                 this->clicked = false;
             }
-        }
-    }
-
-    //Setters
-    void setAllCharactersShown() {
-        for (auto& pair : characters) {
-            pair.second->setShown();
-        }
-    }
-
-    void setAllCharactersHidden() {
-        for (auto& pair : characters) {
-            pair.second->setHidden();
         }
     }
 };

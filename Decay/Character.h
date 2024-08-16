@@ -64,51 +64,6 @@ public:
 
 private:
 
-	class Party {
-	private:
-		std::vector<std::shared_ptr<Character>> characters;
-		static const int maxPartySize = 3;
-
-	public:
-		// Adds a character to the party if there is space
-		bool addCharacter(const std::shared_ptr<Character>& character) {
-			if (characters.size() < maxPartySize) {
-				characters.push_back(character);
-				return true;
-			}
-			return false; // Party is full
-		}
-
-		// Removes a character from the party
-		bool removeCharacter(const std::shared_ptr<Character>& character) {
-			auto it = std::find(characters.begin(), characters.end(), character);
-			if (it != characters.end()) {
-				characters.erase(it);
-				return true;
-			}
-			return false; // Character not found
-		}
-
-		// Accessor to get a character at a specific index
-		std::shared_ptr<Character> getCharacter(int index) const {
-			if (index >= 0 && index < characters.size()) {
-				return characters[index];
-			}
-			return nullptr; // Invalid index
-		}
-
-		// Function to check if the party is full
-		bool isFull() const {
-			return characters.size() == maxPartySize;
-		}
-
-		// Function to get the current size of the party
-		int size() const {
-			return characters.size();
-		}
-	};
-
-
 	//Consts
 	const std::string id;
 	const int BORDER_WIDTH = 200;
