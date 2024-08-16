@@ -19,7 +19,8 @@ private:
 
     int passCount;
     int passCountMax;
-    bool hidden;
+    bool partyHidden;
+    bool statsHidden;
     bool clicked;
 
     // Private constructor for singleton pattern
@@ -27,7 +28,8 @@ private:
         party()
     {
         this->initButtons();
-        this->hidden = true;
+        this->partyHidden = true;
+        this->statsHidden = true;
         this->clicked = false;
     }
 
@@ -65,7 +67,7 @@ public:
     void updateAll(const sf::Vector2f mousePos) {
         for (auto& pair : characters) {
             pair.second->update(mousePos);
-            if (!this->hidden) { pair.second->getStats()->update(mousePos); }
+            if (!this->statsHidden) { pair.second->getStats()->update(mousePos); }
         }
         this->updateButtons(mousePos);
     }
@@ -99,8 +101,9 @@ public:
 
     void renderAllStats(sf::RenderTarget* target) {
         for (auto& pair : characters) {
-            if (!this->hidden) { pair.second->getStats()->render(target); }
+            if (!this->statsHidden) { pair.second->getStats()->render(target); }
         }
+        if (!this->partyHidden) { this->party.render(target); }
         this->renderButtons(target);
     }
 
@@ -131,11 +134,19 @@ public:
 
     //Button Functions
     void initButtons() {
-        this->buttons["OPENSTATS"] = std::make_unique<Button>(1370, 775, 100, 25, 0.5f, "Stats",
+        this->buttons["OPENPARTY"] = std::make_unique<Button>(1370, 775, 100, 25, 0.5f, "Party",
+            sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+        this->buttons["OPENSTATS"] = std::make_unique<Button>(1475, 775, 100, 25, 0.5f, "Stats",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
     }
 
     void renderButtons(sf::RenderTarget* target) {
+        //Render Character Manager Buttons
+        for (auto& pair : buttons) {
+            pair.second->render(target);
+        }
+
+        //Render Stats Buttons
         int height = 20;
         for (auto& pair : characters) {
             if (pair.second) { // Check if pointer is valid
@@ -148,7 +159,6 @@ public:
                 }
             }
         }
-        this->buttons["OPENSTATS"]->render(target);
     }
 
     void updateButtons(const sf::Vector2f mousePos) {
@@ -158,23 +168,17 @@ public:
             }
         }
 
-        if (this->buttons["OPENSTATS"] && this->buttons["OPENSTATS"]->isPressed()) {
-            this->hidden = !this->hidden;
-
-            for (auto& pair : characters) {
-                if (this->hidden) {
-                    //pair.second->setHidden();  // Hide character stats
-                    this->hidden = true;
-                }
-                else {
-                    //pair.second->setShown();   // Show character stats
-                    this->hidden = false;
-                }
-            }
+        //Open the party or stats menus if they are currently hidden
+        if (this->buttons["OPENPARTY"] && this->buttons["OPENPARTY"]->isPressed()) {
+            this->partyHidden = !this->partyHidden;
         }
 
-    // Select the button and display stats while hiding all other stats
-    this->passCountMax = static_cast<int>(characters.size());
+        if (this->buttons["OPENSTATS"] && this->buttons["OPENSTATS"]->isPressed()) {
+            this->statsHidden = !this->statsHidden;
+        }
+
+        // Select the button and display stats while hiding all other stats
+        this->passCountMax = static_cast<int>(characters.size());
         for (auto& pair : characters) {
             auto button = pair.second->getStats()->getButtons()[pair.second->getStats()->getButtonId()];
             if (button && button->isPressed()) {
