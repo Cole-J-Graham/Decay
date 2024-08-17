@@ -20,6 +20,8 @@ public:
     //Party Functions
     void renderPartyMembers(sf::RenderTarget* target);
     void updatePartyMembers(const sf::Vector2f mousePos);
+    void renderPartyMembersButtons(sf::RenderTarget* target);
+    void updateFramePositions();
 
     //Rectangle Functions
     void initRects();
@@ -33,11 +35,17 @@ public:
     std::shared_ptr<Character> getCharacter(int index) const;
     const std::vector<std::shared_ptr<Character>>& getAllCharacters() const;
 
-    //Function to check if the party is full
+    //Modifiers and Operators
     bool isFull() const { return party.size() == maxPartySize; }
-
-    //Function to get the current size of the party
     int size() const { return party.size(); }
+    bool containsCharacter(const std::shared_ptr<Character>& character) const {
+        for (const auto& partyMember : party) {
+            if (partyMember == character) {
+                return true;  // Character is already in the party
+            }
+        }
+        return false;  // Character not found in the party
+    }
 
 private:
     std::map<std::string, std::unique_ptr<Rectangle>> rectangles;
@@ -45,4 +53,12 @@ private:
 
     std::vector<std::shared_ptr<Character>> party;
     static const int maxPartySize = 3;
+    const float frameOneX = 25.f;
+    const float frameOneY = 150.f;
+
+    const float frameTwoX = 25.f;
+    const float frameTwoY = 420.f;
+
+    const float frameThreeX = 25.f;
+    const float frameThreeY = 690.f;
 };

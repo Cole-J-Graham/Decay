@@ -21,7 +21,7 @@ public:
 	void updateButtons(const sf::Vector2f mousePos);
 	void updateMoveButtons(const sf::Vector2f mousePos);
 	void initButtons();
-	void renderButtons(sf::RenderTarget* target);
+	void renderIdButton(sf::RenderTarget* target) { this->buttons[this->id]->render(target); };
 
 	//Move Functions
 	void createMove(std::string key, std::string moveMessage, 
@@ -47,6 +47,8 @@ public:
 	//Setters
 	float& setHp(float& hp) { this->hp = hp; };
 	void resetCharacterFrame() { this->characterFrame = 0; };
+	void setIdButtonPosition(int& x, int& y) { this->buttons[this->id]->setPosition(x, y);};
+	void setSpritePosition(const float& x, const float& y) { this->character.setPosition(x, y); };
 	
 	//Getters
 	float& getDamage() { return this->damage; };
@@ -60,7 +62,8 @@ public:
 
 	const std::string& getId() { return this->id; };
 	std::map<std::string, Move*> getMoves()& { return this->moveButtons; };
-	std::unique_ptr<StatsModule>& getStats() { return this->stats; }
+	std::unique_ptr<StatsModule>& getStats() { return this->stats; };
+	std::map<std::string, std::unique_ptr<Button>>& getButtons() { return this->buttons; };
 
 private:
 

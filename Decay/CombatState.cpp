@@ -26,15 +26,21 @@ void CombatState::combatLoop(const sf::Vector2f mousePos)
     switch (this->combatFrame) {
     case 0:
         //Players Turn
-        CharacterManager::getInstance().getCharacter("PLAYER")->characterTurn(this->combatFrame, mousePos);
+        if (CharacterManager::getInstance().getParty().size() >= 0) {
+            CharacterManager::getInstance().getParty().getCharacter(0)->characterTurn(this->combatFrame, mousePos);
+        }
         break;
     case 1:
-        //Zin's Turn
-        CharacterManager::getInstance().getCharacter("ZIN")->characterTurn(this->combatFrame, mousePos);
+        //Companion 1's Turn
+        if (CharacterManager::getInstance().getParty().size() >= 1) {
+            CharacterManager::getInstance().getParty().getCharacter(1)->characterTurn(this->combatFrame, mousePos);
+        }
         break;
     case 2:
-        //Thom's turn
-        CharacterManager::getInstance().getCharacter("THOM")->characterTurn(this->combatFrame, mousePos);
+        //Companion 2's turn
+        if (CharacterManager::getInstance().getParty().size() >= 2) {
+            CharacterManager::getInstance().getParty().getCharacter(2)->characterTurn(this->combatFrame, mousePos);
+        }
         break;
     case 3:
         //Hostiles Turn

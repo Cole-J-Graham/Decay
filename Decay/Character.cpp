@@ -40,11 +40,11 @@ void Character::render(sf::RenderTarget* target)
 {
     target->draw(this->character);
     this->border->render(target);
-    this->renderButtons(target);
     this->renderText(target);
     //Active Turn
     if (this->turnActive) {
         this->renderMoveButtons(target);
+        this->buttons["ENDTURN"]->render(target);
         for (auto& it : this->moveButtons) { it.second->renderMoveMessage(target); }
     }
 }
@@ -106,15 +106,10 @@ void Character::updateMoveButtons(const sf::Vector2f mousePos)
 
 void Character::initButtons() 
 {
+    this->buttons[this->id] = std::make_unique<Button>(1402, 50, 100, 25, 0.5f, this->characterName,
+        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
     this->buttons["ENDTURN"] = std::make_unique<Button>(450, 800, 150, 25, 0.5f, "End " + this->characterName + "'s Turn",
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), true);
-}
-
-void Character::renderButtons(sf::RenderTarget* target) 
-{
-    for (auto& it : this->buttons) {
-        it.second->render(target);
-    }
 }
 
 // Move Functions

@@ -69,6 +69,9 @@ public:
             pair.second->update(mousePos);
             if (!this->statsHidden) { pair.second->getStats()->update(mousePos); }
         }
+        if (!this->partyHidden) { this->party.update(mousePos); 
+        this->updateCharacterSelectionForParty(mousePos);
+        }
         this->updateButtons(mousePos);
     }
 
@@ -103,11 +106,53 @@ public:
         for (auto& pair : characters) {
             if (!this->statsHidden) { pair.second->getStats()->render(target); }
         }
-        if (!this->partyHidden) { this->party.render(target); }
+        if (!this->partyHidden) { 
+            this->party.render(target);
+            this->renderCharacterSelectionForParty(target);
+        }
         this->renderButtons(target);
     }
 
     //Character Party Functions
+    void updateCharacterSelectionForParty(const sf::Vector2f& mousePos) {
+        // Update all character buttons and handle selection
+        for (auto& pair : characters) {
+            if (pair.second->getButtons()[pair.second->getId()]->isPressed() && !party.containsCharacter(pair.second)) {
+                // Update the button state based on mouse position
+                pair.second->update(mousePos);
+
+                // Check if the button is pressedif (button->isPressed()) {
+                if (party.isFull()) {
+                    // If the party is full, replace the first character in the party
+                    party.removeCharacter(party.getCharacter(0));
+                }
+                // Add the selected character to the party
+                party.addCharacter(pair.second);
+                break; // Break after adding/replacing the character
+            }
+        }
+    }
+
+    void renderCharacterSelectionForParty(sf::RenderTarget* target) {
+        // Render all character buttons
+        int width = 1401;
+        int height = 300;
+        for (auto& pair : characters) {
+            if (!party.containsCharacter(pair.second)) {
+                pair.second->renderIdButton(target);
+                pair.second->setIdButtonPosition(width, height += 26);
+            }
+        }
+    }
+
+    void renderAllPartyButtons(sf::RenderTarget* target) {
+        party.renderPartyMembersButtons(target);
+    }
+
+    void renderAllPartyMembers(sf::RenderTarget* target) {
+        party.renderPartyMembers(target);
+    }
+
     bool addCharacterToParty(const std::string& id) {
         auto character = getCharacter(id);
         if (character) {

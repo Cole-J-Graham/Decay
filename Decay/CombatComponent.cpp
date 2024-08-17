@@ -89,7 +89,7 @@ void CombatComponent::initMoves()
 //Character Functions
 void CombatComponent::renderCharacters(sf::RenderTarget* target)
 {
-    CharacterManager::getInstance().renderAll(target);
+    CharacterManager::getInstance().renderAllPartyMembers(target);
 }
 
 //Enemy Functions
