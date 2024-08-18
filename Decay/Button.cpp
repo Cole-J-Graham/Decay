@@ -67,7 +67,6 @@ void Button::update(const sf::Vector2f mousePos)
     if (!this->hidden) {
         /* Update the booleans for hover and pressed */
         if (!this->clickBlocked) {
-            this->elapsed = this->clock.getElapsedTime();
 
             // Idle
             this->buttonState = BTN_IDLE;
@@ -76,9 +75,16 @@ void Button::update(const sf::Vector2f mousePos)
                 this->buttonState = BTN_HOVER;
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     // Pressed
-                    this->buttonState = BTN_ACTIVE;
-                    this->clock.restart();
-                    //std::cout << "Clicked: " << this->text.getString().toAnsiString() << std::endl;
+                    this->buttonState = BTN_ACTIVE_LEFT;
+                    std::cout << "Clicked LEFT: " << this->text.getString().toAnsiString() << std::endl;
+                    // Block further clicks temporarily
+                    this->clickBlocked = true;
+                    this->clickBlockTimer.restart();
+                }
+                else if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+                    // Pressed
+                    this->buttonState = BTN_ACTIVE_RIGHT;
+                    std::cout << "Clicked RIGHT: " << this->text.getString().toAnsiString() << std::endl;
                     // Block further clicks temporarily
                     this->clickBlocked = true;
                     this->clickBlockTimer.restart();
@@ -98,7 +104,10 @@ void Button::update(const sf::Vector2f mousePos)
         case BTN_HOVER:
             this->shape.setFillColor(this->hoverColor);
             break;
-        case BTN_ACTIVE:
+        case BTN_ACTIVE_LEFT:
+            this->shape.setFillColor(this->activeColor);
+            break;
+        case BTN_ACTIVE_RIGHT:
             this->shape.setFillColor(this->activeColor);
             break;
         default:
@@ -118,7 +127,17 @@ void Button::render(sf::RenderTarget* target)
 
 const bool Button::isPressed() const
 {
-    if (this->buttonState == BTN_ACTIVE && !this->clickBlocked && !this->hidden) {
+    if (this->buttonState == BTN_ACTIVE_LEFT && !this->clickBlocked && !this->hidden) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+const bool Button::isPressedRight() const
+{
+    if (this->buttonState == BTN_ACTIVE_RIGHT && /*!this->clickBlocked &&*/ !this->hidden) {
         return true;
     }
     else {
@@ -128,7 +147,7 @@ const bool Button::isPressed() const
 
 const bool Button::isHovered() const
 {
-    if (this->buttonState == BTN_HOVER && !this->clickBlocked && !this->hidden)
+    if (this->buttonState == BTN_HOVER && !this->hidden)
         return true;
 
     return false;

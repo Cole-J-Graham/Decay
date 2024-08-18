@@ -120,8 +120,6 @@ public:
             if (pair.second->getButtons()[pair.second->getId()]->isPressed() && !party.containsCharacter(pair.second)) {
                 // Update the button state based on mouse position
                 pair.second->update(mousePos);
-
-                // Check if the button is pressedif (button->isPressed()) {
                 if (party.isFull()) {
                     // If the party is full, replace the first character in the party
                     party.removeCharacter(party.getCharacter(0));
@@ -129,6 +127,13 @@ public:
                 // Add the selected character to the party
                 party.addCharacter(pair.second);
                 break; // Break after adding/replacing the character
+            }
+        }
+
+        //Remove party members on right click
+        for (int i = 0; i < party.size(); i++) {
+            if (party.getCharacter(i)->idButtonIsClicked()) {
+                party.removeCharacter(party.getCharacter(i));
             }
         }
     }

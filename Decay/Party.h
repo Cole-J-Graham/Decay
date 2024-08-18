@@ -52,6 +52,7 @@ private:
     std::map<std::string, std::unique_ptr<Text>> text;
 
     std::vector<std::shared_ptr<Character>> party;
+
     static const int maxPartySize = 3;
     const float frameOneX = 25.f;
     const float frameOneY = 150.f;
