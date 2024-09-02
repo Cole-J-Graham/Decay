@@ -160,6 +160,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="InitializeCharacters.cpp" />
+    <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="MapComponent.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="InitializeCharacters.h" />
+    <ClInclude Include="Inventory.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="MapComponent.h" />
     <ClInclude Include="MapViewer.h" />

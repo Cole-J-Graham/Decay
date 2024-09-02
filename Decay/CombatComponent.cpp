@@ -141,6 +141,7 @@ void CombatComponent::resetEnemy()
         //Clear all moves to allow reinitialization
         CharacterManager::getInstance().clearAllCharacterMoves();
         this->initMoves();
+        this->initEnemyMoves();
     }
     else {
         std::cout << "Enemy " << this->enemyId << " not found." << std::endl;
