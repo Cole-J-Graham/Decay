@@ -150,9 +150,16 @@ void CombatComponent::resetEnemy()
 
 void CombatComponent::initEnemyMoves()
 {
+    // Randomly select a character index between 0 and 2
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> dist(0, 2);
+    int randomIndex = dist(rng);
+
     this->enemies[this->enemyId]->createMove(0, "The creature uses its razor sharp claws to attack!",
-        EntityMove::Subtractor(), this->enemies[this->enemyId]->getDamage(), CharacterManager::getInstance().getCharacter("PLAYER")->getHp(), 0);
+        EntityMove::Subtractor(), CharacterManager::getInstance().getParty().getCharacter(randomIndex)->getHp(), this->enemies[this->enemyId]->getDamage(), 0);
 }
+
 
 //Text Functions
 void CombatComponent::setEnemyId(const std::string& text)

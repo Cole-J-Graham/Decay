@@ -5,6 +5,7 @@
 #include"Button.h"
 #include"Rectangle.h"
 #include"EventManager.h"
+#include"Text.h"
 class MapViewer
 {
 public:
@@ -250,6 +251,7 @@ private:
 	sf::Texture texture;
 	std::ifstream ifs;
 	std::string line;
+	std::unique_ptr<Text> message;
 
 	std::map<std::string, std::unique_ptr<Button>> buttons;
 	std::map<std::string, std::unique_ptr<Rectangle>> rectangles;

@@ -33,19 +33,20 @@ public:
 	void createMove(int key, const std::string& moveMessage, EntityMove::Operation op,
 		float& a, float& b, int coolDown) {
 		this->moves[key] = std::make_unique<EntityMove>(moveMessage, op, a, b, coolDown);
-		this->enemyMoveRangeMax = this->moves.size();
+		//Subtract one to ensure that enemyMoveRangeMax matches the size of the moves container
+		this->enemyMoveRangeMax = this->moves.size() - 1;
+		std::cout << "ENEMY MOVE RANGE MAX:" << this->enemyMoveRangeMax << "\n";
 	}
 
 	void detectMove() {
 		std::random_device dev;
 		std::mt19937 rng(dev());
 		std::uniform_int_distribution<std::mt19937::result_type> enemyMoveRange(this->enemyMoveRangeMin, this->enemyMoveRangeMax);
-
+		
 		int selectedMoveIndex = enemyMoveRange(rng);
 
-		// Assuming `this->moves` is a map with integer keys
 		auto it = this->moves.find(selectedMoveIndex);
-		//std::cout << enemyMoveRange(rng) << "\n";
+		std::cout << "ENEMY MOVE RANGE:" << enemyMoveRange(rng) << "\n";
 		if (it != this->moves.end() && it->second) {
 			it->second->useMove();  // Example usage
 		}

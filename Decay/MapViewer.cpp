@@ -15,7 +15,8 @@ MapViewer::MapViewer()
     areaEnd(false),
     areaReset(false)
 {
-
+    this->message = std::make_unique<Text>(355, 835, 16, "Cannot travel with no party members!", 
+        sf::Color::White, true, 5);
     mapSprite.setPosition(560, 5);
     mapSprite.setScale(0.78f, 0.78f);
 
@@ -51,6 +52,7 @@ void MapViewer::render(sf::RenderTarget* target) {
         renderMaps(target);
     }
     renderButtons(target);
+    this->message->render(target);
 }
 
 // Map Functions
@@ -157,16 +159,24 @@ void MapViewer::updateButtons(const sf::Vector2f& mousePos) {
         it.second->update(mousePos);
     }
 
-    // Open Map Functionality
-    if (buttons["OPENMAP"]->isPressed() && hidden) {
-        maps[currentMapId]->setShown();
-        rectangles["MAPVIEWER"]->show();
-        hidden = false;
-    }
-    else if (buttons["OPENMAP"]->isPressed() && !hidden) {
+    if (buttons["OPENMAP"]->isPressed() && CharacterManager::getInstance().getParty().size() <= 0) {
+        this->message->setShown();
+		this->message->setString("Cannot travel with no party members!");
         maps[currentMapId]->setHidden();
-        rectangles["MAPVIEWER"]->show();
         hidden = true;
+    }
+    else {
+        // Open Map Functionality
+        if (buttons["OPENMAP"]->isPressed() && hidden) {
+            maps[currentMapId]->setShown();
+            rectangles["MAPVIEWER"]->show();
+            hidden = false;
+        }
+        else if (buttons["OPENMAP"]->isPressed() && !hidden) {
+            maps[currentMapId]->setHidden();
+            rectangles["MAPVIEWER"]->show();
+            hidden = true;
+        }
     }
 }
 

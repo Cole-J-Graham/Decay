@@ -10,7 +10,7 @@ Enemy::Enemy(std::string enemyName, float hp, float hpMax, float damage, float d
 	this->defense = defense;
 	this->enemyName = enemyName;
 	this->enemyMoveRangeMin = 0;
-	this->enemyMoveRangeMax = this->moves.size();
+	this->enemyMoveRangeMax = this->moves.size() - 1;
 	this->enemyFrame = 0;
 	this->x = 1695;
 	this->y = 420;
