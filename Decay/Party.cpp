@@ -66,7 +66,7 @@ void Party::updatePartyMembers(const sf::Vector2f mousePos)
 void Party::renderPartyMembersButtons(sf::RenderTarget* target)
 {
     int width = 1401;
-    int height = 100;
+    int height = 50;
     for (int i = 0; i < party.size(); i++) {
         party[i]->renderIdButton(target);
         party[i]->setIdButtonPosition(width, height += 26);
@@ -90,7 +90,9 @@ void Party::updateFramePositions() {
 //Rectangle Functions
 void Party::initRects()
 {
-    this->rectangles["PARTYMENU"] = std::make_unique<Rectangle>(1400, 50, 300, 600, sf::Color::Transparent,
+    this->rectangles["PARTYMENU"] = std::make_unique<Rectangle>(1400, 50, 225, 600, sf::Color::Transparent,
+        sf::Color::White, 1.f, false);
+    this->rectangles["LABELSEPARATOR"] = std::make_unique<Rectangle>(1400, 50, 225, 25, sf::Color::Transparent,
         sf::Color::White, 1.f, false);
 }
 
@@ -104,7 +106,7 @@ void Party::renderRects(sf::RenderTarget* target)
 //Text Functions
 void Party::initText()
 {
-    this->text["HP"] = std::make_unique<Text>(1405, 55, 16, "Current Party Members",
+    this->text["LABELSEPARATORTEXT"] = std::make_unique<Text>(1402, 50, 16, "ACTIVE         |     INACTIVE",
         sf::Color::White, false);
 }
 

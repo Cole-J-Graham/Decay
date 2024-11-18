@@ -140,8 +140,8 @@ public:
 
     void renderCharacterSelectionForParty(sf::RenderTarget* target) {
         // Render all character buttons
-        int width = 1401;
-        int height = 300;
+        int width = 1525;
+        int height = 50;
         for (auto& pair : characters) {
             if (!party.containsCharacter(pair.second)) {
                 pair.second->renderIdButton(target);

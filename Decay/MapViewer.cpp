@@ -15,7 +15,7 @@ MapViewer::MapViewer()
     areaEnd(false),
     areaReset(false)
 {
-    this->message = std::make_unique<Text>(355, 835, 16, "Cannot travel with no party members!", 
+    this->message = std::make_unique<Text>(16, "Cannot travel with no party members!",
         sf::Color::White, true, 5);
     mapSprite.setPosition(560, 5);
     mapSprite.setScale(0.78f, 0.78f);
