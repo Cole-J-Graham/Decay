@@ -1,16 +1,16 @@
-#ifndef MAINMENU_STATE_H
-#define MAINMENU_STATE_H
+#ifndef BONFIRE_STATE_H
+#define BONFIRE_STATE_H
 
 #include "State.h"
 #include "UiPanel.h"
-#include "InitializeCharacters.h"
+#include "CharacterManager.h"
 
-class MainMenuState : public State
+class BonfireState : public State
 {
 public:
     // Constructors and Destructors
-    MainMenuState(sf::RenderWindow* window, std::stack<State*>* states);
-    ~MainMenuState() = default;
+    BonfireState(sf::RenderWindow* window, std::stack<State*>* states);
+    ~BonfireState() = default;
 
     // State Functions
     void endState();
@@ -22,8 +22,10 @@ private:
     // UI Functions
     void initUi();
 
-    // Character Functions
-    void initCharacters();
+    // Bonfire Functions
+    void restParty();
+    void smithWeapon();
+    void leaveBonfire();
 
 private:
     UiPanel ui;

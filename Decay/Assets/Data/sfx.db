@@ -1,0 +1,42 @@
+# id|path
+
+angry|Assets/Sounds/angry.wav
+beast_death|Assets/Sounds/beastDeath.wav
+big_egg_collect|Assets/Sounds/Big Egg collect 1.wav
+blip_select|Assets/Sounds/blipSelect.wav
+bash_small|Assets/Sounds/bashSmall.wav
+bash_light|Assets/Sounds/bashLight.wav
+alarm|Assets/Sounds/alarm.wav
+heavy_attack|Assets/Sounds/heavyAttack.wav
+bonfire_ambience|Assets/Sounds/bonfireAmbience.wav
+blip_select_2|Assets/Sounds/blipSelect2.wav
+click|Assets/Sounds/click.wav
+combat_start|Assets/Sounds/combatStart.wav
+blip_select_3|Assets/Sounds/blipSelect3.wav
+heavy_mage_attack|Assets/Sounds/heavyMageAttack.wav
+special_slash_attack|Assets/Sounds/specialSlashAttack.wav
+special_mage_attack|Assets/Sounds/specialMageAttack.wav
+enraged|Assets/Sounds/enraged.wav
+forest_ambience|Assets/Sounds/forestAmbience.wav
+fruit_collect|Assets/Sounds/Fruit collect 1.wav
+guard|Assets/Sounds/guard.wav
+guarded|Assets/Sounds/guarded.wav
+hefty_blow|Assets/Sounds/heftyBlow.wav
+hell_blaze|Assets/Sounds/hellBlaze.wav
+hit_damage|Assets/Sounds/Hit damage 1.wav
+hover|Assets/Sounds/hoversound.wav
+iron_wall|Assets/Sounds/ironWall.wav
+mend|Assets/Sounds/mend.wav
+menu_click|Assets/Sounds/menuclick.wav
+move_room|Assets/Sounds/moveRoom.wav
+normal_beast_death|Assets/Sounds/normalBeastDeath.wav
+player_guarded|Assets/Sounds/playerguarded.wav
+slash|Assets/Sounds/slash.wav
+smite|Assets/Sounds/smite.wav
+smite_cannon|Assets/Sounds/smiteCannon.wav
+stats_up|Assets/Sounds/statsup.wav
+suck|Assets/Sounds/Suck 1.wav
+text|Assets/Sounds/Text 1.wav
+thom_attack_guard|Assets/Sounds/thomatkguard.wav
+vengeance|Assets/Sounds/vengeance.wav
+violent_decay_blade|Assets/Sounds/violentdecayblade.wav

@@ -1,4 +1,5 @@
 #include "Rectangle.h"
+#include "AssetDatabase.h"
 //Constructors and Destructors
 Rectangle::Rectangle(float x, float y, float width, float height, sf::Color color,
 	sf::Color border_color, float border_thickness, bool hidden)
@@ -25,10 +26,9 @@ Rectangle::Rectangle(std::string text, sf::Color textColor, unsigned int textSiz
 	this->shape.setOutlineThickness(border_thickness);
 
 	//Text
-	font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf");
 	this->text.setString(text);
 	this->text.setFillColor(textColor);
-	this->text.setFont(font);
+	this->text.setFont(AssetDatabase::getInstance().getFont("ticker_font"));
 	this->text.setCharacterSize(textSize);
 	this->text.setPosition(x, y);
 	this->hidden = hidden;

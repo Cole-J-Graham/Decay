@@ -2,6 +2,9 @@
 //Constructor and Destructors
 Game::Game()
 {
+	AssetDatabase::getInstance().loadFromFile("Assets/Data/assets.db");
+	SfxManager::getInstance().loadFromFile("Assets/Data/sfx.db");
+
 	this->initWindow();
 	this->initStates();
 }
@@ -47,12 +50,13 @@ void Game::initStates()
 //Update
 void Game::update()
 {
-	//Update Events
+	SfxManager::getInstance().update();
+
 	this->updateSFMLEvents();
-	//Update the states while not empty
+
 	if (!this->states.empty()) {
 		this->states.top()->update();
-		//If getQuit is called in the top stack, delete the top of the stack and cleanup
+
 		if (this->states.top()->getQuit()) {
 			this->states.top()->endState();
 			delete this->states.top();
@@ -60,7 +64,6 @@ void Game::update()
 		}
 	}
 	else {
-		//Closes game because game is dependent on window being open
 		this->endApplication();
 		this->window->close();
 	}

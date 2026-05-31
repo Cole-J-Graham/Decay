@@ -10,12 +10,6 @@
     <ClCompile Include="GameState.cpp">
       <Filter>States</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Rectangle.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="MainMenuState.cpp">
       <Filter>PlayStates</Filter>
     </ClCompile>
@@ -24,9 +18,6 @@
     </ClCompile>
     <ClCompile Include="UserInputComponent.cpp">
       <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Text.cpp">
-      <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>States</Filter>
@@ -42,9 +33,6 @@
     </ClCompile>
     <ClCompile Include="Character.cpp">
       <Filter>Character</Filter>
-    </ClCompile>
-    <ClCompile Include="MusicPlayer.cpp">
-      <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="StatsModule.cpp">
       <Filter>Character\Stats</Filter>
@@ -76,6 +64,45 @@
     <ClCompile Include="Inventory.cpp">
       <Filter>Character\CharacterManagement</Filter>
     </ClCompile>
+    <ClCompile Include="UiPanel.cpp">
+      <Filter>Resources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetDatabase.cpp">
+      <Filter>Resources\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicPlayer.cpp">
+      <Filter>Resources\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="BonfireState.cpp">
+      <Filter>PlayStates</Filter>
+    </ClCompile>
+    <ClCompile Include="SfxManager.cpp">
+      <Filter>Resources\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="TravelInputComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogueInputComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="UiSprite.cpp">
+      <Filter>Resources\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Resources\UI\CoreUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
+      <Filter>Resources\UI\CoreUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Resources\UI\CoreUI</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationPlayer.cpp">
+      <Filter>Resources\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationEffectManager.cpp">
+      <Filter>Resources\Assets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
@@ -87,15 +114,6 @@
     <ClInclude Include="GameState.h">
       <Filter>States</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Rectangle.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Asset.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="MainMenuState.h">
       <Filter>PlayStates</Filter>
     </ClInclude>
@@ -104,9 +122,6 @@
     </ClInclude>
     <ClInclude Include="UserInputComponent.h">
       <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Text.h">
-      <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="CombatComponent.h">
       <Filter>Combat</Filter>
@@ -119,9 +134,6 @@
     </ClInclude>
     <ClInclude Include="Character.h">
       <Filter>Character</Filter>
-    </ClInclude>
-    <ClInclude Include="MusicPlayer.h">
-      <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="StatsModule.h">
       <Filter>Character\Stats</Filter>
@@ -155,6 +167,51 @@
     </ClInclude>
     <ClInclude Include="Inventory.h">
       <Filter>Character\CharacterManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="UiPanel.h">
+      <Filter>Resources\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetDatabase.h">
+      <Filter>Resources\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset.h">
+      <Filter>Resources\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicPlayer.h">
+      <Filter>Resources\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="EncounterResult.h">
+      <Filter>PlayStates</Filter>
+    </ClInclude>
+    <ClInclude Include="BonfireState.h">
+      <Filter>PlayStates</Filter>
+    </ClInclude>
+    <ClInclude Include="SfxManager.h">
+      <Filter>Resources\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="TravelInputComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogueInputComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="UiSprite.h">
+      <Filter>Resources\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Resources\UI\CoreUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Resources\UI\CoreUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Resources\UI\CoreUI</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationPlayer.h">
+      <Filter>Resources\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationEffectManager.h">
+      <Filter>Resources\Assets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +253,18 @@
     </Filter>
     <Filter Include="Character\CharacterManagement">
       <UniqueIdentifier>{e6e79a27-b6c9-444c-963d-1103ca118912}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Assets">
+      <UniqueIdentifier>{421de0f0-70b5-4f4b-87e8-760e19f4ca29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\UI">
+      <UniqueIdentifier>{c7125478-990b-4490-b89c-886e44e777c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Audio">
+      <UniqueIdentifier>{086c1c7c-28c9-4a16-b5dd-3603b6722241}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\UI\CoreUI">
+      <UniqueIdentifier>{8ec78b2b-c7dc-4893-892a-70e5d6dbc905}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 #include <vector>
 #include <memory> // for std::shared_ptr
 #include"Character.h"
+#include "UiPanel.h"
 
 class Party {
 public:
@@ -12,6 +13,7 @@ public:
     //Core Functions
     void render(sf::RenderTarget* target);
     void update(const sf::Vector2f mousePos);
+    void initUi();
 
     //Management Functions
     bool addCharacter(const std::shared_ptr<Character>& character);
@@ -22,14 +24,6 @@ public:
     void updatePartyMembers(const sf::Vector2f mousePos);
     void renderPartyMembersButtons(sf::RenderTarget* target);
     void updateFramePositions();
-
-    //Rectangle Functions
-    void initRects();
-    void renderRects(sf::RenderTarget* target);
-
-    //Text Functions
-    void initText();
-    void renderText(sf::RenderTarget* target);
 
     //Getters
     std::shared_ptr<Character> getCharacter(int index) const;
@@ -48,9 +42,7 @@ public:
     }
 
 private:
-    std::map<std::string, std::unique_ptr<Rectangle>> rectangles;
-    std::map<std::string, std::unique_ptr<Text>> text;
-
+    UiPanel ui;
     std::vector<std::shared_ptr<Character>> party;
 
     static const int maxPartySize = 3;

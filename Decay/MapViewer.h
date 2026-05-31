@@ -14,7 +14,7 @@ public:
 	~MapViewer();
 
 	//Core Functions
-	void update(const sf::Vector2f& mousePos);
+	void update(const sf::Vector2f& mousePos, bool moveRight, bool moveLeft);
 	void render(sf::RenderTarget* target);
 
 	//Map Functions
@@ -29,7 +29,7 @@ public:
 	void detectNewArea(const std::string& in1, const std::string& in2,
 		const std::string& in3, const std::string& in4, const std::string& in5);
 	void detectAreaEnd();
-	void move();
+	void move(bool moveRight, bool moveLeft);
 
 
 	//Rectangle Functions
@@ -44,6 +44,10 @@ public:
 	//Asset Functions
 	void loadMap(const std::string& file_input);
 
+	//Setters
+	void showOpenMapButton() { this->buttons["OPENMAP"]->show(); };
+	void hideOpenMapButton() { this->buttons["OPENMAP"]->hide(); };
+
 	//Getters
 	int& getMapFramesMaxSize() { return this->mapFramesMaxSize; };
 	bool& getHidden() { return this->hidden; };
@@ -52,6 +56,7 @@ public:
 	int& getMapIdMaxSize() { return this->mapIdMaxSize; };
 	std::string& getMapName() { return this->maps[currentMapId]->getMapName(); };
 	void increaseButtonsShown() { this->maps[currentMapId]->increaseButtonsShown(); };
+
 
 	class MapCore {
 	public:
@@ -228,6 +233,9 @@ public:
 		this->texture.loadFromFile(this->maps[currentMapId]->getMapContainer()[frame]);
 		this->mapSprite.setTexture(this->texture);
 	};
+
+	bool rollEventForCurrentMap();
+	bool currentEventIsActive() const;
 
 private:
 

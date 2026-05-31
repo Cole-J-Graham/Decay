@@ -1,22 +1,18 @@
 #include "MainMenuState.h"
-//Constructors and Destructors
+#include "TravelState.h"
+
+#include <iostream>
+#include <memory>
+
+// Constructors and Destructors
 MainMenuState::MainMenuState(sf::RenderWindow* window, std::stack<State*>* states)
     : State(window, states)
 {
-    //Initialization Functions
-    this->initButtons();
+    this->initUi();
     this->initCharacters();
 }
 
-MainMenuState::~MainMenuState()
-{
-    auto it = this->buttons.begin();
-    for (it = this->buttons.begin(); it != this->buttons.end(); ++it) {
-        delete it->second;
-    }
-}
-
-//State Functions
+// State Functions
 void MainMenuState::endState()
 {
     std::cout << "Ending MainMenuState!~" << "\n";
@@ -31,50 +27,83 @@ void MainMenuState::update()
 {
     this->updateMousePositions();
     this->updateKeybinds();
-    this->updateButtons();
-}
 
-void MainMenuState::render(sf::RenderTarget* target)
-{
-    this->renderButtons(target);
-}
+    this->ui.update(this->getMousePosView());
 
-//Asset Functions
-void MainMenuState::initButtons()
-{
-    this->buttons["GAME_STATE"] = new Button(100, 100, 100, 25, 0.5f, "Start",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->buttons["EXIT_STATE"] = new Button(100, 125, 100, 25, 0.5f, "Quit",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-}
-
-void MainMenuState::updateButtons()
-{
-    /*Updates all buttons in the State and handles their functionality*/
-    for (auto &it : this->buttons) {
-        it.second->update(getMousePosView());
-    }
-
-    //Start the game
-    if (this->buttons["GAME_STATE"]->isPressed()) {
+    if (this->ui.button("GAME_STATE").isPressed()) {
         this->states->push(new TravelState(this->window, this->states));
         std::cout << "Starting gamestate!" << "\n";
     }
 
-    //Quit the game
-    if (this->buttons["EXIT_STATE"]->isPressed()) {
+    if (this->ui.button("EXIT_STATE").isPressed()) {
         this->quit = true;
     }
 }
 
-void MainMenuState::renderButtons(sf::RenderTarget* target)
+void MainMenuState::render(sf::RenderTarget* target)
 {
-    for (auto& it : this->buttons) {
-        it.second->render(target);
+    if (target == nullptr) {
+        return;
     }
+
+    this->ui.render(*target);
 }
 
-//Character Functions
+// UI Functions
+void MainMenuState::initUi()
+{
+    const sf::Color idle(70, 70, 70, 70);
+    const sf::Color hover(150, 150, 150, 255);
+    const sf::Color active(20, 20, 20, 70);
+
+    this->ui.addSprite("MAIN_MENU_LOGO", std::make_unique<UiSprite>(
+        "main_menu_logo",
+        1600,
+        50,
+        0.2f,
+        0.2f,
+        false
+    ));
+
+    this->ui.addButton("GAME_STATE", std::make_unique<Button>(
+        100, 100, 100, 25, 0.5f, "Start",
+        idle,
+        hover,
+        active,
+        false
+    ));
+
+    this->ui.addButton("EXIT_STATE", std::make_unique<Button>(
+        100, 125, 100, 25, 0.5f, "Quit",
+        idle,
+        hover,
+        active,
+        false
+    ));
+
+    this->ui.addAnimation("DECAY_LOGO_ANIMATION", std::make_unique<AnimationPlayer>());
+    
+    //Animations
+    auto decayLogo = std::make_unique<AnimationPlayer>();
+
+    decayLogo->setFramesFromTextureIds({"decay_menu_1","decay_menu_2","decay_menu_3","decay_menu_4","decay_menu_5","decay_menu_6"});
+
+    decayLogo->setFrameTimes({
+        1.65f, // slow hold
+        1.60f, // slow hold
+        1.55f, // slow hold
+        0.57f, // drip starts moving
+        0.57f, // fast
+        0.55f  // fastest
+        });
+
+    decayLogo->setLooping(true);
+    decayLogo->fitInside(560.f, 5.f, 800.f, 800.f, 0.f);
+    decayLogo->play();
+
+    this->ui.addAnimation("DECAY_LOGO_ANIMATION", std::move(decayLogo));
+}
+// Character Functions
 void MainMenuState::initCharacters()
 {
     InitializeCharacters::getInstance().initialize();

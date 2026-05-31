@@ -15,7 +15,7 @@ EventManager::EventManager(std::string& areaName)
     this->skipLine = false;
 
     //Module Initialization
-    this->userInput = new UserInputComponent();
+    this->dialogueInput = std::make_unique<DialogueInputComponent>();
 
     //Seed randomization
 	srand(time(NULL));
@@ -26,72 +26,84 @@ EventManager::EventManager(std::string& areaName)
 
 EventManager::~EventManager()
 {
-    delete this->userInput;
+
 }
 
 //Core Functions
 void EventManager::update(sf::Vector2f mousePos)
 {
-    this->userInput->update(mousePos);
+    this->dialogueInput->update(mousePos);
     this->updateEvents();
     this->updateInput();
 }
 
 void EventManager::render(sf::RenderTarget* target)
 {
-    this->userInput->render(target);
+    this->dialogueInput->render(target);
     if (!this->inChar.empty()) { CharacterManager::getInstance().getCharacter(this->inChar)->render(target); };
 }
 
 //Event Functions
-void EventManager::initEvents() {
-    // Load file names into the deque
-    this->getFileNamesInDirectory("Assets/Events/" + this->areaName);
+void EventManager::initEvents()
+{
+    this->getEventsInDirectory("Assets/Events/" + this->areaName);
 
-    // Update file paths in the deque
-    for (auto& entry : eventsFilePaths) {
-        entry = "Assets/Events/" + areaName + "/" + entry;
-        std::cout << "EVENT FILE LOADED: " << entry << "\n";
+    for (auto& event : events) {
+        std::cout << "EVENT FILE LOADED: " << event.path
+            << " | oneTime: " << event.oneTime
+            << " | hasPlayed: " << event.hasPlayed << "\n";
     }
 }
 
-void EventManager::updateEvents() {
+void EventManager::updateEvents()
+{
     if (this->eventActivated) {
-        this->userInput->hideMoveArrows();
-        std::random_device dev;
-        std::mt19937 rng(dev());
-        std::uniform_int_distribution<std::mt19937::result_type> eventRange(0, this->eventsFilePaths.size() - 1);
 
-        if (!isFileOpen && !this->eventsFilePaths.empty()) {
-            //Event trigger possiblity
-            int index = eventRange(rng);
-            std::string selectedFile = this->eventsFilePaths[index];
-            if (this->openFile(selectedFile)) {
-                std::cout << "File " << selectedFile << " opened successfully." << std::endl; // Debug statement
-                this->eventsFilePaths.erase(this->eventsFilePaths.begin() + index);
+        if (!isFileOpen && !this->events.empty()) {
+            std::vector<int> validEventIndexes;
+
+            for (int i = 0; i < this->events.size(); i++) {
+                if (this->eventCanPlay(this->events[i])) {
+                    validEventIndexes.push_back(i);
+                }
             }
-        }
 
-        else if (!isFileOpen && this->eventsFilePaths.empty()) {
-            //If no events are left in the area
-            this->userInput->showMoveArrows();
-            this->eventActivated = false;
-            std::cout << "No events remaining in area..." << "\n";
+            if (validEventIndexes.empty()) {
+                this->eventActivated = false;
+                std::cout << "No playable events remaining in area..." << "\n";
+                return;
+            }
+
+            std::random_device dev;
+            std::mt19937 rng(dev());
+            std::uniform_int_distribution<std::size_t> eventRange(0, validEventIndexes.size() - 1);
+
+            this->activeEventIndex = validEventIndexes[eventRange(rng)];
+            const std::string selectedFile = this->events[this->activeEventIndex].path;
+
+            if (this->openFile(selectedFile)) {
+                std::cout << "File " << selectedFile << " opened successfully." << std::endl;
+            }
         }
 
         if (isFileOpen) {
             while (true) {
-                //Event triggered
                 if (currentState == IDLE && !this->processNextLine()) {
+                    if (this->activeEventIndex >= 0 && this->activeEventIndex < this->events.size()) {
+                        if (this->events[this->activeEventIndex].oneTime) {
+                            this->events[this->activeEventIndex].hasPlayed = true;
+                        }
+                    }
+
+                    this->activeEventIndex = -1;
                     this->eventActivated = false;
                     this->inChar = "";
-                    this->userInput->showMoveArrows();
                     this->closeFile();
-                    break; // End of file or error
+                    break;
                 }
 
                 if (currentState != IDLE) {
-                    break; // Stop processing to wait for further input
+                    break;
                 }
             }
         }
@@ -101,8 +113,8 @@ void EventManager::updateEvents() {
 void EventManager::characterSpeak() {
     this->readLine(this->inResponseOne);
     this->readLine(this->inResponseTwo);
-    this->userInput->showDialogueOptions();
-    this->userInput->setDialogueOptions(this->inResponseOne, this->inResponseTwo);
+    this->dialogueInput->showDialogueOptions();
+    this->dialogueInput->setDialogueOptions(this->inResponseOne, this->inResponseTwo);
     this->updateState(PROCESSING_DIALOGUE);
     std::cout << "Processing Dialogue: True (characterSpeak)" << std::endl; // Debug statement
 }
@@ -113,31 +125,35 @@ void EventManager::npcSpeak() {
     this->readLine(this->inExpression);
     if (this->skipLine) { this->readLine(lineSkip); this->skipLine = false; }
     this->readLine(this->inTalk);
-    this->userInput->setMainDialogueText(this->inTalk);
-    this->userInput->showMainDialogue();
+    this->dialogueInput->setMainDialogueText(this->inTalk);
+    this->dialogueInput->showMainDialogue();
     // Additional processing for NPC speak
     this->updateState(PROCESSING_DIALOGUE);
     std::cout << "Processing Dialogue: True (npcSpeak)" << std::endl; // Debug statement
 }
 
-void EventManager::eventChance() {
+bool EventManager::eventChance()
+{
+    if (this->eventActivated) {
+        return true;
+    }
+
     std::random_device dev;
     std::mt19937 rng(dev());
     std::uniform_int_distribution<std::mt19937::result_type> eventThreshold(this->eventThresholdMin, this->eventThresholdMax);
 
     if (this->eventOdds > eventThreshold(rng)) {
-        // Activate event if event odds are above the event threshold
         std::cout << "Odds success..." << "\n";
         this->eventActivated = true;
         this->eventOdds = 0;
         this->eventIncrease = 1;
+        return true;
     }
-    else {
-        // Increase chance of odd happening if failed
-        std::cout << "Odds failed chances increased..." << "\n";
-        this->eventOdds += this->eventIncrease;
-        this->eventIncrease *= 2;
-    }
+
+    std::cout << "Odds failed chances increased..." << "\n";
+    this->eventOdds += this->eventIncrease;
+    this->eventIncrease *= 2;
+    return false;
 }
 
 //File Management Functions
@@ -218,11 +234,20 @@ void EventManager::readCharacters(size_t numChars, std::string& extractedString)
     delete[] buffer;
 }
 
-std::deque<std::string> EventManager::getFileNamesInDirectory(const std::string& directoryPath) {
+std::deque<EventManager::EventDefinition> EventManager::getEventsInDirectory(const std::string& directoryPath)
+{
     try {
         for (const std::filesystem::directory_entry& entry : std::filesystem::directory_iterator(directoryPath)) {
-            if (entry.is_regular_file()) { // Ensure it is a file (not a directory or symlink)
-                this->eventsFilePaths.push_back(entry.path().filename().string());
+            if (entry.is_regular_file()) {
+                EventDefinition event;
+
+                const std::string filename = entry.path().filename().string();
+
+                event.path = entry.path().string();
+                event.oneTime = filename.find(".once.") != std::string::npos;
+                event.hasPlayed = false;
+
+                this->events.push_back(event);
             }
         }
     }
@@ -230,7 +255,7 @@ std::deque<std::string> EventManager::getFileNamesInDirectory(const std::string&
         std::cerr << "Filesystem error: " << e.what() << std::endl;
     }
 
-    return this->eventsFilePaths;
+    return this->events;
 }
 
 void EventManager::updateState(State newState) {
@@ -239,19 +264,29 @@ void EventManager::updateState(State newState) {
 
 void EventManager::updateInput() {
     //Activate line skip boolean if bottom dialogue option is clicked
-    if (this->userInput->bottomDialogueClicked()) { std::cout << "LINE SKIP ACTIVATED" << "\n";  this->skipLine = true; }
+    if (this->dialogueInput->bottomDialogueClicked()) { std::cout << "LINE SKIP ACTIVATED" << "\n";  this->skipLine = true; }
 
-    if (this->userInput->topDialogueClicked() || this->userInput->bottomDialogueClicked()) {
-        this->userInput->hideDialogueOptions();
+    if (this->dialogueInput->topDialogueClicked() || this->dialogueInput->bottomDialogueClicked()) {
+        this->dialogueInput->hideDialogueOptions();
         this->updateState(IDLE);
         std::cout << "Processing Dialogue: False (updateInput)" << std::endl; // Debug statement
     }
 
-    if (this->userInput->mainDialogueClicked()) {
+    if (this->dialogueInput->mainDialogueClicked()) {
         std::string test = "";
-        this->userInput->hideMainDialogue();
-        this->userInput->setMainDialogueText(test);
+        this->dialogueInput->hideMainDialogue();
+        this->dialogueInput->setMainDialogueText(test);
         this->updateState(IDLE);
         std::cout << "Processing Dialogue: False (updateInput)" << std::endl; // Debug statement
     }
+}
+
+//Helper
+bool EventManager::eventCanPlay(const EventDefinition& event) const
+{
+    if (event.oneTime && event.hasPlayed) {
+        return false;
+    }
+
+    return true;
 }

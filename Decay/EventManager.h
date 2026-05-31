@@ -4,7 +4,8 @@
 #include<random>
 #include<deque>
 #include"CombatState.h"
-#include"UserInputComponent.h"
+#include "DialogueInputComponent.h"
+#include <memory>
 
 class EventManager {
 public:
@@ -19,21 +20,18 @@ public:
 	//Event Functions
 	void initEvents();
 	void updateEvents();
-	void eventChance();
+	bool eventChance();
+	bool isEventActive() const { return this->eventActivated; }
 
 	//File Functions
 	void updateInput();
 
 	//Getters
-
-	UserInputComponent* userInput;
-
-	bool rightArrowClicked() { return this->userInput->rightArrowClicked(); }
-	bool leftArrowClicked() { return this->userInput->leftArrowClicked(); }
-
 	bool getEventActivated() { return this->eventActivated; }
 
 private:
+
+	std::unique_ptr<DialogueInputComponent> dialogueInput;
 
 	bool isFileOpen;
 	bool eventActivated;
@@ -50,7 +48,16 @@ private:
 	std::string areaName;
 	std::string inResponseOne, inResponseTwo, inExpression, inTalk, inChar;
 	std::string currentLine;
-	std::deque<std::string> eventsFilePaths;
+
+	struct EventDefinition
+	{
+		std::string path;
+		bool oneTime = false;
+		bool hasPlayed = false;
+	};
+
+	std::deque<EventDefinition> events;
+	int activeEventIndex = -1;
 
 	enum State {
 		IDLE,
@@ -71,7 +78,10 @@ private:
 	void closeFile();
 	void readLine(std::string& extractedLine);
 	void readCharacters(size_t numChars, std::string& extractedString);
-	std::deque<std::string> getFileNamesInDirectory(const std::string& directoryPath);
+	std::deque<EventDefinition> getEventsInDirectory(const std::string& directoryPath);
 	void updateState(State newState);
+
+	//Helper
+	bool eventCanPlay(const EventDefinition& event) const;
 };
 

@@ -31,11 +31,13 @@ MapViewer::~MapViewer()
 }
 
 // Core Functions
-void MapViewer::update(const sf::Vector2f& mousePos) {
+void MapViewer::update(const sf::Vector2f& mousePos, bool moveRight, bool moveLeft)
+{
     updateButtons(mousePos);
     updateMaps(mousePos);
-    move();
+    move(moveRight, moveLeft);
     detectAreaEnd();
+
     detectNewArea(
         maps[currentMapId]->getMapLoadAreaInputs()[0],
         maps[currentMapId]->getMapLoadAreaInputs()[1],
@@ -116,20 +118,20 @@ void MapViewer::detectAreaEnd() {
     }
 }
 
-void MapViewer::move() {
+void MapViewer::move(bool moveRight, bool moveLeft)
+{
     if (mapSelected) {
         time = clock.getElapsedTime();
+
         if (time.asSeconds() >= move_time) {
-            if (maps[currentMapId]->event->rightArrowClicked() && mapFrame < mapFramesMaxSize) {
+            if (moveRight && mapFrame < mapFramesMaxSize) {
                 mapFrame++;
                 setMapFrame(mapFrame);
-                maps[currentMapId]->event->eventChance();
                 clock.restart();
             }
-            else if (maps[currentMapId]->event->leftArrowClicked() && mapFrame > 0) {
+            else if (moveLeft && mapFrame > 0) {
                 mapFrame--;
                 setMapFrame(mapFrame);
-                maps[currentMapId]->event->eventChance();
                 clock.restart();
             }
         }
@@ -212,4 +214,28 @@ void MapViewer::loadMap(const std::string& file_input) {
     else {
         std::cerr << "Failed to open file: " << file_input << std::endl;
     }
+}
+
+bool MapViewer::rollEventForCurrentMap()
+{
+    if (this->maps.count(this->currentMapId) <= 0) {
+        return false;
+    }
+
+    if (this->maps[this->currentMapId]->event == nullptr) {
+        return false;
+    }
+
+    return this->maps[this->currentMapId]->event->eventChance();
+}
+
+bool MapViewer::currentEventIsActive() const
+{
+    auto it = this->maps.find(this->currentMapId);
+
+    if (it == this->maps.end() || it->second == nullptr || it->second->event == nullptr) {
+        return false;
+    }
+
+    return it->second->event->isEventActive();
 }

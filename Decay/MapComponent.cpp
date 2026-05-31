@@ -20,9 +20,9 @@ MapComponent::~MapComponent()
 }
 
 //Core Functions
-void MapComponent::update(sf::Vector2f mousePos)
+void MapComponent::update(sf::Vector2f mousePos, bool moveRight, bool moveLeft)
 {
-    this->mapView->update(mousePos);
+    this->mapView->update(mousePos, moveRight, moveLeft);
     this->updateButtons(mousePos);
 }
 
@@ -30,6 +30,16 @@ void MapComponent::render(sf::RenderTarget* target)
 {
     this->mapView->render(target);
     if (!this->mapView->getHidden()) { this->renderButtons(target); };
+}
+
+bool MapComponent::mapIsOpen() const
+{
+    return !this->mapView->getHidden();
+}
+
+bool MapComponent::mapIsSelected() const
+{
+    return this->mapView->getMapSelected();
 }
 
 //Map Functions
@@ -47,6 +57,12 @@ void MapComponent::initMapCores()
         sf::Vector2f(200, 200), "", "Corridors",
         sf::Vector2f(300, 250), "", "Dungeon",
         sf::Vector2f(375, 400), "", "Labs");
+}
+
+//Getters
+std::string MapComponent::getCurrentAreaId() const
+{
+    return this->mapView->getMapName();
 }
 
 //Button Functions

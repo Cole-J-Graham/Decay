@@ -151,10 +151,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationEffectManager.cpp" />
+    <ClCompile Include="AnimationPlayer.cpp" />
+    <ClCompile Include="AssetDatabase.cpp" />
+    <ClCompile Include="BonfireState.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CombatComponent.cpp" />
     <ClCompile Include="CombatState.cpp" />
+    <ClCompile Include="DialogueInputComponent.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EntityMove.cpp" />
     <ClCompile Include="EventManager.cpp" />
@@ -170,20 +175,30 @@
     <ClCompile Include="MusicPlayer.cpp" />
     <ClCompile Include="Party.cpp" />
     <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="SfxManager.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StatsModule.cpp" />
     <ClCompile Include="Text.cpp" />
+    <ClCompile Include="TravelInputComponent.cpp" />
     <ClCompile Include="TravelState.cpp" />
+    <ClCompile Include="UiPanel.cpp" />
+    <ClCompile Include="UiSprite.cpp" />
     <ClCompile Include="UserInputComponent.cpp" />
     <ClCompile Include="ViewerModule.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationEffectManager.h" />
+    <ClInclude Include="AnimationPlayer.h" />
     <ClInclude Include="Asset.h" />
+    <ClInclude Include="AssetDatabase.h" />
+    <ClInclude Include="BonfireState.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="CharacterManager.h" />
     <ClInclude Include="CombatComponent.h" />
     <ClInclude Include="CombatState.h" />
+    <ClInclude Include="DialogueInputComponent.h" />
+    <ClInclude Include="EncounterResult.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EntityMove.h" />
     <ClInclude Include="EventManager.h" />
@@ -198,10 +213,14 @@
     <ClInclude Include="MusicPlayer.h" />
     <ClInclude Include="Party.h" />
     <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="SfxManager.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StatsModule.h" />
     <ClInclude Include="Text.h" />
+    <ClInclude Include="TravelInputComponent.h" />
     <ClInclude Include="TravelState.h" />
+    <ClInclude Include="UiPanel.h" />
+    <ClInclude Include="UiSprite.h" />
     <ClInclude Include="UserInputComponent.h" />
     <ClInclude Include="ViewerModule.h" />
   </ItemGroup>

@@ -1,63 +1,69 @@
 #pragma once
-//States
-#include"State.h"
-//Componenets
-#include"MapComponent.h"
-//Managers
-#include"CharacterManager.h"
-//States
-#include"MusicPlayer.h"
-#include"CombatState.h"
+
+// States
+#include "State.h"
+#include "EncounterResult.h"
+#include "MapComponent.h"
+#include "MusicPlayer.h"
+#include "CombatState.h"
+#include "BonfireState.h"
+#include "TravelInputComponent.h"
+
+// Managers
+#include "CharacterManager.h"
+
 class TravelState : public State
 {
 public:
-	//Constructors and Destructors
-	TravelState(sf::RenderWindow* window, std::stack<State*>* states);
-	~TravelState();
+    // Constructors and Destructors
+    TravelState(sf::RenderWindow* window, std::stack<State*>* states);
+    ~TravelState();
 
-	//Core Functions
-	void update();
-	void render(sf::RenderTarget* target = nullptr);
+    // Core Functions
+    void update();
+    void render(sf::RenderTarget* target = nullptr);
 
-	//Travel Functions
-	void updateEventsFromMovement();
+    // Travel Functions
+    void updateEventsFromMovement();
+    void updateTravelActions();
+    void updateTravelInputVisibility();
 
-	//Rectangle Functions
-	void initRects();
-	void renderRects(sf::RenderTarget* target);
+    // Rectangle Functions
+    void initRects();
+    void renderRects(sf::RenderTarget* target);
 
-	void checkFPS(sf::Clock& clock, sf::Clock& fpsClock, int& frameCount) {
-		// Measure the elapsed time since the last frame
-		sf::Time elapsed = clock.restart();
+    void checkFPS(sf::Clock& clock, sf::Clock& fpsClock, int& frameCount)
+    {
+        sf::Time elapsed = clock.restart();
+        frameCount++;
 
-		// Increment the frame count
-		frameCount++;
+        if (fpsClock.getElapsedTime().asSeconds() >= 1.0f) {
+            float fps = frameCount / fpsClock.restart().asSeconds();
+            std::cout << "FPS: " << fps << std::endl;
+            frameCount = 0;
+        }
+    }
 
-		// Check if one second has passed
-		if (fpsClock.getElapsedTime().asSeconds() >= 1.0f) {
-			// Calculate FPS
-			float fps = frameCount / fpsClock.restart().asSeconds();
-			std::cout << "FPS: " << fps << std::endl;
-			frameCount = 0;
-		}
-	}
-	sf::Clock clock;
-	sf::Clock fpsClock;
-	int frameCount = 0;
-	//this->checkFPS(clock, fpsClock, frameCount);
+    sf::Clock clock;
+    sf::Clock fpsClock;
+    int frameCount = 0;
 
 private:
-	int combatChanceMin;
-	int combatChanceMax;
-	float combatOdds;
+    bool didPlayerMove() const;
+    EncounterResult determineEncounterResult();
+    void handleEncounterResult(EncounterResult result);
 
-	std::unique_ptr<UserInputComponent> userInput;
-	std::vector<sf::Texture> mapData;
-	std::map<std::string, Rectangle*> rectangles;
+private:
+    int combatChanceMin;
+    int combatChanceMax;
+    float combatOdds;
 
-	CombatState* combat;
-	MapComponent* map;
+    std::unique_ptr<TravelInputComponent> travelInput;
+    std::vector<sf::Texture> mapData;
+    std::map<std::string, Rectangle*> rectangles;
 
-	std::unique_ptr<MusicPlayer> music;
-	
+    CombatState* combat;
+    MapComponent* map;
+
+    std::unique_ptr<MusicPlayer> music;
 };

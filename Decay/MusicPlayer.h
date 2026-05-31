@@ -1,64 +1,62 @@
 #pragma once
-#include "Rectangle.h"
-#include "Button.h"
-#include <iostream>
+
+#include "UiPanel.h"
+
 #include <SFML/Audio.hpp>
-#include <map>
+
 #include <fstream>
-#include <vector>
+#include <iostream>
+#include <map>
+#include <memory>
 #include <string>
-#include <future>
-#include <atomic>
 
 class MusicPlayer
 {
 public:
-    //Constructors and Destructors
+    // Constructors and Destructors
     MusicPlayer(const std::string& music_list);
     ~MusicPlayer();
 
-    //Core Functions
+    // Core Functions
     void update(const sf::Vector2f mousePos);
     void render(sf::RenderTarget* target);
     void initMusic();
     bool readFile(const std::string& input);
 
-    //Music Player Functions
+    // Music Player Functions
     void updateSongFunctions();
     void nextSong();
+    bool playSong(int id);
 
-    //Button Functions
-    void initButtons();
-    void updateButtons(const sf::Vector2f mousePos);
-    void updateOpenButton(const sf::Vector2f mousePos);
-    void renderButtons(sf::RenderTarget* target);
+    // UI Functions
+    void initUi();
+    void updateUi(const sf::Vector2f mousePos);
+    void showPanel();
+    void hidePanel();
 
-    //Setters
-    bool& setHidden() { return this->hidden = true; };
-    bool& setShown() { return this->hidden = false; };
+    // Setters
+    void setHidden();
+    void setShown();
 
 private:
+    bool loadSound(int id);
+    std::string getDisplayName(const std::string& filename) const;
 
+private:
     int x;
     int y;
 
     bool hidden;
     bool fileRead;
+    int bufferId;
     int currentBufferId;
 
     std::map<int, std::string> songNames;
 
-    std::unique_ptr<Rectangle> border;
-
-    std::atomic<int> bufferId;
-
     std::string musicList;
-    std::map<std::string, std::unique_ptr<Button>> buttons;
 
     sf::Sound song;
     std::map<int, sf::SoundBuffer> buffer;
 
-    std::vector<std::future<void>> futures;
-
-    void loadSoundAsync(int id, const std::string& filename);
+    UiPanel ui;
 };

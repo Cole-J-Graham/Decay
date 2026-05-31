@@ -7,87 +7,148 @@ Character::Character(const std::string id, std::string characterName, float hp, 
     x(x), y(y), turnActive(turnActive), characterName(characterName),
     characterFrame(0), coolDown(0)
 {
-    //Asset Variables
     this->characterTexture.loadFromFile(characterTexture);
     this->character.setTexture(this->characterTexture);
     this->character.setPosition(x, y);
     this->character.setScale(scale, scale);
-    this->border = std::make_unique<Rectangle>(this->x, this->y, BORDER_WIDTH, BORDER_HEIGHT, sf::Color::Transparent, sf::Color::White, 1.f, false);
+
+    this->border = std::make_unique<Rectangle>(
+        this->x,
+        this->y,
+        BORDER_WIDTH,
+        BORDER_HEIGHT,
+        sf::Color::Transparent,
+        sf::Color::White,
+        1.f,
+        false
+    );
+
     this->stats = std::make_unique<StatsModule>(id);
 
-    //Initialization
     this->initText();
     this->initButtons();
 }
 
-Character::~Character() 
+Character::~Character()
 {
-    //Delete Move Buttons
-    auto ib = this->moveButtons.begin();
-    for (ib = this->moveButtons.begin(); ib != this->moveButtons.end(); ++ib) {
-        delete ib->second;
+    for (auto& pair : this->moveButtons) {
+        delete pair.second;
+        pair.second = nullptr;
     }
+
+    this->moveButtons.clear();
 }
 
 // Core Functions
-void Character::update(const sf::Vector2f mousePos) 
+void Character::update(const sf::Vector2f mousePos)
 {
     this->updateText();
     this->updateButtons(mousePos);
 }
 
-void Character::render(sf::RenderTarget* target) 
+void Character::render(sf::RenderTarget* target)
 {
     target->draw(this->character);
     this->border->render(target);
     this->renderText(target);
-    //Active Turn
+
     if (this->turnActive) {
         this->renderMoveButtons(target);
-        this->buttons["ENDTURN"]->render(target);
-        for (auto& it : this->moveButtons) { it.second->renderMoveMessage(target); }
+
+        for (auto& it : this->moveButtons) {
+            it.second->renderMoveMessage(target);
+        }
     }
 }
 
-void Character::characterTurn(int& combatFrame, const sf::Vector2f mousePos) 
+void Character::characterTurn(int& combatFrame, const sf::Vector2f mousePos)
 {
     this->update(mousePos);
+
     switch (this->characterFrame) {
     case 0:
         this->turnActive = true;
-        for (auto& it : this->moveButtons) { it.second->show(); }
+
+        for (auto& it : this->moveButtons) {
+            it.second->show();
+        }
+
         this->updateMoveButtons(mousePos);
         break;
+
     case 1:
-        for (auto& it : this->moveButtons) { it.second->hide(); }
-        this->endTurn(combatFrame);
+        for (auto& it : this->moveButtons) {
+            it.second->hide();
+        }
+
+        // Do not call endTurn() here.
+        // CombatState owns the click-to-continue behavior now.
+        break;
+
+    default:
+        this->characterFrame = 0;
         break;
     }
 }
 
-void Character::resetTurn() 
+void Character::resetTurn()
 {
+    this->turnActive = false;
     this->characterFrame = 0;
-    this->buttons["ENDTURN"]->setIdle();
-    for (auto& it : this->moveButtons) { it.second->hideAttackMessage(); }
+
+    if (this->buttons.count("ENDTURN") > 0) {
+        this->buttons["ENDTURN"]->setIdle();
+        this->buttons["ENDTURN"]->hide();
+    }
+
+    for (auto& it : this->moveButtons) {
+        it.second->hide();
+        it.second->hideAttackMessage();
+    }
 }
 
-void Character::endTurn(int& combatFrame) 
+void Character::endTurn(int& combatFrame)
 {
-    this->buttons["ENDTURN"]->show();
-    if (this->buttons["ENDTURN"]->isPressed()) {
-        this->buttons["ENDTURN"]->hide();
-        this->coolDown--;
-        for (auto& it : this->moveButtons) { it.second->hideAttackMessage(); }
-        combatFrame++;
+    // Legacy behavior kept for compatibility.
+    // New combat flow should use continueTurn() from CombatState.
+    if (this->buttons.count("ENDTURN") <= 0) {
+        return;
     }
+
+    this->buttons["ENDTURN"]->show();
+
+    if (this->buttons["ENDTURN"]->isPressed()) {
+        this->continueTurn(combatFrame);
+    }
+}
+
+void Character::continueTurn(int& combatFrame)
+{
+    this->turnActive = false;
+    this->characterFrame = 0;
+
+    if (this->buttons.count("ENDTURN") > 0) {
+        this->buttons["ENDTURN"]->hide();
+        this->buttons["ENDTURN"]->setIdle();
+    }
+
+    this->coolDown--;
+
+    for (auto& it : this->moveButtons) {
+        it.second->hide();
+        it.second->hideAttackMessage();
+    }
+
+    combatFrame++;
 }
 
 // Button Functions
-void Character::updateButtons(const sf::Vector2f mousePos) 
+void Character::updateButtons(const sf::Vector2f mousePos)
 {
     for (auto& it : this->moveButtons) {
-        if(!it.second->isHidden()) { it.second->update(mousePos); }
+        if (!it.second->isHidden()) {
+            it.second->update(mousePos);
+        }
     }
 
     for (auto& it : this->buttons) {
@@ -104,52 +165,95 @@ void Character::updateMoveButtons(const sf::Vector2f mousePos)
     }
 }
 
-void Character::initButtons() 
+void Character::initButtons()
 {
-    this->buttons[this->id] = std::make_unique<Button>(1402, 50, 100, 25, 0.5f, this->characterName,
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->buttons["ENDTURN"] = std::make_unique<Button>(450, 800, 150, 25, 0.5f, "End " + this->characterName + "'s Turn",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), true);
+    this->buttons[this->id] = std::make_unique<Button>(
+        1402,
+        50,
+        100,
+        25,
+        0.5f,
+        this->characterName,
+        sf::Color(70, 70, 70, 70),
+        sf::Color(150, 150, 150, 255),
+        sf::Color(20, 20, 20, 70),
+        false
+    );
+
+    // Kept for compatibility, but hidden and no longer part of the main combat flow.
+    this->buttons["ENDTURN"] = std::make_unique<Button>(
+        450,
+        800,
+        150,
+        25,
+        0.5f,
+        "End " + this->characterName + "'s Turn",
+        sf::Color(70, 70, 70, 70),
+        sf::Color(150, 150, 150, 255),
+        sf::Color(20, 20, 20, 70),
+        true
+    );
 }
 
 // Move Functions
-void Character::createMove(std::string key, std::string moveMessage, std::string tipMessage, 
-    std::string text, Move::Operation op, float& a, float& b, float& c, int coolDown) 
+void Character::createMove(std::string key, std::string moveMessage, std::string tipMessage,
+    std::string text, Move::Operation op, float& a, float& b, float& c,
+    int coolDown, std::string sfxId, std::function<void()> animationCallback)
 {
-    this->moveButtons[key] = new Move(moveMessage, tipMessage, text, op, a, b, c, coolDown);
+    this->moveButtons[key] = new Move(
+        moveMessage,
+        tipMessage,
+        text,
+        op,
+        a,
+        b,
+        c,
+        coolDown,
+        sfxId,
+        animationCallback
+    );
 }
 
-void Character::renderMoveButtons(sf::RenderTarget* target) 
+void Character::renderMoveButtons(sf::RenderTarget* target)
 {
     int tempButtonY = 825;
+
     for (auto& it : this->moveButtons) {
         if (!it.second->isHidden()) {
-            it.second->render(target);
             it.second->setPosition(BUTTON_X_OFFSET, tempButtonY -= BUTTON_Y_OFFSET);
+            it.second->render(target);
         }
     }
 }
 
 // Text Functions
-void Character::initText() 
+void Character::initText()
 {
-    this->text["HP"] = std::make_unique<Text>(this->x, this->y + 200, 16, "HP: " + toStringWithPrecision(this->hp) + "/" + toStringWithPrecision(this->hpMax),
-        sf::Color::White, false);
+    this->text["HP"] = std::make_unique<Text>(
+        this->x,
+        this->y + 200,
+        16,
+        "HP: " + toStringWithPrecision(this->hp) + "/" + toStringWithPrecision(this->hpMax),
+        sf::Color::White,
+        false
+    );
 }
 
-void Character::renderText(sf::RenderTarget* target) 
+void Character::renderText(sf::RenderTarget* target)
 {
     for (auto& it : this->text) {
         it.second->render(target);
     }
 }
 
-void Character::updateText() 
+void Character::updateText()
 {
-     this->text["HP"]->setString("HP: " + toStringWithPrecision(this->hp) + "/" + toStringWithPrecision(this->hpMax));
+    this->text["HP"]->setString(
+        "HP: " + toStringWithPrecision(this->hp) + "/" + toStringWithPrecision(this->hpMax)
+    );
 }
 
-std::string Character::toStringWithPrecision(double value, int precision) 
+std::string Character::toStringWithPrecision(double value, int precision)
 {
     std::ostringstream out;
     out << std::fixed << std::setprecision(precision) << value;

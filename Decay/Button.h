@@ -1,5 +1,6 @@
 #pragma once
 #include "Asset.h"
+#include "SfxManager.h"
 
 enum button_states {
 	BTN_IDLE = 0,
@@ -37,11 +38,15 @@ public:
 	void hide() { this->hidden = true; }
 	void deActivate() { this->clickBlocked = true; this->shape.setFillColor(this->activeColor); }
 	void reActivate() { this->clickBlocked = false; this->shape.setFillColor(this->idleColor); }
+	void setClickSfxEnabled(bool enabled) { this->playClickSfx = enabled; }
+	void setClickSfxId(const std::string& id) { this->clickSfxId = id; }
 
 private:
 	// Core Booleans
 	short unsigned buttonState;
 
+	bool leftMouseWasDown = false;
+	bool rightMouseWasDown = false;
 	bool hidden;
 	bool clickBlocked;
 
@@ -56,4 +61,8 @@ private:
 	sf::Color idleColor;
 	sf::Color hoverColor;
 	sf::Color activeColor;
+
+	std::string clickSfxId = "click";
+	std::string hoverSfxId = "";
+	bool playClickSfx = true;
 };

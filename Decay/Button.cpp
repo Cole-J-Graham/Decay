@@ -1,4 +1,5 @@
 #include "Button.h"
+#include "AssetDatabase.h"
 
 Button::Button(float x, float y, float width, float height, float clicktime,
     std::string text, sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor,
@@ -11,9 +12,7 @@ Button::Button(float x, float y, float width, float height, float clicktime,
     this->shape.setOutlineThickness(1.f);
     this->shape.setOutlineColor(sf::Color::White);
 
-    if (this->font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf")) {
-        this->text.setFont(this->font);
-    }
+    this->text.setFont(AssetDatabase::getInstance().getFont("ticker_font"));
     this->text.setString(text);
     this->text.setFillColor(sf::Color::White);
     this->text.setCharacterSize(16);
@@ -26,9 +25,8 @@ Button::Button(float x, float y, float width, float height, float clicktime,
     this->shape.setFillColor(this->idleColor);
     this->hidden = hidden;
 
-    // Initialize click blocking mechanism
     this->clickBlocked = false;
-    this->clickBlockDuration = 0.1; // Adjust as needed
+    this->clickBlockDuration = 0.1;
 }
 
 Button::Button(sf::Vector2f pos, float width, float height, float clicktime,
@@ -42,9 +40,7 @@ Button::Button(sf::Vector2f pos, float width, float height, float clicktime,
     this->shape.setOutlineThickness(1.f);
     this->shape.setOutlineColor(sf::Color::White);
 
-    if (this->font.loadFromFile("Assets/Fonts/tickerbit font/Tickerbit-regular.otf")) {
-        this->text.setFont(this->font);
-    }
+    this->text.setFont(AssetDatabase::getInstance().getFont("ticker_font"));
     this->text.setString(text);
     this->text.setFillColor(sf::Color::White);
     this->text.setCharacterSize(16);
@@ -57,63 +53,64 @@ Button::Button(sf::Vector2f pos, float width, float height, float clicktime,
     this->shape.setFillColor(this->idleColor);
     this->hidden = hidden;
 
-    // Initialize click blocking mechanism
     this->clickBlocked = false;
-    this->clickBlockDuration = 0.1; // Adjust as needed
+    this->clickBlockDuration = 0.1;
 }
 
 void Button::update(const sf::Vector2f mousePos)
 {
-    if (!this->hidden) {
-        /* Update the booleans for hover and pressed */
-        if (!this->clickBlocked) {
+    if (this->hidden) {
+        this->buttonState = BTN_IDLE;
+        this->shape.setFillColor(this->idleColor);
 
-            // Idle
-            this->buttonState = BTN_IDLE;
-            if (this->shape.getGlobalBounds().contains(mousePos)) {
-                // Hover
-                this->buttonState = BTN_HOVER;
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                    // Pressed
-                    this->buttonState = BTN_ACTIVE_LEFT;
-                    std::cout << "Clicked LEFT: " << this->text.getString().toAnsiString() << std::endl;
-                    // Block further clicks temporarily
-                    this->clickBlocked = true;
-                    this->clickBlockTimer.restart();
-                }
-                else if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-                    // Pressed
-                    this->buttonState = BTN_ACTIVE_RIGHT;
-                    std::cout << "Clicked RIGHT: " << this->text.getString().toAnsiString() << std::endl;
-                    // Block further clicks temporarily
-                    this->clickBlocked = true;
-                    this->clickBlockTimer.restart();
-                }
+        this->leftMouseWasDown = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+        this->rightMouseWasDown = sf::Mouse::isButtonPressed(sf::Mouse::Right);
+        return;
+    }
+
+    this->buttonState = BTN_IDLE;
+
+    const bool leftMouseDown = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+    const bool rightMouseDown = sf::Mouse::isButtonPressed(sf::Mouse::Right);
+
+    const bool leftClickedThisFrame = leftMouseDown && !this->leftMouseWasDown;
+    const bool rightClickedThisFrame = rightMouseDown && !this->rightMouseWasDown;
+
+    if (this->shape.getGlobalBounds().contains(mousePos)) {
+        this->buttonState = BTN_HOVER;
+
+        if (leftClickedThisFrame) {
+            this->buttonState = BTN_ACTIVE_LEFT;
+            std::cout << "Clicked LEFT: " << this->text.getString().toAnsiString() << std::endl;
+            if (this->playClickSfx && !this->clickSfxId.empty()) {
+                SfxManager::getInstance().play(this->clickSfxId);
             }
         }
-
-        // Check and reset click blocking
-        if (this->clickBlocked && this->clickBlockTimer.getElapsedTime().asSeconds() >= this->clickBlockDuration) {
-            this->clickBlocked = false;
+        else if (rightClickedThisFrame) {
+            this->buttonState = BTN_ACTIVE_RIGHT;
+            std::cout << "Clicked RIGHT: " << this->text.getString().toAnsiString() << std::endl;
         }
+    }
 
-        switch (this->buttonState) {
-        case BTN_IDLE:
-            this->shape.setFillColor(this->idleColor);
-            break;
-        case BTN_HOVER:
-            this->shape.setFillColor(this->hoverColor);
-            break;
-        case BTN_ACTIVE_LEFT:
-            this->shape.setFillColor(this->activeColor);
-            break;
-        case BTN_ACTIVE_RIGHT:
-            this->shape.setFillColor(this->activeColor);
-            break;
-        default:
-            this->shape.setFillColor(sf::Color::Red);
-            break;
-        }
+    this->leftMouseWasDown = leftMouseDown;
+    this->rightMouseWasDown = rightMouseDown;
+
+    switch (this->buttonState) {
+    case BTN_IDLE:
+        this->shape.setFillColor(this->idleColor);
+        break;
+    case BTN_HOVER:
+        this->shape.setFillColor(this->hoverColor);
+        break;
+    case BTN_ACTIVE_LEFT:
+        this->shape.setFillColor(this->activeColor);
+        break;
+    case BTN_ACTIVE_RIGHT:
+        this->shape.setFillColor(this->activeColor);
+        break;
+    default:
+        this->shape.setFillColor(sf::Color::Red);
+        break;
     }
 }
 
@@ -127,33 +124,21 @@ void Button::render(sf::RenderTarget* target)
 
 const bool Button::isPressed() const
 {
-    if (this->buttonState == BTN_ACTIVE_LEFT && !this->clickBlocked && !this->hidden) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return this->buttonState == BTN_ACTIVE_LEFT && !this->hidden;
 }
 
 const bool Button::isPressedRight() const
 {
-    if (this->buttonState == BTN_ACTIVE_RIGHT && /*!this->clickBlocked &&*/ !this->hidden) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return this->buttonState == BTN_ACTIVE_RIGHT && !this->hidden;
 }
 
 const bool Button::isHovered() const
 {
-    if (this->buttonState == BTN_HOVER && !this->hidden)
-        return true;
-
-    return false;
+    return this->buttonState == BTN_HOVER && !this->hidden;
 }
 
-void Button::setIdle() {
+void Button::setIdle()
+{
     this->buttonState = BTN_IDLE;
     this->shape.setFillColor(this->idleColor);
 }

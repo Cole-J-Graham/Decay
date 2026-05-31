@@ -27,7 +27,7 @@ public:
 	//Getters
 	const bool rightArrowClicked()& { return this->right_active; };
 	const bool leftArrowClicked()& { return this->left_active; };
-	const bool quitButtonClicked()& { return this->quit_active; };
+	const bool returnBonfireClicked() const { return this->return_bonfire_active; }
 
 	const bool topDialogueClicked()& { return this->top_dialogue_active; };
 	const bool bottomDialogueClicked()& { return this->bottom_dialogue_active; };
@@ -48,6 +48,8 @@ private:
 	//Assets
 	std::map<std::string, Rectangle*> rectangles;
 	std::map<std::string, Button*> buttons;
+
+	bool return_bonfire_active;
 
 	bool right_active;
 	bool left_active;

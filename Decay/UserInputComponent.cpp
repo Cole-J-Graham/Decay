@@ -68,8 +68,8 @@ void UserInputComponent::updateButtons(sf::Vector2f mousePos)
     else { this->left_active = false; }
     
     //Return to bonfire
-    if (this->buttons["RETURN_BONFIRE"]->isPressed()) { this->quit_active = true; }
-    else { this->quit_active = false; }
+    if (this->buttons["RETURN_BONFIRE"]->isPressed()) { this->return_bonfire_active = true; }
+    else { this->return_bonfire_active = false; }
     //Dialogue Options
     if (this->buttons["DIALOGUEBOXTOP"]->isPressed()) { 
         this->top_dialogue_active = true;
