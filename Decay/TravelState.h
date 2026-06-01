@@ -8,6 +8,7 @@
 #include "CombatState.h"
 #include "BonfireState.h"
 #include "TravelInputComponent.h"
+#include "TravelHudComponent.h"
 
 // Managers
 #include "CharacterManager.h"
@@ -58,6 +59,7 @@ private:
     int combatChanceMax;
     float combatOdds;
 
+    std::unique_ptr<TravelHudComponent> travelHud;
     std::unique_ptr<TravelInputComponent> travelInput;
     std::vector<sf::Texture> mapData;
     std::map<std::string, Rectangle*> rectangles;

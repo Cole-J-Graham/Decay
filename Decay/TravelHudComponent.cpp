@@ -1,0 +1,61 @@
+#include "TravelHudComponent.h"
+
+TravelHudComponent::TravelHudComponent()
+{
+    this->initButtons();
+}
+
+void TravelHudComponent::initButtons()
+{
+    const sf::Color idle(70, 70, 70, 70);
+    const sf::Color hover(150, 150, 150, 255);
+    const sf::Color active(20, 20, 20, 70);
+
+    this->buttons["OPENPARTY"] = std::make_unique<Button>(
+        1370, 775, 100, 25, 0.5f, "Party",
+        idle,
+        hover,
+        active,
+        false
+    );
+
+    this->buttons["OPENSTATS"] = std::make_unique<Button>(
+        1475, 775, 100, 25, 0.5f, "Stats",
+        idle,
+        hover,
+        active,
+        false
+    );
+}
+
+void TravelHudComponent::update(sf::Vector2f mousePos)
+{
+    for (auto& pair : this->buttons) {
+        pair.second->update(mousePos);
+    }
+
+    if (this->buttons["OPENPARTY"]->isPressed()) {
+        this->partyVisible = !this->partyVisible;
+    }
+
+    if (this->buttons["OPENSTATS"]->isPressed()) {
+        this->statsVisible = !this->statsVisible;
+    }
+}
+
+void TravelHudComponent::render(sf::RenderTarget* target)
+{
+    if (target == nullptr) {
+        return;
+    }
+
+    for (auto& pair : this->buttons) {
+        pair.second->render(target);
+    }
+}
+
+void TravelHudComponent::hidePanels()
+{
+    this->partyVisible = false;
+    this->statsVisible = false;
+}

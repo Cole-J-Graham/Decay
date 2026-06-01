@@ -164,7 +164,6 @@
     <ClCompile Include="EntityMove.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="InitializeCharacters.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -179,6 +178,7 @@
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StatsModule.cpp" />
     <ClCompile Include="Text.cpp" />
+    <ClCompile Include="TravelHudComponent.cpp" />
     <ClCompile Include="TravelInputComponent.cpp" />
     <ClCompile Include="TravelState.cpp" />
     <ClCompile Include="UiPanel.cpp" />
@@ -203,7 +203,6 @@
     <ClInclude Include="EntityMove.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameState.h" />
     <ClInclude Include="InitializeCharacters.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="MainMenuState.h" />
@@ -217,6 +216,7 @@
     <ClInclude Include="State.h" />
     <ClInclude Include="StatsModule.h" />
     <ClInclude Include="Text.h" />
+    <ClInclude Include="TravelHudComponent.h" />
     <ClInclude Include="TravelInputComponent.h" />
     <ClInclude Include="TravelState.h" />
     <ClInclude Include="UiPanel.h" />

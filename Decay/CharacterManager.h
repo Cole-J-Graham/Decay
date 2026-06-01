@@ -1,94 +1,88 @@
 #ifndef CHARACTER_MANAGER_H
 #define CHARACTER_MANAGER_H
 
-// Forward declaration of StatsManager
-class StatsManager;
-
 #include "Party.h"
 #include "Character.h"
-#include <memory>
-#include <unordered_map>
-#include <string>
-#include <SFML/Graphics.hpp>  // Assuming SFML is used for sf::Vector2f
 
-class CharacterManager {
+#include <SFML/Graphics.hpp>
+
+#include <iostream>
+#include <memory>
+#include <string>
+#include <unordered_map>
+
+class CharacterManager
+{
 private:
-    std::map<std::string, std::unique_ptr<Button>> buttons;
     std::unordered_map<std::string, std::shared_ptr<Character>> characters;
     Party party;
 
-    int passCount;
-    int passCountMax;
-    bool partyHidden;
-    bool statsHidden;
-    bool clicked;
+    int passCount = 0;
+    int passCountMax = 0;
+    bool clicked = false;
 
-    // Private constructor for singleton pattern
-    CharacterManager() :
-        party()
-    {
-        this->initButtons();
-        this->partyHidden = true;
-        this->statsHidden = true;
-        this->clicked = false;
-    }
+private:
+    CharacterManager()
+        : party()
+    {}
 
-    //Destructor to clean up resources
     ~CharacterManager() = default;
 
 public:
-    //Disable copy constructor and assignment operator
     CharacterManager(const CharacterManager&) = delete;
     CharacterManager& operator=(const CharacterManager&) = delete;
 
-    //Core Functions
-    static CharacterManager& getInstance() {
+    static CharacterManager& getInstance()
+    {
         static CharacterManager instance;
         return instance;
     }
 
-    //Character Functions
-    void addCharacter(const std::string& id, const std::shared_ptr<Character>& character) {
+    // Character Functions
+    void addCharacter(const std::string& id, const std::shared_ptr<Character>& character)
+    {
         characters[id] = character;
     }
 
-    std::shared_ptr<Character> getCharacter(const std::string& id) {
+    std::shared_ptr<Character> getCharacter(const std::string& id)
+    {
         auto it = characters.find(id);
+
         if (it != characters.end()) {
             return it->second;
         }
+
         return nullptr;
     }
 
-    const std::unordered_map<std::string, std::shared_ptr<Character>>& getAllCharacters() const {
+    const std::unordered_map<std::string, std::shared_ptr<Character>>& getAllCharacters() const
+    {
         return characters;
     }
 
-    void updateAll(const sf::Vector2f mousePos) {
+    void updateAll(const sf::Vector2f mousePos)
+    {
         for (auto& pair : characters) {
             pair.second->update(mousePos);
-            if (!this->statsHidden) { pair.second->getStats()->update(mousePos); }
         }
-        if (!this->partyHidden) { this->party.update(mousePos); 
-        this->updateCharacterSelectionForParty(mousePos);
-        }
-        this->updateButtons(mousePos);
     }
 
-    void renderAll(sf::RenderTarget* target) {
+    void renderAll(sf::RenderTarget* target)
+    {
         for (auto& pair : characters) {
             pair.second->render(target);
         }
     }
 
-    //Character Stat Functions
-    std::unordered_map<std::string, StatsModule*> getAllStats() const {
+    // Stats Functions
+    std::unordered_map<std::string, StatsModule*> getAllStats() const
+    {
         std::unordered_map<std::string, StatsModule*> allStats;
 
         for (const auto& pair : characters) {
             const auto& character = pair.second;
+
             if (character) {
-                // Extract the raw pointer from the unique_ptr
                 allStats[pair.first] = character->getStats().get();
             }
         }
@@ -96,141 +90,35 @@ public:
         return allStats;
     }
 
-    void clearAllCharacterMoves() {
+    void updateStatsPanel(const sf::Vector2f mousePos)
+    {
         for (auto& pair : characters) {
-            pair.second->clearMoves();
-        }
-    }
-
-    void renderAllStats(sf::RenderTarget* target) {
-        for (auto& pair : characters) {
-            if (!this->statsHidden) { pair.second->getStats()->render(target); }
-        }
-        if (!this->partyHidden) { 
-            this->party.render(target);
-            this->renderCharacterSelectionForParty(target);
-        }
-        this->renderButtons(target);
-    }
-
-    //Character Party Functions
-    void updateCharacterSelectionForParty(const sf::Vector2f& mousePos) {
-        // Update all character buttons and handle selection
-        for (auto& pair : characters) {
-            if (pair.second->getButtons()[pair.second->getId()]->isPressed() && !party.containsCharacter(pair.second)) {
-                // Update the button state based on mouse position
-                pair.second->update(mousePos);
-                if (party.isFull()) {
-                    // If the party is full, replace the first character in the party
-                    party.removeCharacter(party.getCharacter(0));
-                }
-                // Add the selected character to the party
-                party.addCharacter(pair.second);
-                break; // Break after adding/replacing the character
+            if (pair.second) {
+                pair.second->getStats()->update(mousePos);
             }
         }
 
-        //Remove party members on right click
-        for (int i = 0; i < party.size(); i++) {
-            if (party.getCharacter(i)->idButtonIsClicked()) {
-                party.removeCharacter(party.getCharacter(i));
-            }
-        }
+        this->updateStatsSelection();
     }
 
-    void renderCharacterSelectionForParty(sf::RenderTarget* target) {
-        // Render all character buttons
-        int width = 1525;
-        int height = 50;
+    void renderStatsPanel(sf::RenderTarget* target)
+    {
         for (auto& pair : characters) {
-            if (!party.containsCharacter(pair.second)) {
-                pair.second->renderIdButton(target);
-                pair.second->setIdButtonPosition(width, height += 26);
-            }
-        }
-    }
-
-    void renderAllPartyButtons(sf::RenderTarget* target) {
-        party.renderPartyMembersButtons(target);
-    }
-
-    void renderAllPartyMembers(sf::RenderTarget* target) {
-        party.renderPartyMembers(target);
-    }
-
-    bool addCharacterToParty(const std::string& id) {
-        auto character = getCharacter(id);
-        if (character) {
-            return party.addCharacter(character);
-        }
-        return false;
-    }
-
-    bool removeCharacterFromParty(const std::string& id) {
-        auto character = getCharacter(id);
-        if (character) {
-            return party.removeCharacter(character);
-        }
-        return false;
-    }
-
-    Party& getParty() {
-        return party;
-    }
-
-    const std::vector<std::shared_ptr<Character>>& getAllPartyMembers() const {
-        return party.getAllCharacters();
-    }
-
-    //Button Functions
-    void initButtons() {
-        this->buttons["OPENPARTY"] = std::make_unique<Button>(1370, 775, 100, 25, 0.5f, "Party",
-            sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-        this->buttons["OPENSTATS"] = std::make_unique<Button>(1475, 775, 100, 25, 0.5f, "Stats",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    }
-
-    void renderButtons(sf::RenderTarget* target) {
-        //Render Character Manager Buttons
-        for (auto& pair : buttons) {
-            pair.second->render(target);
-        }
-
-        //Render Stats Buttons
-        int height = 20;
-        for (auto& pair : characters) {
-            if (pair.second) { // Check if pointer is valid
-                auto button = pair.second->getStats()->getButtons()[pair.second->getStats()->getButtonId()];
-                if (button) {
-                    button->setPosition(1705, height += 30);
-                }
-                else {
-                    std::cerr << "Button not found for ID: " << pair.second->getStats()->getButtonId() << std::endl;
-                }
-            }
-        }
-    }
-
-    void updateButtons(const sf::Vector2f mousePos) {
-        for (auto& it : this->buttons) {
-        if (it.second) { // Ensure button is valid
-            it.second->update(mousePos);
+            if (pair.second) {
+                pair.second->getStats()->render(target);
             }
         }
 
-        //Open the party or stats menus if they are currently hidden
-        if (this->buttons["OPENPARTY"] && this->buttons["OPENPARTY"]->isPressed()) {
-            this->partyHidden = !this->partyHidden;
-        }
+        this->positionStatsButtons();
+    }
 
-        if (this->buttons["OPENSTATS"] && this->buttons["OPENSTATS"]->isPressed()) {
-            this->statsHidden = !this->statsHidden;
-        }
-
-        // Select the button and display stats while hiding all other stats
+    void updateStatsSelection()
+    {
         this->passCountMax = static_cast<int>(characters.size());
+
         for (auto& pair : characters) {
             auto button = pair.second->getStats()->getButtons()[pair.second->getStats()->getButtonId()];
+
             if (button && button->isPressed()) {
                 this->clicked = true;
             }
@@ -238,13 +126,148 @@ public:
             if (this->passCount != this->passCountMax && this->clicked) {
                 pair.second->getStats()->getCurrentInstance() = false;
                 this->passCount++;
-            } else if (this->passCount == this->passCountMax) {
+            }
+            else if (this->passCount == this->passCountMax) {
                 pair.second->getStats()->getCurrentInstance() = true;
                 this->passCount = 0;
                 this->clicked = false;
             }
         }
     }
+
+    void positionStatsButtons()
+    {
+        int height = 20;
+
+        for (auto& pair : characters) {
+            if (pair.second) {
+                auto button = pair.second->getStats()->getButtons()[pair.second->getStats()->getButtonId()];
+
+                if (button) {
+                    button->setPosition(1705, height += 30);
+                }
+                else {
+                    std::cerr << "Button not found for ID: "
+                        << pair.second->getStats()->getButtonId()
+                        << std::endl;
+                }
+            }
+        }
+    }
+
+    // Party Functions
+    void updatePartyPanel(const sf::Vector2f& mousePos)
+    {
+        this->party.update(mousePos);
+        this->updateCharacterSelectionForParty(mousePos);
+    }
+
+    void renderPartyPanel(sf::RenderTarget* target)
+    {
+        this->party.render(target);
+        this->renderCharacterSelectionForParty(target);
+    }
+
+    void updateCharacterSelectionForParty(const sf::Vector2f& mousePos)
+    {
+        std::shared_ptr<Character> selectedCharacter = nullptr;
+
+        // Pass 1: update every inactive character button first.
+        for (auto& pair : characters) {
+            if (!pair.second || party.containsCharacter(pair.second)) {
+                continue;
+            }
+
+            pair.second->updateIdButton(mousePos);
+        }
+
+        // Pass 2: after all buttons know the current mouse state, pick only one.
+        for (auto& pair : characters) {
+            if (!pair.second || party.containsCharacter(pair.second)) {
+                continue;
+            }
+
+            if (pair.second->idButtonLeftClicked()) {
+                selectedCharacter = pair.second;
+                break;
+            }
+        }
+
+        if (selectedCharacter == nullptr) {
+            return;
+        }
+
+        if (party.isFull()) {
+            party.removeCharacter(party.getCharacter(0));
+        }
+
+        party.addCharacter(selectedCharacter);
+    }
+
+    void renderCharacterSelectionForParty(sf::RenderTarget* target)
+    {
+        int width = 1525;
+        int height = 50;
+
+        for (auto& pair : characters) {
+            if (!party.containsCharacter(pair.second)) {
+                int x = width;
+                int y = height += 26;
+
+                pair.second->setIdButtonPosition(x, y);
+                pair.second->renderIdButton(target);
+            }
+        }
+    }
+
+    void renderAllPartyButtons(sf::RenderTarget* target)
+    {
+        party.renderPartyMembersButtons(target);
+    }
+
+    void renderAllPartyMembers(sf::RenderTarget* target)
+    {
+        party.renderPartyMembers(target);
+    }
+
+    bool addCharacterToParty(const std::string& id)
+    {
+        auto character = getCharacter(id);
+
+        if (character) {
+            return party.addCharacter(character);
+        }
+
+        return false;
+    }
+
+    bool removeCharacterFromParty(const std::string& id)
+    {
+        auto character = getCharacter(id);
+
+        if (character) {
+            return party.removeCharacter(character);
+        }
+
+        return false;
+    }
+
+    Party& getParty()
+    {
+        return party;
+    }
+
+    const std::vector<std::shared_ptr<Character>>& getAllPartyMembers() const
+    {
+        return party.getAllCharacters();
+    }
+
+    void clearAllCharacterMoves()
+    {
+        for (auto& pair : characters) {
+            pair.second->clearMoves();
+        }
+    }
 };
 
-#endif // CHARACTER_MANAGER_H
+#endif

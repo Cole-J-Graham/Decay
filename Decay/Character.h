@@ -62,7 +62,11 @@ public:
     void resetCharacterFrame() { this->characterFrame = 0; }
     void setIdButtonPosition(int& x, int& y) { this->buttons[this->id]->setPosition(x, y); }
     void setSpritePosition(const float& x, const float& y) { this->character.setPosition(x, y); }
-    const bool& idButtonIsClicked() { return this->buttons[this->id]->isPressedRight(); }
+    //Helpers
+    void renderPreview(sf::RenderTarget* target, float x, float y);
+    bool idButtonIsClicked() const;
+    void updateIdButton(const sf::Vector2f mousePos);
+    bool idButtonLeftClicked() const;
 
     // Getters
     float& getDamage() { return this->damage; }

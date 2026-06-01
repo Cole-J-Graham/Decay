@@ -9,6 +9,7 @@ TravelState::TravelState(sf::RenderWindow* window, std::stack<State*>* states)
     this->combat = new CombatState(window, states);
     this->music = std::make_unique<MusicPlayer>("Assets/Music/music_list.txt");
     this->travelInput = std::make_unique<TravelInputComponent>();
+    this->travelHud = std::make_unique<TravelHudComponent>();
 
     this->combatChanceMin = 1;
     this->combatChanceMax = 11;
@@ -35,7 +36,9 @@ void TravelState::update()
     this->updateMousePositions();
 
     this->updateTravelInputVisibility();
+
     this->travelInput->update(this->getMousePosView());
+    this->travelHud->update(this->getMousePosView());
 
     this->map->update(
         this->getMousePosView(),
@@ -46,16 +49,31 @@ void TravelState::update()
     this->updateTravelInputVisibility();
     this->updateTravelActions();
 
-    CharacterManager::getInstance().updateAll(this->getMousePosView());
+    if (this->travelHud->partyPanelVisible()) {
+        CharacterManager::getInstance().updatePartyPanel(this->getMousePosView());
+    }
+
+    if (this->travelHud->statsPanelVisible()) {
+        CharacterManager::getInstance().updateStatsPanel(this->getMousePosView());
+    }
 }
 
 void TravelState::render(sf::RenderTarget* target)
 {
-    CharacterManager::getInstance().renderAllStats(target);
     this->map->render(target);
     this->renderRects(target);
     this->music->render(target);
+
+    if (this->travelHud->partyPanelVisible()) {
+        CharacterManager::getInstance().renderPartyPanel(target);
+    }
+
+    if (this->travelHud->statsPanelVisible()) {
+        CharacterManager::getInstance().renderStatsPanel(target);
+    }
+
     this->travelInput->render(target);
+    this->travelHud->render(target);
 }
 
 //Travel Functions

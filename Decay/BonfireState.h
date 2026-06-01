@@ -21,6 +21,7 @@ public:
 private:
     // UI Functions
     void initUi();
+    void renderPartyPreview(sf::RenderTarget* target);
 
     // Bonfire Functions
     void restParty();
@@ -29,6 +30,7 @@ private:
 
 private:
     UiPanel ui;
+
 };
 
 #endif

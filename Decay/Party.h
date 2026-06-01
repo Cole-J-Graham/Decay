@@ -18,6 +18,7 @@ public:
     //Management Functions
     bool addCharacter(const std::shared_ptr<Character>& character);
     bool removeCharacter(const std::shared_ptr<Character>& character);
+    void removePartyMemberOnRightClick();
 
     //Party Functions
     void renderPartyMembers(sf::RenderTarget* target);

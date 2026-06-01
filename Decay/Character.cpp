@@ -259,3 +259,49 @@ std::string Character::toStringWithPrecision(double value, int precision)
     out << std::fixed << std::setprecision(precision) << value;
     return out.str();
 }
+
+//Helpers
+void Character::renderPreview(sf::RenderTarget* target, float x, float y)
+{
+    if (target == nullptr) {
+        return;
+    }
+
+    const sf::Vector2f oldPosition = this->character.getPosition();
+
+    this->character.setPosition(x, y);
+    target->draw(this->character);
+
+    this->character.setPosition(oldPosition);
+}
+
+bool Character::idButtonIsClicked() const
+{
+    auto it = this->buttons.find(this->id);
+
+    if (it == this->buttons.end() || it->second == nullptr) {
+        return false;
+    }
+
+    return it->second->isPressedRight();
+}
+
+void Character::updateIdButton(const sf::Vector2f mousePos)
+{
+    auto it = this->buttons.find(this->id);
+
+    if (it != this->buttons.end() && it->second != nullptr) {
+        it->second->update(mousePos);
+    }
+}
+
+bool Character::idButtonLeftClicked() const
+{
+    auto it = this->buttons.find(this->id);
+
+    if (it == this->buttons.end() || it->second == nullptr) {
+        return false;
+    }
+
+    return it->second->isPressed();
+}

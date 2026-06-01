@@ -51,18 +51,27 @@ bool Party::removeCharacter(const std::shared_ptr<Character>& character)
     return false;
 }
 
-// Party Functions
-void Party::renderPartyMembers(sf::RenderTarget* target)
+void Party::removePartyMemberOnRightClick()
 {
-    for (int i = 0; i < party.size(); i++) {
-        party[i]->render(target);
+    for (int i = 0; i < static_cast<int>(party.size()); i++) {
+        if (party[i] && party[i]->idButtonIsClicked()) {
+            this->removeCharacter(party[i]);
+            return;
+        }
     }
 }
 
-void Party::updatePartyMembers(const sf::Vector2f mousePos)
+// Party Functions
+void Party::renderPartyMembers(sf::RenderTarget* target)
 {
-    for (int i = 0; i < party.size(); i++) {
-        party[i]->update(mousePos);
+    if (target == nullptr) {
+        return;
+    }
+
+    for (int i = 0; i < static_cast<int>(party.size()); i++) {
+        if (party[i]) {
+            party[i]->render(target);
+        }
     }
 }
 
@@ -71,10 +80,24 @@ void Party::renderPartyMembersButtons(sf::RenderTarget* target)
     int width = 1401;
     int height = 50;
 
-    for (int i = 0; i < party.size(); i++) {
+    for (int i = 0; i < static_cast<int>(party.size()); i++) {
+        int x = width;
+        int y = height += 26;
+
+        party[i]->setIdButtonPosition(x, y);
         party[i]->renderIdButton(target);
-        party[i]->setIdButtonPosition(width, height += 26);
     }
+}
+
+void Party::updatePartyMembers(const sf::Vector2f mousePos)
+{
+    for (int i = 0; i < static_cast<int>(party.size()); i++) {
+        if (party[i]) {
+            party[i]->updateIdButton(mousePos);
+        }
+    }
+
+    this->removePartyMemberOnRightClick();
 }
 
 void Party::updateFramePositions()
