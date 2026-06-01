@@ -161,6 +161,8 @@
     <ClCompile Include="CombatState.cpp" />
     <ClCompile Include="DialogueInputComponent.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyDatabase.cpp" />
+    <ClCompile Include="EnemyMoveDatabase.cpp" />
     <ClCompile Include="EntityMove.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -201,6 +203,9 @@
     <ClInclude Include="DialogueInputComponent.h" />
     <ClInclude Include="EncounterResult.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyDatabase.h" />
+    <ClInclude Include="EnemyMoveDatabase.h" />
+    <ClInclude Include="EnemyTypes.h" />
     <ClInclude Include="EntityMove.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="Game.h" />

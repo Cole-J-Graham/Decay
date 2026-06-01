@@ -1,4 +1,7 @@
-#include"Game.h"
+#include "Game.h"
+
+#include "EnemyDatabase.h"
+#include "EnemyMoveDatabase.h"
 #include"Inventory.h"
 
 //Constructor and Destructors
@@ -7,6 +10,9 @@ Game::Game()
 	AssetDatabase::getInstance().loadFromFile("Assets/Data/assets.db");
 	SfxManager::getInstance().loadFromFile("Assets/Data/sfx.db");
 	Inventory::getInstance().loadItemDefinitionsFromFile("Assets/Data/inventory.db");
+
+	EnemyMoveDatabase::getInstance().loadFromFile("Assets/Data/enemy_moves.db");
+	EnemyDatabase::getInstance().loadFromFile("Assets/Data/enemies.db");
 
 	this->initWindow();
 	this->initStates();

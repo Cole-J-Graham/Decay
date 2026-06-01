@@ -1,0 +1,4 @@
+id|message|sfxId|damageMultiplier
+CLAW|The creature tears into the party with sharp claws!|bash_light|1.0
+BITE|The creature lunges forward and bites viciously!|bash_light|1.25
+WEAK_SWIPE|The creature makes a clumsy swipe!|bash_light|0.75

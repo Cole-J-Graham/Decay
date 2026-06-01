@@ -1,5 +1,8 @@
 #include "CombatComponent.h"
 
+#include "EnemyDatabase.h"
+#include "EnemyMoveDatabase.h"
+
 #include <iostream>
 
 // Constructors and Destructors
@@ -8,8 +11,6 @@ CombatComponent::CombatComponent()
     this->enemyId = "";
     this->currentArea = "FOREST";
     this->movesInitialized = false;
-
-    this->initEnemyDefinitions();
 }
 
 CombatComponent::~CombatComponent()
@@ -112,70 +113,6 @@ void CombatComponent::renderCharacters(sf::RenderTarget* target)
 }
 
 // Enemy Functions
-void CombatComponent::initEnemyDefinitions()
-{
-    this->enemyDefinitions = {
-        {
-            "WOLF",
-            "Wolf",
-            25.f,
-            25.f,
-            5.f,
-            5.f,
-            0.195f,
-            "Assets/HostileSprites/wolfsprite.png",
-            "Assets/Entities/wolfEntity.jpeg",
-            {
-                {
-                    { "SMITHING_STONE", 1 }
-                },
-                { 20, 35 },
-                { 100, 150 }
-            },
-            { "Forest" }
-        },
-        {
-            "WALKER",
-            "Walker",
-            35.f,
-            35.f,
-            5.f,
-            5.f,
-            0.195f,
-            "Assets/HostileSprites/decaywalkersprite.jpeg",
-            "Assets/Entities/decayEntity.jpeg",
-            {
-                {
-                    { "HEALTH_POTION", 1 },
-                    { "SMITHING_STONE", 1 }
-                },
-                { 35, 55 },
-                { 200, 250 }
-            },
-            { "Forest" }
-        },
-        {
-            "PHANTOM",
-            "Phantom",
-            40.f,
-            40.f,
-            5.f,
-            5.f,
-            0.195f,
-            "Assets/HostileSprites/phantomSprite.jpeg",
-            "Assets/Entities/phantomEntity.jpeg",
-            {
-                {
-                    { "SMITHING_STONE", 2 }
-                },
-                { 60, 90 },
-                { 275, 350 }
-            },
-            { "Forest" }
-        }
-    };
-}
-
 void CombatComponent::renderEnemies(sf::RenderTarget* target)
 {
     for (auto& it : this->enemies) {
@@ -187,14 +124,16 @@ void CombatComponent::renderEnemies(sf::RenderTarget* target)
 
 bool CombatComponent::enemyPool(const std::string& currentArea)
 {
-    if (this->enemyDefinitions.empty()) {
-        std::cerr << "Enemy pool is empty. No enemy spawned." << "\n";
+    const auto& enemyDefinitions = EnemyDatabase::getInstance().getAllEnemies();
+
+    if (enemyDefinitions.empty()) {
+        std::cerr << "Enemy database is empty. No enemy spawned." << "\n";
         return false;
     }
 
     std::vector<const EnemyDefinition*> validEnemies;
 
-    for (const auto& enemy : this->enemyDefinitions) {
+    for (const auto& enemy : enemyDefinitions) {
         const bool canSpawnHere =
             std::find(enemy.spawnAreas.begin(), enemy.spawnAreas.end(), currentArea) != enemy.spawnAreas.end();
 
@@ -263,37 +202,67 @@ void CombatComponent::initEnemyMoves()
         return;
     }
 
-    this->enemies[this->enemyId]->createMove(
-        0,
-        "The creature uses its razor sharp claws to attack!",
-        [this]() {
-            auto& party = CharacterManager::getInstance().getParty();
+    Enemy* enemy = this->enemies[this->enemyId];
 
-            if (party.size() <= 0) {
-                std::cerr << "Enemy attack failed. Party is empty." << "\n";
-                return;
-            }
+    const EnemyDefinition* activeEnemyDefinition =
+        EnemyDatabase::getInstance().getEnemy(this->enemyId);
 
-            std::random_device dev;
-            std::mt19937 rng(dev());
-            std::uniform_int_distribution<int> dist(0, static_cast<int>(party.size()) - 1);
+    if (activeEnemyDefinition == nullptr) {
+        std::cerr << "Cannot initialize enemy moves. Enemy definition not found: "
+            << this->enemyId << "\n";
+        return;
+    }
 
-            auto targetCharacter = party.getCharacter(dist(rng));
+    int moveIndex = 0;
 
-            if (targetCharacter == nullptr) {
-                std::cerr << "Enemy attack failed. Target was null." << "\n";
-                return;
-            }
+    for (const auto& moveId : activeEnemyDefinition->moveIds) {
+        const EnemyMoveDefinition* moveDefinition =
+            EnemyMoveDatabase::getInstance().getMove(moveId);
 
-            targetCharacter->takeDamage(this->enemies[this->enemyId]->getDamage());
+        if (moveDefinition == nullptr) {
+            std::cerr << "Enemy move definition not found: " << moveId << "\n";
+            continue;
+        }
 
-            const sf::Vector2f hitPosition = targetCharacter->getHitEffectPosition();
-            this->playEnemyAttackAnimationAt(hitPosition.x, hitPosition.y);
+        enemy->createMove(
+            moveIndex,
+            moveDefinition->message,
+            [this, moveDefinition]() {
+                auto& party = CharacterManager::getInstance().getParty();
 
-            std::cout << "Enemy attacked " << targetCharacter->getId() << "\n";
-        },
-        "bash_light"
-    );
+                if (party.size() <= 0) {
+                    std::cerr << "Enemy attack failed. Party is empty." << "\n";
+                    return;
+                }
+
+                std::random_device dev;
+                std::mt19937 rng(dev());
+                std::uniform_int_distribution<int> dist(0, static_cast<int>(party.size()) - 1);
+
+                auto targetCharacter = party.getCharacter(dist(rng));
+
+                if (targetCharacter == nullptr) {
+                    std::cerr << "Enemy attack failed. Target was null." << "\n";
+                    return;
+                }
+
+                const float finalDamage =
+                    this->enemies[this->enemyId]->getDamage() * moveDefinition->damageMultiplier;
+
+                targetCharacter->takeDamage(finalDamage);
+
+                const sf::Vector2f hitPosition = targetCharacter->getHitEffectPosition();
+                this->playEnemyAttackAnimationAt(hitPosition.x, hitPosition.y);
+
+                std::cout << "Enemy used " << moveDefinition->id
+                    << " on " << targetCharacter->getId()
+                    << " for " << finalDamage << " damage." << "\n";
+            },
+            moveDefinition->sfxId
+        );
+
+        moveIndex++;
+    }
 }
 
 // Combat Cleanup Functions

@@ -106,6 +106,12 @@
     <ClCompile Include="RewardSystem.cpp">
       <Filter>Inventory</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyDatabase.cpp">
+      <Filter>Resources\Databases</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyMoveDatabase.cpp">
+      <Filter>Resources\Databases</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
@@ -222,6 +228,15 @@
     <ClInclude Include="RewardTypes.h">
       <Filter>Inventory</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyDatabase.h">
+      <Filter>Resources\Databases</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyMoveDatabase.h">
+      <Filter>Resources\Databases</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyTypes.h">
+      <Filter>Combat\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="States">
@@ -277,6 +292,9 @@
     </Filter>
     <Filter Include="Inventory">
       <UniqueIdentifier>{79c8f958-33f0-4b49-b5af-c572e02dcc75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Databases">
+      <UniqueIdentifier>{f868ef38-1a69-4a2f-943f-2a0443ab4957}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

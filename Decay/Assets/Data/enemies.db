@@ -1,0 +1,4 @@
+id|name|hp|hpMax|damage|defense|scale|spritePath|viewerPath|items|goldMin|goldMax|expMin|expMax|moves|spawnAreas
+WOLF|Wolf|25|25|5|5|0.195|Assets/HostileSprites/wolfsprite.png|Assets/Entities/wolfEntity.jpeg|SMITHING_STONE:1|20|35|100|150|CLAW,BITE|Forest
+WALKER|Walker|35|35|5|5|0.195|Assets/HostileSprites/decaywalkersprite.jpeg|Assets/Entities/decayEntity.jpeg|HEALTH_POTION:1,SMITHING_STONE:1|35|55|200|250|CLAW,WEAK_SWIPE|Forest
+PHANTOM|Phantom|40|40|5|5|0.195|Assets/HostileSprites/phantomSprite.jpeg|Assets/Entities/phantomEntity.jpeg|SMITHING_STONE:2|60|90|275|350|WEAK_SWIPE,BITE|Forest

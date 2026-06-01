@@ -12,24 +12,7 @@
 // Entities
 #include "CharacterManager.h"
 #include "Enemy.h"
-
-struct EnemyDefinition
-{
-    std::string id;
-    std::string name;
-
-    float hp;
-    float hpMax;
-    float damage;
-    float defense;
-    float scale;
-
-    std::string spritePath;
-    std::string viewerPath;
-
-    RewardBundle rewards;
-    std::vector<std::string> spawnAreas;
-};
+#include "EnemyTypes.h"
 
 class CombatComponent
 {
@@ -72,7 +55,6 @@ public:
     std::map<std::string, Enemy*> enemies;
 
 private:
-    void initEnemyDefinitions();
     void playHitAnimationAt(float x, float y, float scaleX = 3.f, float scaleY = 3.f);
     void playEnemyAttackAnimationAt(float x, float y);
     void playSlashAnimation();
@@ -82,7 +64,7 @@ private:
     std::string enemyId;
     std::string currentArea = "FOREST";
 
-    std::vector<EnemyDefinition> enemyDefinitions;
+    std::vector<EnemyMoveDefinition> enemyMoveDefinitions;
 
     bool movesInitialized;
 };
