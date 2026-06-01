@@ -1,4 +1,11 @@
 #include "EventManager.h"
+
+namespace
+{
+    constexpr float EVENT_PORTRAIT_X = 25.f;
+    constexpr float EVENT_PORTRAIT_Y = 585.f;
+}
+
 //Constructors and Deconstructors
 EventManager::EventManager(std::string& areaName)
 {
@@ -39,8 +46,23 @@ void EventManager::update(sf::Vector2f mousePos)
 
 void EventManager::render(sf::RenderTarget* target)
 {
+    if (target == nullptr) {
+        return;
+    }
+
     this->dialogueInput->render(target);
-    if (!this->inChar.empty()) { CharacterManager::getInstance().getCharacter(this->inChar)->render(target); };
+
+    if (this->inChar.empty()) {
+        return;
+    }
+
+    auto character = CharacterManager::getInstance().getCharacter(this->inChar);
+
+    if (character == nullptr) {
+        return;
+    }
+
+    character->renderPreview(target, EVENT_PORTRAIT_X, EVENT_PORTRAIT_Y);
 }
 
 //Event Functions
