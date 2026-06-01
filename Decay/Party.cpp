@@ -115,6 +115,28 @@ void Party::updateFramePositions()
     }
 }
 
+void Party::restParty()
+{
+    for (auto& character : this->party) {
+        if (character) {
+            character->rest();
+        }
+    }
+}
+
+void Party::addExpToParty(float amount)
+{
+    if (amount <= 0.f) {
+        return;
+    }
+
+    for (auto& character : this->party) {
+        if (character) {
+            character->addExp(amount);
+        }
+    }
+}
+
 // UI Functions
 void Party::initUi()
 {

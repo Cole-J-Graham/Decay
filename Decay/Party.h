@@ -25,6 +25,8 @@ public:
     void updatePartyMembers(const sf::Vector2f mousePos);
     void renderPartyMembersButtons(sf::RenderTarget* target);
     void updateFramePositions();
+    void restParty();
+    void addExpToParty(float amount);
 
     //Getters
     std::shared_ptr<Character> getCharacter(int index) const;

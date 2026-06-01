@@ -1,5 +1,7 @@
 #include "CombatState.h"
 
+#include "RewardSystem.h"
+
 #include <iostream>
 
 // Constructors and Destructors
@@ -96,11 +98,69 @@ void CombatState::beginCombatEnd()
     this->resetAllCharacterTurns();
 
     auto it = this->enemies.find(this->getEnemyId());
+
+    std::ostringstream rewardMessage;
+    rewardMessage << "Enemy defeated.";
+
     if (it != this->enemies.end() && it->second != nullptr) {
         it->second->resetTurn();
+
+        RewardResult rewards = RewardSystem::grantRewards(
+            it->second->getRewards(),
+            Inventory::getInstance()
+        );
+
+        if (rewards.expGranted > 0) {
+            CharacterManager::getInstance().addExpToParty(static_cast<float>(rewards.expGranted));
+        }
+
+        if (rewards.anyRewardGranted) {
+            rewardMessage << " Received ";
+
+            bool firstReward = true;
+
+            if (rewards.goldGranted > 0) {
+                rewardMessage << "Gold x" << rewards.goldGranted;
+                firstReward = false;
+            }
+
+            if (rewards.expGranted > 0) {
+                if (!firstReward) {
+                    rewardMessage << ", ";
+                }
+
+                rewardMessage << "EXP x" << rewards.expGranted;
+                firstReward = false;
+            }
+
+            for (const auto& reward : rewards.grantedRewards) {
+                const Inventory::ItemDefinition* definition =
+                    Inventory::getInstance().getItemDefinition(reward.itemId);
+
+                std::string itemName = reward.itemId;
+
+                if (definition != nullptr) {
+                    itemName = definition->displayName;
+                }
+
+                if (!firstReward) {
+                    rewardMessage << ", ";
+                }
+
+                rewardMessage << itemName << " x" << reward.quantity;
+                firstReward = false;
+            }
+
+            rewardMessage << ".";
+        }
+        else {
+            rewardMessage << " No rewards received.";
+        }
     }
 
-    this->ui.text("COMBAT_MESSAGE").setString("Enemy defeated. Click to continue...");
+    rewardMessage << " Click to continue...";
+
+    this->ui.text("COMBAT_MESSAGE").setString(rewardMessage.str());
     this->ui.text("COMBAT_MESSAGE").setShown();
 
     this->enableCombatConsoleContinue();

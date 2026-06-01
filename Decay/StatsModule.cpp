@@ -85,6 +85,16 @@ void StatsModule::increaseLevel() {
     }
 }
 
+void StatsModule::addExp(float amount)
+{
+    if (amount <= 0.f) {
+        return;
+    }
+
+    this->exp += amount;
+    this->updateText();
+}
+
 // Rectangle Functions
 void StatsModule::initRects() {
     this->rectangles["STATSMENU"] = std::make_unique<Rectangle>(1400, 50, 300, 600, sf::Color::Transparent,

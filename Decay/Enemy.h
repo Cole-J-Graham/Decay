@@ -11,6 +11,7 @@
 #include "Button.h"
 #include "ViewerModule.h"
 #include "EntityMove.h"
+#include "RewardTypes.h"
 
 class Enemy
 {
@@ -19,7 +20,7 @@ public:
     Enemy() {};
     Enemy(std::string enemyName, float hp, float hpMax, float damage, float defense,
         float scale, std::string enemyTexture, std::string enemyView,
-        float reward, bool turnActive);
+        const RewardBundle& rewards, bool turnActive);
     ~Enemy();
 
     // Core Functions
@@ -86,7 +87,7 @@ public:
     int& getEnemyFrame() { return this->enemyFrame; }
     float& getDamage() { return this->damage; }
     float& getHp() { return this->hp; }
-    float getReward() const { return this->reward; }
+    const RewardBundle& getRewards() const { return this->rewards; }
 
 private:
     // Enemy Variables
@@ -94,7 +95,7 @@ private:
     float hpMax;
     float damage;
     float defense;
-    float reward;
+    RewardBundle rewards;
 
     // Asset Variables
     int enemyMoveRangeMin;

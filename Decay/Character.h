@@ -62,11 +62,20 @@ public:
     void resetCharacterFrame() { this->characterFrame = 0; }
     void setIdButtonPosition(int& x, int& y) { this->buttons[this->id]->setPosition(x, y); }
     void setSpritePosition(const float& x, const float& y) { this->character.setPosition(x, y); }
+    void addExp(float amount)
+    {
+        if (this->stats) {
+            this->stats->addExp(amount);
+        }
+    }
+
     //Helpers
     void renderPreview(sf::RenderTarget* target, float x, float y);
     bool idButtonIsClicked() const;
     void updateIdButton(const sf::Vector2f mousePos);
     bool idButtonLeftClicked() const;
+    void takeDamage(float amount);
+    void heal(float amount);
 
     // Getters
     float& getDamage() { return this->damage; }
@@ -77,6 +86,11 @@ public:
     int& getCoolDown() { return this->coolDown; }
     int& getCharacterFrame() { return this->characterFrame; }
     bool& isTurnActive() { return this->turnActive; }
+
+    // Resting / Recovery
+    void rest();
+    bool isAlive() const { return this->hp > 0.f; }
+
     sf::Vector2f getHitEffectPosition() const
     {
         return sf::Vector2f(

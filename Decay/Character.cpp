@@ -142,6 +142,14 @@ void Character::continueTurn(int& combatFrame)
     combatFrame++;
 }
 
+void Character::rest()
+{
+    this->hp = this->hpMax;
+    this->coolDown = 0;
+    this->resetTurn();
+    this->updateText();
+}
+
 // Button Functions
 void Character::updateButtons(const sf::Vector2f mousePos)
 {
@@ -304,4 +312,34 @@ bool Character::idButtonLeftClicked() const
     }
 
     return it->second->isPressed();
+}
+
+void Character::takeDamage(float amount)
+{
+    if (amount <= 0.f) {
+        return;
+    }
+
+    this->hp -= amount;
+
+    if (this->hp < 0.f) {
+        this->hp = 0.f;
+    }
+
+    this->updateText();
+}
+
+void Character::heal(float amount)
+{
+    if (amount <= 0.f) {
+        return;
+    }
+
+    this->hp += amount;
+
+    if (this->hp > this->hpMax) {
+        this->hp = this->hpMax;
+    }
+
+    this->updateText();
 }

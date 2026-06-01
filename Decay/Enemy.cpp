@@ -2,14 +2,22 @@
 
 // Constructors and Deconstructors
 Enemy::Enemy(std::string enemyName, float hp, float hpMax, float damage, float defense,
-    float scale, std::string enemyTexture, std::string enemyView, float reward, bool turnActive)
+    float scale, std::string enemyTexture, std::string enemyView,
+    const RewardBundle& rewards, bool turnActive)
+    : enemyName(enemyName),
+    hp(hp),
+    hpMax(hpMax),
+    damage(damage),
+    defense(defense),
+    rewards(rewards),
+    turnActive(turnActive)
 {
     this->hp = hp;
     this->hpMax = hpMax;
     this->damage = damage;
     this->defense = defense;
     this->enemyName = enemyName;
-    this->reward = reward;
+    this->rewards = rewards;
 
     this->enemyMoveRangeMin = 0;
     this->enemyMoveRangeMax = -1;
@@ -190,6 +198,11 @@ void Enemy::renderText(sf::RenderTarget* target)
 
 void Enemy::updateText()
 {
+    if (this->hp <= 0.f) {
+        this->text["HP"]->setString("DEFEATED");
+        return;
+    }
+
     this->text["HP"]->setString(
         "HP: " + toStringWithPrecision(this->hp) + "/" + toStringWithPrecision(this->hpMax)
     );

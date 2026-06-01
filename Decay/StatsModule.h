@@ -25,6 +25,7 @@ public:
 
 	//Stat Modifiers
 	void increaseLevel();
+	void addExp(float amount);
 
 	//Rectangle Functions
 	void initRects();

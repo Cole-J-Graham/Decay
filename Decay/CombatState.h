@@ -6,6 +6,7 @@
 // Modules
 #include "CombatComponent.h"
 #include "UiPanel.h"
+#include "RewardSystem.h"
 
 class CombatState : public State, public CombatComponent
 {

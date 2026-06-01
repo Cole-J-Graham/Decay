@@ -115,9 +115,64 @@ void CombatComponent::renderCharacters(sf::RenderTarget* target)
 void CombatComponent::initEnemyDefinitions()
 {
     this->enemyDefinitions = {
-        { "WOLF", "Wolf", 25.f, 25.f, 5.f, 5.f, 0.195f, "Assets/HostileSprites/wolfsprite.png", "Assets/Entities/wolfEntity.jpeg", 112.f, { "Forest" } },
-        { "WALKER", "Walker", 35.f, 35.f, 5.f, 5.f, 0.195f, "Assets/HostileSprites/decaywalkersprite.jpeg", "Assets/Entities/decayEntity.jpeg", 120.f, { "Forest" } },
-        { "PHANTOM", "Phantom", 40.f, 40.f, 5.f, 5.f, 0.195f, "Assets/HostileSprites/phantomSprite.jpeg", "Assets/Entities/phantomEntity.jpeg", 105.f, { "Forest" } }
+        {
+            "WOLF",
+            "Wolf",
+            25.f,
+            25.f,
+            5.f,
+            5.f,
+            0.195f,
+            "Assets/HostileSprites/wolfsprite.png",
+            "Assets/Entities/wolfEntity.jpeg",
+            {
+                {
+                    { "SMITHING_STONE", 1 }
+                },
+                { 20, 35 },
+                { 100, 150 }
+            },
+            { "Forest" }
+        },
+        {
+            "WALKER",
+            "Walker",
+            35.f,
+            35.f,
+            5.f,
+            5.f,
+            0.195f,
+            "Assets/HostileSprites/decaywalkersprite.jpeg",
+            "Assets/Entities/decayEntity.jpeg",
+            {
+                {
+                    { "HEALTH_POTION", 1 },
+                    { "SMITHING_STONE", 1 }
+                },
+                { 35, 55 },
+                { 200, 250 }
+            },
+            { "Forest" }
+        },
+        {
+            "PHANTOM",
+            "Phantom",
+            40.f,
+            40.f,
+            5.f,
+            5.f,
+            0.195f,
+            "Assets/HostileSprites/phantomSprite.jpeg",
+            "Assets/Entities/phantomEntity.jpeg",
+            {
+                {
+                    { "SMITHING_STONE", 2 }
+                },
+                { 60, 90 },
+                { 275, 350 }
+            },
+            { "Forest" }
+        }
     };
 }
 
@@ -171,7 +226,7 @@ bool CombatComponent::enemyPool(const std::string& currentArea)
         selectedEnemy.scale,
         selectedEnemy.spritePath,
         selectedEnemy.viewerPath,
-        selectedEnemy.reward,
+        selectedEnemy.rewards,
         false
     );
 
@@ -230,7 +285,7 @@ void CombatComponent::initEnemyMoves()
                 return;
             }
 
-            targetCharacter->getHp() -= this->enemies[this->enemyId]->getDamage();
+            targetCharacter->takeDamage(this->enemies[this->enemyId]->getDamage());
 
             const sf::Vector2f hitPosition = targetCharacter->getHitEffectPosition();
             this->playEnemyAttackAnimationAt(hitPosition.x, hitPosition.y);

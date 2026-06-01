@@ -1,61 +1,91 @@
 #pragma once
 
-#include <vector>
 #include <string>
-#include <memory>
+#include <unordered_map>
+#include <vector>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
-// Singleton class for managing the player's inventory
-class Inventory {
+class Inventory
+{
 public:
-    // Nested Item class
-    class Item {
-    public:
-        // Constructor
-        Item(const std::string& name, int quantity)
-            : name(name), quantity(quantity) {}
-
-        // Getters
-        std::string getName() const { return name; }
-        int getQuantity() const { return quantity; }
-
-        // Setters
-        void setQuantity(int qty) { quantity = qty; }
-
-    private:
-        std::string name;
-        int quantity;
+    enum class ItemCategory
+    {
+        Material,
+        Consumable,
+        Equipment,
+        KeyItem,
+        QuestItem,
+        Misc
     };
 
-    // Static method to access the singleton instance
-    static Inventory& getInstance() {
-        static Inventory instance;
-        return instance;
-    }
+    struct ItemDefinition
+    {
+        std::string id;
+        std::string displayName;
+        std::string description;
 
-    // Delete copy constructor and assignment operator
+        ItemCategory category = ItemCategory::Misc;
+
+        int maxStack = 99;
+        bool usable = false;
+        bool keyItem = false;
+    };
+
+    struct ItemStack
+    {
+        std::string itemId;
+        int quantity = 0;
+    };
+
+public:
+    // Compatibility singleton.
+    // This lets your current states/systems access Inventory easily for now.
+    static Inventory& getInstance();
+
+    // Keep constructor public so this can later move into GameContext cleanly.
+    Inventory() = default;
+
     Inventory(const Inventory&) = delete;
-    void operator=(const Inventory&) = delete;
+    Inventory& operator=(const Inventory&) = delete;
 
-    // Add an item to the inventory
-    void addItem(const Item& item) {
-        inventory.push_back(item);
-    }
+    // Definition functions
+    bool registerItem(const ItemDefinition& definition);
+    bool isItemRegistered(const std::string& itemId) const;
+    const ItemDefinition* getItemDefinition(const std::string& itemId) const;
 
-    // Remove an item from the inventory by name
-    void removeItem(const std::string& itemName) {
-        inventory.erase(
-            std::remove_if(inventory.begin(), inventory.end(),
-                [&](const Item& item) { return item.getName() == itemName; }),
-            inventory.end());
-    }
+    // Inventory functions
+    bool loadItemDefinitionsFromFile(const std::string& filePath);
+    bool addItem(const std::string& itemId, int quantity = 1);
+    bool removeItem(const std::string& itemId, int quantity = 1);
+    bool consumeItem(const std::string& itemId, int quantity = 1);
+    void addGold(int amount);
+    void addExperience(int amount);
 
-    // Get the list of items in the inventory
-    const std::vector<Item>& getItems() const { return inventory; }
+    int getGold() const;
+    int getExperience() const;
+
+    bool hasItem(const std::string& itemId, int quantity = 1) const;
+    int getQuantity(const std::string& itemId) const;
+
+    bool isEmpty() const;
+    void clear();
+
+    // Useful for UI / save systems
+    std::vector<ItemStack> getAllStacks() const;
+    std::vector<ItemStack> getStacksByCategory(ItemCategory category) const;
 
 private:
-    // Private constructor for singleton pattern
-    Inventory() {}
+    ItemCategory stringToCategory(const std::string& category) const;
+    bool stringToBool(const std::string& value) const;
+    bool isValidQuantity(int quantity) const;
+    int getMaxStackForItem(const std::string& itemId) const;
 
-    // Inventory data
-    std::vector<Item> inventory;
+private:
+    int gold = 0;
+    int experience = 0;
+
+    std::unordered_map<std::string, ItemDefinition> itemDefinitions;
+    std::unordered_map<std::string, int> itemQuantities;
 };

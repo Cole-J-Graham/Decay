@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include "AnimationEffectManager.h"
+#include "RewardTypes.h"
 
 // Entities
 #include "CharacterManager.h"
@@ -26,8 +27,7 @@ struct EnemyDefinition
     std::string spritePath;
     std::string viewerPath;
 
-    float reward;
-
+    RewardBundle rewards;
     std::vector<std::string> spawnAreas;
 };
 

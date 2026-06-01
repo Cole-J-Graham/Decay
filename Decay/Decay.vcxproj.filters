@@ -58,9 +58,6 @@
     <ClCompile Include="Party.cpp">
       <Filter>Character\CharacterManagement</Filter>
     </ClCompile>
-    <ClCompile Include="Inventory.cpp">
-      <Filter>Character\CharacterManagement</Filter>
-    </ClCompile>
     <ClCompile Include="UiPanel.cpp">
       <Filter>Resources\UI</Filter>
     </ClCompile>
@@ -102,6 +99,12 @@
     </ClCompile>
     <ClCompile Include="TravelHudComponent.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="RewardSystem.cpp">
+      <Filter>Inventory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -162,9 +165,6 @@
     <ClInclude Include="Party.h">
       <Filter>Character\CharacterManagement</Filter>
     </ClInclude>
-    <ClInclude Include="Inventory.h">
-      <Filter>Character\CharacterManagement</Filter>
-    </ClInclude>
     <ClInclude Include="UiPanel.h">
       <Filter>Resources\UI</Filter>
     </ClInclude>
@@ -212,6 +212,15 @@
     </ClInclude>
     <ClInclude Include="TravelHudComponent.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="RewardSystem.h">
+      <Filter>Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="RewardTypes.h">
+      <Filter>Inventory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -265,6 +274,9 @@
     </Filter>
     <Filter Include="Resources\UI\CoreUI">
       <UniqueIdentifier>{8ec78b2b-c7dc-4893-892a-70e5d6dbc905}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inventory">
+      <UniqueIdentifier>{79c8f958-33f0-4b49-b5af-c572e02dcc75}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

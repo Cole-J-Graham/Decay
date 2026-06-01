@@ -38,10 +38,10 @@ void InitializeCharacters::initCharacters()
 void InitializeCharacters::initStats()
 {
     CharacterManager::getInstance().getCharacter("PLAYER")->getStats()->createStat("STRENGTH", "STR", "Damage", CharacterManager::getInstance().getCharacter("PLAYER")->getDamage(), 1.4);
-    CharacterManager::getInstance().getCharacter("PLAYER")->getStats()->createStat("VITALITY", "VIT", "Health", CharacterManager::getInstance().getCharacter("PLAYER")->getHp(), 1.5);
+    CharacterManager::getInstance().getCharacter("PLAYER")->getStats()->createStat("VITALITY", "VIT", "Health", CharacterManager::getInstance().getCharacter("PLAYER")->getHpMax(), 1.5);
     CharacterManager::getInstance().getCharacter("PLAYER")->getStats()->createStat("DEFENSE", "DEF", "Defense", CharacterManager::getInstance().getCharacter("PLAYER")->getDefense(), 1.5);
 
     CharacterManager::getInstance().getCharacter("ZIN")->getStats()->createStat("STRENGTH", "STR", "Damage", CharacterManager::getInstance().getCharacter("ZIN")->getDamage(), 1.4);
-    CharacterManager::getInstance().getCharacter("ZIN")->getStats()->createStat("VITALITY", "VIT", "Health", CharacterManager::getInstance().getCharacter("ZIN")->getHp(), 1.5);
+    CharacterManager::getInstance().getCharacter("ZIN")->getStats()->createStat("VITALITY", "VIT", "Health", CharacterManager::getInstance().getCharacter("ZIN")->getHpMax(), 1.5);
     CharacterManager::getInstance().getCharacter("ZIN")->getStats()->createStat("HEALING", "HEA", "Healing", CharacterManager::getInstance().getCharacter("ZIN")->getHealing(), 1.5);
 }

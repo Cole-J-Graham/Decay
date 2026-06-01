@@ -1,9 +1,12 @@
 #include"Game.h"
+#include"Inventory.h"
+
 //Constructor and Destructors
 Game::Game()
 {
 	AssetDatabase::getInstance().loadFromFile("Assets/Data/assets.db");
 	SfxManager::getInstance().loadFromFile("Assets/Data/sfx.db");
+	Inventory::getInstance().loadItemDefinitionsFromFile("Assets/Data/inventory.db");
 
 	this->initWindow();
 	this->initStates();

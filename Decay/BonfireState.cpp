@@ -133,8 +133,9 @@ void BonfireState::renderPartyPreview(sf::RenderTarget* target)
 // Bonfire Functions
 void BonfireState::restParty()
 {
-    // Temporary message until CharacterManager gets a real heal/revive function.
-    this->ui.text("MESSAGE").setString("The party rests at the bonfire.");
+    CharacterManager::getInstance().restParty();
+
+    this->ui.text("MESSAGE").setString("The party rests at the bonfire. HP restored.");
     std::cout << "Party rested at bonfire." << "\n";
 }
 

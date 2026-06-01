@@ -268,6 +268,10 @@ public:
             pair.second->clearMoves();
         }
     }
+
+    void restParty() { this->party.restParty(); }
+
+    void addExpToParty(float amount) { this->party.addExpToParty(amount); }
 };
 
 #endif
