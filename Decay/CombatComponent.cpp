@@ -227,36 +227,14 @@ void CombatComponent::initEnemyMoves()
         enemy->createMove(
             moveIndex,
             moveDefinition->message,
-            [this, moveDefinition]() {
-                auto& party = CharacterManager::getInstance().getParty();
-
-                if (party.size() <= 0) {
-                    std::cerr << "Enemy attack failed. Party is empty." << "\n";
-                    return;
-                }
-
-                std::random_device dev;
-                std::mt19937 rng(dev());
-                std::uniform_int_distribution<int> dist(0, static_cast<int>(party.size()) - 1);
-
-                auto targetCharacter = party.getCharacter(dist(rng));
-
-                if (targetCharacter == nullptr) {
-                    std::cerr << "Enemy attack failed. Target was null." << "\n";
-                    return;
-                }
-
-                const float finalDamage =
-                    this->enemies[this->enemyId]->getDamage() * moveDefinition->damageMultiplier;
-
-                targetCharacter->takeDamage(finalDamage);
-
-                const sf::Vector2f hitPosition = targetCharacter->getHitEffectPosition();
-                this->playEnemyAttackAnimationAt(hitPosition.x, hitPosition.y);
-
-                std::cout << "Enemy used " << moveDefinition->id
-                    << " on " << targetCharacter->getId()
-                    << " for " << finalDamage << " damage." << "\n";
+            [this, enemy, moveDefinition]() {
+                EnemyMoveExecutor::execute(
+                    *moveDefinition,
+                    *enemy,
+                    [this](float x, float y) {
+                        this->playEnemyAttackAnimationAt(x, y);
+                    }
+                );
             },
             moveDefinition->sfxId
         );

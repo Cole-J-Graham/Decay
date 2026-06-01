@@ -13,6 +13,7 @@
 #include "CharacterManager.h"
 #include "Enemy.h"
 #include "EnemyTypes.h"
+#include "EnemyMoveExecutor.h"
 
 class CombatComponent
 {

@@ -343,3 +343,29 @@ void Character::heal(float amount)
 
     this->updateText();
 }
+
+void Character::stun(int turns)
+{
+    if (turns <= 0) {
+        return;
+    }
+
+    this->stunTurns += turns;
+}
+
+bool Character::isStunned() const
+{
+    return this->stunTurns > 0;
+}
+
+void Character::consumeStunTurn()
+{
+    if (this->stunTurns > 0) {
+        this->stunTurns--;
+    }
+}
+
+int Character::getStunTurns() const
+{
+    return this->stunTurns;
+}

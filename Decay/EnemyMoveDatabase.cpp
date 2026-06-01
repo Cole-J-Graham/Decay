@@ -55,16 +55,18 @@ bool EnemyMoveDatabase::loadFromFile(const std::string& filePath)
 
         std::vector<std::string> fields = split(line, '|');
 
-        if (fields.size() < 4) {
+        if (fields.size() < 6) {
             std::cerr << "Invalid enemy move line: " << line << "\n";
             continue;
         }
 
         EnemyMoveDefinition move;
         move.id = fields[0];
-        move.message = fields[1];
-        move.sfxId = fields[2];
-        move.damageMultiplier = std::stof(fields[3]);
+        move.type = fields[1];
+        move.target = fields[2];
+        move.message = fields[3];
+        move.sfxId = fields[4];
+        move.power = std::stof(fields[5]);
 
         if (move.id.empty()) {
             std::cerr << "Enemy move has empty id: " << line << "\n";

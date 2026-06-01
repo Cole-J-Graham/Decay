@@ -112,6 +112,9 @@
     <ClCompile Include="EnemyMoveDatabase.cpp">
       <Filter>Resources\Databases</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyMoveExecutor.cpp">
+      <Filter>Combat\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
@@ -235,6 +238,9 @@
       <Filter>Resources\Databases</Filter>
     </ClInclude>
     <ClInclude Include="EnemyTypes.h">
+      <Filter>Combat\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyMoveExecutor.h">
       <Filter>Combat\Entities</Filter>
     </ClInclude>
   </ItemGroup>

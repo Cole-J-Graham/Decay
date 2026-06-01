@@ -77,6 +77,11 @@ public:
     void takeDamage(float amount);
     void heal(float amount);
 
+    void stun(int turns = 1);
+    bool isStunned() const;
+    void consumeStunTurn();
+    int getStunTurns() const;
+
     // Getters
     float& getDamage() { return this->damage; }
     float& getHp() { return this->hp; }
@@ -119,6 +124,7 @@ private:
     float defense;
     float healing;
     int coolDown;
+    int stunTurns = 0;
 
     // Asset Variables
     int characterFrame;

@@ -8,10 +8,12 @@
 struct EnemyMoveDefinition
 {
     std::string id;
+    std::string type;
+    std::string target;
     std::string message;
     std::string sfxId;
 
-    float damageMultiplier = 1.f;
+    float power = 1.f;
 };
 
 struct EnemyDefinition

@@ -1,4 +1,7 @@
-id|message|sfxId|damageMultiplier
-CLAW|The creature tears into the party with sharp claws!|bash_light|1.0
-BITE|The creature lunges forward and bites viciously!|bash_light|1.25
-WEAK_SWIPE|The creature makes a clumsy swipe!|bash_light|0.75
+id|type|target|message|sfxId|power
+CLAW|DAMAGE|RANDOM_PARTY|The creature tears into the party with sharp claws!|bash_light|1.0
+BITE|DAMAGE|RANDOM_PARTY|The creature lunges forward and bites viciously!|bash_light|1.25
+WEAK_SWIPE|DAMAGE|RANDOM_PARTY|The creature makes a clumsy swipe!|bash_light|0.75
+SWEEP|DAMAGE|ALL_PARTY|The creature sweeps across the whole party!|bash_light|0.65
+SCREECH|STUN|RANDOM_PARTY|The creature lets out a piercing screech!|bash_light|1
+DREAD_HOWL|STUN|ALL_PARTY|The creature's dreadful howl freezes the party!|bash_light|1
