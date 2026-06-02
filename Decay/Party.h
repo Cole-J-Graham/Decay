@@ -34,7 +34,7 @@ public:
 
     //Modifiers and Operators
     bool isFull() const { return party.size() == maxPartySize; }
-    int size() const { return party.size(); }
+    int size() const { return static_cast<int>(party.size()); }
     bool containsCharacter(const std::shared_ptr<Character>& character) const {
         for (const auto& partyMember : party) {
             if (partyMember == character) {

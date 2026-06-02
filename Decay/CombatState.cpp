@@ -296,6 +296,31 @@ void CombatState::handleCharacterTurn(int partyIndex, const sf::Vector2f mousePo
         return;
     }
 
+    if (character->isActionLocked()) {
+        character->resetTurn();
+
+        this->enableCombatConsoleContinue();
+
+        this->ui.text("COMBAT_MESSAGE").setString(
+            character->getId() + " is locked into their action and skips their turn."
+        );
+        this->ui.text("COMBAT_MESSAGE").setShown();
+
+        if (this->combatConsoleClicked()) {
+            character->consumeActionLockTurn();
+            character->tickTemporaryEffects();
+            character->consumePoseTurn();
+
+            this->combatFrame++;
+            this->disableCombatConsoleContinue();
+
+            this->ui.text("COMBAT_MESSAGE").setString("");
+            this->ui.text("COMBAT_MESSAGE").setHidden();
+        }
+
+        return;
+    }
+
     character->characterTurn(this->combatFrame, mousePos);
 
     if (character->isWaitingForContinue()) {

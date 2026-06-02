@@ -2,6 +2,9 @@
 
 #include "Move.h"
 #include "StatsModule.h"
+#include "CharacterMoveTypes.h"
+#include "CharacterStatus.h"
+#include "CharacterPose.h"
 
 #include <map>
 #include <memory>
@@ -36,9 +39,15 @@ public:
     void renderIdButton(sf::RenderTarget* target) { this->buttons[this->id]->render(target); }
 
     // Move Functions
-    void createMove(std::string key, std::string moveMessage,
-        std::string tipMessage, std::string text, Move::Operation op, float& a, float& b,
-        float& c, int coolDown, std::string sfxId, std::function<void()> animationCallback = nullptr);
+    void createMove(
+        const std::string& key,
+        const std::string& moveMessage,
+        const std::string& tipMessage,
+        const std::string& text,
+        Move::Operation operation,
+        const std::string& sfxId = ""
+    );
+
     void renderMoveButtons(sf::RenderTarget* target);
 
     void clearMoves()
@@ -61,7 +70,15 @@ public:
     float& setHp(float& hp) { this->hp = hp; return this->hp; }
     void resetCharacterFrame() { this->characterFrame = 0; }
     void setIdButtonPosition(int& x, int& y) { this->buttons[this->id]->setPosition(x, y); }
-    void setSpritePosition(const float& x, const float& y) { this->character.setPosition(x, y); }
+    void setSpritePosition(const float& x, const float& y)
+    {
+        this->character.setPosition(x, y);
+        this->border->setPosition(x, y);
+        this->text["HP"]->setPosition(x, y + 200.f);
+        this->x = x;
+        this->y = y;
+    }
+
     void addExp(float amount)
     {
         if (this->stats) {
@@ -69,18 +86,49 @@ public:
         }
     }
 
-    //Helpers
+    // Helpers
     void renderPreview(sf::RenderTarget* target, float x, float y);
     bool idButtonIsClicked() const;
     void updateIdButton(const sf::Vector2f mousePos);
     bool idButtonLeftClicked() const;
+
+    // Combat Helpers
     void takeDamage(float amount);
     void heal(float amount);
+    void addBlock(float amount)
+    {
+        this->block += amount;
+        this->updateText();
+    }
 
-    void stun(int turns = 1);
-    bool isStunned() const;
-    void consumeStunTurn();
-    int getStunTurns() const;
+    // Pose Functions
+    void playTemporaryPose(const std::string& texturePath, int durationTurns) { this->pose.playTemporaryPose(this->character, texturePath, durationTurns); }
+    void resetPose() { this->pose.resetPose(this->character); }
+    bool hasTemporaryPose() const { return this->pose.hasTemporaryPose(); }
+    void consumePoseTurn() { this->pose.consumePoseTurn(this->character); }
+
+    // Action Lock Functions
+    void lockActions(int turns) { this->status.lockActions(turns); }
+    bool isActionLocked() const { return this->status.isActionLocked(); }
+    void consumeActionLockTurn() { this->status.consumeActionLockTurn(); }
+
+    // Status / Effects
+    void addTemporaryStatMultiplier(
+        const std::string& id,
+        const std::string& stat,
+        float multiplier,
+        int durationTurns
+    );
+
+    void tickTemporaryEffects();
+
+    float getEffectiveDamage() const;
+    float getEffectiveDefense() const;
+
+    void stun(int turns = 1) { this->status.stun(turns); }
+    bool isStunned() const { return this->status.isStunned(); }
+    void consumeStunTurn() { this->status.consumeStunTurn(); }
+    int getStunTurns() const { return this->status.getStunTurns(); }
 
     // Getters
     float& getDamage() { return this->damage; }
@@ -88,6 +136,7 @@ public:
     float& getHpMax() { return this->hpMax; }
     float& getDefense() { return this->defense; }
     float& getHealing() { return this->healing; }
+    float getBlock() const { return this->block; }
     int& getCoolDown() { return this->coolDown; }
     int& getCharacterFrame() { return this->characterFrame; }
     bool& isTurnActive() { return this->turnActive; }
@@ -99,8 +148,8 @@ public:
     sf::Vector2f getHitEffectPosition() const
     {
         return sf::Vector2f(
-            this->x + (BORDER_WIDTH / 2.f) - 96.f,
-            this->y + (BORDER_HEIGHT / 2.f) - 96.f
+            this->x + (static_cast<float>(BORDER_WIDTH) / 2.f) - 96.f,
+            this->y + (static_cast<float>(BORDER_HEIGHT) / 2.f) - 96.f
         );
     }
 
@@ -124,18 +173,20 @@ private:
     float defense;
     float healing;
     int coolDown;
-    int stunTurns = 0;
+    float block = 0.f;
 
-    // Asset Variables
+    // Turn / Asset Variables
     int characterFrame;
     float x;
     float y;
     bool turnActive;
 
-    sf::Texture characterTexture;
     sf::Sprite character;
     std::string characterName;
     std::unique_ptr<Rectangle> border;
+
+    CharacterStatus status;
+    CharacterPose pose;
 
     std::unique_ptr<StatsModule> stats;
     std::map<std::string, std::unique_ptr<Button>> buttons;

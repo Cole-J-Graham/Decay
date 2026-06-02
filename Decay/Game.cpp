@@ -2,6 +2,7 @@
 
 #include "EnemyDatabase.h"
 #include "EnemyMoveDatabase.h"
+#include "CharacterMoveDatabase.h"
 #include"Inventory.h"
 
 //Constructor and Destructors
@@ -11,6 +12,7 @@ Game::Game()
 	SfxManager::getInstance().loadFromFile("Assets/Data/sfx.db");
 	Inventory::getInstance().loadItemDefinitionsFromFile("Assets/Data/inventory.db");
 
+	CharacterMoveDatabase::getInstance().loadFromFile("Assets/Data/character_moves.db");
 	EnemyMoveDatabase::getInstance().loadFromFile("Assets/Data/enemy_moves.db");
 	EnemyDatabase::getInstance().loadFromFile("Assets/Data/enemies.db");
 

@@ -50,60 +50,46 @@ void CombatComponent::initMoves()
         return;
     }
 
-    std::cout << "INIT MOVES" << "\n";
+    Enemy* activeEnemy = this->enemies[this->enemyId];
 
-    CharacterManager::getInstance().getCharacter("PLAYER")->createMove(
-        "Slash",
-        "The player slashes at the opponent with all his might!",
-        "Players basic attack",
-        "Slash",
-        Move::Subtractor(),
-        this->enemies[this->enemyId]->getHp(),
-        CharacterManager::getInstance().getCharacter("PLAYER")->getDamage(),
-        CharacterManager::getInstance().getCharacter("PLAYER")->getDamage(),
-        0,
-        "slash",
-        [this]() { this->playSlashAnimation(); }
-    );
+    auto& characterManager = CharacterManager::getInstance();
+    const auto& allCharacters = characterManager.getAllCharacters();
 
-    CharacterManager::getInstance().getCharacter("PLAYER")->createMove(
-        "Hefty Blow",
-        "The player charges up a heavy attack for maximum damage!",
-        "Players heavy attack",
-        "Hefty Blow",
-        Move::Subcooldown(),
-        this->enemies[this->enemyId]->getHp(),
-        CharacterManager::getInstance().getCharacter("PLAYER")->getDamage(),
-        CharacterManager::getInstance().getCharacter("PLAYER")->getDamage(),
-        1,
-        "hefty_blow"
-    );
+    for (const auto& pair : allCharacters) {
+        const std::string& characterId = pair.first;
+        const auto& character = pair.second;
 
-    CharacterManager::getInstance().getCharacter("ZIN")->createMove(
-        "Heal",
-        "Zin casts a healing circle around the party!",
-        "Zin's basic healing spell",
-        "Heal",
-        Move::Healer(),
-        CharacterManager::getInstance().getCharacter("ZIN")->getHealing(),
-        CharacterManager::getInstance().getCharacter("PLAYER")->getHp(),
-        CharacterManager::getInstance().getCharacter("PLAYER")->getHpMax(),
-        0,
-        "mend"
-    );
+        if (!character) {
+            continue;
+        }
 
-    CharacterManager::getInstance().getCharacter("THOM")->createMove(
-        "Harden",
-        "Thom hardens his hide!",
-        "Thom's defensive ability.",
-        "Harden",
-        Move::Adder(),
-        CharacterManager::getInstance().getCharacter("THOM")->getDefense(),
-        CharacterManager::getInstance().getCharacter("THOM")->getDefense(),
-        CharacterManager::getInstance().getCharacter("THOM")->getDefense(),
-        0,
-        "iron_wall"
-    );
+        std::vector<const CharacterMoveDefinition*> moveDefinitions =
+            CharacterMoveDatabase::getInstance().getMovesForOwner(characterId);
+
+        for (const CharacterMoveDefinition* moveDefinition : moveDefinitions) {
+            if (moveDefinition == nullptr) {
+                continue;
+            }
+
+            character->createMove(
+                moveDefinition->id,
+                moveDefinition->message,
+                moveDefinition->tip,
+                moveDefinition->buttonText,
+                [this, character, activeEnemy, moveDefinition]() {
+                    CharacterMoveExecutor::execute(
+                        *moveDefinition,
+                        *character,
+                        *activeEnemy,
+                        [this]() {
+                            this->playSlashAnimation();
+                        }
+                    );
+                },
+                moveDefinition->sfxId
+            );
+        }
+    }
 }
 
 // Character Functions

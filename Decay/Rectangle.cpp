@@ -66,3 +66,12 @@ void Rectangle::detectClick(const sf::Vector2f mousePos)
 		}
 	}
 }
+
+//Setters
+void Rectangle::setPosition(float x, float y)
+{
+	this->shape.setPosition(x, y);
+
+	// If this rectangle contains text, move it too
+	this->text.setPosition(x, y);
+}

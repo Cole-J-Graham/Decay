@@ -137,14 +137,14 @@ public:
 
     void positionStatsButtons()
     {
-        int height = 20;
+        float height = 20.f;
 
         for (auto& pair : characters) {
             if (pair.second) {
                 auto button = pair.second->getStats()->getButtons()[pair.second->getStats()->getButtonId()];
 
                 if (button) {
-                    button->setPosition(1705, height += 30);
+                    button->setPosition(1705.f, height += 30.f);
                 }
                 else {
                     std::cerr << "Button not found for ID: "
@@ -206,13 +206,13 @@ public:
 
     void renderCharacterSelectionForParty(sf::RenderTarget* target)
     {
-        int width = 1525;
-        int height = 50;
+        float width = 1525.f;
+        float height = 50.f;
 
         for (auto& pair : characters) {
             if (!party.containsCharacter(pair.second)) {
-                int x = width;
-                int y = height += 26;
+                int x = static_cast<int>(width);
+                int y = static_cast<int>(height += 26.f);
 
                 pair.second->setIdButtonPosition(x, y);
                 pair.second->renderIdButton(target);

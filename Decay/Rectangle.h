@@ -27,6 +27,9 @@ public:
 	//Getters
 	bool& isClicked() { return this->clicked; }
 
+	//Setters
+	void setPosition(float x, float y);
+
 private:
 	sf::RectangleShape shape;
 	sf::Text text;

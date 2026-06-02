@@ -1,9 +1,15 @@
 #include "Move.h"
 
-Move::Move(std::string moveMessage, std::string tipMessage,
-    std::string text, Operation op, float& a, float& b, float& c,
-    int coolDown, std::string sfxId, std::function<void()> animationCallback)
-    : operation(op), a(a), b(b), c(c), coolDown(coolDown), sfxId(sfxId), animationCallback(animationCallback)
+#include <iostream>
+
+Move::Move(
+    std::string moveMessage,
+    std::string tipMessage,
+    std::string text,
+    Operation operation,
+    std::string sfxId
+)
+    : operation(operation), sfxId(sfxId)
 {
     const sf::Color idle(70, 70, 70, 70);
     const sf::Color hover(150, 150, 150, 255);
@@ -66,19 +72,17 @@ void Move::update(const sf::Vector2f mousePos)
 
 void Move::useMove()
 {
-    this->operation(this->a, this->b, this->c, this->coolDown);
+    if (this->operation) {
+        this->operation();
+    }
 
     if (!this->sfxId.empty()) {
         SfxManager::getInstance().play(this->sfxId);
     }
 
-    if (this->animationCallback) {
-        this->animationCallback();
-    }
-
     this->message->setShown();
 
-    std::cout << "Operation applied: a = " << a << ", b = " << b << std::endl;
+    std::cout << "Move used: " << this->moveMessage << "\n";
 }
 
 // Rectangle Functions

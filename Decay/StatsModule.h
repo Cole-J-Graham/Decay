@@ -63,9 +63,9 @@ private:
 			//Initialization
 			button = std::make_unique<Button>(1402, 110, 25, 25, 0.5f, "++",
 				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-			text = std::make_unique<Text>(1428, 110, 16, statName + " " + std::to_string(statCount),
+			text = std::make_unique<Text>(1428.f, 110.f, 16, statName + " " + std::to_string(statCount),
 				sf::Color::White, false);
-			statText = std::make_unique<Text>(1428, 500, 12, modifiedStatName + " " + std::to_string(stat),
+			statText = std::make_unique<Text>(1428.f, 500.f, 12, modifiedStatName + " " + std::to_string(stat),
 				sf::Color::White, false);
 		}
 

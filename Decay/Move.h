@@ -10,13 +10,19 @@
 #include <memory>
 #include <string>
 
-class Move {
+class Move
+{
 public:
-    using Operation = std::function<void(float&, float&, float&, int&)>;
+    using Operation = std::function<void()>;
 
-    Move(std::string moveMessage, std::string tipMessage,
-        std::string text, Operation op, float& a, float& b, float& c,
-        int coolDown, std::string sfxId = "", std::function<void()> animationCallback = nullptr);
+public:
+    Move(
+        std::string moveMessage,
+        std::string tipMessage,
+        std::string text,
+        Operation operation,
+        std::string sfxId = ""
+    );
 
     ~Move() = default;
 
@@ -46,47 +52,11 @@ public:
     std::string& getMoveMessage() { return this->moveMessage; }
     std::unique_ptr<Button>& getButton() { return this->button; }
 
-    struct Adder {
-        void operator()(float& a, float& b, float&, int&) const {
-            a += b;
-        }
-    };
-
-    struct Subtractor {
-        void operator()(float& a, float& b, float&, int&) const {
-            a -= b;
-        }
-    };
-
-    struct Subcooldown {
-        void operator()(float& a, float& b, float& c, int&) const {
-            a -= b;
-            c++;
-        }
-    };
-
-    struct Healer {
-        void operator()(float& a, float& b, float& c, int&) const {
-            if (c >= a) {
-                std::cout << "Skipped healing. Hp is full..." << "\n";
-            }
-            else {
-                a += b;
-            }
-        }
-    };
-
 private:
     Operation operation;
 
-    float& a;
-    float& b;
-    float& c;
-    int coolDown;
+    bool hidden = true;
 
-    bool hidden;
-
-    std::function<void()> animationCallback;
     std::map<std::string, std::unique_ptr<Rectangle>> rectangles;
     std::unique_ptr<Button> button;
     std::unique_ptr<Text> message;

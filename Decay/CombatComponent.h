@@ -14,6 +14,8 @@
 #include "Enemy.h"
 #include "EnemyTypes.h"
 #include "EnemyMoveExecutor.h"
+#include "CharacterMoveDatabase.h"
+#include "CharacterMoveExecutor.h"
 
 class CombatComponent
 {

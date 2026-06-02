@@ -7,8 +7,7 @@ Character::Character(const std::string id, std::string characterName, float hp, 
     x(x), y(y), turnActive(turnActive), characterName(characterName),
     characterFrame(0), coolDown(0)
 {
-    this->characterTexture.loadFromFile(characterTexture);
-    this->character.setTexture(this->characterTexture);
+    this->pose.loadIdleTexture(characterTexture, this->character);
     this->character.setPosition(x, y);
     this->character.setScale(scale, scale);
 
@@ -139,12 +138,16 @@ void Character::continueTurn(int& combatFrame)
         it.second->hideAttackMessage();
     }
 
+    this->tickTemporaryEffects();
+    this->consumePoseTurn();
+
     combatFrame++;
 }
 
 void Character::rest()
 {
     this->hp = this->hpMax;
+    this->block = 0.f;
     this->coolDown = 0;
     this->resetTurn();
     this->updateText();
@@ -204,21 +207,21 @@ void Character::initButtons()
 }
 
 // Move Functions
-void Character::createMove(std::string key, std::string moveMessage, std::string tipMessage,
-    std::string text, Move::Operation op, float& a, float& b, float& c,
-    int coolDown, std::string sfxId, std::function<void()> animationCallback)
+void Character::createMove(
+    const std::string& key,
+    const std::string& moveMessage,
+    const std::string& tipMessage,
+    const std::string& text,
+    Move::Operation operation,
+    const std::string& sfxId
+)
 {
     this->moveButtons[key] = new Move(
         moveMessage,
         tipMessage,
         text,
-        op,
-        a,
-        b,
-        c,
-        coolDown,
-        sfxId,
-        animationCallback
+        operation,
+        sfxId
     );
 }
 
@@ -241,7 +244,8 @@ void Character::initText()
         this->x,
         this->y + 200,
         16,
-        "HP: " + toStringWithPrecision(this->hp) + "/" + toStringWithPrecision(this->hpMax),
+        "HP: " + toStringWithPrecision(this->hp) + "/" + toStringWithPrecision(this->hpMax) +
+        " BLK: " + toStringWithPrecision(this->block),
         sf::Color::White,
         false
     );
@@ -257,7 +261,8 @@ void Character::renderText(sf::RenderTarget* target)
 void Character::updateText()
 {
     this->text["HP"]->setString(
-        "HP: " + toStringWithPrecision(this->hp) + "/" + toStringWithPrecision(this->hpMax)
+        "HP: " + toStringWithPrecision(this->hp) + "/" + toStringWithPrecision(this->hpMax) +
+        " BLK: " + toStringWithPrecision(this->block)
     );
 }
 
@@ -268,7 +273,7 @@ std::string Character::toStringWithPrecision(double value, int precision)
     return out.str();
 }
 
-//Helpers
+// Helpers
 void Character::renderPreview(sf::RenderTarget* target, float x, float y)
 {
     if (target == nullptr) {
@@ -316,14 +321,22 @@ bool Character::idButtonLeftClicked() const
 
 void Character::takeDamage(float amount)
 {
-    if (amount <= 0.f) {
-        return;
+    if (block > 0.f)
+    {
+        const float absorbed = std::min(this->block, amount);
+
+        this->block -= absorbed;
+        amount -= absorbed;
     }
 
-    this->hp -= amount;
+    if (amount > 0.f)
+    {
+        this->hp -= amount;
 
-    if (this->hp < 0.f) {
-        this->hp = 0.f;
+        if (this->hp < 0.f)
+        {
+            this->hp = 0.f;
+        }
     }
 
     this->updateText();
@@ -344,28 +357,28 @@ void Character::heal(float amount)
     this->updateText();
 }
 
-void Character::stun(int turns)
+// Status / Effects — all delegated to CharacterStatus
+void Character::addTemporaryStatMultiplier(
+    const std::string& id,
+    const std::string& stat,
+    float multiplier,
+    int durationTurns
+)
 {
-    if (turns <= 0) {
-        return;
-    }
-
-    this->stunTurns += turns;
+    this->status.addTemporaryStatMultiplier(id, stat, multiplier, durationTurns);
 }
 
-bool Character::isStunned() const
+void Character::tickTemporaryEffects()
 {
-    return this->stunTurns > 0;
+    this->status.tickTemporaryEffects();
 }
 
-void Character::consumeStunTurn()
+float Character::getEffectiveDamage() const
 {
-    if (this->stunTurns > 0) {
-        this->stunTurns--;
-    }
+    return this->status.getEffectiveDamage(this->damage);
 }
 
-int Character::getStunTurns() const
+float Character::getEffectiveDefense() const
 {
-    return this->stunTurns;
+    return this->status.getEffectiveDefense(this->defense);
 }

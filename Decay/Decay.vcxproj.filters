@@ -115,6 +115,18 @@
     <ClCompile Include="EnemyMoveExecutor.cpp">
       <Filter>Combat\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterMoveDatabase.cpp">
+      <Filter>Resources\Databases</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterMoveExecutor.cpp">
+      <Filter>Character\CharacterResources</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterPose.cpp">
+      <Filter>Character\CharacterResources</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterStatus.cpp">
+      <Filter>Character\CharacterResources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="State.h">
@@ -242,6 +254,21 @@
     </ClInclude>
     <ClInclude Include="EnemyMoveExecutor.h">
       <Filter>Combat\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterMoveTypes.h">
+      <Filter>Character\CharacterResources</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterMoveDatabase.h">
+      <Filter>Resources\Databases</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterMoveExecutor.h">
+      <Filter>Character\CharacterResources</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterPose.h">
+      <Filter>Character\CharacterResources</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterStatus.h">
+      <Filter>Character\CharacterResources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
