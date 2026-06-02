@@ -1,7 +1,7 @@
 #include "StatsModule.h"
 
 // Constructors and Destructors
-StatsModule::StatsModule(const std::string& id) 
+StatsModule::StatsModule(const std::string& id)
     : id(id) {
     // Variables
     this->level = 0;
@@ -64,11 +64,35 @@ void StatsModule::createStat(const std::string& key, const std::string& statName
 }
 
 void StatsModule::renderStats(sf::RenderTarget* target) {
-    int y = 110;
+    // Panel geometry
+    const float panelX = 1410.f;
+    const float rightColX = 1560.f;  // x of derived-value column
+    const float rowHeight = 28.f;
+    float y = 138.f;                 // first stat row (below header bar)
+
+    // Column header background stripe
+    sf::RectangleShape colHeaderBg(sf::Vector2f(260.f, 18.f));
+    colHeaderBg.setPosition(panelX, y - 20.f);
+    colHeaderBg.setFillColor(sf::Color(255, 255, 255, 18));
+    target->draw(colHeaderBg);
+
+    // Small column label text (stack-allocated each frame, cheap for UI)
+    Text leftHeader(panelX + 28.f, y - 18.f, 11, "STAT  PTS", sf::Color(180, 180, 180, 200), false);
+    Text rightHeader(rightColX, y - 18.f, 11, "CURRENT VAL", sf::Color(160, 220, 255, 200), false);
+    leftHeader.render(target);
+    rightHeader.render(target);
+
     for (auto& it : this->stats) {
-        it.second->setPosition(1402, y += 25);
+        it.second->setPosition(panelX, y, rightColX);
         it.second->render(target);
+        y += rowHeight;
     }
+
+    // Separator below all stat rows
+    sf::RectangleShape sep(sf::Vector2f(260.f, 2.f));
+    sep.setPosition(panelX, y + 4.f);
+    sep.setFillColor(sf::Color(255, 255, 255, 40));
+    target->draw(sep);
 }
 
 // Stat Modifiers
@@ -97,8 +121,13 @@ void StatsModule::addExp(float amount)
 
 // Rectangle Functions
 void StatsModule::initRects() {
-    this->rectangles["STATSMENU"] = std::make_unique<Rectangle>(1400, 50, 300, 600, sf::Color::Transparent,
+    // Main panel border (x=1400, y=50, w=270, h=620)
+    this->rectangles["STATSMENU"] = std::make_unique<Rectangle>(1400, 50, 270, 620, sf::Color::Transparent,
         sf::Color::White, 1.f, false);
+
+    // Thin divider below the header bar
+    this->rectangles["HEADERDIV"] = std::make_unique<Rectangle>(1400, 82, 270, 1,
+        sf::Color(255, 255, 255, 60), sf::Color::Transparent, 0.f, false);
 }
 
 void StatsModule::renderRects(sf::RenderTarget* target) {
@@ -125,10 +154,13 @@ void StatsModule::initButtons() {
         this->buttonId = this->id;
     }
 
-    this->buttons[this->buttonId] = new Button(1505, 50, 100, 25, 0.5f, this->id,
+    // The "open panel" toggle button — sits at the top-right of the panel
+    this->buttons[this->buttonId] = new Button(1620, 53, 50, 22, 0.5f, this->id,
         sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-    this->buttons["LEVELUP"] = new Button(1402, 53, 100, 25, 0.5f, "LEVEL++",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+
+    // LEVEL++ button — right-aligned in the header bar, left of the toggle
+    this->buttons["LEVELUP"] = new Button(1560, 53, 55, 22, 0.5f, "LVL++",
+        sf::Color(60, 100, 60, 160), sf::Color(100, 180, 100, 255), sf::Color(30, 60, 30, 180), false);
 }
 
 void StatsModule::renderButtons(sf::RenderTarget* target) {
@@ -139,8 +171,20 @@ void StatsModule::renderButtons(sf::RenderTarget* target) {
 
 // Text Functions
 void StatsModule::initText() {
-    this->text["LEVELTEXT"] = std::make_unique<Text>(1504, 53, 16, toStringWithPrecision(this->exp) + "/" + toStringWithPrecision(this->expNext) + "              LVL: " + std::to_string(this->level) + "\n                         SP: " + std::to_string(this->sp),
-        sf::Color::White, false);
+    // Title label
+    this->text["TITLE"] = std::make_unique<Text>(1410, 55, 13,
+        "CHARACTER STATS",
+        sf::Color(200, 200, 200, 220), false);
+
+    // EXP / Level line
+    this->text["EXPTEXT"] = std::make_unique<Text>(1410, 84, 12,
+        buildExpString(),
+        sf::Color(255, 210, 100, 255), false);
+
+    // SP line (slightly below, different colour)
+    this->text["SPTEXT"] = std::make_unique<Text>(1560, 84, 12,
+        buildSpString(),
+        sf::Color(130, 220, 130, 255), false);
 }
 
 void StatsModule::renderText(sf::RenderTarget* target) {
@@ -150,11 +194,22 @@ void StatsModule::renderText(sf::RenderTarget* target) {
 }
 
 void StatsModule::updateText() {
-    this->text["LEVELTEXT"]->setString(toStringWithPrecision(this->exp) + "/" + toStringWithPrecision(this->expNext) + "    LVL: " + std::to_string(this->level) + "\n                         SP: " + std::to_string(this->sp));
+    this->text["EXPTEXT"]->setString(buildExpString());
+    this->text["SPTEXT"]->setString(buildSpString());
 }
 
-std::string StatsModule::toStringWithPrecision(double value, int precision) {
+std::string StatsModule::toStringWithPrecision(double value, int precision) const {
     std::ostringstream out;
     out << std::fixed << std::setprecision(precision) << value;
     return out.str();
+}
+
+std::string StatsModule::buildExpString() const {
+    return "EXP " + toStringWithPrecision(this->exp, 0)
+        + "/" + toStringWithPrecision(this->expNext, 0)
+        + "  LVL " + std::to_string(this->level);
+}
+
+std::string StatsModule::buildSpString() const {
+    return "SP  " + std::to_string(this->sp);
 }

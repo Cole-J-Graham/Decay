@@ -74,6 +74,7 @@ public:
     {
         this->character.setPosition(x, y);
         this->border->setPosition(x, y);
+        this->text["NAME"]->setPosition(x, y - 20.f);
         this->text["HP"]->setPosition(x, y + 200.f);
         this->x = x;
         this->y = y;
@@ -95,11 +96,7 @@ public:
     // Combat Helpers
     void takeDamage(float amount);
     void heal(float amount);
-    void addBlock(float amount)
-    {
-        this->block += amount;
-        this->updateText();
-    }
+    void addBlock(float amount) { this->block += amount; this->updateText(); }
 
     // Pose Functions
     void playTemporaryPose(const std::string& texturePath, int durationTurns) { this->pose.playTemporaryPose(this->character, texturePath, durationTurns); }
@@ -172,8 +169,8 @@ private:
     float damage;
     float defense;
     float healing;
-    int coolDown;
     float block = 0.f;
+    int coolDown;
 
     // Turn / Asset Variables
     int characterFrame;

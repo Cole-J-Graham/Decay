@@ -240,6 +240,15 @@ void Character::renderMoveButtons(sf::RenderTarget* target)
 // Text Functions
 void Character::initText()
 {
+    this->text["NAME"] = std::make_unique<Text>(
+        this->x,
+        this->y - 20.f,
+        16,
+        this->characterName,
+        sf::Color::White,
+        false
+    );
+
     this->text["HP"] = std::make_unique<Text>(
         this->x,
         this->y + 200,
@@ -321,7 +330,7 @@ bool Character::idButtonLeftClicked() const
 
 void Character::takeDamage(float amount)
 {
-    if (block > 0.f)
+    if (this->block > 0.f)
     {
         const float absorbed = std::min(this->block, amount);
 

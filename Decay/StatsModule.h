@@ -40,7 +40,9 @@ public:
 	void initText();
 	void renderText(sf::RenderTarget* target = nullptr);
 	void updateText();
-	std::string toStringWithPrecision(double value, int precision = 2);
+	std::string toStringWithPrecision(double value, int precision = 2) const;
+	std::string buildExpString() const;
+	std::string buildSpString() const;
 
 	//Getters
 	bool& getCurrentInstance() { return this->currentInstance; }
@@ -60,13 +62,19 @@ private:
 		Stat(const std::string& statName, const std::string& modifiedStatName, float& stat, float statModifier)
 			: statName(statName), stat(stat), modifiedStatName(modifiedStatName), statModifier(statModifier), statCount(0)
 		{
-			//Initialization
-			button = std::make_unique<Button>(1402, 110, 25, 25, 0.5f, "++",
-				sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-			text = std::make_unique<Text>(1428.f, 110.f, 16, statName + " " + std::to_string(statCount),
-				sf::Color::White, false);
-			statText = std::make_unique<Text>(1428.f, 500.f, 12, modifiedStatName + " " + std::to_string(stat),
-				sf::Color::White, false);
+			// Left side: [++] button + "STR  3" label
+			button = std::make_unique<Button>(0, 0, 22, 22, 0.5f, "+",
+				sf::Color(80, 120, 80, 180), sf::Color(120, 200, 120, 255), sf::Color(40, 80, 40, 200), false);
+
+			// Stat name + invested count  (e.g. "STR   3")
+			text = std::make_unique<Text>(0.f, 0.f, 14, buildStatLabel(),
+				sf::Color(220, 220, 220, 255), false);
+
+			// Right column: derived value  (e.g. "Max HP  125")
+			statText = std::make_unique<Text>(0.f, 0.f, 13, buildDerivedLabel(),
+				sf::Color(160, 220, 255, 255), false);
+
+			// Thin divider line drawn manually in render()
 		}
 
 		~Stat() = default;
@@ -79,6 +87,12 @@ private:
 
 		void render(sf::RenderTarget* target)
 		{
+			// Horizontal rule above each row (subtle)
+			sf::RectangleShape divider(sf::Vector2f(260.f, 1.f));
+			divider.setPosition(rowX, rowY - 3.f);
+			divider.setFillColor(sf::Color(255, 255, 255, 25));
+			target->draw(divider);
+
 			button->render(target);
 			text->render(target);
 			statText->render(target);
@@ -90,22 +104,39 @@ private:
 				if (sp > 0) {
 					statCount++;
 					this->stat += this->statModifier;
-					text->setString(statName + " " + std::to_string(statCount));
-					statText->setString(modifiedStatName + " " + std::to_string(stat));
+					text->setString(buildStatLabel());
+					statText->setString(buildDerivedLabel());
 					sp--;
 				}
 			}
 		}
 
-		// Modifiers
-		void setPosition(float x, float y)
+		// Setters / layout
+		// xLeft = left edge of panel, xRight = x of right column
+		void setPosition(float xLeft, float y, float xRight)
 		{
-			button->setPosition(x, y);
-			text->setPosition(x + 26, y);
-			statText->setPosition(x, y + 420);
+			rowX = xLeft;
+			rowY = y;
+			button->setPosition(xLeft, y);
+			text->setPosition(xLeft + 28.f, y + 3.f);
+			statText->setPosition(xRight, y + 3.f);
+		}
+
+		// Expose derived label for the summary section
+		std::string buildDerivedLabel() const
+		{
+			std::ostringstream oss;
+			oss << std::fixed << std::setprecision(1) << stat;
+			return modifiedStatName + "  " + oss.str();
 		}
 
 	private:
+		std::string buildStatLabel() const
+		{
+			return statName + "  " + std::to_string(statCount);
+		}
+
+		float rowX = 0.f, rowY = 0.f;
 
 		int statCount;
 		float& stat;

@@ -54,35 +54,86 @@ void BonfireState::render(sf::RenderTarget* target)
 // UI Functions
 void BonfireState::initUi()
 {
-    const sf::Color idle(70, 70, 70, 70);
-    const sf::Color hover(150, 150, 150, 255);
-    const sf::Color active(20, 20, 20, 70);
+    // ── Colour palette ───────────────────────────────────────────────
+    const sf::Color panelBorder(255, 255, 255, 60);
+    const sf::Color transparent(sf::Color::Transparent);
 
-    this->ui.addRectangle("MAIN_PANEL", std::make_unique<Rectangle>(560, 5, 800, 800, sf::Color::Transparent, sf::Color::White, 1.f, false));
-    this->ui.addRectangle("ACTION_PANEL", std::make_unique<Rectangle>(1370, 50, 400, 300, sf::Color::Transparent, sf::Color::White, 1.f, false));
-    this->ui.addRectangle("MESSAGE_PANEL", std::make_unique<Rectangle>(560, 830, 800, 175, sf::Color::Transparent, sf::Color::White, 1.f, false));
+    // Buttons: warm ember tones for idle, bright for hover
+    const sf::Color btnIdle(90, 55, 30, 160);
+    const sf::Color btnHover(200, 130, 60, 255);
+    const sf::Color btnActive(50, 28, 10, 200);
 
-    this->ui.addText("TITLE", std::make_unique<Text>(575, 20, 24, "Bonfire", sf::Color::White, false));
-    this->ui.addText("MESSAGE", std::make_unique<Text>(575, 845, 16, "The bonfire waits quietly.", sf::Color::White, false));
+    // Danger / leave button
+    const sf::Color btnDangerIdle(90, 30, 30, 160);
+    const sf::Color btnDangerHover(200, 60, 60, 255);
+    const sf::Color btnDangerActive(50, 10, 10, 200);
 
-    this->ui.addButton("REST_PARTY", std::make_unique<Button>(1385, 75, 200, 25, 0.5f, "Rest Party", idle, hover, active, false));
-    this->ui.addButton("SMITH_WEAPON", std::make_unique<Button>(1385, 105, 200, 25, 0.5f, "Smith Weapon", idle, hover, active, false));
-    this->ui.addButton("LEAVE_BONFIRE", std::make_unique<Button>(1385, 135, 200, 25, 0.5f, "Leave Bonfire", idle, hover, active, false));
-
+    // ── Left panel – party preview ───────────────────────────────────
     this->ui.addRectangle("PARTY_PREVIEW_PANEL", std::make_unique<Rectangle>(
-        25, 50, 300, 750,
-        sf::Color::Transparent,
-        sf::Color::White,
-        1.f,
-        false
-    ));
+        25, 50, 310, 750, transparent, panelBorder, 1.f, false));
+
+    // Header divider
+    this->ui.addRectangle("PARTY_HEADER_DIV", std::make_unique<Rectangle>(
+        25, 82, 310, 1, sf::Color(255, 255, 255, 40), transparent, 0.f, false));
 
     this->ui.addText("PARTY_PREVIEW_TITLE", std::make_unique<Text>(
-        35, 60, 16,
-        "Party",
-        sf::Color::White,
-        false
-    ));
+        38, 57, 13, "PARTY", sf::Color(200, 200, 200, 220), false));
+
+    // ── Centre panel – main view ─────────────────────────────────────
+    this->ui.addRectangle("MAIN_PANEL", std::make_unique<Rectangle>(
+        360, 5, 950, 800, transparent, panelBorder, 1.f, false));
+
+    this->ui.addText("TITLE", std::make_unique<Text>(
+        378, 18, 28, "Bonfire", sf::Color(255, 200, 100, 255), false));
+
+    // Thin gold line under the title
+    this->ui.addRectangle("TITLE_DIV", std::make_unique<Rectangle>(
+        360, 56, 950, 1, sf::Color(255, 200, 100, 60), transparent, 0.f, false));
+
+    // ── Message panel ────────────────────────────────────────────────
+    this->ui.addRectangle("MESSAGE_PANEL", std::make_unique<Rectangle>(
+        360, 820, 950, 180, transparent, panelBorder, 1.f, false));
+
+    // Subtle label above the message text
+    this->ui.addText("MESSAGE_LABEL", std::make_unique<Text>(
+        378, 828, 11, "LOG", sf::Color(180, 180, 180, 160), false));
+
+    this->ui.addRectangle("MESSAGE_LABEL_DIV", std::make_unique<Rectangle>(
+        360, 844, 950, 1, sf::Color(255, 255, 255, 25), transparent, 0.f, false));
+
+    this->ui.addText("MESSAGE", std::make_unique<Text>(
+        378, 852, 15, "The bonfire waits quietly.", sf::Color(220, 200, 170, 255), false));
+
+    // ── Right panel – actions ────────────────────────────────────────
+    this->ui.addRectangle("ACTION_PANEL", std::make_unique<Rectangle>(
+        1320, 50, 290, 260, transparent, panelBorder, 1.f, false));
+
+    this->ui.addText("ACTION_TITLE", std::make_unique<Text>(
+        1335, 58, 13, "ACTIONS", sf::Color(200, 200, 200, 220), false));
+
+    this->ui.addRectangle("ACTION_HEADER_DIV", std::make_unique<Rectangle>(
+        1320, 80, 290, 1, sf::Color(255, 255, 255, 40), transparent, 0.f, false));
+
+    // Buttons – full width of the panel, evenly spaced, taller (30px)
+    const float btnX = 1335.f;
+    const float btnW = 260.f;
+    const float btnH = 30.f;
+    const float btnGap = 12.f;
+    float btnY = 92.f;
+
+    this->ui.addButton("REST_PARTY", std::make_unique<Button>(
+        btnX, btnY, btnW, btnH, 0.5f, "Rest Party",
+        btnIdle, btnHover, btnActive, false));
+
+    btnY += btnH + btnGap;
+    this->ui.addButton("SMITH_WEAPON", std::make_unique<Button>(
+        btnX, btnY, btnW, btnH, 0.5f, "Smith Weapon",
+        btnIdle, btnHover, btnActive, false));
+
+    btnY += btnH + btnGap;
+    this->ui.addButton("LEAVE_BONFIRE", std::make_unique<Button>(
+        btnX, btnY, btnW, btnH, 0.5f, "Leave Bonfire",
+        btnDangerIdle, btnDangerHover, btnDangerActive, false));
 }
 
 void BonfireState::renderPartyPreview(sf::RenderTarget* target)
@@ -95,38 +146,38 @@ void BonfireState::renderPartyPreview(sf::RenderTarget* target)
 
     const float panelX = 25.f;
     const float panelY = 50.f;
-    const float panelWidth = 300.f;
+    const float panelW = 310.f;
 
-    const float slotX = panelX + 25.f;
-    const float slotY = panelY + 70.f;
-    const float slotWidth = panelWidth - 50.f;
-    const float slotHeight = 180.f;
-    const float slotGap = 25.f;
+    const float slotX = panelX + 12.f;
+    const float slotY = panelY + 40.f;   // below the "PARTY" header bar
+    const float slotW = panelW - 24.f;
+    const float slotH = 175.f;
+    const float slotGap = 14.f;
 
     for (int i = 0; i < static_cast<int>(partyMembers.size()); i++) {
-        if (!partyMembers[i]) {
-            continue;
-        }
+        if (!partyMembers[i]) continue;
 
-        const float currentSlotY = slotY + (i * (slotHeight + slotGap));
+        const float sy = slotY + i * (slotH + slotGap);
 
-        Rectangle slotBorder(
-            slotX,
-            currentSlotY,
-            slotWidth,
-            slotHeight,
-            sf::Color::Transparent,
-            sf::Color::White,
-            1.f,
-            false
-        );
+        // Subtle filled background for the slot
+        sf::RectangleShape slotBg(sf::Vector2f(slotW, slotH));
+        slotBg.setPosition(slotX, sy);
+        slotBg.setFillColor(sf::Color(255, 255, 255, 10));
+        target->draw(slotBg);
 
+        // Slot border
+        Rectangle slotBorder(slotX, sy, slotW, slotH,
+            sf::Color::Transparent, sf::Color(255, 255, 255, 60), 1.f, false);
         slotBorder.render(target);
 
-        const float characterX = slotX + 25.f;
-        const float characterY = currentSlotY + 15.f;
+        // Thin accent bar at the top of each slot (warm ember colour)
+        sf::RectangleShape accent(sf::Vector2f(slotW, 3.f));
+        accent.setPosition(slotX, sy);
+        accent.setFillColor(sf::Color(220, 140, 60, 180));
+        target->draw(accent);
 
-        partyMembers[i]->renderPreview(target, characterX, characterY);
+        // Character preview (name, sprite, stats) rendered by the character itself
+        partyMembers[i]->renderPreview(target, slotX + 12.f, sy + 12.f);
     }
 }
 
