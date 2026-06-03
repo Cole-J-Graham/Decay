@@ -53,7 +53,7 @@ private:
     std::vector<std::string> splitLine(const std::string& line, char delimiter) const;
 
 private:
-    float masterVolume = 100.f;
+    float masterVolume = 70.f;
 
     std::map<std::string, sf::SoundBuffer> buffers;
     std::map<std::string, SfxDefinition> definitions;

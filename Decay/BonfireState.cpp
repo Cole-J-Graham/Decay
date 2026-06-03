@@ -23,6 +23,7 @@ void BonfireState::updateKeybinds()
 
 void BonfireState::update()
 {
+    this->checkForQuit();
     this->updateMousePositions();
     this->updateKeybinds();
 
@@ -70,11 +71,11 @@ void BonfireState::initUi()
 
     // ── Left panel – party preview ───────────────────────────────────
     this->ui.addRectangle("PARTY_PREVIEW_PANEL", std::make_unique<Rectangle>(
-        25, 50, 310, 750, transparent, panelBorder, 1.f, false));
+        25, 50, 240, 750, transparent, panelBorder, 1.f, false));
 
     // Header divider
     this->ui.addRectangle("PARTY_HEADER_DIV", std::make_unique<Rectangle>(
-        25, 82, 310, 1, sf::Color(255, 255, 255, 40), transparent, 0.f, false));
+        25, 82, 240, 1, sf::Color(255, 255, 255, 40), transparent, 0.f, false));
 
     this->ui.addText("PARTY_PREVIEW_TITLE", std::make_unique<Text>(
         38, 57, 13, "PARTY", sf::Color(200, 200, 200, 220), false));
@@ -146,12 +147,12 @@ void BonfireState::renderPartyPreview(sf::RenderTarget* target)
 
     const float panelX = 25.f;
     const float panelY = 50.f;
-    const float panelW = 310.f;
+    const float panelW = 240.f;
 
     const float slotX = panelX + 12.f;
     const float slotY = panelY + 40.f;   // below the "PARTY" header bar
     const float slotW = panelW - 24.f;
-    const float slotH = 175.f;
+    const float slotH = 212.f;
     const float slotGap = 14.f;
 
     for (int i = 0; i < static_cast<int>(partyMembers.size()); i++) {

@@ -1,4 +1,6 @@
 #include "State.h"
+#include "PauseMenuState.h"
+
 //Constructors and Destructors
 State::State(sf::RenderWindow* window, std::stack<State*>* states)
 {
@@ -38,14 +40,16 @@ const bool& State::getQuit() const
 
 void State::checkForQuit()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-	{
-		this->quit = true;
+	const bool escDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
+
+	if (escDown && !this->escWasDown) {
+		this->states->push(new PauseMenuState(this->window, this->states));
 	}
+
+	this->escWasDown = escDown;
 }
 
 void State::endState()
 {
 	std::cout << "Ending game state~" << "\n";
 }
-

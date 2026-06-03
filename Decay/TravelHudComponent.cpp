@@ -36,10 +36,12 @@ void TravelHudComponent::update(sf::Vector2f mousePos)
 
     if (this->buttons["OPENPARTY"]->isPressed()) {
         this->partyVisible = !this->partyVisible;
+        this->statsVisible = false;  // close stats when opening party
     }
 
     if (this->buttons["OPENSTATS"]->isPressed()) {
         this->statsVisible = !this->statsVisible;
+        this->partyVisible = false;  // close party when opening stats
     }
 }
 

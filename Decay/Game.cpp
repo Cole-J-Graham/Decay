@@ -3,6 +3,8 @@
 #include "EnemyDatabase.h"
 #include "EnemyMoveDatabase.h"
 #include "CharacterMoveDatabase.h"
+#include "MusicManager.h"
+#include "SettingsManager.h"
 #include"Inventory.h"
 
 //Constructor and Destructors
@@ -11,10 +13,13 @@ Game::Game()
 	AssetDatabase::getInstance().loadFromFile("Assets/Data/assets.db");
 	SfxManager::getInstance().loadFromFile("Assets/Data/sfx.db");
 	Inventory::getInstance().loadItemDefinitionsFromFile("Assets/Data/inventory.db");
+	MusicManager::getInstance().loadFromFile("Assets/Data/songs.db");
 
 	CharacterMoveDatabase::getInstance().loadFromFile("Assets/Data/character_moves.db");
 	EnemyMoveDatabase::getInstance().loadFromFile("Assets/Data/enemy_moves.db");
 	EnemyDatabase::getInstance().loadFromFile("Assets/Data/enemies.db");
+
+	SettingsManager::getInstance().loadFromFile("Assets/Data/settings.db");
 
 	this->initWindow();
 	this->initStates();
@@ -68,7 +73,10 @@ void Game::update()
 	if (!this->states.empty()) {
 		this->states.top()->update();
 
-		if (this->states.top()->getQuit()) {
+		// Drain all states that signalled quit this frame so that a
+		// double-pop (e.g. ESC from settings while paused) happens
+		// atomically rather than over two frames.
+		while (!this->states.empty() && this->states.top()->getQuit()) {
 			this->states.top()->endState();
 			delete this->states.top();
 			this->states.pop();

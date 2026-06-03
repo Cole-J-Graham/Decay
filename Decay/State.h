@@ -34,6 +34,8 @@ public:
 
 private:
 
+	bool escWasDown = false;
+
 	//Mouse Position
 	sf::Vector2i mousePosScreen;
 	sf::Vector2i mousePosWindow;

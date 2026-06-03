@@ -181,23 +181,18 @@ void Character::initButtons()
     this->buttons[this->id] = std::make_unique<Button>(
         1402,
         50,
-        100,
-        25,
+        120,                            // wide enough for any character name
+        22,
         0.5f,
         this->characterName,
         sf::Color(70, 70, 70, 70),
-        sf::Color(150, 150, 150, 255),
+        sf::Color(100, 130, 100, 200),  // muted green hover, matches stat panel
         sf::Color(20, 20, 20, 70),
         false
     );
 
-    // Kept for compatibility, but hidden and no longer part of the main combat flow.
     this->buttons["ENDTURN"] = std::make_unique<Button>(
-        450,
-        800,
-        150,
-        25,
-        0.5f,
+        450, 800, 150, 25, 0.5f,
         "End " + this->characterName + "'s Turn",
         sf::Color(70, 70, 70, 70),
         sf::Color(150, 150, 150, 255),

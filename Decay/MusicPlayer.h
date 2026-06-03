@@ -18,34 +18,30 @@ public:
     ~MusicPlayer();
 
     // Core Functions
-    void update(const sf::Vector2f mousePos);
-    void render(sf::RenderTarget* target);
-    void initMusic();
     bool readFile(const std::string& input);
 
     // Music Player Functions
-    void updateSongFunctions();
-    void nextSong();
     bool playSong(int id);
 
-    // UI Functions
-    void initUi();
-    void updateUi(const sf::Vector2f mousePos);
-    void showPanel();
-    void hidePanel();
-
     // Setters
-    void setHidden();
-    void setShown();
+    void playDirect(const std::string& path);
+    bool isStopped() const
+    {
+        return this->trackStarted && this->song.getStatus() == sf::Sound::Stopped;
+    }
+    void setVolume(float volume);   // 0-100, applied immediately
+    float getVolume() const;
+    void stopMusic();
 
 private:
     bool loadSound(int id);
-    std::string getDisplayName(const std::string& filename) const;
 
 private:
     int x;
     int y;
 
+    bool trackStarted = false;
+    float volume = 70.f;  // master volume 0-100
     bool hidden;
     bool fileRead;
     int bufferId;

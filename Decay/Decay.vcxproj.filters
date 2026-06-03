@@ -1,23 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="State.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenuState.cpp">
-      <Filter>PlayStates</Filter>
-    </ClCompile>
-    <ClCompile Include="TravelState.cpp">
-      <Filter>PlayStates</Filter>
+      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="UserInputComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
-      <Filter>States</Filter>
+      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="CombatComponent.cpp">
       <Filter>Combat</Filter>
@@ -39,9 +30,6 @@
     </ClCompile>
     <ClCompile Include="ViewerModule.cpp">
       <Filter>Combat\Entities\EntityResources</Filter>
-    </ClCompile>
-    <ClCompile Include="CombatState.cpp">
-      <Filter>Combat</Filter>
     </ClCompile>
     <ClCompile Include="EventManager.cpp">
       <Filter>Events</Filter>
@@ -66,9 +54,6 @@
     </ClCompile>
     <ClCompile Include="MusicPlayer.cpp">
       <Filter>Resources\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="BonfireState.cpp">
-      <Filter>PlayStates</Filter>
     </ClCompile>
     <ClCompile Include="SfxManager.cpp">
       <Filter>Resources\Audio</Filter>
@@ -127,19 +112,37 @@
     <ClCompile Include="CharacterStatus.cpp">
       <Filter>Character\CharacterResources</Filter>
     </ClCompile>
+    <ClCompile Include="MusicManager.cpp">
+      <Filter>Resources\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsMenuState.cpp">
+      <Filter>States\UIStates</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsManager.cpp">
+      <Filter>States\UIStates</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseMenuState.cpp">
+      <Filter>States\UIStates</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>States\UIStates</Filter>
+    </ClCompile>
+    <ClCompile Include="TravelState.cpp">
+      <Filter>States\PlayStates</Filter>
+    </ClCompile>
+    <ClCompile Include="CombatState.cpp">
+      <Filter>States\PlayStates</Filter>
+    </ClCompile>
+    <ClCompile Include="BonfireState.cpp">
+      <Filter>States\PlayStates</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="State.h">
-      <Filter>States</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h">
-      <Filter>States</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenuState.h">
-      <Filter>PlayStates</Filter>
-    </ClInclude>
-    <ClInclude Include="TravelState.h">
-      <Filter>PlayStates</Filter>
+      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="UserInputComponent.h">
       <Filter>Components</Filter>
@@ -164,9 +167,6 @@
     </ClInclude>
     <ClInclude Include="ViewerModule.h">
       <Filter>Combat\Entities\EntityResources</Filter>
-    </ClInclude>
-    <ClInclude Include="CombatState.h">
-      <Filter>Combat</Filter>
     </ClInclude>
     <ClInclude Include="EventManager.h">
       <Filter>Events</Filter>
@@ -197,12 +197,6 @@
     </ClInclude>
     <ClInclude Include="MusicPlayer.h">
       <Filter>Resources\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="EncounterResult.h">
-      <Filter>PlayStates</Filter>
-    </ClInclude>
-    <ClInclude Include="BonfireState.h">
-      <Filter>PlayStates</Filter>
     </ClInclude>
     <ClInclude Include="SfxManager.h">
       <Filter>Resources\Audio</Filter>
@@ -270,16 +264,40 @@
     <ClInclude Include="CharacterStatus.h">
       <Filter>Character\CharacterResources</Filter>
     </ClInclude>
+    <ClInclude Include="MusicManager.h">
+      <Filter>Resources\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsMenuState.h">
+      <Filter>States\UIStates</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsManager.h">
+      <Filter>States\UIStates</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseMenuState.h">
+      <Filter>States\UIStates</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuState.h">
+      <Filter>States\UIStates</Filter>
+    </ClInclude>
+    <ClInclude Include="TravelState.h">
+      <Filter>States\PlayStates</Filter>
+    </ClInclude>
+    <ClInclude Include="CombatState.h">
+      <Filter>States\PlayStates</Filter>
+    </ClInclude>
+    <ClInclude Include="BonfireState.h">
+      <Filter>States\PlayStates</Filter>
+    </ClInclude>
+    <ClInclude Include="EncounterResult.h">
+      <Filter>Combat\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>States</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="States">
-      <UniqueIdentifier>{84355af7-6553-42f9-b993-b401f2a6d294}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{1f3ad11b-c7f1-4438-8e90-d44d5dda9372}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="PlayStates">
-      <UniqueIdentifier>{5bb6a893-8872-4406-b51d-e59bae97fbd8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{b642a9a3-ba75-4139-9ba8-a2e5f05b4c17}</UniqueIdentifier>
@@ -328,6 +346,18 @@
     </Filter>
     <Filter Include="Resources\Databases">
       <UniqueIdentifier>{f868ef38-1a69-4a2f-943f-2a0443ab4957}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{84355af7-6553-42f9-b993-b401f2a6d294}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States">
+      <UniqueIdentifier>{5bb6a893-8872-4406-b51d-e59bae97fbd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States\UIStates">
+      <UniqueIdentifier>{eb555ec9-46ba-49bc-8ead-a93d051573f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States\PlayStates">
+      <UniqueIdentifier>{19712dc2-d9c5-4d1c-90ce-baf86ecc531d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

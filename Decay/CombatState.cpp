@@ -1,7 +1,6 @@
 #include "CombatState.h"
-
 #include "RewardSystem.h"
-
+#include "MusicManager.h"
 #include <iostream>
 
 // Constructors and Destructors
@@ -180,6 +179,8 @@ void CombatState::finishCombatEnd()
     this->combatFrame = 0;
     this->stateEnd = false;
 
+    MusicManager::getInstance().pop();  // resume area music
+
     if (!this->states->empty()) {
         this->states->pop();
     }
@@ -203,18 +204,24 @@ void CombatState::resetCombat()
 bool CombatState::startCombat(const std::string& areaId)
 {
     this->resetCombat();
-
     this->setCurrentArea(areaId);
 
     const bool spawnedEnemy = this->enemyPool(this->getCurrentArea());
-
-    if (!spawnedEnemy) {
-        return false;
-    }
+    if (!spawnedEnemy) return false;
 
     this->combatFrame = 0;
     this->stateEnd = false;
     this->disableCombatConsoleContinue();
+
+    // Try area-specific combat music, fall back to generic "Combat" if not found
+    const std::string combatContext = "Combat_" + areaId;
+    if (MusicManager::getInstance().hasContext(combatContext)) {
+        MusicManager::getInstance().play(combatContext);
+    }
+    else {
+		std::cout << "No combat music found for area " << areaId << ", using generic combat music.\n";
+        MusicManager::getInstance().play("Combat");
+    }
 
     return true;
 }
@@ -225,6 +232,7 @@ void CombatState::updateKeybinds()
 
 void CombatState::update()
 {
+    this->checkForQuit();
     this->updateMousePositions();
 
     this->ui.update(this->getMousePosView());

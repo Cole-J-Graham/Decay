@@ -144,7 +144,7 @@ public:
                 auto button = pair.second->getStats()->getButtons()[pair.second->getStats()->getButtonId()];
 
                 if (button) {
-                    button->setPosition(1705.f, height += 30.f);
+                    button->setPosition(1690.f, height += 30.f);
                 }
                 else {
                     std::cerr << "Button not found for ID: "
@@ -206,17 +206,25 @@ public:
 
     void renderCharacterSelectionForParty(sf::RenderTarget* target)
     {
-        float width = 1525.f;
-        float height = 50.f;
+        const float colX = 1538.f;
+        const float colWidth = 125.f;   // fills from divider to panel right edge (1538+125=1663, panel ends ~1670)
+        const float rowHeight = 28.f;
+        float y = 105.f;
 
         for (auto& pair : characters) {
-            if (!party.containsCharacter(pair.second)) {
-                int x = static_cast<int>(width);
-                int y = static_cast<int>(height += 26.f);
+            if (!pair.second || party.containsCharacter(pair.second)) continue;
 
-                pair.second->setIdButtonPosition(x, y);
-                pair.second->renderIdButton(target);
-            }
+            // Row tint behind inactive button
+            sf::RectangleShape rowBg(sf::Vector2f(colWidth, rowHeight - 2.f));
+            rowBg.setPosition(colX, y + 1.f);
+            rowBg.setFillColor(sf::Color(255, 255, 255, 5));
+            target->draw(rowBg);
+
+            int x = static_cast<int>(colX);
+            int yPos = static_cast<int>(y);
+            pair.second->setIdButtonPosition(x, yPos);
+            pair.second->renderIdButton(target);
+            y += rowHeight;
         }
     }
 

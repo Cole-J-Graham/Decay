@@ -154,9 +154,9 @@ void StatsModule::initButtons() {
         this->buttonId = this->id;
     }
 
-    // The "open panel" toggle button — sits at the top-right of the panel
-    this->buttons[this->buttonId] = new Button(1620, 53, 50, 22, 0.5f, this->id,
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
+    // The character buttons that appear when clicking — "stats"
+    this->buttons[this->buttonId] = new Button(1620, 53, 100, 22, 0.5f, this->id,
+        sf::Color(60, 90, 60, 160), sf::Color(100, 180, 100, 255), sf::Color(20, 20, 20, 70), false);
 
     // LEVEL++ button — right-aligned in the header bar, left of the toggle
     this->buttons["LEVELUP"] = new Button(1560, 53, 55, 22, 0.5f, "LVL++",

@@ -1,12 +1,16 @@
 #include "MainMenuState.h"
 #include "TravelState.h"
+#include "SettingsMenuState.h"
 
 #include <iostream>
 #include <memory>
 
 // Constructors and Destructors
-MainMenuState::MainMenuState(sf::RenderWindow* window, std::stack<State*>* states)
+MainMenuState::MainMenuState(sf::RenderWindow* window,
+    std::stack<State*>* states,
+    MusicPlayer* musicPlayer)
     : State(window, states)
+    , musicPlayer(musicPlayer)
 {
     this->initUi();
     this->initCharacters();
@@ -25,6 +29,7 @@ void MainMenuState::updateKeybinds()
 
 void MainMenuState::update()
 {
+    this->checkForQuit();
     this->updateMousePositions();
     this->updateKeybinds();
 
@@ -33,6 +38,10 @@ void MainMenuState::update()
     if (this->ui.button("GAME_STATE").isPressed()) {
         this->states->push(new TravelState(this->window, this->states));
         std::cout << "Starting gamestate!" << "\n";
+    }
+
+    if (this->ui.button("SETTINGS_STATE").isPressed()) {
+        this->states->push(new SettingsMenuState(this->window, this->states, this->musicPlayer));
     }
 
     if (this->ui.button("EXIT_STATE").isPressed()) {
@@ -73,8 +82,16 @@ void MainMenuState::initUi()
         false
     ));
 
+    this->ui.addButton("SETTINGS_STATE", std::make_unique<Button>(
+        100, 150, 100, 25, 0.5f, "Settings",
+        idle,
+        hover,
+        active,
+        false
+    ));
+
     this->ui.addButton("EXIT_STATE", std::make_unique<Button>(
-        100, 125, 100, 25, 0.5f, "Quit",
+        100, 175, 100, 25, 0.5f, "Quit",
         idle,
         hover,
         active,
@@ -82,11 +99,11 @@ void MainMenuState::initUi()
     ));
 
     this->ui.addAnimation("DECAY_LOGO_ANIMATION", std::make_unique<AnimationPlayer>());
-    
+
     //Animations
     auto decayLogo = std::make_unique<AnimationPlayer>();
 
-    decayLogo->setFramesFromTextureIds({"decay_menu_1","decay_menu_2","decay_menu_3","decay_menu_4","decay_menu_5","decay_menu_6"});
+    decayLogo->setFramesFromTextureIds({ "decay_menu_1","decay_menu_2","decay_menu_3","decay_menu_4","decay_menu_5","decay_menu_6" });
 
     decayLogo->setFrameTimes({
         1.65f, // slow hold

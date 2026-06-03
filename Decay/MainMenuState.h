@@ -5,11 +5,16 @@
 #include "UiPanel.h"
 #include "InitializeCharacters.h"
 
+class MusicPlayer;   // forward declaration — full type only needed in .cpp
+
 class MainMenuState : public State
 {
 public:
     // Constructors and Destructors
-    MainMenuState(sf::RenderWindow* window, std::stack<State*>* states);
+    // Pass an optional MusicPlayer so SettingsMenuState can control its volume.
+    MainMenuState(sf::RenderWindow* window,
+        std::stack<State*>* states,
+        MusicPlayer* musicPlayer = nullptr);
     ~MainMenuState() = default;
 
     // State Functions
@@ -27,6 +32,7 @@ private:
 
 private:
     UiPanel ui;
+    MusicPlayer* musicPlayer = nullptr;   // non-owning; may be nullptr
 };
 
 #endif

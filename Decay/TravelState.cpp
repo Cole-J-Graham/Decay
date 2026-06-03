@@ -1,4 +1,7 @@
 #include "TravelState.h"
+#include "MusicManager.h"
+#include "PauseMenuState.h"
+
 //Constructors and Destructors
 TravelState::TravelState(sf::RenderWindow* window, std::stack<State*>* states)
     : State(window, states)
@@ -7,7 +10,10 @@ TravelState::TravelState(sf::RenderWindow* window, std::stack<State*>* states)
     this->initRects();
     this->map = new MapComponent();
     this->combat = new CombatState(window, states);
-    this->music = std::make_unique<MusicPlayer>("Assets/Music/music_list.txt");
+    this->music = std::make_unique<MusicPlayer>("Assets/Data/music_list.txt");
+    MusicManager_setPlayer(this->music.get());
+    MusicManager::getInstance().play("Forest");
+
     this->travelInput = std::make_unique<TravelInputComponent>();
     this->travelHud = std::make_unique<TravelHudComponent>();
 
@@ -30,9 +36,23 @@ TravelState::~TravelState()
 }
 
 //Core Functions
+void TravelState::checkForQuit()
+{
+    // Replicates the base ESC edge-detect, but pushes PauseMenuState with
+    // the music pointer so settings can actually control music volume.
+    const bool escDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
+
+    if (!this->escWasDown && escDown) {
+        this->states->push(new PauseMenuState(this->window, this->states, this->music.get()));
+    }
+
+    this->escWasDown = escDown;
+}
+
 void TravelState::update()
 {
-    this->music->update(this->getMousePosView());
+    this->checkForQuit();
+    MusicManager::getInstance().update();
     this->updateMousePositions();
 
     this->updateTravelInputVisibility();
@@ -62,7 +82,6 @@ void TravelState::render(sf::RenderTarget* target)
 {
     this->map->render(target);
     this->renderRects(target);
-    this->music->render(target);
 
     if (this->travelHud->partyPanelVisible()) {
         CharacterManager::getInstance().renderPartyPanel(target);
@@ -79,8 +98,13 @@ void TravelState::render(sf::RenderTarget* target)
 //Travel Functions
 void TravelState::updateEventsFromMovement()
 {
+    const std::string areaBefore = this->map->getCurrentAreaId();
     const EncounterResult result = this->determineEncounterResult();
     this->handleEncounterResult(result);
+    const std::string areaAfter = this->map->getCurrentAreaId();
+
+    // If the player moved to a new area, transition the music
+    if (areaBefore != areaAfter && result != EncounterResult::Combat) { MusicManager::getInstance().transition(areaAfter); }
 }
 
 void TravelState::updateTravelActions()

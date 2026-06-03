@@ -24,6 +24,9 @@ public:
     void update();
     void render(sf::RenderTarget* target = nullptr);
 
+    // Overrides base checkForQuit to push PauseMenuState with the music pointer
+    void checkForQuit();
+
     // Travel Functions
     void updateEventsFromMovement();
     void updateTravelActions();
@@ -53,6 +56,8 @@ private:
     bool didPlayerMove() const;
     EncounterResult determineEncounterResult();
     void handleEncounterResult(EncounterResult result);
+
+    bool escWasDown = false;  // edge-detect for checkForQuit override
 
 private:
     int combatChanceMin;

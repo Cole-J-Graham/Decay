@@ -1,3 +1,0 @@
-Assets/Music/Tracks/Accolade.wav
-Assets/Music/Tracks/ANocturneForAll.wav
-Assets/Music/Tracks/Communication.wav

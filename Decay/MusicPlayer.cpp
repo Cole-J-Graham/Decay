@@ -1,4 +1,5 @@
 #include "MusicPlayer.h"
+#include "SettingsManager.h"
 
 // Constructors and Destructors
 MusicPlayer::MusicPlayer(const std::string& music_list)
@@ -13,8 +14,7 @@ MusicPlayer::MusicPlayer(const std::string& music_list)
     this->musicList = music_list;
 
     this->readFile(this->musicList);
-    this->initUi();
-    this->initMusic();
+    this->setVolume(SettingsManager::getInstance().getMusicVolume());
 }
 
 MusicPlayer::~MusicPlayer()
@@ -23,32 +23,6 @@ MusicPlayer::~MusicPlayer()
 }
 
 // Core Functions
-void MusicPlayer::update(const sf::Vector2f mousePos)
-{
-    this->ui.update(mousePos);
-    this->updateUi(mousePos);
-
-    if (!this->hidden) {
-        this->updateSongFunctions();
-    }
-}
-
-void MusicPlayer::render(sf::RenderTarget* target)
-{
-    if (target == nullptr) {
-        return;
-    }
-
-    this->ui.render(*target);
-}
-
-void MusicPlayer::initMusic()
-{
-    if (this->songNames.count(this->currentBufferId) > 0) {
-        this->ui.rectangle("BORDER").setText(this->getDisplayName(this->songNames[this->currentBufferId]));
-    }
-}
-
 bool MusicPlayer::readFile(const std::string& input)
 {
     std::ifstream file(input);
@@ -113,124 +87,59 @@ bool MusicPlayer::loadSound(int id)
 }
 
 // Music Player Functions
-void MusicPlayer::updateSongFunctions()
-{
-    this->nextSong();
-}
-
-void MusicPlayer::nextSong()
-{
-    if (this->ui.button("NEXT").isPressed()) {
-        if (this->currentBufferId + 1 < this->bufferId) {
-            this->currentBufferId++;
-            this->playSong(this->currentBufferId);
-        }
-    }
-    else if (this->ui.button("PREV").isPressed()) {
-        if (this->currentBufferId > 0) {
-            this->currentBufferId--;
-            this->playSong(this->currentBufferId);
-        }
-    }
-}
-
 bool MusicPlayer::playSong(int id)
 {
-    if (id < 0 || id >= this->bufferId) {
-        return false;
-    }
-
-    if (!this->loadSound(id)) {
-        return false;
-    }
-
-    if (this->songNames.count(id) > 0) {
-        this->ui.rectangle("BORDER").setText(this->getDisplayName(this->songNames[id]));
-    }
+    if (id < 0 || id >= this->bufferId) return false;
+    if (!this->loadSound(id)) return false;
 
     this->song.stop();
     this->song.setBuffer(this->buffer[id]);
+    this->song.setVolume(this->volume);
     this->song.play();
+    this->trackStarted = true;
 
     return true;
 }
 
-// UI Functions
-void MusicPlayer::initUi()
+void MusicPlayer::playDirect(const std::string& path)
 {
-    const sf::Color idle(70, 70, 70, 70);
-    const sf::Color hover(150, 150, 150, 255);
-    const sf::Color active(20, 20, 20, 70);
+    // Find the id for this path, or load it on demand
+    int targetId = -1;
 
-    this->ui.addRectangle("BORDER", std::make_unique<Rectangle>("Test", sf::Color::White, 16, this->x, this->y, 206, 200, sf::Color::Transparent, sf::Color::White, 1.f, true));
-
-    this->ui.addButton("NEXT", std::make_unique<Button>(1475, 250, 100, 25, 0.5f, "NEXT", idle, hover, active, true));
-    this->ui.addButton("PREV", std::make_unique<Button>(1370, 250, 100, 25, 0.5f, "PREV", idle, hover, active, true));
-    this->ui.addButton("CLOSE", std::make_unique<Button>(1555, 74, 20, 25, 0.5f, " x ", idle, hover, active, true));
-    this->ui.addButton("OPEN", std::make_unique<Button>(1370, 10, 55, 25, 0.5f, "MUSIC", idle, hover, active, false));
-
-    this->hidePanel();
-}
-
-void MusicPlayer::updateUi(const sf::Vector2f mousePos)
-{
-    if (this->hidden) {
-        if (this->ui.button("OPEN").isPressed()) {
-            this->showPanel();
+    for (auto& pair : this->songNames) {
+        if (pair.second == path) {
+            targetId = pair.first;
+            break;
         }
-
-        return;
     }
 
-    if (this->ui.button("OPEN").isPressed() || this->ui.button("CLOSE").isPressed()) {
-        this->hidePanel();
-    }
-}
-
-void MusicPlayer::showPanel()
-{
-    this->hidden = false;
-
-    this->ui.rectangle("BORDER").show();
-
-    this->ui.button("NEXT").show();
-    this->ui.button("PREV").show();
-    this->ui.button("CLOSE").show();
-    this->ui.button("OPEN").show();
-}
-
-void MusicPlayer::hidePanel()
-{
-    this->hidden = true;
-
-    this->ui.rectangle("BORDER").hide();
-
-    this->ui.button("NEXT").hide();
-    this->ui.button("PREV").hide();
-    this->ui.button("CLOSE").hide();
-
-    this->ui.button("OPEN").show();
-}
-
-// Setters
-void MusicPlayer::setHidden()
-{
-    this->hidePanel();
-}
-
-void MusicPlayer::setShown()
-{
-    this->showPanel();
-}
-
-// Helpers
-std::string MusicPlayer::getDisplayName(const std::string& filename) const
-{
-    const std::size_t slash = filename.find_last_of("/\\");
-
-    if (slash == std::string::npos) {
-        return filename;
+    if (targetId == -1) {
+        // Register it dynamically
+        targetId = this->bufferId;
+        this->songNames[targetId] = path;
+        this->bufferId++;
     }
 
-    return filename.substr(slash + 1);
+    this->playSong(targetId);
+}
+
+void MusicPlayer::stopMusic()
+{
+    this->song.stop();
+}
+
+void MusicManager_setPlayer(MusicPlayer* player);
+
+void MusicPlayer::setVolume(float volume)
+{
+    if (volume < 0.f)   volume = 0.f;
+    if (volume > 100.f) volume = 100.f;
+
+    this->volume = volume;
+    this->song.setVolume(this->volume);
+}
+
+float MusicPlayer::getVolume() const
+{
+    return this->volume;
 }

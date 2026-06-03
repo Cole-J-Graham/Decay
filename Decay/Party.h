@@ -1,26 +1,27 @@
 #pragma once
 #include <vector>
-#include <memory> // for std::shared_ptr
-#include"Character.h"
+#include <memory>
+#include "Character.h"
 #include "UiPanel.h"
 
 class Party {
 public:
-    //Constructors and Destructors
+    // Constructors and Destructors
     Party();
     ~Party();
 
-    //Core Functions
+    // Core Functions
     void render(sf::RenderTarget* target);
     void update(const sf::Vector2f mousePos);
     void initUi();
 
-    //Management Functions
+    // Management Functions
     bool addCharacter(const std::shared_ptr<Character>& character);
+    bool addToSlot(int slot, const std::shared_ptr<Character>& character);  // explicit slot (0-2)
     bool removeCharacter(const std::shared_ptr<Character>& character);
     void removePartyMemberOnRightClick();
 
-    //Party Functions
+    // Party Functions
     void renderPartyMembers(sf::RenderTarget* target);
     void updatePartyMembers(const sf::Vector2f mousePos);
     void renderPartyMembersButtons(sf::RenderTarget* target);
@@ -28,33 +29,26 @@ public:
     void restParty();
     void addExpToParty(float amount);
 
-    //Getters
+    // Getters
     std::shared_ptr<Character> getCharacter(int index) const;
     const std::vector<std::shared_ptr<Character>>& getAllCharacters() const;
 
-    //Modifiers and Operators
-    bool isFull() const { return party.size() == maxPartySize; }
+    // Modifiers and Operators
+    bool isFull() const { return static_cast<int>(party.size()) == maxPartySize; }
     int size() const { return static_cast<int>(party.size()); }
     bool containsCharacter(const std::shared_ptr<Character>& character) const {
-        for (const auto& partyMember : party) {
-            if (partyMember == character) {
-                return true;  // Character is already in the party
-            }
-        }
-        return false;  // Character not found in the party
+        for (const auto& m : party)
+            if (m == character) return true;
+        return false;
     }
+
+    static const int maxPartySize = 3;
 
 private:
     UiPanel ui;
     std::vector<std::shared_ptr<Character>> party;
 
-    static const int maxPartySize = 3;
-    const float frameOneX = 25.f;
-    const float frameOneY = 150.f;
-
-    const float frameTwoX = 25.f;
-    const float frameTwoY = 420.f;
-
-    const float frameThreeX = 25.f;
-    const float frameThreeY = 690.f;
+    const float frameOneX = 25.f;  const float frameOneY = 150.f;
+    const float frameTwoX = 25.f;  const float frameTwoY = 420.f;
+    const float frameThreeX = 25.f;  const float frameThreeY = 690.f;
 };
