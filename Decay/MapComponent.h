@@ -1,38 +1,46 @@
 #pragma once
-#include"MapViewer.h"
+
+#include "MapViewer.h"
+#include "Button.h"
+
+#include <map>
+#include <memory>
+#include <string>
+
 class MapComponent
 {
 public:
-	//Constructors and Destructors
-	MapComponent();
-	~MapComponent();
+    MapComponent();
+    ~MapComponent() = default;
 
-	//Core Functions
-	void update(sf::Vector2f mousePos, bool moveRight, bool moveLeft);
-	void render(sf::RenderTarget* target);
-	bool mapIsOpen() const;
-	bool mapIsSelected() const;
+    // Non-copyable
+    MapComponent(const MapComponent&) = delete;
+    MapComponent& operator=(const MapComponent&) = delete;
 
-	//Button Functions
-	void initButtons();
-	void updateButtons(const sf::Vector2f mousePos);
-	void renderButtons(sf::RenderTarget* target);
+    // Core
+    void update(const sf::Vector2f& mousePos, bool moveRight, bool moveLeft);
+    void render(sf::RenderTarget* target);
 
-	//Map Functions
-	void initMapCores();
-	void showMapButton() { this->mapView->showOpenMapButton(); };
-	void hideMapButton() { this->mapView->hideOpenMapButton(); };
+    // Map open/close button visibility
+    void showMapButton() { this->mapView->showOpenMapButton(); }
+    void hideMapButton() { this->mapView->hideOpenMapButton(); }
 
-	//Getters
-	std::string getCurrentAreaId() const;
-	bool rollEvent() { return this->mapView->rollEventForCurrentMap(); };
-	bool eventIsActive() const { return this->mapView->currentEventIsActive(); };
+    // State queries
+    bool        mapIsOpen()      const;
+    bool        mapIsSelected()  const;
+    std::string getCurrentAreaId() const;
+    std::string getCurrentMapId()  const;
+
+    // Event passthrough
+    bool rollEvent() { return this->mapView->rollEventForCurrentMap(); }
+    bool eventIsActive() const { return this->mapView->currentEventIsActive(); }
 
 private:
-	MapViewer* mapView;
-	std::ifstream ifs;
-	std::string line;
+    void initButtons();
+    void updateButtons(const sf::Vector2f& mousePos);
+    void renderButtons(sf::RenderTarget* target);
+    void syncCenterButtonLabel();
 
-	std::map<std::string, Button*> buttons;
+    std::unique_ptr<MapViewer> mapView;
+    std::map<std::string, std::unique_ptr<Button>> buttons;
 };
-

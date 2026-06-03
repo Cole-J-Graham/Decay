@@ -178,6 +178,13 @@ bool EventManager::eventChance()
     return false;
 }
 
+void EventManager::forceEvent()
+{
+    this->eventActivated = true;
+    this->eventOdds = 0;
+    this->eventIncrease = 1;
+}
+
 //File Management Functions
 bool EventManager::processNextLine() {
     if (!isFileOpen) {

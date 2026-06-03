@@ -10,6 +10,11 @@
 #include "TravelInputComponent.h"
 #include "TravelHudComponent.h"
 
+//Events
+#include "TriggerManager.h"
+#include "GameFlags.h"
+#include "GameTriggers.h"
+
 // Managers
 #include "CharacterManager.h"
 
@@ -63,6 +68,7 @@ private:
     int combatChanceMin;
     int combatChanceMax;
     float combatOdds;
+    std::string lastMapId;
 
     std::unique_ptr<TravelHudComponent> travelHud;
     std::unique_ptr<TravelInputComponent> travelInput;

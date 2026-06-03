@@ -65,6 +65,7 @@ public:
 
     int getGold() const;
     int getExperience() const;
+    bool spendGold(int amount);
 
     bool hasItem(const std::string& itemId, int quantity = 1) const;
     int getQuantity(const std::string& itemId) const;

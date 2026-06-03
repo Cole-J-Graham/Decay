@@ -1,0 +1,12 @@
+*SPEAK_NPC
+DOCTOR
+*NEUTRAL
+"Hello? Is someone there?"
+"Well I'll be... The knight lives?"
+*SPEAK_CHARACTER
+"Something like that.."
+*SPEAK_NPC
+DOCTOR
+"Well... I'm impressed to say the least I'd say. Last I saw you were in quite the crowd."
+*SPEAK_CHARACTER
+"Yeah, well aware."

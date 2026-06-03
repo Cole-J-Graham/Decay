@@ -1,0 +1,30 @@
+# maps.db
+# Map and area definitions for the MapSystem
+#
+# MAPS section
+#   id | name | scale | map_image | unlock_condition
+#   unlock_condition: "none" = always unlocked
+#                     a map id = unlocked when that map is fully explored
+#
+# AREAS section
+#   id | map_id | area_index | name | button_x | button_y | frames_file
+#   area_index: 0-based order within the map (controls button reveal order)
+
+[MAPS]
+id|name|scale|map_image|unlock_condition
+forest|Forest|0.390|Assets/Wallpapers/Forest/forestmap.jpeg|none
+castle|Castle|0.385|Assets/Wallpapers/Castle/castleMap.jpeg|none
+plateau|Plateau|0.385|Assets/Wallpapers/Decay/decayMap.jpeg|none
+
+[AREAS]
+id|map_id|area_index|name|button_x|button_y|frames_file
+forest_entrance|forest|0|Entrance|150|150|Assets/Wallpapers/ForestTextFiles/forest.txt
+forest_darkplains|forest|1|Dark Plains|150|250|Assets/Wallpapers/ForestTextFiles/forestdepths.txt
+forest_depths|forest|2|Depths|200|200|Assets/Wallpapers/ForestTextFiles/abyssalwoods.txt
+forest_corruption|forest|3|Corruption|300|250|Assets/Wallpapers/ForestTextFiles/abyssaldepths.txt
+forest_deepdark|forest|4|Deep Dark|375|400|Assets/Wallpapers/ForestTextFiles/forest.txt
+castle_entrance|castle|0|Entrance|150|150|Assets/Wallpapers/CastleTextFiles/castle.txt
+castle_depths|castle|1|Depths|150|250|Assets/Wallpapers/CastleTextFiles/castledepths.txt
+castle_corridors|castle|2|Corridors|200|200|
+castle_dungeon|castle|3|Dungeon|300|250|
+castle_labs|castle|4|Labs|375|400|

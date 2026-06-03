@@ -21,6 +21,7 @@ public:
 	void initEvents();
 	void updateEvents();
 	bool eventChance();
+	void forceEvent();
 	bool isEventActive() const { return this->eventActivated; }
 
 	//File Functions

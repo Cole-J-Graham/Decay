@@ -1,0 +1,21 @@
+# shop.db — Plague Doctor's Stock
+# Format: item_id | buy_price | sell_multiplier | stock
+# stock: -1 = unlimited, 0 = sold out, N = finite quantity
+# sell_multiplier defaults to 0.5 if omitted
+
+# ── Consumables (unlimited stock) ─────────────────────────────────────────────
+health_potion|50|0.5|-1
+antidote|30|0.5|-1
+smelling_salts|20|0.4|-1
+bandage|15|0.4|-1
+
+# ── Specialty items (finite stock, resets per run / save) ─────────────────────
+plague_tonic|120|0.6|5
+surgeons_needle|80|0.5|3
+laudanum|200|0.5|2
+
+# ── Vendor trash (can sell to doctor, not in buy list) ────────────────────────
+# To make an item sell-only, don't list it here; the player can still sell it
+# and receives a 0g price (doctor won't take it).  Add it with buy_price=0
+# to let the doctor accept it at the sell_multiplier rate:
+wolf_pelt|0|0.3|-1

@@ -237,6 +237,12 @@ void Inventory::addExperience(int amount)
     }
 }
 
+bool Inventory::spendGold(int amount) {
+    if (amount <= 0 || this->gold < amount) return false;
+    this->gold -= amount;
+    return true;
+}
+
 int Inventory::getGold() const
 {
     return this->gold;

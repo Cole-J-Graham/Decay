@@ -16,6 +16,7 @@ hit_animation|texture|Assets/Game_Resources/hitAnimationSpriteSheet.png
 player_sprite|texture|Assets / Sprites / Player.png
 zin_sprite|texture|Assets/Sprites/zinSprite.png
 thom_sprite|texture|Assets/Sprites/thomNormal.png
+doctor_sprite|texture|Assets/Sprites/plaugeguy.png
 
 wolf_sprite|texture|Assets/HostileSprites/wolfsprite.png
 wolf_view|texture|Assets/Entities/wolfEntity.jpeg

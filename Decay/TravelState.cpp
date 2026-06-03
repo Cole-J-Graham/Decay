@@ -9,6 +9,7 @@ TravelState::TravelState(sf::RenderWindow* window, std::stack<State*>* states)
     //Initialization
     this->initRects();
     this->map = new MapComponent();
+    this->lastMapId = this->map->getCurrentMapId();
     this->combat = new CombatState(window, states);
     this->music = std::make_unique<MusicPlayer>("Assets/Data/music_list.txt");
     MusicManager_setPlayer(this->music.get());
@@ -93,24 +94,32 @@ void TravelState::render(sf::RenderTarget* target)
 
     this->travelInput->render(target);
     this->travelHud->render(target);
+    GameTriggers::renderNotification(target);
 }
 
 //Travel Functions
 void TravelState::updateEventsFromMovement()
 {
-    const std::string areaBefore = this->map->getCurrentAreaId();
+    const std::string mapBefore = this->map->getCurrentMapId();
     const EncounterResult result = this->determineEncounterResult();
     this->handleEncounterResult(result);
-    const std::string areaAfter = this->map->getCurrentAreaId();
+    const std::string mapAfter = this->map->getCurrentMapId();
 
-    // If the player moved to a new area, transition the music
-    if (areaBefore != areaAfter && result != EncounterResult::Combat) { MusicManager::getInstance().transition(areaAfter); }
+    if (mapBefore != mapAfter && result != EncounterResult::Combat) {
+        MusicManager::getInstance().transition(mapAfter);
+
+        // Fire a first-visit trigger for this map if we haven't yet.
+        // Pattern: "<mapId>_first_visit"
+        const std::string visitKey = mapAfter + "_first_visit";
+        TriggerManager::getInstance().fire(visitKey);
+    }
 }
+
 
 void TravelState::updateTravelActions()
 {
     if (this->travelInput->returnBonfireClicked()) {
-        this->states->push(new BonfireState(this->window, this->states));
+        this->states->push(new BonfireState(this->window, this->states, this->map->getCurrentMapId()));
         return;
     }
 

@@ -1,241 +1,461 @@
 #include "MapViewer.h"
+#include "MapDatabase.h"
+#include "CharacterManager.h"
+#include "TriggerManager.h"
+
 #include <iostream>
 
-// Constructor and Destructor
+// ---------------------------------------------------------------------------
+// Constructor
+// ---------------------------------------------------------------------------
+
 MapViewer::MapViewer()
-    : x(100),
-    y(100),
-    hidden(true),
-    map(0),
-    currentMapId(0),
-    mapFramesMaxSize(-1),
-    mapIdMaxSize(-1),
-    move_time(0.1f),
-    mapSelected(false),
-    areaEnd(false),
-    areaReset(false)
+    : currentMapIndex(0)
+    , mapFrame(0)
+    , mapFramesMaxSize(-1)
+    , mapSelected(false)
+    , areaReset(false)
+    , areaEnd(false)
+    , x(100.f)
+    , y(100.f)
+    , hidden(true)
+    , moveTime(0.1f)
 {
     this->message = std::make_unique<Text>(16, "Cannot travel with no party members!",
         sf::Color::White, true, 5);
-    mapSprite.setPosition(560, 5);
-    mapSprite.setScale(0.78f, 0.78f);
 
-    // Initialization
-    initRects();
-    initButtons();
+    this->mapIconSprite.setPosition(560, 5);
+    this->mapIconSprite.setScale(0.78f, 0.78f);
+
+    this->frameSprite.setPosition(560, 5);
+    this->frameSprite.setScale(0.78f, 0.78f);
+
+    this->initRects();
+    this->initButtons();
 }
 
-MapViewer::~MapViewer() 
+// ---------------------------------------------------------------------------
+// Build from database — call this after MapDatabase::loadFromFile()
+// ---------------------------------------------------------------------------
+
+void MapViewer::buildFromDatabase()
 {
+    const auto& db = MapDatabase::getInstance();
+    this->mapOrder = db.getMapOrder();
 
+    this->maps.clear();
+    this->mapUnlocked.clear();
+    this->mapUnlocked.resize(this->mapOrder.size(), false);
+
+    for (int i = 0; i < static_cast<int>(this->mapOrder.size()); ++i) {
+        const std::string& mapId = this->mapOrder[i];
+        const MapDefinition* mapDef = db.getMap(mapId);
+
+        if (!mapDef) {
+            std::cerr << "MapViewer: MapDatabase has no definition for mapId: " << mapId << "\n";
+            continue;
+        }
+
+        auto areaDefs = db.getAreasForMap(mapId);
+        this->maps[mapId] = std::make_unique<MapCore>(*mapDef, areaDefs);
+
+        // A map is unlocked at startup if its unlock condition is "none"
+        if (mapDef->unlockCondition == "none") {
+            this->mapUnlocked[i] = true;
+        }
+    }
+
+    // Ensure index is valid
+    this->currentMapIndex = 0;
 }
 
-// Core Functions
+// ---------------------------------------------------------------------------
+// Core update/render
+// ---------------------------------------------------------------------------
+
 void MapViewer::update(const sf::Vector2f& mousePos, bool moveRight, bool moveLeft)
 {
-    updateButtons(mousePos);
-    updateMaps(mousePos);
-    move(moveRight, moveLeft);
-    detectAreaEnd();
+    this->updateButtons(mousePos);
+    this->updateMaps(mousePos);
+    this->moveFrames(moveRight, moveLeft);
 
-    detectNewArea(
-        maps[currentMapId]->getMapLoadAreaInputs()[0],
-        maps[currentMapId]->getMapLoadAreaInputs()[1],
-        maps[currentMapId]->getMapLoadAreaInputs()[2],
-        maps[currentMapId]->getMapLoadAreaInputs()[3],
-        maps[currentMapId]->getMapLoadAreaInputs()[4]
-    );
+    // Check if the current map has an area button pressed
+    if (!this->mapOrder.empty()) {
+        const std::string& currentMapId = this->mapOrder[this->currentMapIndex];
+        auto it = this->maps.find(currentMapId);
+        if (it != this->maps.end()) {
+            std::string pressedArea = it->second->getPressedAreaId();
+            if (!pressedArea.empty()) {
+                this->handleAreaPressed(pressedArea);
+            }
+        }
+    }
+
+    // Detect frame sequence completion
+    if (this->areaReset && this->mapFrame == this->mapFramesMaxSize) {
+        this->onAreaExplorationComplete(this->activeAreaId);
+    }
 }
 
-void MapViewer::render(sf::RenderTarget* target) {
-    target->draw(mapSprite);
-    if (!hidden) {
-        renderRects(target);
-        renderMaps(target);
+void MapViewer::render(sf::RenderTarget* target)
+{
+    target->draw(this->mapIconSprite);
+
+    if (!this->hidden) {
+        this->renderRects(target);
+        this->renderMaps(target);
+
+        // Draw frame playback sprite if an area is being explored
+        if (this->mapSelected) {
+            target->draw(this->frameSprite);
+        }
     }
-    renderButtons(target);
+
+    this->renderButtons(target);
     this->message->render(target);
 }
 
-// Map Functions
-void MapViewer::updateMaps(const sf::Vector2f& mousePos) {
-    maps[currentMapId]->update(mousePos);
-}
-
-void MapViewer::renderMaps(sf::RenderTarget* target) {
-    maps[currentMapId]->render(target);
-}
-
-void MapViewer::createMapCore(const std::string& mapName, int mapId, float scale, const std::string& mapInput,
-    const sf::Vector2f& pos1, const std::string& in1, const std::string& str1,
-    const sf::Vector2f& pos2, const std::string& in2, const std::string& str2,
-    const sf::Vector2f& pos3, const std::string& in3, const std::string& str3,
-    const sf::Vector2f& pos4, const std::string& in4, const std::string& str4,
-    const sf::Vector2f& pos5, const std::string& in5, const std::string& str5)
+void MapViewer::navigateRight()
 {
-    maps[mapId] = std::make_unique<MapCore>(mapName, scale, mapInput,
-        pos1, in1, str1, pos2, in2, str2, pos3, in3, str3,
-        pos4, in4, str4, pos5, in5, str5);
-    mapIdMaxSize++;
+    if (this->canNavigateRight()) {
+        this->navigateToMap(this->currentMapIndex + 1);
+    }
 }
 
-void MapViewer::detectNewArea(const std::string& in1, const std::string& in2,
-    const std::string& in3, const std::string& in4, const std::string& in5)
+void MapViewer::navigateLeft()
 {
-    if (maps[currentMapId]->getButtons()[0]->isPressed()) {
-        loadMap(in1);
-    }
-    if (maps[currentMapId]->getButtons()[1]->isPressed()) {
-        loadMap(in2);
-    }
-    if (maps[currentMapId]->getButtons()[2]->isPressed()) {
-        loadMap(in3);
-    }
-    if (maps[currentMapId]->getButtons()[3]->isPressed()) {
-        loadMap(in4);
-    }
-    if (maps[currentMapId]->getButtons()[4]->isPressed()) {
-        loadMap(in5);
+    if (this->canNavigateLeft()) {
+        this->navigateToMap(this->currentMapIndex - 1);
     }
 }
 
-void MapViewer::detectAreaEnd() {
-    if (areaReset) {
-        if (mapFrame == mapFramesMaxSize) {
-            areaEnd = true;
-            if (areaEnd) {
-                if (maps[currentMapId]->getActiveButtonId() == maps[currentMapId]->getLocationsExplored()) {
-                    maps[currentMapId]->increaseButtonsShown();
-                    maps[currentMapId]->increaseLocationsExplored();
-                    areaEnd = false;
-                    areaReset = false;
+
+void MapViewer::navigateToMap(int index)
+{
+    if (index < 0 || index >= static_cast<int>(this->mapOrder.size())) return;
+    if (!this->isMapUnlocked(index)) return;
+
+    // Hide current
+    const std::string& currentId = this->mapOrder[this->currentMapIndex];
+    auto currentIt = this->maps.find(currentId);
+    if (currentIt != this->maps.end()) {
+        currentIt->second->hide();
+    }
+
+    this->currentMapIndex = index;
+
+    // Show new
+    const std::string& newId = this->mapOrder[this->currentMapIndex];
+    auto newIt = this->maps.find(newId);
+    if (newIt != this->maps.end()) {
+        newIt->second->show();
+    }
+}
+
+bool MapViewer::canNavigateRight() const
+{
+    int next = this->currentMapIndex + 1;
+    return next < static_cast<int>(this->mapOrder.size()) && this->isMapUnlocked(next);
+}
+
+bool MapViewer::canNavigateLeft() const
+{
+    return this->currentMapIndex > 0 && this->isMapUnlocked(this->currentMapIndex - 1);
+}
+
+// ---------------------------------------------------------------------------
+// Area logic
+// ---------------------------------------------------------------------------
+
+void MapViewer::handleAreaPressed(const std::string& areaId)
+{
+    const std::string& currentMapId = this->mapOrder[this->currentMapIndex];
+    auto it = this->maps.find(currentMapId);
+    if (it == this->maps.end()) return;
+
+    const std::string framesFile = it->second->getFramesFileForArea(areaId);
+    if (framesFile.empty()) {
+        std::cerr << "MapViewer: no frames file for area: " << areaId << "\n";
+        return;
+    }
+
+    this->activeAreaId = areaId;
+    this->loadAreaFrames(framesFile);
+}
+
+void MapViewer::onAreaExplorationComplete(const std::string& areaId)
+{
+    if (areaId.empty()) return;
+
+    const std::string& currentMapId = this->mapOrder[this->currentMapIndex];
+    auto it = this->maps.find(currentMapId);
+    if (it == this->maps.end()) return;
+
+    MapCore* core = it->second.get();
+
+    // Avoid double-counting if somehow called again before reset
+    if (core->isAreaExplored(areaId)) return;
+
+    core->markAreaExplored(areaId);
+    core->revealNextAreaButton();
+
+    // Check if this completes the entire map
+    if (core->isFullyExplored()) {
+        this->tryUnlockNextMap(currentMapId);
+    }
+
+    // Reset frame playback state
+    this->areaEnd = false;
+    this->areaReset = false;
+    this->activeAreaId.clear();
+}
+
+// ---------------------------------------------------------------------------
+// Frame animation
+// ---------------------------------------------------------------------------
+
+void MapViewer::loadAreaFrames(const std::string& framesFile)
+{
+    const std::string& currentMapId = this->mapOrder[this->currentMapIndex];
+    auto it = this->maps.find(currentMapId);
+    if (it == this->maps.end()) return;
+
+    it->second->loadFrames(framesFile);
+    const auto& frames = it->second->getFrames();
+
+    if (frames.empty()) {
+        std::cerr << "MapViewer: no frames loaded from: " << framesFile << "\n";
+        return;
+    }
+
+    this->mapFramesMaxSize = static_cast<int>(frames.size()) - 1;
+    this->mapFrame = 0;
+    this->mapSelected = true;
+    this->areaEnd = false;
+    this->areaReset = true;
+
+    this->setFrame(this->mapFrame);
+}
+
+void MapViewer::setFrame(int frame)
+{
+    const std::string& currentMapId = this->mapOrder[this->currentMapIndex];
+    auto it = this->maps.find(currentMapId);
+    if (it == this->maps.end()) return;
+
+    const auto& frames = it->second->getFrames();
+    if (frame < 0 || frame >= static_cast<int>(frames.size())) return;
+
+    if (!this->frameTexture.loadFromFile(frames[frame])) {
+        std::cerr << "MapViewer: failed to load frame: " << frames[frame] << "\n";
+        return;
+    }
+
+    this->frameSprite.setTexture(this->frameTexture);
+}
+
+void MapViewer::moveFrames(bool moveRight, bool moveLeft)
+{
+    if (!this->mapSelected) return;
+
+    this->time = this->clock.getElapsedTime();
+    if (this->time.asSeconds() < this->moveTime) return;
+
+    if (moveRight && this->mapFrame < this->mapFramesMaxSize) {
+        this->mapFrame++;
+        this->setFrame(this->mapFrame);
+        this->clock.restart();
+    }
+    else if (moveLeft && this->mapFrame > 0) {
+        this->mapFrame--;
+        this->setFrame(this->mapFrame);
+        this->clock.restart();
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Unlock logic
+// ---------------------------------------------------------------------------
+
+bool MapViewer::isMapUnlocked(int mapOrderIndex) const
+{
+    if (mapOrderIndex < 0 || mapOrderIndex >= static_cast<int>(this->mapUnlocked.size())) {
+        return false;
+    }
+    return this->mapUnlocked[mapOrderIndex];
+}
+
+void MapViewer::tryUnlockNextMap(const std::string& completedMapId)
+{
+    const auto& db = MapDatabase::getInstance();
+
+    // Walk through mapOrder and unlock any map whose unlockCondition == completedMapId
+    for (int i = 0; i < static_cast<int>(this->mapOrder.size()); ++i) {
+        const MapDefinition* def = db.getMap(this->mapOrder[i]);
+        if (def && def->unlockCondition == completedMapId) {
+            if (!this->mapUnlocked[i]) {
+                this->mapUnlocked[i] = true;
+
+                // Reveal the first area button of the newly unlocked map
+                auto it = this->maps.find(this->mapOrder[i]);
+                if (it != this->maps.end()) {
+                    it->second->revealNextAreaButton();
                 }
-                else {
-                    std::cout << "# of Buttons Not Increased due to Area # != locations #" << "\n";
+
+                std::cout << "MapViewer: unlocked map \"" << this->mapOrder[i] << "\"\n";
+
+                // Fire the unlock notification trigger.
+                // Key pattern: "map_unlocked:<displayName>"
+                // Registrations live in GameTriggers.cpp.
+                const MapDefinition* newDef = db.getMap(this->mapOrder[i]);
+                if (newDef) {
+                    TriggerManager::getInstance().fire("map_unlocked:" + newDef->name);
                 }
+
             }
         }
     }
 }
 
-void MapViewer::move(bool moveRight, bool moveLeft)
+// ---------------------------------------------------------------------------
+// Visibility controls
+// ---------------------------------------------------------------------------
+
+void MapViewer::showOpenMapButton() { this->buttons["OPENMAP"]->show(); }
+void MapViewer::hideOpenMapButton() { this->buttons["OPENMAP"]->hide(); }
+
+bool MapViewer::isHidden()      const { return this->hidden; }
+bool MapViewer::isMapSelected() const { return this->mapSelected; }
+
+std::string MapViewer::getCurrentMapId() const
 {
-    if (mapSelected) {
-        time = clock.getElapsedTime();
-
-        if (time.asSeconds() >= move_time) {
-            if (moveRight && mapFrame < mapFramesMaxSize) {
-                mapFrame++;
-                setMapFrame(mapFrame);
-                clock.restart();
-            }
-            else if (moveLeft && mapFrame > 0) {
-                mapFrame--;
-                setMapFrame(mapFrame);
-                clock.restart();
-            }
-        }
-    }
+    if (this->mapOrder.empty()) return "";
+    return this->mapOrder[this->currentMapIndex];
 }
 
-// Rectangle Functions
-void MapViewer::initRects() {
-    rectangles["MAPVIEWER"] = std::make_unique<Rectangle>(x, y, 400, 400,
-        sf::Color::Transparent, sf::Color::White, 1.f, false);
+
+std::string MapViewer::getCurrentMapName() const
+{
+    if (this->mapOrder.empty()) return "";
+    const std::string& id = this->mapOrder[this->currentMapIndex];
+    auto it = this->maps.find(id);
+    if (it == this->maps.end()) return "";
+    return it->second->getMapName();
 }
 
-void MapViewer::renderRects(sf::RenderTarget* target) {
-    for (const auto& it : rectangles) {
-        it.second->render(target);
-    }
-}
-
-// Button Functions
-void MapViewer::initButtons() {
-    buttons["OPENMAP"] = std::make_unique<Button>(450, 775, 100, 25, 0.5f, "Map",
-        sf::Color(70, 70, 70, 70), sf::Color(150, 150, 150, 255), sf::Color(20, 20, 20, 70), false);
-}
-
-void MapViewer::updateButtons(const sf::Vector2f& mousePos) {
-    for (const auto& it : buttons) {
-        it.second->update(mousePos);
-    }
-
-    if (buttons["OPENMAP"]->isPressed() && CharacterManager::getInstance().getParty().size() <= 0) {
-        this->message->setShown();
-		this->message->setString("Cannot travel with no party members!");
-        maps[currentMapId]->setHidden();
-        hidden = true;
-    }
-    else {
-        // Open Map Functionality
-        if (buttons["OPENMAP"]->isPressed() && hidden) {
-            maps[currentMapId]->setShown();
-            rectangles["MAPVIEWER"]->show();
-            hidden = false;
-        }
-        else if (buttons["OPENMAP"]->isPressed() && !hidden) {
-            maps[currentMapId]->setHidden();
-            rectangles["MAPVIEWER"]->show();
-            hidden = true;
-        }
-    }
-}
-
-void MapViewer::renderButtons(sf::RenderTarget* target) {
-    for (const auto& it : buttons) {
-        it.second->render(target);
-    }
-}
-
-// Asset Functions
-void MapViewer::loadMap(const std::string& file_input) {
-    mapFramesMaxSize = -1;
-    std::ifstream ifs(file_input);
-    if (ifs.is_open()) {
-        // Clear the map outside the loop if necessary
-        maps[currentMapId]->clearMap();
-        // Reset map frame to make map flow more concise
-        mapFrame = 0;
-        // Set map to selected to safeguard vector subscript errors
-        mapSelected = true;
-        areaEnd = false;
-        areaReset = true;
-
-        std::string input;
-        while (std::getline(ifs, input)) {
-            // Load texture from file
-            maps[currentMapId]->loadMap(input);
-            mapFramesMaxSize++;
-        }
-        ifs.close();
-        setMapFrame(mapFrame);
-    }
-    else {
-        std::cerr << "Failed to open file: " << file_input << std::endl;
-    }
-}
+// ---------------------------------------------------------------------------
+// Event passthrough
+// ---------------------------------------------------------------------------
 
 bool MapViewer::rollEventForCurrentMap()
 {
-    if (this->maps.count(this->currentMapId) <= 0) {
-        return false;
-    }
-
-    if (this->maps[this->currentMapId]->event == nullptr) {
-        return false;
-    }
-
-    return this->maps[this->currentMapId]->event->eventChance();
+    if (this->mapOrder.empty()) return false;
+    const std::string& id = this->mapOrder[this->currentMapIndex];
+    auto it = this->maps.find(id);
+    if (it == this->maps.end() || !it->second) return false;
+    return it->second->rollEvent();
 }
 
 bool MapViewer::currentEventIsActive() const
 {
-    auto it = this->maps.find(this->currentMapId);
+    if (this->mapOrder.empty()) return false;
+    const std::string& id = this->mapOrder[this->currentMapIndex];
+    auto it = this->maps.find(id);
+    if (it == this->maps.end() || !it->second) return false;
+    return it->second->isEventActive();
+}
 
-    if (it == this->maps.end() || it->second == nullptr || it->second->event == nullptr) {
-        return false;
+// ---------------------------------------------------------------------------
+// Init helpers
+// ---------------------------------------------------------------------------
+
+void MapViewer::initRects()
+{
+    this->rectangles["MAPVIEWER"] = std::make_unique<Rectangle>(
+        x, y, 400, 400,
+        sf::Color::Transparent, sf::Color::White, 1.f, false
+    );
+}
+
+void MapViewer::initButtons()
+{
+    this->buttons["OPENMAP"] = std::make_unique<Button>(
+        450, 775, 100, 25, 0.5f, "Map",
+        sf::Color(70, 70, 70, 70),
+        sf::Color(150, 150, 150, 255),
+        sf::Color(20, 20, 20, 70),
+        false
+    );
+}
+
+// ---------------------------------------------------------------------------
+// Update/render helpers
+// ---------------------------------------------------------------------------
+
+void MapViewer::updateButtons(const sf::Vector2f& mousePos)
+{
+    for (const auto& it : this->buttons) {
+        it.second->update(mousePos);
     }
 
-    return it->second->event->isEventActive();
+    if (this->buttons["OPENMAP"]->isPressed()) {
+        if (CharacterManager::getInstance().getParty().size() <= 0) {
+            this->message->setShown();
+            this->message->setString("Cannot travel with no party members!");
+            if (!this->mapOrder.empty()) {
+                const std::string& id = this->mapOrder[this->currentMapIndex];
+                auto it = this->maps.find(id);
+                if (it != this->maps.end()) it->second->hide();
+            }
+            this->hidden = true;
+        }
+        else if (this->hidden) {
+            if (!this->mapOrder.empty()) {
+                const std::string& id = this->mapOrder[this->currentMapIndex];
+                auto it = this->maps.find(id);
+                if (it != this->maps.end()) it->second->show();
+            }
+            this->rectangles["MAPVIEWER"]->show();
+            this->hidden = false;
+        }
+        else {
+            if (!this->mapOrder.empty()) {
+                const std::string& id = this->mapOrder[this->currentMapIndex];
+                auto it = this->maps.find(id);
+                if (it != this->maps.end()) it->second->hide();
+            }
+            this->rectangles["MAPVIEWER"]->show();
+            this->hidden = true;
+        }
+    }
+}
+
+void MapViewer::renderButtons(sf::RenderTarget* target)
+{
+    for (const auto& it : this->buttons) {
+        it.second->render(target);
+    }
+}
+
+void MapViewer::renderRects(sf::RenderTarget* target)
+{
+    for (const auto& it : this->rectangles) {
+        it.second->render(target);
+    }
+}
+
+void MapViewer::updateMaps(const sf::Vector2f& mousePos)
+{
+    if (this->mapOrder.empty()) return;
+    const std::string& id = this->mapOrder[this->currentMapIndex];
+    auto it = this->maps.find(id);
+    if (it != this->maps.end()) it->second->update(mousePos);
+}
+
+void MapViewer::renderMaps(sf::RenderTarget* target)
+{
+    if (this->mapOrder.empty()) return;
+    const std::string& id = this->mapOrder[this->currentMapIndex];
+    auto it = this->maps.find(id);
+    if (it != this->maps.end()) it->second->render(target);
 }

@@ -139,6 +139,30 @@
     <ClCompile Include="State.cpp">
       <Filter>States</Filter>
     </ClCompile>
+    <ClCompile Include="MapCore.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="MapDatabase.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTypes.h">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="ShopState.cpp">
+      <Filter>States\PlayStates</Filter>
+    </ClCompile>
+    <ClCompile Include="ShopDatabase.cpp">
+      <Filter>Resources\Databases</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFlags.h">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="TriggerManager.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTriggers.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -293,6 +317,24 @@
     </ClInclude>
     <ClInclude Include="State.h">
       <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="MapCore.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="MapDatabase.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="ShopState.h">
+      <Filter>States\PlayStates</Filter>
+    </ClInclude>
+    <ClInclude Include="ShopDatabase.h">
+      <Filter>Resources\Databases</Filter>
+    </ClInclude>
+    <ClInclude Include="TriggerManager.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTriggers.h">
+      <Filter>Events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

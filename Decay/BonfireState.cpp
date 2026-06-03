@@ -1,11 +1,14 @@
 #include "BonfireState.h"
+#include "ShopState.h"
 
+#include <algorithm>
 #include <iostream>
 #include <memory>
 
 // Constructors and Destructors
-BonfireState::BonfireState(sf::RenderWindow* window, std::stack<State*>* states)
+BonfireState::BonfireState(sf::RenderWindow* window, std::stack<State*>* states, const std::string& areaId)
     : State(window, states)
+    , areaId(areaId)
 {
     this->initUi();
 }
@@ -37,6 +40,10 @@ void BonfireState::update()
         this->smithWeapon();
     }
 
+    if (this->ui.button("VISIT_SHOP").isPressed()) {
+        this->visitShop();
+    }
+
     if (this->ui.button("LEAVE_BONFIRE").isPressed()) {
         this->leaveBonfire();
     }
@@ -48,6 +55,10 @@ void BonfireState::render(sf::RenderTarget* target)
         return;
     }
 
+    if (this->hasBonfireImage) {
+        target->draw(this->bonfireSprite);
+    }
+
     this->ui.render(*target);
     this->renderPartyPreview(target);
 }
@@ -55,6 +66,7 @@ void BonfireState::render(sf::RenderTarget* target)
 // UI Functions
 void BonfireState::initUi()
 {
+    const bool atCastle = (this->areaId == "castle");
     // ── Colour palette ───────────────────────────────────────────────
     const sf::Color panelBorder(255, 255, 255, 60);
     const sf::Color transparent(sf::Color::Transparent);
@@ -90,6 +102,42 @@ void BonfireState::initUi()
     // Thin gold line under the title
     this->ui.addRectangle("TITLE_DIV", std::make_unique<Rectangle>(
         360, 56, 950, 1, sf::Color(255, 200, 100, 60), transparent, 0.f, false));
+
+    // ── Bonfire image – centre panel ─────────────────────────────────
+    {
+        const std::string imagePath = "Assets/Wallpapers/Bonfires/" + this->areaId + ".jpeg";
+        const float imgX = 360.f;
+        const float imgY = 60.f;
+        const float imgW = 950.f;
+        const float imgH = 750.f;
+
+        if (!this->areaId.empty() && this->bonfireTexture.loadFromFile(imagePath)) {
+            // Loaded fine — build a raw sprite and draw it via a UiSprite workaround.
+            // We own the texture on BonfireState so it stays alive.
+            sf::Sprite bonfireSprite(this->bonfireTexture);
+
+            // Scale to fill the centre panel box
+            const sf::FloatRect bounds = bonfireSprite.getLocalBounds();
+            if (bounds.width > 0.f && bounds.height > 0.f) {
+                const float scaleX = imgW / bounds.width;
+                const float scaleY = imgH / bounds.height;
+                const float scale = std::min(scaleX, scaleY);
+                bonfireSprite.setScale(scale, scale);
+                const float cx = imgX + (imgW - bounds.width * scale) / 2.f;
+                const float cy = imgY + (imgH - bounds.height * scale) / 2.f;
+                bonfireSprite.setPosition(cx, cy);
+            }
+
+            this->bonfireSprite = bonfireSprite;
+            this->hasBonfireImage = true;
+        }
+        else {
+            if (!this->areaId.empty()) {
+                std::cerr << "BonfireState: could not load bonfire image: " << imagePath << "\n";
+            }
+            this->hasBonfireImage = false;
+        }
+    }
 
     // ── Message panel ────────────────────────────────────────────────
     this->ui.addRectangle("MESSAGE_PANEL", std::make_unique<Rectangle>(
@@ -130,6 +178,16 @@ void BonfireState::initUi()
     this->ui.addButton("SMITH_WEAPON", std::make_unique<Button>(
         btnX, btnY, btnW, btnH, 0.5f, "Smith Weapon",
         btnIdle, btnHover, btnActive, false));
+
+    btnY += btnH + btnGap;
+    // Label reads "Investigate Noises" on first castle visit, "Visit Doctor" after.
+    // The intro event itself lives in ShopState — BonfireState only needs the flag.
+    const std::string shopButtonLabel = (atCastle && !GameFlags::getInstance().has("doctor_intro_played"))
+        ? "Investigate Noises"
+        : "Visit Doctor";
+    this->ui.addButton("VISIT_SHOP", std::make_unique<Button>(
+        btnX, btnY, btnW, btnH, 0.5f, shopButtonLabel,
+        btnIdle, btnHover, btnActive, !atCastle));  // hidden = !atCastle
 
     btnY += btnH + btnGap;
     this->ui.addButton("LEAVE_BONFIRE", std::make_unique<Button>(
@@ -205,4 +263,9 @@ void BonfireState::leaveBonfire()
     if (!this->states->empty()) {
         this->states->pop();
     }
+}
+
+void BonfireState::visitShop()
+{
+    this->states->push(new ShopState(this->window, this->states));
 }
