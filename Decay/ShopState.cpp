@@ -20,20 +20,13 @@ static std::string goldStr(int g)
 ShopState::ShopState(sf::RenderWindow* window, std::stack<State*>* states)
     : State(window, states)
 {
-    ShopDatabase::getInstance().load();   // idempotent if already loaded
+    ShopDatabase::getInstance().load();
     this->initUi();
     this->refreshShopList();
     this->refreshInventoryList();
 
-    // First visit: build the intro event and force-activate it.
-    // The shop UI is locked until the event finishes (handled in update()).
-    // EventManager is constructed with the display name to match the
-    // folder convention: Assets/Events/Castle/doctor_intro.once.txt
-    if (!GameFlags::getInstance().has("doctor_intro_played")) {
-        std::string castleArea = "Castle";
-        this->introEvent = std::make_unique<EventManager>(castleArea);
-        this->introEvent->forceEvent();
-    }
+    // Intro event
+    if (!GameFlags::getInstance().has("doctor_intro_played")){ this->introEvent = std::make_unique<EventManager>("Castle", "doctor_intro_played"); }
 }
 
 // ── State interface ───────────────────────────────────────────────────────────
@@ -50,25 +43,22 @@ void ShopState::updateKeybinds()
 
 void ShopState::update()
 {
-    // If the intro event is still running, hand control to it exclusively.
-    // The shop UI does not update until the event is done.
-    if (this->introEvent && this->introEvent->isEventActive()) {
-        this->updateMousePositions();
-        this->introEvent->update(this->getMousePosView());
-        return;
-    }
+    this->updateMousePositions();
 
-    // Intro just finished — fire the completion trigger and discard the event.
-    // GameTriggers::registerAll() handles setting the "doctor_intro_played" flag.
-    if (this->introEvent) {
-        TriggerManager::getInstance().fire("doctor_intro_complete");
-        this->introEvent.reset();
+    // In ShopState::update(), replace the entire introEvent block with this:
+    if (this->introEvent)
+    {
+        if (this->introEvent->hasFinished())
+            this->introEvent.reset();
+        else
+        {
+            this->introEvent->update(this->getMousePosView());
+            return;
+        }
     }
 
     this->checkForQuit();
-    this->updateMousePositions();
     this->updateKeybinds();
-
     this->ui.update(this->getMousePosView());
 
     // ── Leave ──────────────────────────────────────────────────────────────
@@ -105,7 +95,6 @@ void ShopState::update()
     // ── Shop list row buttons ──────────────────────────────────────────────
     for (int i = 0; i < kVisibleRows; ++i) {
         const std::string btnId = "SHOP_ROW_" + std::to_string(i);
-        // The button exists only if the row is populated; guard with try/catch.
         try {
             if (this->ui.button(btnId).isPressed()) {
                 const int realIndex = shopScrollOffset + i;
@@ -130,10 +119,6 @@ void ShopState::update()
         }
         catch (...) {}
     }
-
-    // ── Scroll (mouse wheel over columns) — not yet wired, stubs ready ─────
-    // scrollShop(0);
-    // scrollInventory(0);
 
     // ── Update feedback text ───────────────────────────────────────────────
     this->ui.text("FEEDBACK_MSG").setString(feedbackMessage);
@@ -167,7 +152,6 @@ void ShopState::render(sf::RenderTarget* target)
             const float ry = colY + i * rowH;
             const bool  selected = (realIndex == shopSelectedIndex);
 
-            // Highlight selected row
             if (selected) {
                 sf::RectangleShape hl(sf::Vector2f(colW, rowH - 2.f));
                 hl.setPosition(colX, ry);
@@ -211,7 +195,6 @@ void ShopState::render(sf::RenderTarget* target)
                 target->draw(hl);
             }
 
-            // Sell price = floor(buyPrice * sellMultiplier), or 0 if unknown
             const int sellPrice = def
                 ? static_cast<int>(std::floor(def->buyPrice * def->sellMultiplier))
                 : 0;
@@ -261,7 +244,6 @@ void ShopState::initUi()
     this->ui.addRectangle("SHOP_HEADER_DIV", std::make_unique<Rectangle>(
         25, 82, 460, 1, divider, transparent, 0.f, false));
 
-    // Invisible hit-target buttons for each row; rendered manually in render()
     for (int i = 0; i < kVisibleRows; ++i) {
         const float ry = 110.f + i * 28.f;
         this->ui.addButton("SHOP_ROW_" + std::to_string(i),
@@ -283,7 +265,6 @@ void ShopState::initUi()
     this->ui.addRectangle("CENTRE_HEADER_DIV", std::make_unique<Rectangle>(
         500, 82, 910, 1, divider, transparent, 0.f, false));
 
-    // Door-slot flavour text area
     this->ui.addRectangle("DOOR_SLOT_BG", std::make_unique<Rectangle>(
         510, 92, 890, 120, sf::Color(20, 15, 10, 180), sf::Color(255, 200, 100, 60), 1.f, false));
 
@@ -294,7 +275,6 @@ void ShopState::initUi()
         " No touching. No exceptions.\"",
         sf::Color(200, 180, 140, 230), false));
 
-    // Gold display
     this->ui.addRectangle("GOLD_PANEL", std::make_unique<Rectangle>(
         510, 630, 890, 60, sf::Color(30, 25, 10, 160), sf::Color(255, 200, 100, 60), 1.f, false));
 
@@ -304,7 +284,6 @@ void ShopState::initUi()
     this->ui.addText("GOLD_VALUE", std::make_unique<Text>(
         590, 640, 15, "0g", sf::Color(255, 210, 80, 255), false));
 
-    // Feedback / log area
     this->ui.addRectangle("FEEDBACK_PANEL", std::make_unique<Rectangle>(
         510, 700, 890, 80, transparent, sf::Color(255, 255, 255, 25), 1.f, false));
 
@@ -317,7 +296,6 @@ void ShopState::initUi()
     this->ui.addText("FEEDBACK_MSG", std::make_unique<Text>(
         522, 726, 14, feedbackMessage, sf::Color(220, 200, 170, 255), false));
 
-    // Leave button
     this->ui.addButton("LEAVE_SHOP", std::make_unique<Button>(
         660.f, 792.f, 200.f, 30.f, 0.5f, "Leave",
         btnDangerIdle, btnDangerHover, btnDangerActive, false));
@@ -349,22 +327,18 @@ void ShopState::initUi()
     const float portraitW = 380.f;
     const float portraitH = 320.f;
 
-    // Filled background
     this->ui.addRectangle("DOCTOR_PORTRAIT_BG", std::make_unique<Rectangle>(
         portraitX, portraitY, portraitW, portraitH,
         sf::Color(20, 15, 10, 180), sf::Color::Transparent, 0.f, false));
 
-    // Border — same style as the character slots in BonfireState
     this->ui.addRectangle("DOCTOR_PORTRAIT_BORDER", std::make_unique<Rectangle>(
         portraitX, portraitY, portraitW, portraitH,
         sf::Color::Transparent, sf::Color(255, 255, 255, 60), 1.f, false));
 
-    // Ember accent bar along the top
     this->ui.addRectangle("DOCTOR_PORTRAIT_ACCENT", std::make_unique<Rectangle>(
         portraitX, portraitY, portraitW, 3.f,
         sf::Color(220, 140, 60, 180), sf::Color::Transparent, 0.f, false));
 
-    // The sprite itself, fitted inside with a little padding
     this->ui.addSprite("DOCTOR_PORTRAIT", std::make_unique<UiSprite>(
         "doctor_sprite", portraitX, portraitY, 1.f, 1.f, false));
     this->ui.sprite("DOCTOR_PORTRAIT").fitInside(portraitX, portraitY, portraitW, portraitH, 8.f);
@@ -376,7 +350,7 @@ void ShopState::refreshShopList()
 {
     shopItemIds.clear();
     for (const auto& def : ShopDatabase::getInstance().getAllItems()) {
-        if (def.stock != 0) {   // 0 means sold out; -1 = infinite, >0 = remaining
+        if (def.stock != 0) {
             shopItemIds.push_back(def.itemId);
         }
     }
@@ -412,25 +386,10 @@ void ShopState::tryBuy(const std::string& itemId)
         return;
     }
 
-    // Inventory::addGold only accepts positive values.
-    // We implement spend as: verify balance, then add the negative via a
-    // workaround — add a spendGold method to Inventory, or use the two-liner below.
-    // ** Add to Inventory.h: bool spendGold(int amount);
-    // ** Add to Inventory.cpp:
-    //      bool Inventory::spendGold(int amount) {
-    //          if (amount <= 0 || this->gold < amount) return false;
-    //          this->gold -= amount;
-    //          return true;
-    //      }
-    // Then this call compiles as-is:
     inv.spendGold(def->buyPrice);
     inv.addItem(itemId, 1);
 
-    // Decrement finite stock
     if (def->stock > 0) {
-        // ShopDatabase holds the definition; we modify via a non-const accessor.
-        // If ShopDatabase doesn't expose a mutable interface yet, use the
-        // cast below as a stopgap until you add one.
         const_cast<ShopItemDefinition*>(def)->stock -= 1;
     }
 
@@ -500,7 +459,6 @@ float ShopState::renderListRow(sf::RenderTarget* target,
     nameText.setPosition(x + 4.f, y + 4.f);
     target->draw(nameText);
 
-    // Price (right-aligned)
     sf::Text priceText;
     priceText.setFont(font);
     priceText.setCharacterSize(13);
@@ -510,7 +468,6 @@ float ShopState::renderListRow(sf::RenderTarget* target,
     priceText.setPosition(x + w - pw - 8.f, y + 4.f);
     target->draw(priceText);
 
-    // Thin separator line
     sf::RectangleShape sep(sf::Vector2f(w, 1.f));
     sep.setPosition(x, y + 27.f);
     sep.setFillColor(sf::Color(255, 255, 255, 15));

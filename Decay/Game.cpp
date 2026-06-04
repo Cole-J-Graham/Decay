@@ -5,11 +5,13 @@
 #include "CharacterMoveDatabase.h"
 #include "MusicManager.h"
 #include "SettingsManager.h"
-#include"Inventory.h"
+#include "Inventory.h"
+#include "GameTriggers.h"
 
 //Constructor and Destructors
 Game::Game()
 {
+	GameTriggers::registerAll();
 	AssetDatabase::getInstance().loadFromFile("Assets/Data/assets.db");
 	SfxManager::getInstance().loadFromFile("Assets/Data/sfx.db");
 	Inventory::getInstance().loadItemDefinitionsFromFile("Assets/Data/inventory.db");

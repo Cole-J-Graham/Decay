@@ -1,12 +1,28 @@
-*SPEAK_NPC
-DOCTOR
-*NEUTRAL
-"Hello? Is someone there?"
-"Well I'll be... The knight lives?"
-*SPEAK_CHARACTER
-"Something like that.."
-*SPEAK_NPC
-DOCTOR
-"Well... I'm impressed to say the least I'd say. Last I saw you were in quite the crowd."
-*SPEAK_CHARACTER
-"Yeah, well aware."
+[SPEAK_NPC]
+NPC: DOCTOR
+EMOTION: NEUTRAL
+LINE: Hello? Is someone there?
+
+[SPEAK_CHARACTER]
+RESPONSE_A: Walk towards the voice
+RESPONSE_B: Step away from the voice
+
+[SPEAK_NPC]
+NPC: DOCTOR
+EMOTION: NEUTRAL
+LINE_A: Well I'll be... The knight lives?
+LINE_B: Heading out so soon— Wait, you're the knight from the castle?!
+
+[SPEAK_CHARACTER]
+RESPONSE_A: Yeah... and here we are I suppose.
+RESPONSE_B: I'd say I'm happy to see you too... but I'm not.
+
+[SPEAK_NPC]
+NPC: DOCTOR
+EMOTION: NEUTRAL
+LINE_A: Well, since you aren't dead, maybe we can get some use out of each other in these trying times?
+LINE_B: Look, I didn't really expect this reunion myself. Last I saw you, you had around one hundred of those... things, attacking you. But maybe we can help each other out?
+
+[SPEAK_CHARACTER]
+RESPONSE_A: What are you getting at?
+RESPONSE_B: I'm not too sure about this, honestly.

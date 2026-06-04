@@ -1,88 +1,152 @@
 #pragma once
-#include<filesystem>
-#include<fstream>
-#include<random>
-#include<deque>
-#include"CombatState.h"
-#include "DialogueInputComponent.h"
+#include <filesystem>
+#include <fstream>
+#include <random>
+#include <deque>
+#include <vector>
+#include <string>
 #include <memory>
+#include "CombatState.h"
+#include "DialogueInputComponent.h"
 
-class EventManager {
+class EventManager
+{
 public:
-	//Constructors and Deconstructors
-	EventManager(std::string& areaName);
-	~EventManager();
+    // -------------------------------------------------------
+    //  Constructors and Destructors
+    // -------------------------------------------------------
 
-	//Core Functions
-	void update(sf::Vector2f mousePos);
-	void render(sf::RenderTarget* target);
+    // General-purpose constructor — used by TravelState and others
+    // that trigger events by chance or via forceEvent().
+    EventManager(const std::string& areaName);
 
-	//Event Functions
-	void initEvents();
-	void updateEvents();
-	bool eventChance();
-	void forceEvent();
-	bool isEventActive() const { return this->eventActivated; }
+    // One-time intro constructor — automatically force-activates the event,
+    // sets the completion flag, and optionally fires a trigger when done.
+    // The calling state only needs to check hasFinished() each frame.
+    EventManager(const std::string& areaName,
+        const std::string& completionFlag,
+        const std::string& completionTrigger = "");
 
-	//File Functions
-	void updateInput();
+    ~EventManager();
 
-	//Getters
-	bool getEventActivated() { return this->eventActivated; }
+    //Core Functions
+    void update(sf::Vector2f mousePos);
+    void render(sf::RenderTarget* target);
+
+    //Event Functions
+    void initEvents();
+    void updateEvents();
+    bool eventChance();
+    void forceEvent();
+
+    //Getters
+    bool isEventActive() const { return this->eventActivated; }
+    bool hasFinished()   const { return this->eventStarted && !this->eventRunning; }
 
 private:
 
-	std::unique_ptr<DialogueInputComponent> dialogueInput;
+    // -------------------------------------------------------
+    //  Block types parsed from event files
+    // -------------------------------------------------------
+    struct NPCBlock
+    {
+        std::string npc;
+        std::string emotion;
+        std::string lineA;
+        std::string lineB;
+    };
 
-	bool isFileOpen;
-	bool eventActivated;
-	bool skipLine;
+    struct CharacterBlock
+    {
+        std::string responseA;
+        std::string responseB;
+    };
 
-	float eventOdds;
-	float eventIncrease;
-	float eventThresholdMax;
-	float eventThresholdMin;
+    struct Beat
+    {
+        enum class Type { NPC, CHARACTER } type;
+        NPCBlock       npc;
+        CharacterBlock character;
+    };
 
-	int eventKey;
+    // -------------------------------------------------------
+    //  Event file definition
+    // -------------------------------------------------------
+    struct EventDefinition
+    {
+        std::string path;
+        bool        oneTime = false;
+        bool        hasPlayed = false;
+    };
 
-	std::ifstream ifs;
-	std::string areaName;
-	std::string inResponseOne, inResponseTwo, inExpression, inTalk, inChar;
-	std::string currentLine;
+    // -------------------------------------------------------
+    //  State machine
+    // -------------------------------------------------------
+    enum class State
+    {
+        IDLE,
+        SHOWING_NPC,
+        SHOWING_CHOICES,
+    };
 
-	struct EventDefinition
-	{
-		std::string path;
-		bool oneTime = false;
-		bool hasPlayed = false;
-	};
+    enum class Choice { NONE, A, B };
 
-	std::deque<EventDefinition> events;
-	int activeEventIndex = -1;
+    // -------------------------------------------------------
+    //  Private helpers
+    // -------------------------------------------------------
+    void        initInternal();
+    void        loadEventFile(const std::string& path);
+    void        advanceBeat();
+    void        showNPCBeat(const NPCBlock& block, const std::string& line);
+    void        showChoiceBeat(const CharacterBlock& block);
 
-	enum State {
-		IDLE,
-		PROCESSING_CHARACTER,
-		PROCESSING_NPC,
-		PROCESSING_DIALOGUE
-	};
+    Beat        parseNPCBlock();
+    Beat        parseCharacterBlock();
+    std::string parseValue(const std::string& line);
 
-	State currentState = IDLE;
+    bool        openFile(const std::string& path);
+    void        closeFile();
+    std::string readFileLine();
 
-	//Private Event Functions
-	void characterSpeak();
-	void npcSpeak();
+    void        getEventsInDirectory(const std::string& directoryPath);
+    bool        eventCanPlay(const EventDefinition& event) const;
+    void        updateInput();
 
-	//File Management Functions
-	bool processNextLine();
-	bool openFile(const std::string& file_input);
-	void closeFile();
-	void readLine(std::string& extractedLine);
-	void readCharacters(size_t numChars, std::string& extractedString);
-	std::deque<EventDefinition> getEventsInDirectory(const std::string& directoryPath);
-	void updateState(State newState);
+    // -------------------------------------------------------
+    //  Members
+    // -------------------------------------------------------
+    std::unique_ptr<DialogueInputComponent> dialogueInput;
 
-	//Helper
-	bool eventCanPlay(const EventDefinition& event) const;
+    // One-time event completion — set at construction, used in advanceBeat()
+    std::string completionFlag;
+    std::string completionTrigger;
+
+    // Probability
+    bool  eventActivated = false;
+    bool  eventRunning = false;
+    bool  eventStarted = false;
+    float eventOdds = 0.f;
+    float eventIncrease = 1.f;
+    float eventThresholdMax = 1000.f;
+    float eventThresholdMin = 0.f;
+
+    // Area / file
+    std::string   areaName;
+    std::ifstream ifs;
+    bool          isFileOpen = false;
+
+    // Beat sequence
+    std::vector<Beat> beats;
+    int               currentBeatIndex = -1;
+
+    // Player's last choice
+    Choice lastChoice = Choice::NONE;
+
+    // Active event tracking
+    std::deque<EventDefinition> events;
+    int                         activeEventIndex = -1;
+
+    // Display state
+    State       currentState = State::IDLE;
+    std::string activeNPCName;
 };
-

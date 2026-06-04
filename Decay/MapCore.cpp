@@ -23,7 +23,7 @@ MapCore::MapCore(const MapDefinition& mapDef,
     // Build area states from definitions (already sorted by areaIndex by MapDatabase)
     this->initButtons(areaDefs);
 
-    this->event = std::make_unique<EventManager>(this->mapName);
+    this->event = std::make_unique<EventManager>(std::string(this->mapName));
 }
 
 // ---------------------------------------------------------------------------
