@@ -25,6 +25,5 @@ forest_corruption|forest|3|Corruption|300|250|Assets/Wallpapers/ForestTextFiles/
 forest_deepdark|forest|4|Deep Dark|375|400|Assets/Wallpapers/ForestTextFiles/forest.txt
 castle_entrance|castle|0|Entrance|150|150|Assets/Wallpapers/CastleTextFiles/castle.txt
 castle_depths|castle|1|Depths|150|250|Assets/Wallpapers/CastleTextFiles/castledepths.txt
-castle_corridors|castle|2|Corridors|200|200|
-castle_dungeon|castle|3|Dungeon|300|250|
-castle_labs|castle|4|Labs|375|400|
+castle_chamber|castle|3|Chambers|300|250|Assets/Wallpapers/CastleTextFiles/castlechambers.txt
+castle_labyrinth|castle|2|Labyrinth|200|200|Assets/Wallpapers/CastleTextFiles/castlelabyrinth.txt

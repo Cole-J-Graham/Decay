@@ -5,3 +5,5 @@ WEAK_SWIPE|DAMAGE|RANDOM_PARTY|The creature makes a clumsy swipe!|bash_light|0.7
 SWEEP|DAMAGE|ALL_PARTY|The creature sweeps across the whole party!|bash_light|0.65
 SCREECH|STUN|RANDOM_PARTY|The creature lets out a piercing screech!|bash_light|1
 DREAD_HOWL|STUN|ALL_PARTY|The creature's dreadful howl freezes the party!|bash_light|1
+BRANCH_SPEAR|DAMAGE|RANDOM_PARTY|The creature strikes forwards with one of its branches, piercing like a spear!|strike_long|3.25
+BRICK_TOSS|DAMAGE|RANDOM_PARTY|The entity levitates a brick and hurls it!|strike_long|3.25

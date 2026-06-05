@@ -11,9 +11,11 @@ TravelState::TravelState(sf::RenderWindow* window, std::stack<State*>* states)
     this->map = new MapComponent();
     this->lastMapId = this->map->getCurrentMapId();
     this->combat = new CombatState(window, states);
-    this->music = std::make_unique<MusicPlayer>("Assets/Data/music_list.txt");
+    this->music = std::make_unique<MusicPlayer>();
     MusicManager_setPlayer(this->music.get());
-    MusicManager::getInstance().play("Forest");
+    MusicManager::getInstance().play("forest");
+    MusicManager::getInstance().loadFromFile("Assets/Data/songs.db");
+    MusicManager::getInstance().play(lastMapId);
 
     this->travelInput = std::make_unique<TravelInputComponent>();
     this->travelHud = std::make_unique<TravelHudComponent>();
@@ -67,6 +69,21 @@ void TravelState::update()
         this->travelInput->leftArrowClicked()
     );
 
+    const std::string currentMap = this->map->getCurrentMapId();
+
+    if (currentMap != this->lastMapId)
+    {
+        std::cout << "MAP CHANGED: "
+            << this->lastMapId
+            << " -> "
+            << currentMap
+            << std::endl;
+
+        MusicManager::getInstance().transition(currentMap);
+
+        this->lastMapId = currentMap;
+    }
+
     this->updateTravelInputVisibility();
     this->updateTravelActions();
 
@@ -104,15 +121,13 @@ void TravelState::updateEventsFromMovement()
     const EncounterResult result = this->determineEncounterResult();
     this->handleEncounterResult(result);
     const std::string mapAfter = this->map->getCurrentMapId();
-
-    if (mapBefore != mapAfter && result != EncounterResult::Combat) {
-        MusicManager::getInstance().transition(mapAfter);
-
-        // Fire a first-visit trigger for this map if we haven't yet.
-        // Pattern: "<mapId>_first_visit"
-        const std::string visitKey = mapAfter + "_first_visit";
-        TriggerManager::getInstance().fire(visitKey);
-    }
+    //if (mapBefore != mapAfter && result != EncounterResult::Combat) {
+    //    MusicManager::getInstance().transition(mapAfter);
+    //    // Fire a first-visit trigger for this map if we haven't yet.
+    //    // Pattern: "<mapId>_first_visit"
+    //    const std::string visitKey = mapAfter + "_first_visit";
+    //    TriggerManager::getInstance().fire(visitKey);
+    //}
 }
 
 

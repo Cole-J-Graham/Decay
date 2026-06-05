@@ -3,7 +3,6 @@
 #include "EnemyDatabase.h"
 #include "EnemyMoveDatabase.h"
 #include "CharacterMoveDatabase.h"
-#include "MusicManager.h"
 #include "SettingsManager.h"
 #include "Inventory.h"
 #include "GameTriggers.h"
@@ -15,7 +14,6 @@ Game::Game()
 	AssetDatabase::getInstance().loadFromFile("Assets/Data/assets.db");
 	SfxManager::getInstance().loadFromFile("Assets/Data/sfx.db");
 	Inventory::getInstance().loadItemDefinitionsFromFile("Assets/Data/inventory.db");
-	MusicManager::getInstance().loadFromFile("Assets/Data/songs.db");
 
 	CharacterMoveDatabase::getInstance().loadFromFile("Assets/Data/character_moves.db");
 	EnemyMoveDatabase::getInstance().loadFromFile("Assets/Data/enemy_moves.db");
