@@ -77,10 +77,9 @@ void Enemy::render(sf::RenderTarget* target)
     target->draw(this->enemy);
     this->renderText(target);
 
-    if (this->turnActive) {
-        for (auto& it : this->moves) {
-            it.second->renderMoveMessage(target);
-        }
+    // Always render move messages — visibility is controlled by EntityMove::hidden
+    for (auto& it : this->moves) {
+        it.second->renderMoveMessage(target);
     }
 }
 

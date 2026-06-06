@@ -9,13 +9,13 @@ Move::Move(
     Operation operation,
     std::string sfxId
 )
-    : operation(operation), sfxId(sfxId)
+    : operation(operation), sfxId(sfxId), text(text)
 {
-    const sf::Color idle(70, 70, 70, 70);
-    const sf::Color hover(150, 150, 150, 255);
-    const sf::Color active(20, 20, 20, 70);
+    const sf::Color idle(15, 15, 30, 200);        // dark navy, matches console bg
+    const sf::Color hover(255, 200, 80, 40);       // gold tint on hover, matches accent bar
+    const sf::Color active(255, 200, 80, 80);      // brighter gold on press
 
-    this->button = std::make_unique<Button>(350, 800, 100, 25, 0.1f, text, idle, hover, active, false);
+    this->button = std::make_unique<Button>(350, 800, 0.f, 25, 0.1f, text, idle, hover, active, false);
     this->button->setClickSfxEnabled(false);
     this->message = std::make_unique<Text>(355, 835, 16, moveMessage, sf::Color::White, true);
 
@@ -72,6 +72,10 @@ void Move::update(const sf::Vector2f mousePos)
 
 void Move::useMove()
 {
+    if (!this->canUse()) {
+        return;
+    }
+
     if (this->operation) {
         this->operation();
     }
@@ -83,6 +87,41 @@ void Move::useMove()
     this->message->setShown();
 
     std::cout << "Move used: " << this->moveMessage << "\n";
+}
+
+// MP Functions
+void Move::initMp(int maxUses, int currentUses)
+{
+    this->mpMax = maxUses;
+    this->mp = (maxUses == -1) ? -1 : currentUses;
+    this->updateButton();
+}
+
+bool Move::canUse() const
+{
+    return this->mpMax == -1 || this->mp > 0;
+}
+
+void Move::consumeMp()
+{
+    if (this->mpMax != -1 && this->mp > 0) {
+        this->mp--;
+        this->updateButton();
+    }
+}
+
+void Move::restoreMp()
+{
+    if (this->mpMax != -1) {
+        this->mp = this->mpMax;
+        this->updateButton();
+    }
+}
+
+std::string Move::getMpString() const
+{
+    if (this->mpMax == -1) return "";
+    return " [" + std::to_string(this->mp) + "/" + std::to_string(this->mpMax) + "]";
 }
 
 // Rectangle Functions
@@ -112,4 +151,20 @@ void Move::renderRects(sf::RenderTarget* target)
     for (auto& it : this->rectangles) {
         it.second->render(target);
     }
+}
+
+void Move::updateButton()
+{
+    std::string label = this->text;
+    if (this->mpMax != -1) {
+        label += " [" + std::to_string(this->mp) + "/" + std::to_string(this->mpMax) + "]";
+    }
+    this->button->setTextConst(label);
+
+    // Resize to fit new label
+    sf::Text temp;
+    temp.setFont(AssetDatabase::getInstance().getFont("ticker_font"));
+    temp.setString(label);
+    temp.setCharacterSize(16);
+    this->button->setSize(temp.getLocalBounds().width + 10.f, 25.f);
 }

@@ -52,10 +52,22 @@ public:
     std::string& getMoveMessage() { return this->moveMessage; }
     std::unique_ptr<Button>& getButton() { return this->button; }
 
+    // MP Functions
+    void initMp(int maxUses, int currentUses);
+    bool canUse() const;
+    void consumeMp();
+    void restoreMp();
+    int getMp() const { return this->mp; }
+    std::string getMpString() const;
+
 private:
+    void updateButton();
+
     Operation operation;
 
     bool hidden = true;
+    int mpMax = -1;
+    int mp = -1;
 
     std::map<std::string, std::unique_ptr<Rectangle>> rectangles;
     std::unique_ptr<Button> button;
@@ -63,5 +75,6 @@ private:
 
     std::string moveMessage;
     std::string tipMessage;
+    std::string text;
     std::string sfxId;
 };

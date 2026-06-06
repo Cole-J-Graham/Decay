@@ -104,8 +104,30 @@ public:
     void renderStatsPanel(sf::RenderTarget* target)
     {
         for (auto& pair : characters) {
-            if (pair.second) {
-                pair.second->getStats()->render(target);
+            if (!pair.second) continue;
+
+            pair.second->getStats()->render(target);
+
+            // Draw portrait for whichever character is currently selected
+            if (pair.second->getStats()->getCurrentInstance())
+            {
+                // Panel: x=1400, w=270 → center = 1535. Portrait sits near panel bottom.
+                constexpr float portraitX = 1675.f;
+                constexpr float portraitY = 470.f;
+                const float padding = 1.f; // adjust border thickness here
+
+                sf::FloatRect bounds = pair.second->getSprite().getGlobalBounds();
+
+                sf::RectangleShape border(sf::Vector2f(
+                    bounds.width + padding * 2.f,
+                    bounds.height + padding * 2.f));
+
+                border.setPosition(portraitX - padding, portraitY - padding);
+                border.setFillColor(sf::Color::White);
+                border.setOutlineThickness(0.f);
+
+                target->draw(border);
+                pair.second->renderPreview(target, portraitX, portraitY);
             }
         }
 

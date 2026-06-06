@@ -40,6 +40,7 @@ public:
 	void reActivate() { this->clickBlocked = false; this->shape.setFillColor(this->idleColor); }
 	void setClickSfxEnabled(bool enabled) { this->playClickSfx = enabled; }
 	void setClickSfxId(const std::string& id) { this->clickSfxId = id; }
+	void setSize(float w, float h) { this->shape.setSize({ w, h }); }
 
 private:
 	// Core Booleans

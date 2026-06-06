@@ -10,7 +10,7 @@ class StatsModule
 {
 public:
 	//Constructors and Deconstructors
-	StatsModule(const std::string& id);
+	StatsModule(const std::string& id, const std::string& tipText = "");
 	~StatsModule();
 
 	//Core Functions
@@ -143,6 +143,7 @@ private:
 		float statModifier;
 		std::string statName;
 		std::string modifiedStatName;
+		std::string tipText;
 		std::unique_ptr<Button> button;
 		std::unique_ptr<Text> text;
 		std::unique_ptr<Text> statText;
@@ -158,6 +159,7 @@ private:
 
 	const std::string& id;
 	std::string buttonId;
+	std::string tipText;
 
 	std::map<std::string, Button*> buttons;
 	std::map<std::string, std::shared_ptr<Stat>> stats;

@@ -1,7 +1,7 @@
-id|ownerId|buttonText|message|tip|sfxId|cooldown|poseTexturePath|poseDurationTurns|effects
-SLASH|PLAYER|Slash|The player slashes at the opponent with all his might!|Player's basic attack.|slash|0||0|DAMAGE:ENEMY:1.0:0
-HEFTY_BLOW|PLAYER|Hefty Blow|The player charges up a heavy attack for maximum damage!|Heavy attack with increased damage.|hefty_blow|1||0|DAMAGE:ENEMY:1.75:0
-HEAL|ZIN|Mend|Zin casts a healing circle around the party!|Heals the lowest HP party member.|mend|0||0|HEAL:LOWEST_HP_ALLY:1.0:0
-HARDEN|OVI|Harden|Thom hardens his hide!|Temporarily increases Thom's defense.|iron_wall|0||0|BUFF_DEFENSE:SELF:1.5:2
-ENRAGE|OVI|Enrage|Thom enters a reckless fury!|Locks Thom down, boosts Player and Zin, but lowers Thom's defense.|angry|4|Assets/Sprites/thomRage.png|4|SELF_LOCK:SELF:0:4;BUFF_DAMAGE:ALLY_ID:PLAYER:1.5:4;BUFF_DAMAGE:ALLY_ID:ZIN:1.5:4;DEBUFF_DEFENSE:SELF:0.5:4
-BEETLE_WALL|JUNE|Beetle Wall|June summons a wall of beetles around the party!|Adds block to the entire party, providing some protection.|june_guard|0||0|BLOCK:ALL_PARTY:10.0:0
+id|ownerId|buttonText|message|tip|sfxId|cooldown|poseTexturePath|poseDurationTurns|effects|mpMax
+SLASH|PLAYER|Slash|The player slashes at the opponent with all his might!|Player's basic attack.|slash|0||0|DAMAGE:ENEMY:1.0:0|infinite
+HEFTY_BLOW|PLAYER|Hefty Blow|The player charges up a heavy attack for maximum damage!|Heavy attack with increased damage.|hefty_blow|1||0|DAMAGE:ENEMY:1.75:0|2
+HEAL|ZIN|Mend|Zin casts a healing circle around the party!|Heals the lowest HP party member.|mend|0||0|HEAL:LOWEST_HP_ALLY:1.0:0|infinite
+HARDEN|OVI|Harden|Thom hardens his hide!|Temporarily increases Thom's defense.|iron_wall|0||0|BUFF_DEFENSE:SELF:1.5:2|infinite
+ENRAGE|OVI|Enrage|Thom enters a reckless fury!|Locks Thom down, boosts Player and Zin, but lowers Thom's defense.|angry|4|Assets/Sprites/thomRage.png|4|SELF_LOCK:SELF:0:4;BUFF_DAMAGE:ALLY_ID:PLAYER:1.5:4;BUFF_DAMAGE:ALLY_ID:ZIN:1.5:4;DEBUFF_DEFENSE:SELF:0.5:4|1
+BEETLE_WALL|JUNE|Beetle Wall|June summons a wall of beetles around the party!|Adds block to the entire party, providing some protection.|june_guard|0||0|BLOCK:ALL_PARTY:10.0:0|3

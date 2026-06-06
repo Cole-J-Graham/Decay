@@ -132,6 +132,14 @@ bool CharacterMoveDatabase::loadFromFile(const std::string& filePath)
         move.poseDurationTurns = std::stoi(fields[8]);
         move.effects = parseEffects(fields[9]);
 
+        // field 10 — mpMax. "infinite" or missing = -1
+        if (fields.size() > 10 && fields[10] != "infinite" && !fields[10].empty()) {
+            move.mpMax = std::stoi(fields[10]);
+        }
+        else {
+            move.mpMax = -1;
+        }
+
         if (move.id.empty() || move.ownerId.empty()) {
             std::cerr << "Character move missing id or owner: " << line << "\n";
             continue;

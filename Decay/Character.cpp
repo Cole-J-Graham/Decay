@@ -62,8 +62,6 @@ void Character::render(sf::RenderTarget* target)
 
 void Character::characterTurn(int& combatFrame, const sf::Vector2f mousePos)
 {
-    this->update(mousePos);
-
     switch (this->characterFrame) {
     case 0:
         this->turnActive = true;
@@ -72,16 +70,16 @@ void Character::characterTurn(int& combatFrame, const sf::Vector2f mousePos)
             it.second->show();
         }
 
-        this->updateMoveButtons(mousePos);
+        if (!this->waitingForMouseRelease && !this->justContinued) {
+            this->updateMoveButtons(mousePos);
+        }
+        this->justContinued = false;
         break;
 
     case 1:
         for (auto& it : this->moveButtons) {
             it.second->hide();
         }
-
-        // Do not call endTurn() here.
-        // CombatState owns the click-to-continue behavior now.
         break;
 
     default:
@@ -92,6 +90,7 @@ void Character::characterTurn(int& combatFrame, const sf::Vector2f mousePos)
 
 void Character::resetTurn()
 {
+    this->justContinued = false;
     this->turnActive = false;
     this->characterFrame = 0;
 
@@ -146,9 +145,12 @@ void Character::continueTurn(int& combatFrame)
 
 void Character::rest()
 {
+    this->waitingForMouseRelease = true;  // ← add
+    this->justContinued = true;
     this->hp = this->hpMax;
     this->block = 0.f;
     this->coolDown = 0;
+    this->moveMp.clear();  // bonfire rest restores all MP
     this->resetTurn();
     this->updateText();
 }
@@ -156,12 +158,6 @@ void Character::rest()
 // Button Functions
 void Character::updateButtons(const sf::Vector2f mousePos)
 {
-    for (auto& it : this->moveButtons) {
-        if (!it.second->isHidden()) {
-            it.second->update(mousePos);
-        }
-    }
-
     for (auto& it : this->buttons) {
         it.second->update(mousePos);
     }
@@ -170,8 +166,17 @@ void Character::updateButtons(const sf::Vector2f mousePos)
 void Character::updateMoveButtons(const sf::Vector2f mousePos)
 {
     for (auto& it : this->moveButtons) {
+        it.second->update(mousePos);  // ← update first, then check
+    }
+
+    for (auto& it : this->moveButtons) {
         if (it.second->isPressed()) {
+            std::cout << "MOVE PRESSED: " << it.first << " by " << this->id << "\n";
             this->characterFrame = 1;
+            for (auto& other : this->moveButtons) {
+                other.second->hide();
+            }
+            return;
         }
     }
 }
@@ -222,7 +227,8 @@ void Character::createMove(
 
 void Character::renderMoveButtons(sf::RenderTarget* target)
 {
-    int tempButtonY = 825;
+	// Position buttons in a vertical list, starting from a base Y coordinate and offsetting each subsequent button by a fixed amount.
+    int tempButtonY = 795;
 
     for (auto& it : this->moveButtons) {
         if (!it.second->isHidden()) {

@@ -28,5 +28,8 @@ struct CharacterMoveDefinition
     std::string poseTexturePath;
     int poseDurationTurns = 0;
 
+    // -1 = infinite; any other value = max uses per combat
+    int mpMax = -1;
+
     std::vector<MoveEffectDefinition> effects;
 };

@@ -169,7 +169,9 @@
     <ClCompile Include="EventFileParser.cpp">
       <Filter>Events\EventLogic</Filter>
     </ClCompile>
-    <ClCompile Include="BeatSequencer.cpp" />
+    <ClCompile Include="BeatSequencer.cpp">
+      <Filter>Events\EventLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -355,7 +357,9 @@
     <ClInclude Include="EventFileParser.h">
       <Filter>Events\EventLogic</Filter>
     </ClInclude>
-    <ClInclude Include="BeatSequencer.h" />
+    <ClInclude Include="BeatSequencer.h">
+      <Filter>Events\EventLogic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">

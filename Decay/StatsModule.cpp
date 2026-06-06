@@ -1,8 +1,8 @@
 #include "StatsModule.h"
 
 // Constructors and Destructors
-StatsModule::StatsModule(const std::string& id)
-    : id(id) {
+StatsModule::StatsModule(const std::string& id, const std::string& tipText)
+    : id(id), tipText(tipText) {
     // Variables
     this->level = 0;
     this->exp = 0;
@@ -185,6 +185,10 @@ void StatsModule::initText() {
     this->text["SPTEXT"] = std::make_unique<Text>(1560, 84, 12,
         buildSpString(),
         sf::Color(130, 220, 130, 255), false);
+
+    this->text["TIPTEXT"] = std::make_unique<Text>(1410, 100, 11,
+        this->tipText,
+        sf::Color(255, 200, 80, 200), false); // warm gold, distinct from SP green
 }
 
 void StatsModule::renderText(sf::RenderTarget* target) {

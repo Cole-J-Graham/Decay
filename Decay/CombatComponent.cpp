@@ -71,23 +71,41 @@ void CombatComponent::initMoves()
                 continue;
             }
 
+            Character* characterPtr = character.get();
+
             character->createMove(
                 moveDefinition->id,
                 moveDefinition->message,
                 moveDefinition->tip,
                 moveDefinition->buttonText,
-                [this, character, activeEnemy, moveDefinition]() {
+                [this, characterPtr, activeEnemy, moveDefinition]() {
+                    std::map<std::string, Move*>& charMoves = characterPtr->getMoves();
+                    auto it = charMoves.find(moveDefinition->id);
+                    if (it != charMoves.end() && !it->second->canUse()) {
+                        return;
+                    }
+                    if (it != charMoves.end()) {
+                        it->second->consumeMp();
+                        // Save MP back to character so it persists after moves are cleared
+                        characterPtr->setMoveMp(moveDefinition->id, it->second->getMp());
+                    }
                     CharacterMoveExecutor::execute(
                         *moveDefinition,
-                        *character,
+                        *characterPtr,
                         *activeEnemy,
-                        [this]() {
-                            this->playSlashAnimation();
-                        }
+                        [this]() { this->playSlashAnimation(); }
                     );
                 },
                 moveDefinition->sfxId
             );
+
+            // Restore saved MP (persists across combats); first combat uses mpMax as default
+            std::map<std::string, Move*>& charMoves = characterPtr->getMoves();
+            auto it = charMoves.find(moveDefinition->id);
+            if (it != charMoves.end()) {
+                int savedMp = characterPtr->getMoveMp(moveDefinition->id, moveDefinition->mpMax);
+                it->second->initMp(moveDefinition->mpMax, savedMp);
+            }
         }
     }
 }

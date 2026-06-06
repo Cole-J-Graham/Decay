@@ -286,64 +286,60 @@ void CombatState::handleCharacterTurn(int partyIndex, const sf::Vector2f mousePo
         return;
     }
 
-    if (character->isStunned()) {
-        this->enableCombatConsoleContinue();
+    this->ui.text("TURN_INDICATOR_TEXT").setString("TURN  " + character->getId());
 
-        this->ui.text("COMBAT_MESSAGE").setString(
-            character->getId() + " is stunned and skips their turn."
-        );
-        this->ui.text("COMBAT_MESSAGE").setShown();
-
-        if (this->combatConsoleClicked()) {
-            character->consumeStunTurn();
-            character->resetTurn();
-
-            this->combatFrame++;
-            this->disableCombatConsoleContinue();
-
-            this->ui.text("COMBAT_MESSAGE").setString("");
-            this->ui.text("COMBAT_MESSAGE").setHidden();
-        }
-
-        return;
-    }
-
-    if (character->isActionLocked()) {
-        character->resetTurn();
-
-        this->enableCombatConsoleContinue();
-
-        this->ui.text("COMBAT_MESSAGE").setString(
-            character->getId() + " is locked into their action and skips their turn."
-        );
-        this->ui.text("COMBAT_MESSAGE").setShown();
-
-        if (this->combatConsoleClicked()) {
-            character->consumeActionLockTurn();
-            character->tickTemporaryEffects();
-            character->consumePoseTurn();
-
-            this->combatFrame++;
-            this->disableCombatConsoleContinue();
-
-            this->ui.text("COMBAT_MESSAGE").setString("");
-            this->ui.text("COMBAT_MESSAGE").setHidden();
-        }
-
-        return;
-    }
-
-    character->characterTurn(this->combatFrame, mousePos);
-
+    // ← Check this FIRST before anything else can reset characterFrame
     if (character->isWaitingForContinue()) {
         this->enableCombatConsoleContinue();
 
         if (this->combatConsoleClicked()) {
             character->continueTurn(this->combatFrame);
             this->disableCombatConsoleContinue();
-            return;
         }
+        return;
     }
+
+    character->clearJustContinued();
+
+    if (character->isStunned()) {
+        this->enableCombatConsoleContinue();
+        this->ui.text("COMBAT_MESSAGE").setString(character->getId() + " is stunned and skips their turn.");
+        this->ui.text("COMBAT_MESSAGE").setShown();
+
+        if (this->combatConsoleClicked()) {
+            character->consumeStunTurn();
+            character->resetTurn();
+            this->combatFrame++;
+            this->disableCombatConsoleContinue();
+            this->ui.text("COMBAT_MESSAGE").setString("");
+            this->ui.text("COMBAT_MESSAGE").setHidden();
+        }
+        return;
+    }
+
+    if (character->isActionLocked()) {
+        character->resetTurn();
+        this->enableCombatConsoleContinue();
+        this->ui.text("COMBAT_MESSAGE").setString(character->getId() + " is locked into their action and skips their turn.");
+        this->ui.text("COMBAT_MESSAGE").setShown();
+
+        if (this->combatConsoleClicked()) {
+            character->consumeActionLockTurn();
+            character->tickTemporaryEffects();
+            character->consumePoseTurn();
+            this->combatFrame++;
+            this->disableCombatConsoleContinue();
+            this->ui.text("COMBAT_MESSAGE").setString("");
+            this->ui.text("COMBAT_MESSAGE").setHidden();
+        }
+        return;
+    }
+
+    if (!sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+        character->clearWaitingForMouseRelease();
+    }
+
+    character->characterTurn(this->combatFrame, mousePos);
 }
 
 void CombatState::handleEnemyTurn(const sf::Vector2f mousePos)
@@ -381,15 +377,16 @@ void CombatState::enableCombatConsoleContinue()
     if (!this->combatConsoleActive) {
         this->combatConsoleActive = true;
         this->ui.button("COMBAT_CONSOLE_CONTINUE").show();
+        this->ui.text("COMBAT_CONTINUE_HINT").setShown();
     }
 }
 
 void CombatState::disableCombatConsoleContinue()
 {
     this->combatConsoleActive = false;
-
     this->ui.button("COMBAT_CONSOLE_CONTINUE").setIdle();
     this->ui.button("COMBAT_CONSOLE_CONTINUE").hide();
+    this->ui.text("COMBAT_CONTINUE_HINT").setHidden();
 }
 
 bool CombatState::combatConsoleClicked()
@@ -401,42 +398,59 @@ bool CombatState::combatConsoleClicked()
 // UI Functions
 void CombatState::initUi()
 {
+    // ── Enemy zone border ─────────────────────────────────────────────
     this->ui.addRectangle("HOSTILEBORDER", std::make_unique<Rectangle>(
         1695, 420, 200, 200,
         sf::Color::Transparent,
-        sf::Color::White,
-        1.f,
-        false
+        sf::Color(255, 80, 80, 120),   // red tint — hostile zone
+        1.f, false
     ));
 
-    this->ui.addRectangle("COMBATCONSOLE", std::make_unique<Rectangle>(
-        350, 830, 1250, 175,
+    // ── Combat console — filled dark panel ───────────────────────────
+    this->ui.addRectangle("COMBATCONSOLE_BG", std::make_unique<Rectangle>(
+        350, 825, 1250, 175,
+        sf::Color(10, 10, 20, 210),    // near-black fill
+        sf::Color(255, 255, 255, 50),
+        1.f, false
+    ));
+
+    // Thin gold accent bar along the top of the console
+    this->ui.addRectangle("COMBATCONSOLE_ACCENT", std::make_unique<Rectangle>(
+        350, 825, 1250, 2,
+        sf::Color(255, 200, 80, 160),
         sf::Color::Transparent,
-        sf::Color::White,
-        1.f,
-        false
+        0.f, false
     ));
 
-    this->ui.addRectangle("COMBATCONSOLE_BUTTONPANEL", std::make_unique<Rectangle>(
-        350, 800, 1250, 25,
-        sf::Color::Transparent,
-        sf::Color::White,
-        1.f,
-        false
-    ));
-
+    // Main message text — slightly inset
     this->ui.addText("COMBAT_MESSAGE", std::make_unique<Text>(
-        355, 835, 16,
-        "",
-        sf::Color::White,
+        360, 846, 15, "", sf::Color(230, 220, 200, 255), true
+    ));
+
+    // "Click to continue" hint — bottom-right of console
+    this->ui.addText("COMBAT_CONTINUE_HINT", std::make_unique<Text>(
+        1455, 830, 12, "[ Click to continue ]",
+        sf::Color(180, 180, 180, 140), true   // starts hidden
+    ));
+
+    // Invisible click target covering the whole console
+    this->ui.addButton("COMBAT_CONSOLE_CONTINUE", std::make_unique<Button>(
+        350, 825, 1250, 175, 0.5f, "",
+        sf::Color(0, 0, 0, 0),
+        sf::Color(255, 255, 255, 12),
+        sf::Color(255, 255, 255, 25),
         true
     ));
 
-    this->ui.addButton("COMBAT_CONSOLE_CONTINUE", std::make_unique<Button>(
-        350, 830, 1250, 175, 0.5f, "",
-        sf::Color(0, 0, 0, 0),
-        sf::Color(255, 255, 255, 20),
+    // ── Turn indicator bar above the console ─────────────────────────
+    this->ui.addRectangle("TURN_INDICATOR_BG", std::make_unique<Rectangle>(
+        350, 800, 1250, 22,
+        sf::Color(20, 20, 35, 200),
         sf::Color(255, 255, 255, 40),
-        true
+        1.f, false
+    ));
+
+    this->ui.addText("TURN_INDICATOR_TEXT", std::make_unique<Text>(
+        360, 803, 12, "", sf::Color(160, 220, 255, 220), false
     ));
 }

@@ -87,6 +87,9 @@ public:
         }
     }
 
+    // Getters
+    sf::Sprite& getSprite() { return this->character; }
+
     // Helpers
     void renderPreview(sf::RenderTarget* target, float x, float y);
     bool idButtonIsClicked() const;
@@ -137,6 +140,7 @@ public:
     int& getCoolDown() { return this->coolDown; }
     int& getCharacterFrame() { return this->characterFrame; }
     bool& isTurnActive() { return this->turnActive; }
+    void clearJustContinued() { this->justContinued = false; }
 
     // Resting / Recovery
     void rest();
@@ -150,8 +154,17 @@ public:
         );
     }
 
+    // MP persistence across combats
+    void setMoveMp(const std::string& moveId, int mp) { this->moveMp[moveId] = mp; }
+    int getMoveMp(const std::string& moveId, int defaultVal) const
+    {
+        auto it = this->moveMp.find(moveId);
+        return it != this->moveMp.end() ? it->second : defaultVal;
+    }
+
+    void clearWaitingForMouseRelease() { this->waitingForMouseRelease = false; }
     const std::string& getId() { return this->id; }
-    std::map<std::string, Move*> getMoves()& { return this->moveButtons; }
+    std::map<std::string, Move*>& getMoves() { return this->moveButtons; }
     std::unique_ptr<StatsModule>& getStats() { return this->stats; }
     std::map<std::string, std::unique_ptr<Button>>& getButtons() { return this->buttons; }
 
@@ -161,7 +174,7 @@ private:
     const int BORDER_WIDTH = 200;
     const int BORDER_HEIGHT = 200;
     const int BUTTON_X_OFFSET = 350;
-    const int BUTTON_Y_OFFSET = 25;
+    const int BUTTON_Y_OFFSET = 30;
 
     // Player Variables
     float hp;
@@ -171,12 +184,14 @@ private:
     float healing;
     float block = 0.f;
     int coolDown;
+    bool waitingForMouseRelease = false;
 
     // Turn / Asset Variables
     int characterFrame;
     float x;
     float y;
     bool turnActive;
+    bool justContinued = false;
 
     sf::Sprite character;
     std::string characterName;
@@ -189,4 +204,7 @@ private:
     std::map<std::string, std::unique_ptr<Button>> buttons;
     std::map<std::string, std::unique_ptr<Text>> text;
     std::map<std::string, Move*> moveButtons;
+
+    // Persists MP counts across combats; cleared on bonfire rest
+    std::map<std::string, int> moveMp;
 };
