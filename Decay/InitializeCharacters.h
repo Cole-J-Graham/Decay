@@ -21,6 +21,7 @@ private:
 
     //Character Functions
     void initCharacters();
+    void initNPCs();
 
     //Stat Functions
     void initStats();

@@ -1,4 +1,5 @@
 #include "InitializeCharacters.h"
+#include "NPCManager.h"
 
 //Private constructor
 InitializeCharacters::InitializeCharacters()
@@ -24,6 +25,7 @@ void InitializeCharacters::initialize()
 {
     this->initCharacters();
     this->initStats();
+    this->initNPCs();
 }
 
 //Character Functions
@@ -33,6 +35,14 @@ void InitializeCharacters::initCharacters()
     CharacterManager::getInstance().addCharacter("ZIN", std::make_shared<Character>("ZIN", "Zin", 100, 100, 10, 10, 5, 25.f, 420.f, 0.066f, "Assets/Sprites/zinSprite.png", false));
     CharacterManager::getInstance().addCharacter("OVI", std::make_shared<Character>("OVI", "Ovi", 100, 100, 10, 10, 0, 25.f, 690.f, 0.625f, "Assets/Sprites/thomNormal.png", false));
     CharacterManager::getInstance().addCharacter("JUNE", std::make_shared<Character>("JUNE", "June", 100, 100, 10, 10, 0, 25.f, 960.f, 0.625f, "Assets/Sprites/june.png", false));
+}
+
+//Initialize NPCs for game. Currently piped through here for simplicity, but may want to move to a separate function or class if it gets more complex.
+void InitializeCharacters::initNPCs()
+{
+    NPCManager::getInstance().addNPC("TREE", std::make_unique<NPC>("TREE", "Speaking Tree", "speaking_tree_portrait", 0.2f));
+
+    
 }
 
 //Stat Functions

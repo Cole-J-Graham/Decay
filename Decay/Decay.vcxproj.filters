@@ -163,6 +163,13 @@
     <ClCompile Include="GameTriggers.cpp">
       <Filter>Events</Filter>
     </ClCompile>
+    <ClCompile Include="NPC.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventFileParser.cpp">
+      <Filter>Events\EventLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="BeatSequencer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -336,6 +343,19 @@
     <ClInclude Include="GameTriggers.h">
       <Filter>Events</Filter>
     </ClInclude>
+    <ClInclude Include="NPC.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="NPCManager.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Beat.h">
+      <Filter>Events\EventLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="EventFileParser.h">
+      <Filter>Events\EventLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="BeatSequencer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">
@@ -400,6 +420,9 @@
     </Filter>
     <Filter Include="States\PlayStates">
       <UniqueIdentifier>{19712dc2-d9c5-4d1c-90ce-baf86ecc531d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Events\EventLogic">
+      <UniqueIdentifier>{d2ab432c-99fc-4a85-a730-1e6409d8fbe7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -6,72 +6,48 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include "BeatSequencer.h"
+#include "EventFileParser.h"
 #include "CombatState.h"
 #include "DialogueInputComponent.h"
+
+// ============================================================
+//  EventManager
+//  Owns event lifecycle (activation, directory scanning,
+//  one-time tracking, probability) and rendering.
+//  Delegates all beat logic to BeatSequencer and all file
+//  parsing to EventFileParser.
+// ============================================================
 
 class EventManager
 {
 public:
-    // -------------------------------------------------------
-    //  Constructors and Destructors
-    // -------------------------------------------------------
-
-    // General-purpose constructor — used by TravelState and others
-    // that trigger events by chance or via forceEvent().
+    // General-purpose constructor.
     EventManager(const std::string& areaName);
 
-    // One-time intro constructor — automatically force-activates the event,
-    // sets the completion flag, and optionally fires a trigger when done.
-    // The calling state only needs to check hasFinished() each frame.
+    // One-time intro constructor — auto-activates and sets a
+    // completion flag / trigger when the sequence finishes.
     EventManager(const std::string& areaName,
         const std::string& completionFlag,
         const std::string& completionTrigger = "");
 
     ~EventManager();
 
-    //Core Functions
+    // Core
     void update(sf::Vector2f mousePos);
     void render(sf::RenderTarget* target);
 
-    //Event Functions
+    // Event control
     void initEvents();
     void updateEvents();
     bool eventChance();
     void forceEvent();
 
-    //Getters
-    bool isEventActive() const { return this->eventActivated; }
-    bool hasFinished()   const { return this->eventStarted && !this->eventRunning; }
+    // Getters
+    bool isEventActive() const { return eventActivated; }
+    bool hasFinished()   const { return sequencer.isFinished(); }
 
 private:
-
-    // -------------------------------------------------------
-    //  Block types parsed from event files
-    // -------------------------------------------------------
-    struct NPCBlock
-    {
-        std::string npc;
-        std::string emotion;
-        std::string lineA;
-        std::string lineB;
-    };
-
-    struct CharacterBlock
-    {
-        std::string responseA;
-        std::string responseB;
-    };
-
-    struct Beat
-    {
-        enum class Type { NPC, CHARACTER } type;
-        NPCBlock       npc;
-        CharacterBlock character;
-    };
-
-    // -------------------------------------------------------
-    //  Event file definition
-    // -------------------------------------------------------
     struct EventDefinition
     {
         std::string path;
@@ -79,74 +55,30 @@ private:
         bool        hasPlayed = false;
     };
 
-    // -------------------------------------------------------
-    //  State machine
-    // -------------------------------------------------------
-    enum class State
-    {
-        IDLE,
-        SHOWING_NPC,
-        SHOWING_CHOICES,
-    };
+    void getEventsInDirectory(const std::string& directoryPath);
+    bool eventCanPlay(const EventDefinition& event) const;
+    void onSequenceFinished();
 
-    enum class Choice { NONE, A, B };
-
-    // -------------------------------------------------------
-    //  Private helpers
-    // -------------------------------------------------------
-    void        initInternal();
-    void        loadEventFile(const std::string& path);
-    void        advanceBeat();
-    void        showNPCBeat(const NPCBlock& block, const std::string& line);
-    void        showChoiceBeat(const CharacterBlock& block);
-
-    Beat        parseNPCBlock();
-    Beat        parseCharacterBlock();
-    std::string parseValue(const std::string& line);
-
-    bool        openFile(const std::string& path);
-    void        closeFile();
-    std::string readFileLine();
-
-    void        getEventsInDirectory(const std::string& directoryPath);
-    bool        eventCanPlay(const EventDefinition& event) const;
-    void        updateInput();
-
-    // -------------------------------------------------------
-    //  Members
-    // -------------------------------------------------------
+    // Subsystems
     std::unique_ptr<DialogueInputComponent> dialogueInput;
+    BeatSequencer                           sequencer;
+    EventFileParser                         parser;
 
-    // One-time event completion — set at construction, used in advanceBeat()
+    // One-time completion
     std::string completionFlag;
     std::string completionTrigger;
 
     // Probability
     bool  eventActivated = false;
-    bool  eventRunning = false;
-    bool  eventStarted = false;
     float eventOdds = 0.f;
     float eventIncrease = 1.f;
     float eventThresholdMax = 1000.f;
     float eventThresholdMin = 0.f;
 
-    // Area / file
-    std::string   areaName;
-    std::ifstream ifs;
-    bool          isFileOpen = false;
+    // Area
+    std::string areaName;
 
-    // Beat sequence
-    std::vector<Beat> beats;
-    int               currentBeatIndex = -1;
-
-    // Player's last choice
-    Choice lastChoice = Choice::NONE;
-
-    // Active event tracking
+    // Event list
     std::deque<EventDefinition> events;
     int                         activeEventIndex = -1;
-
-    // Display state
-    State       currentState = State::IDLE;
-    std::string activeNPCName;
 };

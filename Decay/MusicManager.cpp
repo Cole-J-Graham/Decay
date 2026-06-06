@@ -11,36 +11,40 @@ void MusicManager_setPlayer(MusicPlayer* player)
 void MusicManager::loadFromFile(const std::string& path)
 {
     std::ifstream file(path);
-
     if (!file.is_open()) {
         std::cerr << "MusicManager: failed to open " << path << "\n";
         return;
     }
 
     std::string line;
-    int count = 0;
-
     while (std::getline(file, line)) {
         if (line.empty()) continue;
-
         const std::size_t sep = line.find('|');
-
-        if (sep == std::string::npos) {
-            std::cerr << "MusicManager: malformed line: " << line << "\n";
-            continue;
-        }
+        if (sep == std::string::npos) continue;
 
         const std::string context = line.substr(0, sep);
         const std::string trackPath = line.substr(sep + 1);
-
         this->playlists[context].push_back(trackPath);
+    }
 
-        if (gMusicPlayer != nullptr && gMusicPlayer->preload(trackPath)) {
-            count++;
+    std::cout << "MusicManager: parsed playlists from " << path << "\n";
+}
+
+void MusicManager::preloadAll()
+{
+    if (gMusicPlayer == nullptr) {
+        std::cerr << "MusicManager: no player set, cannot preload\n";
+        return;
+    }
+
+    int count = 0;
+    for (auto& [context, playlist] : this->playlists) {
+        for (auto& trackPath : playlist) {
+            if (gMusicPlayer->preload(trackPath)) count++;
         }
     }
 
-    std::cout << "Loaded songs: " << count << "\n";
+    std::cout << "MusicManager: preloaded " << count << " tracks\n";
 }
 
 void MusicManager::play(const std::string& context)

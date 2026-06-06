@@ -1,0 +1,38 @@
+[SPEAK_NPC]
+NPC: TREE
+EMOTION: NEUTRAL
+LINE: Understand me, do you not?
+
+[SPEAK_CHARACTER]
+RESPONSE_A: Who's there?
+RESPONSE_B: Well, I certainly wish I didn't.
+
+[SPEAK_NPC]
+NPC: TREE
+EMOTION: NEUTRAL
+LINE_A: What is it you seek?
+LINE_B: You understand me, I understand you. Now, what is it you seek?
+
+[SPEAK_CHARACTER]
+RESPONSE_A: What do I seek?
+RESPONSE_B: I don't understand what you want from me.
+
+[SPEAK_NPC]
+NPC: TREE
+EMOTION: NEUTRAL
+LINE_A: Do you seek wealth? Or power?
+LINE_B: Fear not, I want only to give. Do you seek wealth? Or power?
+
+[SPEAK_CHARACTER]
+RESPONSE_A: Wealth
+RESPONSE_B: Power
+
+[GIVE_ON_CHOICE]
+CHOICE_A_GOLD: 300
+CHOICE_B_EXP: 300
+
+[SPEAK_NPC]
+NPC: TREE
+EMOTION: NEUTRAL
+LINE_A: Very well. *the tree vanishes, leaving something behind...* +300 Gold gained.
+LINE_B: Very well. *the tree vanishes. You and your party feel unexplainably stronger...* +300 Party EXP gained.

@@ -6,6 +6,7 @@
 #include "SettingsManager.h"
 #include "Inventory.h"
 #include "GameTriggers.h"
+#include "MusicManager.h"
 
 //Constructor and Destructors
 Game::Game()
@@ -19,6 +20,7 @@ Game::Game()
 	EnemyMoveDatabase::getInstance().loadFromFile("Assets/Data/enemy_moves.db");
 	EnemyDatabase::getInstance().loadFromFile("Assets/Data/enemies.db");
 
+	MusicManager::getInstance().loadFromFile("Assets/Data/songs.db");
 	SettingsManager::getInstance().loadFromFile("Assets/Data/settings.db");
 
 	this->initWindow();

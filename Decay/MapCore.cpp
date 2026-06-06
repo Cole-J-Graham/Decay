@@ -213,7 +213,7 @@ void MapCore::initButtons(const std::vector<const AreaDefinition*>& areaDefs)
         state.explored = false;
         state.button = std::make_unique<Button>(
             sf::Vector2f(def->buttonX, def->buttonY),
-            100, 25, 0.5f, def->name,
+            0, 25.f, 0.5f, def->name,
             sf::Color(70, 70, 70, 70),
             sf::Color(150, 150, 150, 255),
             sf::Color(20, 20, 20, 70),

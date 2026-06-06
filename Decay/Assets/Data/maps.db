@@ -14,16 +14,22 @@
 id|name|scale|map_image|unlock_condition
 forest|Forest|0.390|Assets/Wallpapers/Forest/forestmap.jpeg|none
 castle|Castle|0.385|Assets/Wallpapers/Castle/castleMap.jpeg|none
-plateau|Plateau|0.385|Assets/Wallpapers/Decay/decayMap.jpeg|none
+decay|Decay|0.385|Assets/Wallpapers/Decay/decayMap.jpeg|none
 
 [AREAS]
 id|map_id|area_index|name|button_x|button_y|frames_file
-forest_entrance|forest|0|Entrance|150|150|Assets/Wallpapers/ForestTextFiles/forest.txt
+forest_entrance|forest|0|Forest Entrance|150|150|Assets/Wallpapers/ForestTextFiles/forest.txt
 forest_darkplains|forest|1|Dark Plains|150|250|Assets/Wallpapers/ForestTextFiles/forestdepths.txt
-forest_depths|forest|2|Depths|200|200|Assets/Wallpapers/ForestTextFiles/abyssalwoods.txt
+forest_depths|forest|2|Forest Depths|200|200|Assets/Wallpapers/ForestTextFiles/abyssalwoods.txt
 forest_corruption|forest|3|Corruption|300|250|Assets/Wallpapers/ForestTextFiles/abyssaldepths.txt
 forest_deepdark|forest|4|Deep Dark|375|400|Assets/Wallpapers/ForestTextFiles/forest.txt
-castle_entrance|castle|0|Entrance|150|150|Assets/Wallpapers/CastleTextFiles/castle.txt
-castle_depths|castle|1|Depths|150|250|Assets/Wallpapers/CastleTextFiles/castledepths.txt
-castle_chamber|castle|3|Chambers|300|250|Assets/Wallpapers/CastleTextFiles/castlechambers.txt
-castle_labyrinth|castle|2|Labyrinth|200|200|Assets/Wallpapers/CastleTextFiles/castlelabyrinth.txt
+
+castle_entrance|castle|0|Castle Entrance|150|150|Assets/Wallpapers/CastleTextFiles/castle.txt
+castle_depths|castle|1|Castle Depths|150|250|Assets/Wallpapers/CastleTextFiles/castledepths.txt
+castle_chamber|castle|2|Castle Chambers|300|250|Assets/Wallpapers/CastleTextFiles/castlechambers.txt
+castle_labyrinth|castle|3|Castle Labyrinth|200|200|Assets/Wallpapers/CastleTextFiles/castlelabyrinth.txt
+
+decay_entrance|decay|0|Crimson Caves|150|150|Assets/Wallpapers/decayTextFiles/decay_entrance.txt
+decay_ocean|decay|1|Crimson Ocean|300|159|Assets/Wallpapers/decayTextFiles/decay_ocean.txt
+decay_forest|decay|2|Crimson Forest|130|325|Assets/Wallpapers/decayTextFiles/decay_forest.txt
+decay_giants|decay|3|Plateau of Giants|500|520|Assets/Wallpapers/decayTextFiles/decay_entrance.txt

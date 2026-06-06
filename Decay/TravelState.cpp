@@ -13,8 +13,7 @@ TravelState::TravelState(sf::RenderWindow* window, std::stack<State*>* states)
     this->combat = new CombatState(window, states);
     this->music = std::make_unique<MusicPlayer>();
     MusicManager_setPlayer(this->music.get());
-    MusicManager::getInstance().play("forest");
-    MusicManager::getInstance().loadFromFile("Assets/Data/songs.db");
+    MusicManager::getInstance().preloadAll();
     MusicManager::getInstance().play(lastMapId);
 
     this->travelInput = std::make_unique<TravelInputComponent>();

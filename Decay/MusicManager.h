@@ -28,6 +28,7 @@ public:
     // preload every track into MusicPlayer. Call this at boot after
     // MusicManager_setPlayer() has been called.
     void loadFromFile(const std::string& path);
+    void preloadAll();
 
     // Push a new context and start its playlist from track 0.
     // No-op if this context is already on top.

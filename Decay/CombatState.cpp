@@ -213,14 +213,18 @@ bool CombatState::startCombat(const std::string& areaId)
     this->stateEnd = false;
     this->disableCombatConsoleContinue();
 
-    // Try area-specific combat music, fall back to generic "Combat" if not found
-    const std::string combatContext = "Combat_" + areaId;
+	//Transform areaID to lowercase for db matching, but keep original for logging
+    std::string areaIdLower = areaId;
+    std::transform(areaIdLower.begin(), areaIdLower.end(), areaIdLower.begin(), ::tolower);
+    const std::string combatContext = "combat_" + areaIdLower;
+    // Match db format: "combat_forest", "combat_castle", etc.
     if (MusicManager::getInstance().hasContext(combatContext)) {
         MusicManager::getInstance().play(combatContext);
     }
     else {
-		std::cout << "No combat music found for area " << areaId << ", using generic combat music.\n";
-        MusicManager::getInstance().play("Combat");
+        std::cout << "No combat music found for area " << areaId
+            << ". Attempted: " << combatContext << "\n";
+        // No generic fallback exists in db, so just leave travel music playing
     }
 
     return true;

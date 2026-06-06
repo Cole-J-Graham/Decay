@@ -38,3 +38,6 @@ forest_area_abyssal_depths|text|Assets/Wallpapers/ForestTextFiles/abyssaldepths.
 castle_area_entrance|text|Assets/Wallpapers/CastleTextFiles/castle.txt
 
 music_list|text|Assets/Music/music_list.txt
+
+#NPC Portraits
+speaking_tree_portrait|texture|Assets/Entities/entityTree.jpeg

@@ -46,6 +46,14 @@ Button::Button(sf::Vector2f pos, float width, float height, float clicktime,
     this->text.setCharacterSize(16);
     this->text.setPosition(pos);
 
+    if (width <= 0.f)
+    {
+        sf::FloatRect bounds = this->text.getLocalBounds();
+        width = bounds.width + 5.f;
+    }
+
+    this->shape.setSize(sf::Vector2f(width, height));
+
     this->idleColor = idleColor;
     this->hoverColor = hoverColor;
     this->activeColor = activeColor;

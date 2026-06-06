@@ -154,6 +154,7 @@
     <ClCompile Include="AnimationEffectManager.cpp" />
     <ClCompile Include="AnimationPlayer.cpp" />
     <ClCompile Include="AssetDatabase.cpp" />
+    <ClCompile Include="BeatSequencer.cpp" />
     <ClCompile Include="BonfireState.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Character.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="EnemyMoveDatabase.cpp" />
     <ClCompile Include="EnemyMoveExecutor.cpp" />
     <ClCompile Include="EntityMove.cpp" />
+    <ClCompile Include="EventFileParser.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameFlags.h" />
@@ -185,6 +187,7 @@
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="MusicManager.cpp" />
     <ClCompile Include="MusicPlayer.cpp" />
+    <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Party.cpp" />
     <ClCompile Include="PauseMenuState.cpp" />
     <ClCompile Include="Rectangle.cpp" />
@@ -211,6 +214,8 @@
     <ClInclude Include="AnimationPlayer.h" />
     <ClInclude Include="Asset.h" />
     <ClInclude Include="AssetDatabase.h" />
+    <ClInclude Include="Beat.h" />
+    <ClInclude Include="BeatSequencer.h" />
     <ClInclude Include="BonfireState.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Character.h" />
@@ -230,6 +235,7 @@
     <ClInclude Include="EnemyMoveExecutor.h" />
     <ClInclude Include="EnemyTypes.h" />
     <ClInclude Include="EntityMove.h" />
+    <ClInclude Include="EventFileParser.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameTriggers.h" />
@@ -243,6 +249,8 @@
     <ClInclude Include="Move.h" />
     <ClInclude Include="MusicManager.h" />
     <ClInclude Include="MusicPlayer.h" />
+    <ClInclude Include="NPC.h" />
+    <ClInclude Include="NPCManager.h" />
     <ClInclude Include="Party.h" />
     <ClInclude Include="PauseMenuState.h" />
     <ClInclude Include="Rectangle.h" />
