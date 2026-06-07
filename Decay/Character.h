@@ -100,6 +100,7 @@ public:
     void takeDamage(float amount);
     void heal(float amount);
     void addBlock(float amount) { this->block += amount; this->updateText(); }
+    void clearCombatStatus() { this->status.clear(); }
 
     // Pose Functions
     void playTemporaryPose(const std::string& texturePath, int durationTurns) { this->pose.playTemporaryPose(this->character, texturePath, durationTurns); }

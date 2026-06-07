@@ -98,6 +98,7 @@ public:
             }
         }
 
+        this->positionStatsButtons();
         this->updateStatsSelection();
     }
 
@@ -130,8 +131,6 @@ public:
                 pair.second->renderPreview(target, portraitX, portraitY);
             }
         }
-
-        this->positionStatsButtons();
     }
 
     void updateStatsSelection()

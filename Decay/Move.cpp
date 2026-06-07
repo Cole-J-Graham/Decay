@@ -56,6 +56,13 @@ void Move::update(const sf::Vector2f mousePos)
         return;
     }
 
+    if (!this->canUse()) {
+        this->button->disable();
+    }
+    else {
+        this->button->enable();
+    }
+
     this->button->update(mousePos);
 
     if (this->button->isHovered()) {
@@ -125,15 +132,53 @@ std::string Move::getMpString() const
 }
 
 // Rectangle Functions
+static std::string wrapText(const std::string& text, const sf::Font& font, unsigned int charSize, float maxWidth)
+{
+    std::string result;
+    std::string line;
+    std::istringstream stream(text);
+    std::string word;
+
+    while (stream >> word) {
+        std::string testLine = line.empty() ? word : line + " " + word;
+
+        sf::Text temp;
+        temp.setFont(font);
+        temp.setCharacterSize(charSize);
+        temp.setString(testLine);
+
+        if (!line.empty() && temp.getLocalBounds().width > maxWidth) {
+            result += line + "\n";
+            line = word;
+        }
+        else {
+            line = testLine;
+        }
+    }
+
+    if (!line.empty()) {
+        result += line;
+    }
+
+    return result;
+}
+
 void Move::initRects()
 {
+    const float boxWidth = 200.f;
+    const float padding = 8.f;
+    const unsigned int tipFontSize = 16;
+
+    const sf::Font& font = AssetDatabase::getInstance().getFont("ticker_font");
+    std::string wrappedTip = wrapText(this->tipMessage, font, tipFontSize, boxWidth - padding * 2);
+
     this->rectangles["TIPBOX"] = std::make_unique<Rectangle>(
-        this->tipMessage,
+        wrappedTip,           // <-- wrapped string instead of raw tipMessage
         sf::Color::White,
-        16,
+        tipFontSize,
         1700,
         100,
-        200,
+        boxWidth,
         200,
         sf::Color::Transparent,
         sf::Color::White,

@@ -67,6 +67,13 @@ Button::Button(sf::Vector2f pos, float width, float height, float clicktime,
 
 void Button::update(const sf::Vector2f mousePos)
 {
+    if (this->hidden || this->buttonState == BTN_DISABLED) {
+        this->shape.setFillColor(sf::Color(60, 60, 60, 150)); // dim grey
+        this->leftMouseWasDown = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+        this->rightMouseWasDown = sf::Mouse::isButtonPressed(sf::Mouse::Right);
+        return;
+    }
+
     if (this->hidden) {
         this->buttonState = BTN_IDLE;
         this->shape.setFillColor(this->idleColor);
@@ -115,6 +122,9 @@ void Button::update(const sf::Vector2f mousePos)
         break;
     case BTN_ACTIVE_RIGHT:
         this->shape.setFillColor(this->activeColor);
+        break;
+    case BTN_DISABLED:
+        this->shape.setFillColor(sf::Color(60, 60, 60, 150));
         break;
     default:
         this->shape.setFillColor(sf::Color::Red);

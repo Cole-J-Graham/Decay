@@ -36,6 +36,7 @@ private:
     // Combat Turn Helpers
     void handleCharacterTurn(int partyIndex, const sf::Vector2f mousePos);
     void handleEnemyTurn(const sf::Vector2f mousePos);
+    void resetAllCharactersForNewCombat();
 
     // Combat Ending Helpers
     void beginCombatEnd();

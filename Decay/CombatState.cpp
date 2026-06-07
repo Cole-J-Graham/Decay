@@ -174,7 +174,7 @@ void CombatState::finishCombatEnd()
 
     this->clearCurrentEnemy();
     this->clearCombatMoves();
-    this->resetAllCharacterTurns();
+    this->resetAllCharactersForNewCombat();
 
     this->combatFrame = 0;
     this->stateEnd = false;
@@ -195,7 +195,7 @@ void CombatState::resetCombat()
 
     this->clearCurrentEnemy();
     this->clearCombatMoves();
-    this->resetAllCharacterTurns();
+	this->resetAllCharactersForNewCombat();
 
     this->combatFrame = 0;
     this->stateEnd = false;
@@ -260,10 +260,23 @@ void CombatState::render(sf::RenderTarget* target)
 // Character Functions
 void CombatState::resetAllCharacterTurns()
 {
+	// Mid combat turn resets should only reset the turn state, not the pose or combat status effects, so that stuns and locks persist across turns but still consume their duration properly.
     auto& allCharacters = CharacterManager::getInstance().getAllCharacters();
 
     for (auto& pair : allCharacters) {
         pair.second->resetTurn();
+    }
+}
+
+void CombatState::resetAllCharactersForNewCombat()
+{
+	// Full combat resets should clear turn state, pose, and combat status effects, so that characters start fresh in the new combat.
+    auto& allCharacters = CharacterManager::getInstance().getAllCharacters();
+    for (auto& pair : allCharacters) {
+        auto& c = pair.second;
+        c->resetTurn();
+        c->resetPose();
+        c->clearCombatStatus();
     }
 }
 
@@ -424,7 +437,7 @@ void CombatState::initUi()
 
     // Main message text — slightly inset
     this->ui.addText("COMBAT_MESSAGE", std::make_unique<Text>(
-        360, 846, 15, "", sf::Color(230, 220, 200, 255), true
+        355, 835, 16, "", sf::Color::White, true
     ));
 
     // "Click to continue" hint — bottom-right of console

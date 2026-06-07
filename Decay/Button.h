@@ -6,7 +6,8 @@ enum button_states {
 	BTN_IDLE = 0,
 	BTN_HOVER,
 	BTN_ACTIVE_LEFT,
-	BTN_ACTIVE_RIGHT
+	BTN_ACTIVE_RIGHT,
+	BTN_DISABLED
 };
 
 class Button
@@ -41,6 +42,10 @@ public:
 	void setClickSfxEnabled(bool enabled) { this->playClickSfx = enabled; }
 	void setClickSfxId(const std::string& id) { this->clickSfxId = id; }
 	void setSize(float w, float h) { this->shape.setSize({ w, h }); }
+
+	void disable() { this->buttonState = BTN_DISABLED; }
+	void enable() { this->buttonState = BTN_IDLE; }
+	bool isDisabled() const { return this->buttonState == BTN_DISABLED; }
 
 private:
 	// Core Booleans
