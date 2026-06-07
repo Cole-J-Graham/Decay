@@ -1,0 +1,17 @@
+#type|id|displayName|assetId|scale|emotions
+# NPCs
+NPC|TREE|Speaking Tree|speaking_tree_portrait|0.2|NEUTRAL:speaking_tree_portrait
+
+# Characters  
+CHARACTER|PLAYER|Player|Assets/Sprites/Player.png|0.319|NEUTRAL:player_neutral;HAPPY:player_happy
+
+#Zin
+CHARACTER|ZIN|Zin|zin_sprite|0.066|NEUTRAL:zin_sprite
+CHARACTER|ZIN|Zin|zin_neutral|0.066|CONCERNED:zin_concerned
+CHARACTER|ZIN|Zin|zin_neutral|0.066|SAD:zin_sad
+CHARACTER|ZIN|Zin|zin_neutral|0.066|SCARED:zin_scared
+CHARACTER|ZIN|Zin|zin_neutral|0.066|HAPPY:zin_happy
+CHARACTER|ZIN|Zin|zin_neutral|0.066|ANNOYED:zin_happy
+
+CHARACTER|OVI|Ovi|Assets/Sprites/thomNormal.png|0.625|NEUTRAL:ovi_neutral;ANGRY:ovi_angry
+CHARACTER|JUNE|June|Assets/Sprites/june.png|0.625|NEUTRAL:june_neutral

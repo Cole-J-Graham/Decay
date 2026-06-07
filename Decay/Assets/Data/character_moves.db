@@ -1,7 +1,69 @@
-id|ownerId|buttonText|message|tip|sfxId|cooldown|poseTexturePath|poseDurationTurns|effects|mpMax
-SLASH|PLAYER|Slash|The player slashes at the opponent with all his might!|Player's basic attack.|slash|0||0|DAMAGE:ENEMY:1.0:0|infinite
-HEFTY_BLOW|PLAYER|Hefty Blow|The player charges up a heavy attack for maximum damage!|Heavy attack with increased damage.|hefty_blow|1||0|DAMAGE:ENEMY:1.75:0|2
-HEAL|ZIN|Mend|Zin casts a healing circle around the party!|Heals the lowest HP party member.|mend|0||0|HEAL:LOWEST_HP_ALLY:1.0:0|infinite
-HARDEN|OVI|Harden|Thom hardens his hide!|Temporarily increases Thom's defense.|iron_wall|0||0|BUFF_DEFENSE:SELF:1.5:2|infinite
-ENRAGE|OVI|Enrage|Thom enters a reckless fury!|Locks Thom down, boosts Player and Zin, but lowers Thom's defense.|angry|4|Assets/Sprites/thomRage.png|4|SELF_LOCK:SELF:0:4;BUFF_DAMAGE:ALLY_ID:PLAYER:1.5:4;BUFF_DAMAGE:ALLY_ID:ZIN:1.5:4;DEBUFF_DEFENSE:SELF:0.5:4|1
-BEETLE_WALL|JUNE|Beetle Wall|June summons a wall of beetles around the party!|Adds block to the entire party, providing some protection.|june_guard|0||0|BLOCK:ALL_PARTY:10.0:0|3
+id|ownerId|buttonText|message|tip|sfxId|cooldown|poseTexturePath|poseDurationTurns|effects|mpMax|levelRequirement
+
+#PLAYER
+SLASH|PLAYER|Slash|The player slashes at the opponent with all his might!|Player's basic attack.|slash|0||0|DAMAGE:ENEMY:1.0:0|infinite|-1
+HEFTY_BLOW|PLAYER|Hefty Blow|The player charges up a heavy attack for maximum damage!|Heavy attack with increased damage.|hefty_blow|1||0|DAMAGE:ENEMY:1.75:0|2|-1
+
+#ZIN
+HEAL|ZIN|Mend|Zin casts a healing circle around the party!|Heals the lowest HP party member.|mend|0||0|HEAL:LOWEST_HP_ALLY:1.0:0|infinite|-1
+SMITE|ZIN|Smite|Zin presses her hands together and casts a thunderbolt onto the opponent!|Casts a bolt of lightining directly onto the opponent.|smite|0||0|DAMAGE:ENEMY:0.65:0|10|1
+HELL_FIRE|ZIN|Hell Fire|Zin casts a circle of flames around the opponent that rapidly grows into an inferno!|Zin's heavy attack. Causes the enemy to be engulfed in flames straight from hell itself.|hellBlaze|3|Assets/Sprites/zinRage.png|3|SELF_LOCK:SELF:0:3;DAMAGE:ENEMY:6.75:0|1|15
+
+#OVI
+HARDEN|OVI|Harden|Thom hardens his hide!|Temporarily increases Thom's defense.|iron_wall|0||0|BUFF_DEFENSE:SELF:1.5:2|infinite|-1
+ENRAGE|OVI|Enrage|Thom enters a reckless fury!|Locks Thom down, boosts Player and Zin, but lowers Thom's defense.|angry|4|Assets/Sprites/thomRage.png|4|SELF_LOCK:SELF:0:4;BUFF_DAMAGE:ALLY_ID:PLAYER:1.5:4;BUFF_DAMAGE:ALLY_ID:ZIN:1.5:4;DEBUFF_DEFENSE:SELF:0.5:4|1|-1
+
+#JUNE
+BEETLE_WALL|JUNE|Beetle Wall|June summons a wall of beetles around the party!|Adds block to the entire party, providing some protection.|june_guard|0||0|BLOCK:ALL_PARTY:10.0:0|3|-1
+
+
+
+
+
+# =============================================================
+# CHARACTER MOVE DATABASE
+# =============================================================
+# EFFECT FORMAT: TYPE:TARGET:VALUE:DURATION  (or TYPE:TARGET:TARGET_ID:VALUE:DURATION for ALLY_ID)
+#
+# DAMAGE:ENEMY:VALUE:0
+#   Deals (character.damage * VALUE) to the enemy.
+#   1.0 = 100% of damage stat. 1.75 = 175%. 2.0 = double, etc.
+#
+# HEAL:TARGET:VALUE:0
+#   Heals (character.healing * VALUE) to the target.
+#   Targets: SELF, LOWEST_HP_ALLY, ALL_PARTY
+#
+# BLOCK:TARGET:VALUE:0
+#   Adds VALUE as flat block points to the target.
+#   Targets: SELF, ALL_PARTY
+#   e.g. BLOCK:ALL_PARTY:10.0:0 adds 10 block to everyone.
+#
+# BUFF_DAMAGE:TARGET:VALUE:DURATION
+#   Multiplies target's damage by VALUE for DURATION turns.
+#   e.g. 1.5 = +50% damage. Targets: SELF, ALLY_ID
+#
+# BUFF_DEFENSE:TARGET:VALUE:DURATION
+#   Multiplies target's defense by VALUE for DURATION turns.
+#   e.g. 1.5 = +50% defense.
+#
+# DEBUFF_DAMAGE:TARGET:VALUE:DURATION
+#   Multiplies target's damage by VALUE for DURATION turns.
+#   e.g. 0.5 = -50% damage.
+#
+# DEBUFF_DEFENSE:TARGET:VALUE:DURATION
+#   Multiplies target's defense by VALUE for DURATION turns.
+#   e.g. 0.5 = -50% defense.
+#
+# SELF_LOCK:SELF:0:DURATION
+#   Locks the user out of acting for DURATION turns.
+#
+# ALLY_ID syntax: TYPE:ALLY_ID:CHARACTER_ID:VALUE:DURATION
+#   e.g. BUFF_DAMAGE:ALLY_ID:PLAYER:1.5:4
+#
+# FIELDS:
+# id | ownerId | buttonText | message | tip | sfxId | cooldown
+#    | poseTexturePath | poseDurationTurns | effects | mpMax | levelRequirement
+#
+# mpMax: number of uses per combat. "infinite" = unlimited.
+# levelRequirement: -1 = always available. 5 = requires level 5.
+# =============================================================

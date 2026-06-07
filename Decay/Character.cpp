@@ -1,4 +1,5 @@
 #include "Character.h"
+#include "AssetDatabase.h"
 
 // Constructors and Deconstructors
 Character::Character(const std::string id, std::string characterName, float hp, float hpMax, float damage, float defense,
@@ -145,12 +146,12 @@ void Character::continueTurn(int& combatFrame)
 
 void Character::rest()
 {
-    this->waitingForMouseRelease = true;  // ← add
+    this->waitingForMouseRelease = true;
     this->justContinued = true;
     this->hp = this->hpMax;
     this->block = 0.f;
     this->coolDown = 0;
-    this->moveMp.clear();  // bonfire rest restores all MP
+    this->moveMp.clear();
     this->resetTurn();
     this->updateText();
 }
@@ -166,7 +167,7 @@ void Character::updateButtons(const sf::Vector2f mousePos)
 void Character::updateMoveButtons(const sf::Vector2f mousePos)
 {
     for (auto& it : this->moveButtons) {
-        it.second->update(mousePos);  // ← update first, then check
+        it.second->update(mousePos);
     }
 
     for (auto& it : this->moveButtons) {
@@ -186,12 +187,12 @@ void Character::initButtons()
     this->buttons[this->id] = std::make_unique<Button>(
         1402,
         50,
-        120,                            // wide enough for any character name
+        120,
         22,
         0.5f,
         this->characterName,
         sf::Color(70, 70, 70, 70),
-        sf::Color(100, 130, 100, 200),  // muted green hover, matches stat panel
+        sf::Color(100, 130, 100, 200),
         sf::Color(20, 20, 20, 70),
         false
     );
@@ -227,7 +228,6 @@ void Character::createMove(
 
 void Character::renderMoveButtons(sf::RenderTarget* target)
 {
-	// Position buttons in a vertical list, starting from a base Y coordinate and offsetting each subsequent button by a fixed amount.
     int tempButtonY = 795;
 
     for (auto& it : this->moveButtons) {
@@ -391,4 +391,24 @@ float Character::getEffectiveDamage() const
 float Character::getEffectiveDefense() const
 {
     return this->status.getEffectiveDefense(this->defense);
+}
+
+// Emotion Functions
+void Character::addEmotion(const std::string& emotion, const std::string& assetId)
+{
+    this->emotionAssets[emotion] = assetId;
+}
+
+void Character::setEmotion(const std::string& emotion)
+{
+    if (emotion.empty() || emotion == this->currentEmotion) return;
+
+    this->currentEmotion = emotion;
+
+    auto it = this->emotionAssets.find(emotion);
+    if (it != this->emotionAssets.end() && AssetDatabase::getInstance().has(it->second))
+    {
+        this->character.setTexture(AssetDatabase::getInstance().getTexture(it->second));
+    }
+    // No fallback needed — if emotion not found, portrait stays as-is
 }

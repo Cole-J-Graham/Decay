@@ -38,6 +38,11 @@ void GameTriggers::renderNotification(sf::RenderTarget* target)
     gNotification->render(target);
 }
 
+void GameTriggers::showMoveUnlockNotification(const std::string& moveName)
+{
+    showNotification("New move unlocked: " + moveName, 6.f);
+}
+
 // ---------------------------------------------------------------------------
 // registerAll
 // ---------------------------------------------------------------------------

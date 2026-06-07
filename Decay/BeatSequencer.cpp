@@ -21,6 +21,7 @@ void BeatSequencer::start(std::vector<Beat> inBeats, DialogueInputComponent* dlg
     lastChoice = Choice::NONE;
     currentState = State::IDLE;
     activeNPCName = "";
+    activeEmotion = "";
     running = true;
     started = true;
 
@@ -41,6 +42,7 @@ void BeatSequencer::reset()
     lastChoice = Choice::NONE;
     currentState = State::IDLE;
     activeNPCName = "";
+    activeEmotion = "";
     running = false;
     started = false;
     dialogue = nullptr;
@@ -93,6 +95,7 @@ void BeatSequencer::advanceBeat()
     if (currentBeatIndex >= (int)beats.size())
     {
         activeNPCName = "";
+        activeEmotion = "";
         running = false;
         std::cout << "BeatSequencer: sequence finished.\n";
         return;
@@ -109,7 +112,40 @@ void BeatSequencer::advanceBeat()
     }
     else if (beat.type == Beat::Type::CHARACTER)
     {
-        showChoiceBeat(beat.character);
+        const std::string& cid = beat.character.characterId;
+
+        bool inParty = false;
+
+        if (!cid.empty()) {
+            for (const auto& member : CharacterManager::getInstance().getAllPartyMembers()) {
+                if (member && member->getId() == cid) {
+                    inParty = true;
+                    break;
+                }
+            }
+        }
+        else {
+            inParty = true; // no ID, always show (choice blocks without a character)
+        }
+
+        if (!inParty) {
+            advanceBeat(); // not in party, skip silently
+            return;
+        }
+
+        if (!beat.character.line.empty())
+        {
+            // Spoken line — show like NPC but with character portrait
+            activeNPCName = cid;
+            activeEmotion = beat.character.emotion;  // empty string is fine, setEmotion handles it
+            std::string line = beat.character.line;
+            dialogue->setMainDialogueText(line);
+            dialogue->showMainDialogue();
+            currentState = State::SHOWING_NPC; // reuse NPC click-to-continue flow
+        }
+        else {
+            showChoiceBeat(beat.character); // existing choice behaviour
+        }
     }
     else if (beat.type == Beat::Type::GIVE_ITEM)
     {
@@ -142,12 +178,19 @@ void BeatSequencer::showNPCBeat(const NPCBlock& block, const std::string& line)
 {
     activeNPCName = block.npc;
 
+    if (!block.emotionA.empty() || !block.emotionB.empty()) {
+        activeEmotion = (lastChoice == Choice::B) ? block.emotionB : block.emotionA;
+    }
+    else {
+        activeEmotion = block.emotion;
+    }
+
     std::string displayLine = line.empty() ? block.lineA : line;
     dialogue->setMainDialogueText(displayLine);
     dialogue->showMainDialogue();
     currentState = State::SHOWING_NPC;
 
-    std::cout << "[NPC:" << block.npc << "|" << block.emotion << "] " << displayLine << "\n";
+    std::cout << "[NPC:" << block.npc << "|" << activeEmotion << "] " << displayLine << "\n";
 }
 
 void BeatSequencer::showChoiceBeat(const CharacterBlock& block)
@@ -221,7 +264,6 @@ void BeatSequencer::giveItem(const std::string& itemId, int quantity)
 
 void BeatSequencer::giveExpToParty(float amount)
 {
-    // Distributes exp to every character currently in the party.
     for (auto& member : CharacterManager::getInstance().getAllPartyMembers())
     {
         if (member && member->getStats())

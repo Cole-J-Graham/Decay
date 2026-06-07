@@ -14,6 +14,11 @@ LINE_A: What is it you seek?
 LINE_B: You understand me, I understand you. Now, what is it you seek?
 
 [SPEAK_CHARACTER]
+CHARACTER: ZIN
+EMOTION: CONCERNED
+LINE: ...Did that tree just speak?
+
+[SPEAK_CHARACTER]
 RESPONSE_A: What do I seek?
 RESPONSE_B: I don't understand what you want from me.
 

@@ -21,4 +21,5 @@ class GameTriggers
 public:
     static void registerAll();
     static void renderNotification(sf::RenderTarget* target);
+    static void showMoveUnlockNotification(const std::string& moveName);
 };

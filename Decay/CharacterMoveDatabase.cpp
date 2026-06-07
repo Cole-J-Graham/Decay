@@ -140,6 +140,13 @@ bool CharacterMoveDatabase::loadFromFile(const std::string& filePath)
             move.mpMax = -1;
         }
 
+        if (fields.size() > 11 && fields[11] != "none" && !fields[11].empty()) {
+            move.levelRequirement = std::stoi(fields[11]);
+        }
+        else {
+            move.levelRequirement = -1;
+        }
+
         if (move.id.empty() || move.ownerId.empty()) {
             std::cerr << "Character move missing id or owner: " << line << "\n";
             continue;

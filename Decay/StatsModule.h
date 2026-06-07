@@ -50,6 +50,7 @@ public:
 	const std::string& getId() { return this->id; }
 	std::string& getButtonId() { return this->buttonId; }
 	std::map<std::string, Button*>& getButtons() { return this->buttons; };
+	int getLevel() const { return this->level; }
 
 	//Setters
 	void setButtonId(std::string& id) { this->buttonId = id; }

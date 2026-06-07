@@ -24,6 +24,7 @@ struct CharacterMoveDefinition
 
     std::string sfxId;
     int cooldown = 0;
+    int levelRequirement = -1;
 
     std::string poseTexturePath;
     int poseDurationTurns = 0;

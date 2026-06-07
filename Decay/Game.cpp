@@ -3,6 +3,7 @@
 #include "EnemyDatabase.h"
 #include "EnemyMoveDatabase.h"
 #include "CharacterMoveDatabase.h"
+#include "EmotionDatabase.h"
 #include "SettingsManager.h"
 #include "Inventory.h"
 #include "GameTriggers.h"
@@ -24,7 +25,10 @@ Game::Game()
 	SettingsManager::getInstance().loadFromFile("Assets/Data/settings.db");
 
 	this->initWindow();
-	this->initStates();
+	this->initStates();  // InitializeCharacters runs inside here
+
+	// Must come after initStates so CharacterManager already has all characters registered
+	EmotionDatabase::getInstance().loadFromFile("Assets/Data/emotions.db");
 }
 
 Game::~Game()
@@ -46,9 +50,6 @@ void Game::endApplication()
 //Initialization (Private Functions)
 void Game::initWindow()
 {
-	/*Creates a SFML window using options from a window.ini file.*/
-
-
 	std::string title = "None";
 	sf::VideoMode window_bounds(1920, 1080);
 	unsigned framerate_limit = 120;
@@ -61,7 +62,6 @@ void Game::initWindow()
 
 void Game::initStates()
 {
-	/*Push in states here*/
 	this->states.push(new MainMenuState(window, &states));
 }
 
@@ -75,9 +75,6 @@ void Game::update()
 	if (!this->states.empty()) {
 		this->states.top()->update();
 
-		// Drain all states that signalled quit this frame so that a
-		// double-pop (e.g. ESC from settings while paused) happens
-		// atomically rather than over two frames.
 		while (!this->states.empty() && this->states.top()->getQuit()) {
 			this->states.top()->endState();
 			delete this->states.top();
@@ -92,8 +89,6 @@ void Game::update()
 
 void Game::updateDt()
 {
-	/*Updates the dt variable with the time it takes to update and render one frame.*/
-
 	this->dt = this->dtClock.restart().asSeconds();
 }
 
@@ -111,7 +106,6 @@ void Game::render()
 {
 	this->window->clear();
 
-	//Render Items
 	if (!this->states.empty()) {
 		this->states.top()->render(this->window);
 	}

@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include <string>
 
 // ============================================================
@@ -12,13 +11,18 @@
 struct NPCBlock
 {
     std::string npc;
-    std::string emotion;
+    std::string emotion;    // flat, applies regardless of choice
+    std::string emotionA;   // if last choice was A
+    std::string emotionB;   // if last choice was B
     std::string lineA;
     std::string lineB;
 };
 
 struct CharacterBlock
 {
+    std::string characterId;
+    std::string emotion;    // portrait emotion when this character speaks
+    std::string line;
     std::string responseA;
     std::string responseB;
 };

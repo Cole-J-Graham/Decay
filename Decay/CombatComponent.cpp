@@ -2,6 +2,8 @@
 
 #include "EnemyDatabase.h"
 #include "EnemyMoveDatabase.h"
+#include "GameFlags.h"
+#include "GameTriggers.h"
 
 #include <iostream>
 
@@ -69,6 +71,19 @@ void CombatComponent::initMoves()
         for (const CharacterMoveDefinition* moveDefinition : moveDefinitions) {
             if (moveDefinition == nullptr) {
                 continue;
+            }
+
+            if (moveDefinition->levelRequirement != -1) {
+                int charLevel = character->getStats()->getLevel();
+                if (charLevel < moveDefinition->levelRequirement) {
+                    continue; // not unlocked yet, don't create it
+                }
+
+                const std::string unlockFlag = "move_unlocked_" + moveDefinition->id;
+                if (!GameFlags::getInstance().has(unlockFlag)) {
+                    GameFlags::getInstance().set(unlockFlag);
+                    GameTriggers::showMoveUnlockNotification(moveDefinition->buttonText);
+                }
             }
 
             Character* characterPtr = character.get();

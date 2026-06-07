@@ -31,7 +31,7 @@ EventManager::EventManager(const std::string& areaName,
 {
     this->dialogueInput = std::make_unique<DialogueInputComponent>();
     this->initEvents();
-    this->forceEvent();  // one-time intros always auto-activate
+    this->forceEvent();
 }
 
 EventManager::~EventManager() {}
@@ -59,20 +59,25 @@ void EventManager::render(sf::RenderTarget* target)
 
     dialogueInput->render(target);
 
-    const std::string& npcName = sequencer.getActiveNPCName();
-    if (npcName.empty()) return;
+    const std::string& activeName = sequencer.getActiveNPCName();
+    if (activeName.empty()) return;
 
-    // Check NPCManager first, fall back to CharacterManager
-    NPC* npc = NPCManager::getInstance().getNPC(npcName);
+    // Check NPCManager first
+    NPC* npc = NPCManager::getInstance().getNPC(activeName);
     if (npc)
     {
+        npc->setEmotion(sequencer.getActiveEmotion());
         npc->renderPreview(target, EVENT_PORTRAIT_X, EVENT_PORTRAIT_Y);
         return;
     }
 
-    auto character = CharacterManager::getInstance().getCharacter(npcName);
+    // Fall back to CharacterManager — party characters can speak too
+    auto character = CharacterManager::getInstance().getCharacter(activeName);
     if (character)
+    {
+        character->setEmotion(sequencer.getActiveEmotion());
         character->renderPreview(target, EVENT_PORTRAIT_X, EVENT_PORTRAIT_Y);
+    }
 }
 
 // ============================================================
@@ -134,12 +139,10 @@ void EventManager::updateEvents()
 
 void EventManager::onSequenceFinished()
 {
-    // Mark one-time events as played
     if (activeEventIndex >= 0 && activeEventIndex < (int)events.size())
         if (events[activeEventIndex].oneTime)
             events[activeEventIndex].hasPlayed = true;
 
-    // Set completion flag and fire trigger if this was a one-time intro event
     if (!completionFlag.empty())
         GameFlags::getInstance().set(completionFlag);
     if (!completionTrigger.empty())

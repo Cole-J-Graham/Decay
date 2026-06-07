@@ -31,7 +31,7 @@ public:
     void set(const std::string& flag) { this->flags.insert(flag); }
     bool has(const std::string& flag) const { return this->flags.count(flag) > 0; }
     void clear(const std::string& flag) { this->flags.erase(flag); }
-    void clearAll() { this->flags.clear(); }
+    void clearAll() { this->flags.clear(); }    
 
 private:
     GameFlags() = default;

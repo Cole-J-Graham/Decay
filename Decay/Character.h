@@ -10,6 +10,7 @@
 #include <memory>
 #include <stack>
 #include <string>
+#include <unordered_map>
 
 class Character
 {
@@ -95,6 +96,10 @@ public:
     bool idButtonIsClicked() const;
     void updateIdButton(const sf::Vector2f mousePos);
     bool idButtonLeftClicked() const;
+
+    // Emotion Functions
+    void addEmotion(const std::string& emotion, const std::string& assetId);
+    void setEmotion(const std::string& emotion);
 
     // Combat Helpers
     void takeDamage(float amount);
@@ -208,4 +213,8 @@ private:
 
     // Persists MP counts across combats; cleared on bonfire rest
     std::map<std::string, int> moveMp;
+
+    // Emotion portrait swapping
+    std::unordered_map<std::string, std::string> emotionAssets;
+    std::string currentEmotion;
 };

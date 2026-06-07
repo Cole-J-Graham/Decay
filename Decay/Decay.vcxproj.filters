@@ -172,6 +172,9 @@
     <ClCompile Include="BeatSequencer.cpp">
       <Filter>Events\EventLogic</Filter>
     </ClCompile>
+    <ClCompile Include="EmotionDatabase.cpp">
+      <Filter>Resources\Databases</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -359,6 +362,9 @@
     </ClInclude>
     <ClInclude Include="BeatSequencer.h">
       <Filter>Events\EventLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="EmotionDatabase.h">
+      <Filter>Resources\Databases</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

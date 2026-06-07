@@ -34,6 +34,7 @@ public:
 
     // Active NPC name for portrait rendering in EventManager.
     const std::string& getActiveNPCName() const { return activeNPCName; }
+    const std::string& getActiveEmotion() const { return activeEmotion; }
 
     State getState() const { return currentState; }
 
@@ -65,6 +66,7 @@ private:
     Choice                     lastChoice = Choice::NONE;
     State                      currentState = State::IDLE;
     std::string                activeNPCName;
+    std::string                activeEmotion;
 
     bool                       running = false;
     bool                       started = false;

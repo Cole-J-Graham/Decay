@@ -23,7 +23,7 @@ std::vector<Beat> EventFileParser::parse(const std::string& path)
         if (line.empty() && ifs.eof()) break;
         if (line.empty()) continue;
 
-        if (line == "[SPEAK_NPC]")       beats.push_back(parseNPCBlock());
+        if (line == "[SPEAK_NPC]")             beats.push_back(parseNPCBlock());
         else if (line == "[SPEAK_CHARACTER]")  beats.push_back(parseCharacterBlock());
         else if (line == "[GIVE_ITEM]")        beats.push_back(parseGiveItemBlock());
         else if (line == "[GIVE_GOLD]")        beats.push_back(parseGiveGoldBlock());
@@ -58,11 +58,13 @@ Beat EventFileParser::parseNPCBlock()
         std::string key = line.substr(0, sep);
         std::string val = (sep + 2 <= line.size()) ? line.substr(sep + 2) : "";
 
-        if (key == "NPC")     beat.npc.npc = val;
-        else if (key == "EMOTION") beat.npc.emotion = val;
+        if (key == "NPC")       beat.npc.npc = val;
+        else if (key == "EMOTION")   beat.npc.emotion = val;
+        else if (key == "EMOTION_A") beat.npc.emotionA = val;
+        else if (key == "EMOTION_B") beat.npc.emotionB = val;
         else if (key == "LINE") { beat.npc.lineA = val; beat.npc.lineB = val; }
-        else if (key == "LINE_A")  beat.npc.lineA = val;
-        else if (key == "LINE_B")  beat.npc.lineB = val;
+        else if (key == "LINE_A")    beat.npc.lineA = val;
+        else if (key == "LINE_B")    beat.npc.lineB = val;
     }
 
     if (beat.npc.lineB.empty()) beat.npc.lineB = beat.npc.lineA;
@@ -85,7 +87,10 @@ Beat EventFileParser::parseCharacterBlock()
         std::string key = line.substr(0, sep);
         std::string val = (sep + 2 <= line.size()) ? line.substr(sep + 2) : "";
 
-        if (key == "RESPONSE_A") beat.character.responseA = val;
+        if (key == "CHARACTER")  beat.character.characterId = val;
+        else if (key == "EMOTION")    beat.character.emotion = val;
+        else if (key == "LINE")       beat.character.line = val;
+        else if (key == "RESPONSE_A") beat.character.responseA = val;
         else if (key == "RESPONSE_B") beat.character.responseB = val;
     }
 

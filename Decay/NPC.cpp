@@ -32,3 +32,25 @@ void NPC::renderPreview(sf::RenderTarget* target, float x, float y)
     target->draw(border);
     target->draw(sprite);
 }
+
+void NPC::addEmotion(const std::string& emotion, const std::string& assetId)
+{
+    emotionAssets[emotion] = assetId;
+}
+
+void NPC::setEmotion(const std::string& emotion)
+{
+    if (emotion.empty() || emotion == currentEmotion) return;
+
+    currentEmotion = emotion;
+
+    auto it = emotionAssets.find(emotion);
+    if (it != emotionAssets.end() && AssetDatabase::getInstance().has(it->second)) {
+        sprite.setTexture(AssetDatabase::getInstance().getTexture(it->second));
+    }
+    else {
+        // Fall back to default neutral texture
+        if (AssetDatabase::getInstance().has(assetId))
+            sprite.setTexture(AssetDatabase::getInstance().getTexture(assetId));
+    }
+}

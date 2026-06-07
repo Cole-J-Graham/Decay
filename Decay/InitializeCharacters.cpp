@@ -40,9 +40,7 @@ void InitializeCharacters::initCharacters()
 //Initialize NPCs for game. Currently piped through here for simplicity, but may want to move to a separate function or class if it gets more complex.
 void InitializeCharacters::initNPCs()
 {
-    NPCManager::getInstance().addNPC("TREE", std::make_unique<NPC>("TREE", "Speaking Tree", "speaking_tree_portrait", 0.2f));
-
-    
+    // NPCs are now loaded from Assets/Data/emotions.db via EmotionDatabas
 }
 
 //Stat Functions
