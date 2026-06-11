@@ -132,3 +132,62 @@ bool& Text::setShown()
     this->timer.restart();
     return this->hidden;
 }
+
+std::string Text::wrapText(const std::string& text, float maxWidth, unsigned int charSize)
+{
+    const sf::Font& font = AssetDatabase::getInstance().getFont("ticker_font");
+
+    std::string result;
+    std::string word;
+    float       lineWidth = 0.f;
+
+    auto measureWord = [&](const std::string& w) -> float
+        {
+            float width = 0.f;
+            for (char c : w)
+                width += font.getGlyph(c, charSize, false).advance;
+            return width;
+        };
+
+    const float spaceAdvance = font.getGlyph(' ', charSize, false).advance;
+
+    for (size_t i = 0; i <= text.size(); ++i)
+    {
+        char c = (i < text.size()) ? text[i] : '\0';
+
+        if (c == ' ' || c == '\n' || c == '\0')
+        {
+            if (!word.empty())
+            {
+                float wordWidth = measureWord(word);
+
+                if (lineWidth > 0.f && lineWidth + spaceAdvance + wordWidth > maxWidth)
+                {
+                    result += '\n';
+                    lineWidth = 0.f;
+                }
+                else if (lineWidth > 0.f)
+                {
+                    result += ' ';
+                    lineWidth += spaceAdvance;
+                }
+
+                result += word;
+                lineWidth += wordWidth;
+                word.clear();
+            }
+
+            if (c == '\n')
+            {
+                result += '\n';
+                lineWidth = 0.f;
+            }
+        }
+        else
+        {
+            word += c;
+        }
+    }
+
+    return result;
+}

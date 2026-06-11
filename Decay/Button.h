@@ -42,6 +42,7 @@ public:
 	void setClickSfxEnabled(bool enabled) { this->playClickSfx = enabled; }
 	void setClickSfxId(const std::string& id) { this->clickSfxId = id; }
 	void setSize(float w, float h) { this->shape.setSize({ w, h }); }
+	void setTextPosition(float x, float y) { this->text.setPosition(x, y); }
 
 	void disable() { this->buttonState = BTN_DISABLED; }
 	void enable() { this->buttonState = BTN_IDLE; }

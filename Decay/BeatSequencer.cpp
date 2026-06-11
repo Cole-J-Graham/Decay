@@ -1,6 +1,7 @@
 #include "BeatSequencer.h"
 #include "Inventory.h"
 #include "CharacterManager.h"
+#include "Text.h"
 #include <iostream>
 
 // ============================================================
@@ -195,9 +196,10 @@ void BeatSequencer::showNPCBeat(const NPCBlock& block, const std::string& line)
 
 void BeatSequencer::showChoiceBeat(const CharacterBlock& block)
 {
-    dialogue->setDialogueOptions(
-        const_cast<std::string&>(block.responseA),
-        const_cast<std::string&>(block.responseB));
+    std::string responseA = Text::wrapText(block.responseA, 1800.f);
+    std::string responseB = Text::wrapText(block.responseB, 1800.f);
+
+    dialogue->setDialogueOptions(responseA, responseB);
     dialogue->showDialogueOptions();
     currentState = State::SHOWING_CHOICES;
 

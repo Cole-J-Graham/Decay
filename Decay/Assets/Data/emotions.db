@@ -1,6 +1,7 @@
 #type|id|displayName|assetId|scale|emotions
 # NPCs
 NPC|TREE|Speaking Tree|speaking_tree_portrait|0.2|NEUTRAL:speaking_tree_portrait
+NPC|SIWARD|Speaking Tree|siward_sprite|0.319|NEUTRAL:siward_sprite
 
 # Characters  
 CHARACTER|PLAYER|Player|Assets/Sprites/Player.png|0.319|NEUTRAL:player_neutral;HAPPY:player_happy

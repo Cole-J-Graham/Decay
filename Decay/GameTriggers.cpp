@@ -2,6 +2,7 @@
 #include "TriggerManager.h"
 #include "GameFlags.h"
 #include "Text.h"
+#include <iostream>
 #include <memory>
 
 // ---------------------------------------------------------------------------
@@ -40,6 +41,7 @@ void GameTriggers::renderNotification(sf::RenderTarget* target)
 
 void GameTriggers::showMoveUnlockNotification(const std::string& moveName)
 {
+    std::cout << "MOVE UNLOCK NOTIFICATION: " << moveName << "\n";
     showNotification("New move unlocked: " + moveName, 6.f);
 }
 

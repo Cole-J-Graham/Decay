@@ -29,6 +29,7 @@ thom_sprite|texture|Assets/Sprites/thomNormal.png
 #NPC Sprites
 doctor_sprite|texture|Assets/Sprites/plaugeguy.png
 speaking_tree_portrait|texture|Assets/Entities/entityTree.jpeg
+siward_sprite|texture|Assets/Sprites/siward.png
 
 #Hostile Sprites
 wolf_sprite|texture|Assets/HostileSprites/wolfsprite.png

@@ -39,6 +39,8 @@ public:
 
     void setCountdownVisible(bool visible) { this->countdownVisible = visible; }
     void setCountdownPosition(float x, float y) { this->countdownText.setPosition(x, y); }
+    static std::string wrapText(const std::string& text, float maxWidth,
+        unsigned int charSize = 16);
 
     // Getters
     bool& getHidden() { return this->hidden; }

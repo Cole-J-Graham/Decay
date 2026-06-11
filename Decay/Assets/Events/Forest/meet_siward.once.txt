@@ -1,0 +1,44 @@
+[SPEAK_NPC]
+NPC: SIWARD
+EMOTION: NEUTRAL
+LINE: *You can hear clunky metal armor behind a tree nearby. You slightly ready yourself until you notice it greets you.* Why hello, traveler!
+
+[SPEAK_CHARACTER]
+RESPONSE_A: Hello?
+RESPONSE_B: I didn't really expect to meet anyone out here, I'll be honest.
+
+[SPEAK_NPC]
+NPC: SIWARD
+EMOTION: NEUTRAL
+LINE_A: Hello! Hello indeed!
+LINE_B: Neither did I!
+
+[SPEAK_CHARACTER]
+RESPONSE_A: So, what exactly are you doing this deep in the woods?
+RESPONSE_B: Are you traveling anywhere in particular? Or do you just like wandering around this horrific place?
+
+[SPEAK_NPC]
+NPC: SIWARD
+EMOTION: NEUTRAL
+LINE_A: A very fair question. I am here to hunt demons and slay all abominations that hope to harm others out here! *The man says valiantly enough that you just might believe him...*, then it shall be off to the heart of the decay itself!
+LINE_B: Well, I have an idea of where I'm heading, however, it requires a great deal of strength to reach there. I plan to head to the very depths of the decay itself. *He explains with an oddly abrupt amount of hand motions.*
+
+[SPEAK_CHARACTER]
+RESPONSE_A: I'm sorry, but the "decay itself"? What exactly does that mean?
+RESPONSE_B: Well... that sounds uh- bleak. Good luck with that.
+
+[SPEAK_NPC]
+NPC: SIWARD
+EMOTION: NEUTRAL
+LINE_A: By the decay itself, I mean the very heart of how this world was infested. *He steps closer to you and lifts his finger east as he places an arm around you.*, you see, eastbound I believe is where the plague started. I can't yet explain it, but I feel almost this... deep connection to it. All I know is I must end it. But enough of that, if you see me out in that neck of the woods, flag me down!
+LINE_B: Much appreciated, traveler! I'll be heading east! If you end up traveling that same direction, make sure to give me a shout if you see a pile of metal roaming around! *He exclaims with laughter following his words.*
+
+[SPEAK_CHARACTER]
+RESPONSE_A: Well, in fact we'll be heading east as well. So I'm sure we'll see you around and maybe even lend a hand.
+RESPONSE_B: I'm not so sure about all of that, but fair enough I suppose...?
+
+[SPEAK_NPC]
+NPC: SIWARD
+EMOTION: NEUTRAL
+LINE_A: Well I appreciate that quite a bit. I'm sure I'll see you all around with time. Best of luck adventurers! *The man exclaims as he waves himself off towards the party.*
+LINE_B: You'll know soon enough! Best of luck adventurers! *The man exclaims as he waves himself off towards the party.*

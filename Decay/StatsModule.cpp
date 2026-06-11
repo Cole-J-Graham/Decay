@@ -1,4 +1,7 @@
 #include "StatsModule.h"
+#include "CharacterMoveDatabase.h"
+#include "GameFlags.h"
+#include "GameTriggers.h"
 
 // Constructors and Destructors
 StatsModule::StatsModule(const std::string& id, const std::string& tipText)
@@ -41,7 +44,7 @@ void StatsModule::render(sf::RenderTarget* target) {
         this->renderButtons(target);
         this->renderText(target);
     }
-    else if (this->buttons.count(this->buttonId)) { // Ensure button exists
+    else if (this->buttons.count(this->buttonId)) {
         this->buttons[this->buttonId]->render(target);
     }
 }
@@ -49,7 +52,7 @@ void StatsModule::render(sf::RenderTarget* target) {
 // Stat Functions
 void StatsModule::updateStats(const sf::Vector2f mousePos) {
     for (auto& it : this->stats) {
-        if (it.second) { // Check if pointer is valid
+        if (it.second) {
             it.second->update(mousePos);
             it.second->statUp(this->sp);
         }
@@ -64,19 +67,16 @@ void StatsModule::createStat(const std::string& key, const std::string& statName
 }
 
 void StatsModule::renderStats(sf::RenderTarget* target) {
-    // Panel geometry
     const float panelX = 1410.f;
-    const float rightColX = 1560.f;  // x of derived-value column
+    const float rightColX = 1560.f;
     const float rowHeight = 28.f;
-    float y = 138.f;                 // first stat row (below header bar)
+    float y = 138.f;
 
-    // Column header background stripe
     sf::RectangleShape colHeaderBg(sf::Vector2f(260.f, 18.f));
     colHeaderBg.setPosition(panelX, y - 20.f);
     colHeaderBg.setFillColor(sf::Color(255, 255, 255, 18));
     target->draw(colHeaderBg);
 
-    // Small column label text (stack-allocated each frame, cheap for UI)
     Text leftHeader(panelX + 28.f, y - 18.f, 11, "STAT  PTS", sf::Color(180, 180, 180, 200), false);
     Text rightHeader(rightColX, y - 18.f, 11, "CURRENT VAL", sf::Color(160, 220, 255, 200), false);
     leftHeader.render(target);
@@ -88,7 +88,6 @@ void StatsModule::renderStats(sf::RenderTarget* target) {
         y += rowHeight;
     }
 
-    // Separator below all stat rows
     sf::RectangleShape sep(sf::Vector2f(260.f, 2.f));
     sep.setPosition(panelX, y + 4.f);
     sep.setFillColor(sf::Color(255, 255, 255, 40));
@@ -102,6 +101,20 @@ void StatsModule::increaseLevel() {
             this->exp -= this->expNext;
             this->level++;
             this->sp++;
+
+            // Check for newly unlocked moves at this level
+            auto moves = CharacterMoveDatabase::getInstance().getMovesForOwner(this->id);
+            for (const auto* move : moves)
+            {
+                if (move->levelRequirement != this->level) continue;
+
+                const std::string unlockFlag = "move_unlocked_" + move->id;
+                if (!GameFlags::getInstance().has(unlockFlag))
+                {
+                    GameFlags::getInstance().set(unlockFlag);
+                    GameTriggers::showMoveUnlockNotification(move->buttonText);
+                }
+            }
         }
         else {
             std::cout << "Not enough exp for level up..." << "\n";
@@ -121,11 +134,9 @@ void StatsModule::addExp(float amount)
 
 // Rectangle Functions
 void StatsModule::initRects() {
-    // Main panel border (x=1400, y=50, w=270, h=620)
     this->rectangles["STATSMENU"] = std::make_unique<Rectangle>(1400, 50, 270, 620, sf::Color::Transparent,
         sf::Color::White, 1.f, false);
 
-    // Thin divider below the header bar
     this->rectangles["HEADERDIV"] = std::make_unique<Rectangle>(1400, 82, 270, 1,
         sf::Color(255, 255, 255, 60), sf::Color::Transparent, 0.f, false);
 }
@@ -139,7 +150,7 @@ void StatsModule::renderRects(sf::RenderTarget* target) {
 // Button Functions
 void StatsModule::updateButtons(const sf::Vector2f mousePos) {
     for (auto& it : this->buttons) {
-        if (it.second) { // Ensure button is valid
+        if (it.second) {
             it.second->update(mousePos);
         }
     }
@@ -154,11 +165,9 @@ void StatsModule::initButtons() {
         this->buttonId = this->id;
     }
 
-    // The character buttons that appear when clicking — "stats"
     this->buttons[this->buttonId] = new Button(1620, 53, 100, 22, 0.5f, this->id,
         sf::Color(60, 90, 60, 160), sf::Color(100, 180, 100, 255), sf::Color(20, 20, 20, 70), false);
 
-    // LEVEL++ button — right-aligned in the header bar, left of the toggle
     this->buttons["LEVELUP"] = new Button(1560, 53, 55, 22, 0.5f, "LVL++",
         sf::Color(60, 100, 60, 160), sf::Color(100, 180, 100, 255), sf::Color(30, 60, 30, 180), false);
 }
@@ -171,24 +180,21 @@ void StatsModule::renderButtons(sf::RenderTarget* target) {
 
 // Text Functions
 void StatsModule::initText() {
-    // Title label
     this->text["TITLE"] = std::make_unique<Text>(1410, 55, 13,
         "CHARACTER STATS",
         sf::Color(200, 200, 200, 220), false);
 
-    // EXP / Level line
     this->text["EXPTEXT"] = std::make_unique<Text>(1410, 84, 12,
         buildExpString(),
         sf::Color(255, 210, 100, 255), false);
 
-    // SP line (slightly below, different colour)
     this->text["SPTEXT"] = std::make_unique<Text>(1560, 84, 12,
         buildSpString(),
         sf::Color(130, 220, 130, 255), false);
 
     this->text["TIPTEXT"] = std::make_unique<Text>(1410, 100, 11,
         this->tipText,
-        sf::Color(255, 200, 80, 200), false); // warm gold, distinct from SP green
+        sf::Color(255, 200, 80, 200), false);
 }
 
 void StatsModule::renderText(sf::RenderTarget* target) {

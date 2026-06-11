@@ -73,16 +73,11 @@ void CombatComponent::initMoves()
                 continue;
             }
 
+            // Skip moves the character hasn't leveled into yet
             if (moveDefinition->levelRequirement != -1) {
                 int charLevel = character->getStats()->getLevel();
                 if (charLevel < moveDefinition->levelRequirement) {
-                    continue; // not unlocked yet, don't create it
-                }
-
-                const std::string unlockFlag = "move_unlocked_" + moveDefinition->id;
-                if (!GameFlags::getInstance().has(unlockFlag)) {
-                    GameFlags::getInstance().set(unlockFlag);
-                    GameTriggers::showMoveUnlockNotification(moveDefinition->buttonText);
+                    continue;
                 }
             }
 
@@ -101,7 +96,6 @@ void CombatComponent::initMoves()
                     }
                     if (it != charMoves.end()) {
                         it->second->consumeMp();
-                        // Save MP back to character so it persists after moves are cleared
                         characterPtr->setMoveMp(moveDefinition->id, it->second->getMp());
                     }
                     CharacterMoveExecutor::execute(
@@ -114,7 +108,7 @@ void CombatComponent::initMoves()
                 moveDefinition->sfxId
             );
 
-            // Restore saved MP (persists across combats); first combat uses mpMax as default
+            // Restore saved MP (persists across combats)
             std::map<std::string, Move*>& charMoves = characterPtr->getMoves();
             auto it = charMoves.find(moveDefinition->id);
             if (it != charMoves.end()) {
@@ -168,7 +162,6 @@ bool CombatComponent::enemyPool(const std::string& currentArea)
 
     std::random_device dev;
     std::mt19937 rng(dev());
-
     std::uniform_int_distribution<std::size_t> enemyRange(0, validEnemies.size() - 1);
 
     const EnemyDefinition& selectedEnemy = *validEnemies[enemyRange(rng)];
@@ -304,7 +297,7 @@ void CombatComponent::setEnemyId(const std::string& text)
     std::cout << "--------------------ENEMY ID SET TO: " << this->enemyId << "\n";
 }
 
-//Animation Functions
+// Animation Functions
 void CombatComponent::updateCombatAnimations()
 {
     this->combatAnimations.update();
