@@ -15,6 +15,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <string>
 
 class GameTriggers
 {
@@ -22,4 +23,11 @@ public:
     static void registerAll();
     static void renderNotification(sf::RenderTarget* target);
     static void showMoveUnlockNotification(const std::string& moveName);
+
+    // General-purpose notification used by the event/reward system
+    // (GIVE_*/TAKE_* beats fire these for things like "+50 Gold",
+    // "Obtained: Health Potion x1", "-10 HP"). Notifications queue —
+    // if one is already showing, new ones wait their turn rather than
+    // overwriting it.
+    static void showNotification(const std::string& message, float durationSeconds = 3.f);
 };

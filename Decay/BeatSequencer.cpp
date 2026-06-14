@@ -1,6 +1,7 @@
 #include "BeatSequencer.h"
 #include "Inventory.h"
 #include "CharacterManager.h"
+#include "GameTriggers.h"
 #include "Text.h"
 #include <iostream>
 
@@ -370,27 +371,44 @@ void BeatSequencer::dispatchTakeOnChoice(const TakeOnChoiceBlock& block)
 
 void BeatSequencer::giveGold(int amount)
 {
+    if (amount <= 0) return;
+
     Inventory::getInstance().addGold(amount);
+    GameTriggers::showNotification("+" + std::to_string(amount) + " Gold");
     std::cout << "BeatSequencer: gave gold: " << amount << "\n";
 }
 
 void BeatSequencer::giveItem(const std::string& itemId, int quantity)
 {
-    Inventory::getInstance().addItem(itemId, quantity);
+    if (Inventory::getInstance().addItem(itemId, quantity))
+    {
+        const auto* def = Inventory::getInstance().getItemDefinition(itemId);
+        const std::string displayName = (def != nullptr) ? def->displayName : itemId;
+        GameTriggers::showNotification("Obtained: " + displayName + " x" + std::to_string(quantity));
+    }
+
     std::cout << "BeatSequencer: gave item: " << itemId << " x" << quantity << "\n";
 }
 
 void BeatSequencer::giveExpToParty(float amount)
 {
+    if (amount <= 0.f) return;
+
+    bool anyGained = false;
+
     for (auto& member : CharacterManager::getInstance().getAllPartyMembers())
     {
         if (member && member->getStats())
         {
             member->getStats()->addExp(amount);
+            anyGained = true;
             std::cout << "BeatSequencer: gave exp " << amount
                 << " to " << member->getId() << "\n";
         }
     }
+
+    if (anyGained)
+        GameTriggers::showNotification("+" + std::to_string(static_cast<int>(amount)) + " Party EXP");
 }
 
 // ============================================================
@@ -399,25 +417,48 @@ void BeatSequencer::giveExpToParty(float amount)
 
 void BeatSequencer::takeGold(int amount)
 {
+    if (amount <= 0) return;
+
+    const int currentGold = Inventory::getInstance().getGold();
+    const int actualLoss = (amount < currentGold) ? amount : currentGold;
+
     Inventory::getInstance().removeGold(amount);
+
+    if (actualLoss > 0)
+        GameTriggers::showNotification("-" + std::to_string(actualLoss) + " Gold");
+
     std::cout << "BeatSequencer: took gold: " << amount << "\n";
 }
 
 void BeatSequencer::takeItem(const std::string& itemId, int quantity)
 {
-    Inventory::getInstance().removeItem(itemId, quantity);
+    if (Inventory::getInstance().removeItem(itemId, quantity))
+    {
+        const auto* def = Inventory::getInstance().getItemDefinition(itemId);
+        const std::string displayName = (def != nullptr) ? def->displayName : itemId;
+        GameTriggers::showNotification("Lost: " + displayName + " x" + std::to_string(quantity));
+    }
+
     std::cout << "BeatSequencer: took item: " << itemId << " x" << quantity << "\n";
 }
 
 void BeatSequencer::damagePartyMembers(float amount)
 {
+    if (amount <= 0.f) return;
+
+    bool anyDamaged = false;
+
     for (auto& member : CharacterManager::getInstance().getAllPartyMembers())
     {
         if (member)
         {
             member->takeDamage(amount);
+            anyDamaged = true;
             std::cout << "BeatSequencer: dealt " << amount
                 << " damage to " << member->getId() << "\n";
         }
     }
+
+    if (anyDamaged)
+        GameTriggers::showNotification("The party takes " + std::to_string(static_cast<int>(amount)) + " damage!");
 }

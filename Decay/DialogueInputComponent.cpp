@@ -5,6 +5,16 @@ DialogueInputComponent::DialogueInputComponent()
 {
     this->initButtons();
     this->initRects();
+
+    // Small "continue" indicator shown once the current line has fully
+    // typed out. Sits in the bottom-right corner of the main dialogue box.
+    this->continueIndicator = std::make_unique<Text>(
+        1880.f, 1060.f,
+        16,
+        "v",
+        sf::Color(220, 220, 220, 200),
+        false
+    );
 }
 
 void DialogueInputComponent::initButtons()
@@ -37,9 +47,66 @@ void DialogueInputComponent::update(sf::Vector2f mousePos)
         pair.second->update(mousePos);
     }
 
+    this->updateTypewriter();
+
     this->topDialogueActive = this->buttons["DIALOGUEBOXTOP"]->isPressed();
     this->bottomDialogueActive = this->buttons["DIALOGUEBOXBOTTOM"]->isPressed();
-    this->mainDialogueActive = this->buttons["DIALOGUEBOXCENTER"]->isPressed();
+}
+
+void DialogueInputComponent::updateTypewriter()
+{
+    const bool fullyRevealed = this->revealedChars >= this->fullMainDialogueText.size();
+    const bool clicked = this->buttons["DIALOGUEBOXCENTER"]->isPressed();
+
+    if (!fullyRevealed)
+    {
+        const float elapsed = this->typewriterClock.restart().asSeconds();
+
+        if (clicked)
+        {
+            // Click while typing skips straight to the full line instead
+            // of advancing the sequence.
+            this->revealedChars = this->fullMainDialogueText.size();
+        }
+        else
+        {
+            this->revealTimer += elapsed;
+
+            while (this->revealTimer >= secondsPerChar
+                && this->revealedChars < this->fullMainDialogueText.size())
+            {
+                this->revealedChars++;
+                this->revealTimer -= secondsPerChar;
+            }
+        }
+
+        std::string revealedText = this->fullMainDialogueText.substr(0, this->revealedChars);
+        this->buttons["DIALOGUEBOXCENTER"]->setText(revealedText);
+
+        // This click was consumed by speeding up the text, not by advancing.
+        this->mainDialogueActive = false;
+    }
+    else
+    {
+        this->typewriterClock.restart();
+        this->revealTimer = 0.f;
+        this->mainDialogueActive = clicked;
+    }
+
+    // Blink the continue indicator only once the line is fully shown
+    if (fullyRevealed && this->mainDialogueVisible)
+    {
+        if (this->indicatorBlinkClock.getElapsedTime().asSeconds() >= indicatorBlinkInterval)
+        {
+            this->indicatorBlinkVisible = !this->indicatorBlinkVisible;
+            this->indicatorBlinkClock.restart();
+        }
+    }
+    else
+    {
+        this->indicatorBlinkVisible = false;
+        this->indicatorBlinkClock.restart();
+    }
 }
 
 void DialogueInputComponent::render(sf::RenderTarget* target)
@@ -55,12 +122,26 @@ void DialogueInputComponent::render(sf::RenderTarget* target)
     for (auto& pair : this->rectangles) {
         pair.second->render(target);
     }
+
+    if (this->mainDialogueVisible
+        && this->revealedChars >= this->fullMainDialogueText.size()
+        && this->indicatorBlinkVisible)
+    {
+        this->continueIndicator->render(target);
+    }
 }
 
 void DialogueInputComponent::setMainDialogueText(std::string& text)
 {
     std::string wrapped = Text::wrapText(text, 1800.f);
-    this->buttons["DIALOGUEBOXCENTER"]->setText(wrapped);
+
+    this->fullMainDialogueText = wrapped;
+    this->revealedChars = 0;
+    this->revealTimer = 0.f;
+    this->typewriterClock.restart();
+
+    std::string empty = "";
+    this->buttons["DIALOGUEBOXCENTER"]->setText(empty);
 }
 
 void DialogueInputComponent::setDialogueOptions(std::string& top, std::string& bottom)
@@ -86,9 +167,11 @@ void DialogueInputComponent::hideDialogueOptions()
 void DialogueInputComponent::showMainDialogue()
 {
     this->buttons["DIALOGUEBOXCENTER"]->show();
+    this->mainDialogueVisible = true;
 }
 
 void DialogueInputComponent::hideMainDialogue()
 {
     this->buttons["DIALOGUEBOXCENTER"]->hide();
+    this->mainDialogueVisible = false;
 }

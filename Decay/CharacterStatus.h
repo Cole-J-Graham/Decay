@@ -6,6 +6,17 @@
 class CharacterStatus
 {
 public:
+    // Temporary stat multiplier (buff/debuff). Exposed publicly so UI code
+    // (status effect indicators) can enumerate what's currently active —
+    // CharacterStatus itself stays presentation-agnostic.
+    struct TemporaryStatMultiplier
+    {
+        std::string id;
+        std::string stat;
+        float multiplier = 1.f;
+        int turnsRemaining = 0;
+    };
+
     // Stun
     void stun(int turns);
     bool isStunned() const;
@@ -31,16 +42,13 @@ public:
     float getEffectiveDamage(float baseDamage) const;
     float getEffectiveDefense(float baseDefense) const;
 
-    void clear();
-
-private:
-    struct TemporaryStatMultiplier
+    // Read-only view of currently active multipliers, for status-effect UI
+    const std::vector<TemporaryStatMultiplier>& getTemporaryStatMultipliers() const
     {
-        std::string id;
-        std::string stat;
-        float multiplier = 1.f;
-        int turnsRemaining = 0;
-    };
+        return this->temporaryStatMultipliers;
+    }
+
+    void clear();
 
 private:
     int stunTurns = 0;
