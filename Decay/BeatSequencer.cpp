@@ -16,7 +16,7 @@ BeatSequencer::BeatSequencer() {}
 
 void BeatSequencer::start(std::vector<Beat> inBeats, DialogueInputComponent* dlg)
 {
-    beats = std::move(inBeats);
+    beats = resolveConditionals(inBeats);
     dialogue = dlg;
     currentBeatIndex = -1;
     lastChoice = Choice::NONE;
@@ -47,6 +47,61 @@ void BeatSequencer::reset()
     running = false;
     started = false;
     dialogue = nullptr;
+}
+
+// ============================================================
+//  Conditional resolution ([IF_FOLLOWER] / [END_IF])
+// ============================================================
+
+std::vector<Beat> BeatSequencer::resolveConditionals(const std::vector<Beat>& inBeats)
+{
+    std::vector<Beat> resolved;
+    resolved.reserve(inBeats.size());
+
+    for (size_t i = 0; i < inBeats.size(); ++i)
+    {
+        const Beat& beat = inBeats[i];
+
+        if (beat.type == Beat::Type::CONDITION_START)
+        {
+            const std::string& followerId = beat.condition.followerId;
+
+            bool followerPresent = false;
+            for (const auto& member : CharacterManager::getInstance().getAllPartyMembers())
+            {
+                if (member && member->getId() == followerId)
+                {
+                    followerPresent = true;
+                    break;
+                }
+            }
+
+            if (followerPresent)
+            {
+                // Follower is here — keep the inner beats, drop just this marker.
+                continue;
+            }
+
+            // Follower isn't here — skip everything up to and including the
+            // matching END_IF. If no END_IF is found (malformed event file),
+            // this consumes the rest of the sequence.
+            while (i < inBeats.size() && inBeats[i].type != Beat::Type::CONDITION_END)
+                ++i;
+
+            continue; // also drops the CONDITION_END itself
+        }
+
+        if (beat.type == Beat::Type::CONDITION_END)
+        {
+            // Block was kept (its CONDITION_START fell through above) —
+            // drop the closing marker too.
+            continue;
+        }
+
+        resolved.push_back(beat);
+    }
+
+    return resolved;
 }
 
 // ============================================================
@@ -168,6 +223,26 @@ void BeatSequencer::advanceBeat()
         dispatchGiveOnChoice(beat.giveOnChoice);
         advanceBeat();
     }
+    else if (beat.type == Beat::Type::TAKE_GOLD)
+    {
+        dispatchTakeGold(beat.takeGold);
+        advanceBeat();
+    }
+    else if (beat.type == Beat::Type::TAKE_ITEM)
+    {
+        dispatchTakeItem(beat.takeItem);
+        advanceBeat();
+    }
+    else if (beat.type == Beat::Type::TAKE_DAMAGE)
+    {
+        dispatchTakeDamage(beat.takeDamage);
+        advanceBeat();
+    }
+    else if (beat.type == Beat::Type::TAKE_ON_CHOICE)
+    {
+        dispatchTakeOnChoice(beat.takeOnChoice);
+        advanceBeat();
+    }
     else
     {
         std::cerr << "BeatSequencer: unknown beat type at index " << currentBeatIndex << "\n";
@@ -249,6 +324,47 @@ void BeatSequencer::dispatchGiveOnChoice(const GiveOnChoiceBlock& block)
 }
 
 // ============================================================
+//  Penalty dispatch
+// ============================================================
+
+void BeatSequencer::dispatchTakeGold(const TakeGoldBlock& block)
+{
+    takeGold(block.amount);
+}
+
+void BeatSequencer::dispatchTakeItem(const TakeItemBlock& block)
+{
+    takeItem(block.itemId, block.quantity);
+}
+
+void BeatSequencer::dispatchTakeDamage(const TakeDamageBlock& block)
+{
+    damagePartyMembers(block.amount);
+}
+
+void BeatSequencer::dispatchTakeOnChoice(const TakeOnChoiceBlock& block)
+{
+    if (lastChoice == Choice::B)
+    {
+        if (block.choiceBGold > 0)
+            takeGold(block.choiceBGold);
+        if (!block.choiceBItemId.empty())
+            takeItem(block.choiceBItemId, block.choiceBQuantity);
+        if (block.choiceBDamage > 0.f)
+            damagePartyMembers(block.choiceBDamage);
+    }
+    else // Choice::A or NONE defaults to A
+    {
+        if (block.choiceAGold > 0)
+            takeGold(block.choiceAGold);
+        if (!block.choiceAItemId.empty())
+            takeItem(block.choiceAItemId, block.choiceAQuantity);
+        if (block.choiceADamage > 0.f)
+            damagePartyMembers(block.choiceADamage);
+    }
+}
+
+// ============================================================
 //  Reward helpers
 // ============================================================
 
@@ -273,6 +389,35 @@ void BeatSequencer::giveExpToParty(float amount)
             member->getStats()->addExp(amount);
             std::cout << "BeatSequencer: gave exp " << amount
                 << " to " << member->getId() << "\n";
+        }
+    }
+}
+
+// ============================================================
+//  Penalty helpers
+// ============================================================
+
+void BeatSequencer::takeGold(int amount)
+{
+    Inventory::getInstance().removeGold(amount);
+    std::cout << "BeatSequencer: took gold: " << amount << "\n";
+}
+
+void BeatSequencer::takeItem(const std::string& itemId, int quantity)
+{
+    Inventory::getInstance().removeItem(itemId, quantity);
+    std::cout << "BeatSequencer: took item: " << itemId << " x" << quantity << "\n";
+}
+
+void BeatSequencer::damagePartyMembers(float amount)
+{
+    for (auto& member : CharacterManager::getInstance().getAllPartyMembers())
+    {
+        if (member)
+        {
+            member->takeDamage(amount);
+            std::cout << "BeatSequencer: dealt " << amount
+                << " damage to " << member->getId() << "\n";
         }
     }
 }

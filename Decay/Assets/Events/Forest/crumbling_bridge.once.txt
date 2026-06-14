@@ -1,0 +1,7 @@
+[SPEAK_NPC]
+NPC: NARRATOR
+EMOTION: NEUTRAL
+LINE: The old wooden bridge groans under your party's weight. A plank gives way beneath you, and you stumble hard against the railing before catching yourself.
+
+[TAKE_DAMAGE]
+AMOUNT: 10

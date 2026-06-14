@@ -1,0 +1,18 @@
+[SPEAK_NPC]
+NPC: NARRATOR
+EMOTION: NEUTRAL
+LINE: The path splits ahead. To the left, sunlight glints off something metallic in the grass. To the right, the air shimmers faintly with an unfamiliar energy.
+
+[SPEAK_CHARACTER]
+RESPONSE_A: Investigate the glint to the left.
+RESPONSE_B: Walk through the shimmering air to the right.
+
+[GIVE_ON_CHOICE]
+CHOICE_A_GOLD: 75
+CHOICE_B_EXP: 75
+
+[SPEAK_NPC]
+NPC: NARRATOR
+EMOTION: NEUTRAL
+LINE_A: It's a few dropped coins, tarnished but spendable. +75 Gold gained.
+LINE_B: The shimmer fades as you pass through it, leaving a strange tingling sensation. +75 Party EXP gained.

@@ -18,6 +18,7 @@ public:
 
     bool partyPanelVisible() const { return this->partyVisible; }
     bool statsPanelVisible() const { return this->statsVisible; }
+    bool inventoryPanelVisible() const { return this->inventoryVisible; }
 
     void hidePanels();
 
@@ -29,4 +30,5 @@ private:
 
     bool partyVisible = false;
     bool statsVisible = false;
+    bool inventoryVisible = false;
 };

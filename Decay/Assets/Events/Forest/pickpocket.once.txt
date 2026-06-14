@@ -1,0 +1,7 @@
+[SPEAK_NPC]
+NPC: NARRATOR
+EMOTION: NEUTRAL
+LINE: A figure brushes past you on the empty road, quick and silent. By the time you notice, your coin pouch feels lighter. -30 Gold lost.
+
+[TAKE_GOLD]
+AMOUNT: 30

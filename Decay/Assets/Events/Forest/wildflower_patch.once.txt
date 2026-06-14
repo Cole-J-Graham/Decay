@@ -1,0 +1,7 @@
+[SPEAK_NPC]
+NPC: NARRATOR
+EMOTION: NEUTRAL
+LINE: A patch of strange, faintly glowing wildflowers grows alongside the road. Your party pauses to rest among them, and you feel oddly refreshed. +50 Party EXP gained.
+
+[GIVE_EXP]
+AMOUNT: 50

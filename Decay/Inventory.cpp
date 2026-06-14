@@ -230,6 +230,15 @@ void Inventory::addGold(int amount)
     }
 }
 
+void Inventory::removeGold(int amount)
+{
+    if (amount <= 0) {
+        return;
+    }
+
+    this->gold = std::max(0, this->gold - amount);
+}
+
 void Inventory::addExperience(int amount)
 {
     if (amount > 0) {

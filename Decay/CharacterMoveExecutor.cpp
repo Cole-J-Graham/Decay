@@ -207,27 +207,45 @@ void CharacterMoveExecutor::applyBuffOrDebuff(
     Character& user
 )
 {
+    std::string stat;
+    float multiplier = effect.value;
+
+    if (effect.type == "BUFF_DAMAGE" || effect.type == "DEBUFF_DAMAGE") {
+        stat = "DAMAGE";
+    }
+    else if (effect.type == "BUFF_DEFENSE" || effect.type == "DEBUFF_DEFENSE") {
+        stat = "DEFENSE";
+    }
+
+    if (stat.empty()) {
+        std::cerr << "Unknown buff/debuff type: " << effect.type << "\n";
+        return;
+    }
+
+    if (effect.target == "ALL_PARTY") {
+        auto& party = CharacterManager::getInstance().getParty();
+
+        for (int i = 0; i < party.size(); i++) {
+            auto character = party.getCharacter(i);
+
+            if (character) {
+                character->addTemporaryStatMultiplier(
+                    effect.type,
+                    stat,
+                    multiplier,
+                    effect.durationTurns
+                );
+            }
+        }
+
+        return;
+    }
+
     Character* target = resolveSingleCharacterTarget(effect, user);
 
     if (target == nullptr) {
         std::cerr << "Buff/debuff target not found." << "\n";
         return;
-    }
-
-    std::string stat;
-    float multiplier = effect.value;
-
-    if (effect.type == "BUFF_DAMAGE") {
-        stat = "DAMAGE";
-    }
-    else if (effect.type == "BUFF_DEFENSE") {
-        stat = "DEFENSE";
-    }
-    else if (effect.type == "DEBUFF_DAMAGE") {
-        stat = "DAMAGE";
-    }
-    else if (effect.type == "DEBUFF_DEFENSE") {
-        stat = "DEFENSE";
     }
 
     target->addTemporaryStatMultiplier(

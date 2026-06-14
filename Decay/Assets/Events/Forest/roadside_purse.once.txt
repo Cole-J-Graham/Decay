@@ -1,0 +1,7 @@
+[SPEAK_NPC]
+NPC: NARRATOR
+EMOTION: NEUTRAL
+LINE: Half-buried in the dirt along the path, a small leather coin purse catches your eye. Inside: a handful of gold. +50 Gold gained.
+
+[GIVE_GOLD]
+AMOUNT: 50

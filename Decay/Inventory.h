@@ -61,6 +61,7 @@ public:
     bool removeItem(const std::string& itemId, int quantity = 1);
     bool consumeItem(const std::string& itemId, int quantity = 1);
     void addGold(int amount);
+    void removeGold(int amount);
     void addExperience(int amount);
 
     int getGold() const;

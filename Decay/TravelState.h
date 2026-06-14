@@ -9,6 +9,7 @@
 #include "BonfireState.h"
 #include "TravelInputComponent.h"
 #include "TravelHudComponent.h"
+#include "InventoryPanel.h"
 
 //Events
 #include "TriggerManager.h"
@@ -72,6 +73,7 @@ private:
 
     std::unique_ptr<TravelHudComponent> travelHud;
     std::unique_ptr<TravelInputComponent> travelInput;
+    std::unique_ptr<InventoryPanel> inventoryPanel;
     std::vector<sf::Texture> mapData;
     std::map<std::string, Rectangle*> rectangles;
 

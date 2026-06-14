@@ -175,6 +175,9 @@
     <ClCompile Include="EmotionDatabase.cpp">
       <Filter>Resources\Databases</Filter>
     </ClCompile>
+    <ClCompile Include="InventoryPanel.cpp">
+      <Filter>Inventory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -365,6 +368,9 @@
     </ClInclude>
     <ClInclude Include="EmotionDatabase.h">
       <Filter>Resources\Databases</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryPanel.h">
+      <Filter>Inventory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,25 +1,4 @@
 id|ownerId|buttonText|message|tip|sfxId|cooldown|poseTexturePath|poseDurationTurns|effects|mpMax|levelRequirement
-
-#PLAYER
-SLASH|PLAYER|Slash|The player slashes at the opponent with all his might!|Player's basic attack.|slash|0||0|DAMAGE:ENEMY:1.0:0|infinite|-1
-HEFTY_BLOW|PLAYER|Hefty Blow|The player charges up a heavy attack for maximum damage!|Heavy attack with increased damage.|hefty_blow|1||0|DAMAGE:ENEMY:1.75:0|2|-1
-
-#ZIN
-HEAL|ZIN|Mend|Zin casts a healing circle around the party!|Heals the lowest HP party member.|mend|0||0|HEAL:LOWEST_HP_ALLY:1.0:0|infinite|-1
-SMITE|ZIN|Smite|Zin presses her hands together and casts a thunderbolt onto the opponent!|Casts a bolt of lightining directly onto the opponent.|smite|0||0|DAMAGE:ENEMY:0.65:0|10|1
-HELL_FIRE|ZIN|Hell Fire|Zin casts a circle of flames around the opponent that rapidly grows into an inferno!|Zin's heavy attack. Causes the enemy to be engulfed in flames straight from hell itself.|hellBlaze|3|Assets/Sprites/zinRage.png|3|SELF_LOCK:SELF:0:3;DAMAGE:ENEMY:6.75:0|1|15
-
-#OVI
-HARDEN|OVI|Harden|Thom hardens his hide!|Temporarily increases Thom's defense.|iron_wall|0||0|BUFF_DEFENSE:SELF:1.5:2|infinite|-1
-ENRAGE|OVI|Enrage|Thom enters a reckless fury!|Locks Thom down, boosts Player and Zin, but lowers Thom's defense.|angry|4|Assets/Sprites/thomRage.png|4|SELF_LOCK:SELF:0:4;BUFF_DAMAGE:ALLY_ID:PLAYER:1.5:4;BUFF_DAMAGE:ALLY_ID:ZIN:1.5:4;DEBUFF_DEFENSE:SELF:0.5:4|1|-1
-
-#JUNE
-BEETLE_WALL|JUNE|Beetle Wall|June summons a wall of beetles around the party!|Adds block to the entire party, providing some protection.|june_guard|0||0|BLOCK:ALL_PARTY:10.0:0|3|-1
-
-
-
-
-
 # =============================================================
 # CHARACTER MOVE DATABASE
 # =============================================================
@@ -40,11 +19,10 @@ BEETLE_WALL|JUNE|Beetle Wall|June summons a wall of beetles around the party!|Ad
 #
 # BUFF_DAMAGE:TARGET:VALUE:DURATION
 #   Multiplies target's damage by VALUE for DURATION turns.
-#   e.g. 1.5 = +50% damage. Targets: SELF, ALLY_ID
+#   e.g. 1.5 = +50% damage. Targets: SELF, ALLY_ID, ALL_PARTY
 #
 # BUFF_DEFENSE:TARGET:VALUE:DURATION
 #   Multiplies target's defense by VALUE for DURATION turns.
-#   e.g. 1.5 = +50% defense.
 #
 # DEBUFF_DAMAGE:TARGET:VALUE:DURATION
 #   Multiplies target's damage by VALUE for DURATION turns.
@@ -52,7 +30,6 @@ BEETLE_WALL|JUNE|Beetle Wall|June summons a wall of beetles around the party!|Ad
 #
 # DEBUFF_DEFENSE:TARGET:VALUE:DURATION
 #   Multiplies target's defense by VALUE for DURATION turns.
-#   e.g. 0.5 = -50% defense.
 #
 # SELF_LOCK:SELF:0:DURATION
 #   Locks the user out of acting for DURATION turns.
@@ -65,5 +42,99 @@ BEETLE_WALL|JUNE|Beetle Wall|June summons a wall of beetles around the party!|Ad
 #    | poseTexturePath | poseDurationTurns | effects | mpMax | levelRequirement
 #
 # mpMax: number of uses per combat. "infinite" = unlimited.
-# levelRequirement: -1 = always available. 5 = requires level 5.
+# levelRequirement: -1 = always available. N = requires level N.
 # =============================================================
+
+# =============================================================
+# PLAYER — Damage dealer. High STR scaling (2.0). Builds into
+#           a relentless striker. Later moves lean into burst
+#           damage, self-buffing, and desperation strikes.
+# =============================================================
+SLASH|PLAYER|Slash|The player slashes at the opponent with all his might!|Player's basic attack.|slash|0||0|DAMAGE:ENEMY:1.0:0|infinite|-1
+HEFTY_BLOW|PLAYER|Hefty Blow|The player charges up a heavy attack for maximum damage!|Heavy attack with increased damage.|hefty_blow|1||0|DAMAGE:ENEMY:1.75:0|2|-1
+# Lv5 — Adrenaline. Self damage buff before a big hit. Good combo setup.
+ADRENALINE_RUSH|PLAYER|Adrenaline|The player digs deep, pushing past their limits!|Buffs own damage by 60% for 2 turns. Use before a heavy strike for maximum effect.|slash|0||0|BUFF_DAMAGE:SELF:1.6:2|3|5
+# Lv8 — Rend. Stronger than Hefty Blow, fewer uses. Mid-game power spike.
+REND|PLAYER|Rend|The player tears into the enemy with a vicious strike!|A powerful attack dealing 2.5x damage. Limited uses — save it.|hefty_blow|0||0|DAMAGE:ENEMY:2.5:0|3|8
+# Lv12 — Battle Stance. Locks player in for one turn but hits like a freight train after.
+BATTLE_STANCE|PLAYER|Battle Stance|The player steadies themselves, preparing an unstoppable assault.|Spend a turn to buff own damage by 100% for 2 turns. Plan ahead.|slash|0||0|SELF_LOCK:SELF:0:1;BUFF_DAMAGE:SELF:2.0:2|2|12
+# Lv18 — Deathblow. The big gun. Reserved for desperate moments.
+DEATHBLOW|PLAYER|Deathblow|The player channels every ounce of strength into a single devastating strike!|Player's heaviest attack. 4x damage. One shot per bonfire.|hefty_blow|0||0|DAMAGE:ENEMY:4.0:0|1|18
+# Lv25 — Rampage. Multiple hits at increasing power. True late-game identity.
+RAMPAGE|PLAYER|Rampage|The player enters an unstoppable fury, striking the enemy again and again!|Deals 1.2x damage, then 1.6x, then 2.2x — three hits in sequence. Uses the same move slot.|slash|0||0|DAMAGE:ENEMY:1.2:0;DAMAGE:ENEMY:1.6:0;DAMAGE:ENEMY:2.2:0|2|25
+
+# =============================================================
+# ZIN — Healer / offensive mage. High HEA scaling (2.0), low STR.
+#        Moves develop from reactive healing into proactive setup
+#        and eventually devastating nukes. Glass cannon support.
+# =============================================================
+HEAL|ZIN|Mend|Zin casts a healing circle around the party!|Heals the lowest HP party member.|mend|0||0|HEAL:LOWEST_HP_ALLY:1.0:0|infinite|-1
+SMITE|ZIN|Smite|Zin presses her hands together and casts a thunderbolt onto the opponent!|Casts a bolt of lightning directly onto the opponent.|smite|0||0|DAMAGE:ENEMY:0.65:0|10|1
+HELL_FIRE|ZIN|Hell Fire|Zin casts a circle of flames around the opponent that rapidly grows into an inferno!|Zin's heavy attack. Engulfs the enemy in hellfire. Locks Zin out for 3 turns.|hellBlaze|3|Assets/Sprites/zinRage.png|3|SELF_LOCK:SELF:0:3;DAMAGE:ENEMY:6.75:0|1|15
+# Lv5 — Mend All. Full party heal, weaker per target. Important mid-game tool.
+MEND_ALL|ZIN|Mend All|Zin spreads her healing light across the entire party!|Heals all party members for 0.6x Zin's healing stat. Costs 4 uses.|mend|0||0|HEAL:ALL_PARTY:0.6:0|4|5
+# Lv8 — Consecrate. Boosts entire party defense. Great pre-boss setup.
+CONSECRATE|ZIN|Consecrate|Zin whispers a blessing over her allies, hardening their resolve!|Buffs the entire party's defense by 40% for 2 turns.|smite|0||0|BUFF_DEFENSE:ALL_PARTY:1.4:2|3|8
+# Lv12 — Chain Lightning. Hits twice for moderate damage. More reliable than Hell Fire.
+CHAIN_LIGHTNING|ZIN|Chain Lightning|Zin unleashes a crackling bolt that rebounds off the enemy again and again!|Hits enemy twice for 1.2x then 1.8x damage. 2 uses per bonfire.|smite|0||0|DAMAGE:ENEMY:1.2:0;DAMAGE:ENEMY:1.8:0|2|12
+# Lv20 — Restoration. Full party heal with self-lock tradeoff. Late-game clutch.
+RESTORATION|ZIN|Restoration|Zin pours her entire soul into restoring her allies!|Heals all party members for 1.5x Zin's healing stat. Locks Zin out 1 turn. One use.|mend|0||0|SELF_LOCK:SELF:0:1;HEAL:ALL_PARTY:1.5:0|1|20
+# Lv28 — Judgment. Zin's ultimate. Massive nuke with major lockout. Reserved for killing blows.
+JUDGMENT|ZIN|Judgment|Zin calls down divine wrath upon the enemy — a pillar of light consumes them whole!|Zin's ultimate attack. 10x damage. Locks Zin out for 4 turns. One use per bonfire.|hellBlaze|0|Assets/Sprites/zinRage.png|4|SELF_LOCK:SELF:0:4;DAMAGE:ENEMY:10.0:0|1|28
+
+# =============================================================
+# OVI — Buffer / utility tank. High ENV scaling (2.0), moderate VIT.
+#        Moves build from self-buffing into party-wide empowerment
+#        and disruption. The force multiplier of the group.
+# =============================================================
+HARDEN|OVI|Harden|Thom hardens his hide!|Temporarily increases Thom's defense by 50% for 2 turns.|iron_wall|0||0|BUFF_DEFENSE:SELF:1.5:2|infinite|-1
+ENRAGE|OVI|Enrage|Thom enters a reckless fury!|Buffs Player and Zin's damage, but cripples Thom's defense and locks him down.|angry|4|Assets/Sprites/thomRage.png|4|SELF_LOCK:SELF:0:4;BUFF_DAMAGE:ALLY_ID:PLAYER:1.5:4;BUFF_DAMAGE:ALLY_ID:ZIN:1.5:4;DEBUFF_DEFENSE:SELF:0.5:4|1|-1
+# Lv4 — Fortify. Party-wide defense buff. Ovi's first group utility.
+FORTIFY|OVI|Fortify|Thom plants himself like a wall, rallying the party's defenses!|Buffs entire party defense by 40% for 2 turns. 3 uses.|iron_wall|0||0|BUFF_DEFENSE:ALL_PARTY:1.4:2|3|4
+# Lv8 — Invigorate. Party-wide damage buff. The reason you bring Ovi.
+INVIGORATE|OVI|Invigorate|Thom lets out a thunderous roar, filling his allies with battle fury!|Buffs entire party damage by 50% for 2 turns. 3 uses.|angry|0||0|BUFF_DAMAGE:ALL_PARTY:1.5:2|3|8
+# Lv14 — Iron Veil. Massive short-term defense spike for the whole party. One-time emergency button.
+IRON_VEIL|OVI|Iron Veil|Thom erupts in armored fury, encasing his allies in an impenetrable shell!|Buffs entire party defense by 100% for 1 turn. Emergency use only. 2 uses.|iron_wall|0||0|BUFF_DEFENSE:ALL_PARTY:2.0:1|2|14
+# Lv20 — Warcry. Massive party damage buff with a tradeoff — Ovi can't act.
+WARCRY|OVI|Warcry|Thom unleashes a bone-shaking warcry that drives the party into a frenzy!|Buffs entire party damage by 80% for 3 turns. Locks Ovi out for 2 turns. 1 use.|angry|0|Assets/Sprites/thomRage.png|3|SELF_LOCK:SELF:0:2;BUFF_DAMAGE:ALL_PARTY:1.8:3|1|20
+# Lv30 — Colossus. Ovi's identity move. Locks himself in, but the party becomes unstoppable.
+COLOSSUS|OVI|Colossus|Thom roars with the voice of a god, transforming his allies into living weapons!|Buffs ALL party stats by 100% for 4 turns. Locks Ovi out entirely. One use per bonfire.|angry|0|Assets/Sprites/thomRage.png|4|SELF_LOCK:SELF:0:4;BUFF_DAMAGE:ALL_PARTY:2.0:4;BUFF_DEFENSE:ALL_PARTY:2.0:4|1|30
+
+# =============================================================
+# JUNE — Defensive tank. Very high DEF scaling (2.3), high VIT (1.7).
+#         Moves develop from passive blocking into active protection
+#         and eventually disruption of the enemy. Party shield.
+# =============================================================
+BEETLE_WALL|JUNE|Beetle Wall|June summons a wall of beetles around the party!|Adds 10 block to the entire party.|june_guard|0||0|BLOCK:ALL_PARTY:10.0:0|infinite|-1
+# Lv4 — Carapace. Personal defense buff. June becomes a wall.
+CARAPACE|JUNE|Carapace|June's exoskeleton thickens, turning her skin to armor!|Buffs June's own defense by 75% for 3 turns. Infinite uses.|june_guard|0||0|BUFF_DEFENSE:SELF:1.75:3|3|4
+# Lv8 — Bulwark. Massive block for the whole party. June's second group utility.
+BULWARK|JUNE|Bulwark|June throws herself in front of her allies, absorbing the coming blow!|Adds 25 flat block to the entire party. 2 uses.|june_guard|0||0|BLOCK:ALL_PARTY:25.0:0|2|8
+# Lv12 — Shell Shock. June attacks — rare for her, but hits hard enough with DEF scaling to matter.
+SHELL_SHOCK|JUNE|Shell Shock|June launches forward, crashing into the enemy like a battering ram!|Deals 1.5x damage. June's damage is low but this is still useful in a pinch. 3 uses.|june_guard|0||0|DAMAGE:ENEMY:1.5:0|3|12
+# Lv18 — Ironclad Vow. June sacrifices her offense for a massive sustained defense buff.
+IRONCLAD_VOW|JUNE|Ironclad Vow|June swears an oath of protection — nothing shall pass while she stands!|Buffs June's defense by 150% for 4 turns and debuffs her damage by 75%. 2 uses.|june_guard|0||0|BUFF_DEFENSE:SELF:2.5:4;DEBUFF_DAMAGE:SELF:0.25:4|2|18
+# Lv22 — Fortress. The ultimate defensive turn. Party-wide huge block + defense buff.
+FORTRESS|JUNE|Fortress|June raises an impenetrable fortress of living beetles around her allies!|Adds 40 block to all party members and buffs party defense by 60% for 2 turns. 1 use.|june_guard|0||0|BLOCK:ALL_PARTY:40.0:0;BUFF_DEFENSE:ALL_PARTY:1.6:2|1|22
+# Lv30 — Last Stand. June's ultimate. Near-invincible for a few turns — at great personal cost.
+LAST_STAND|JUNE|Last Stand|June lets out a defiant cry, standing unmovable as a mountain!|Buffs entire party defense by 200% for 3 turns. Locks June out for 3 turns. One use.|june_guard|0||0|SELF_LOCK:SELF:0:3;BUFF_DEFENSE:ALL_PARTY:3.0:3|1|30
+
+# =============================================================
+# SULIMAN — Glass cannon. Insane STR scaling (3.0), nearly no VIT (0.2).
+#            Every move is high risk, high reward. Dies easily but hits
+#            harder than anyone. Designed to go last and hit hardest.
+# =============================================================
+# Lv1 — Piercing Strike. Basic Suliman attack. Even his basic hits hard due to STR 3.0.
+PIERCING_STRIKE|SULIMAN|Pierce|Suliman drives his blade through the enemy's defenses with surgical precision!|Suliman's basic attack. 1.1x damage. With his STR stat, this hits very hard.|slash|0||0|DAMAGE:ENEMY:1.1:0|infinite|-1
+# Lv3 — Expose. Debuffs enemy defense — makes the whole party more effective.
+EXPOSE|SULIMAN|Expose|Suliman finds a gap in the enemy's armor and tears it wide open!|Debuffs enemy defense by 50% for 2 turns. Synergizes with the whole party. 3 uses.|slash|0||0|DEBUFF_DEFENSE:ENEMY:0.5:2|3|3
+# Lv6 — Execution. High damage, punishes low HP enemies.
+EXECUTION|SULIMAN|Execute|Suliman lines up the killing blow with terrifying calm.|Heavy attack for 2.8x damage. Best used to finish off weakened enemies. 2 uses.|hefty_blow|0||0|DAMAGE:ENEMY:2.8:0|2|6
+# Lv10 — Bloodlust. Self damage buff — Suliman gambling on himself.
+BLOODLUST|SULIMAN|Bloodlust|A manic grin spreads across Suliman's face as the blood starts to flow!|Buffs Suliman's damage by 80% for 2 turns. His STR stat makes this terrifying. 2 uses.|slash|0||0|BUFF_DAMAGE:SELF:1.8:2|2|10
+# Lv16 — Annihilate. Mid-tier nuke. No lockout, just raw damage.
+ANNIHILATE|SULIMAN|Annihilate|Suliman launches a savage three-hit combo that tears through the enemy!|Hits enemy for 1.5x, 2.0x, and 2.5x in sequence. 2 uses per bonfire.|hefty_blow|0||0|DAMAGE:ENEMY:1.5:0;DAMAGE:ENEMY:2.0:0;DAMAGE:ENEMY:2.5:0|2|16
+# Lv22 — Death Mark. Sets up the party for a massive follow-up — debuff + self buff combo.
+DEATH_MARK|SULIMAN|Death Mark|Suliman marks the enemy for death — a quiet promise of annihilation.|Debuffs enemy defense by 70% for 3 turns and buffs Suliman damage by 100%. 1 use.|slash|0||0|DEBUFF_DEFENSE:ENEMY:0.3:3;BUFF_DAMAGE:SELF:2.0:3|1|22
+# Lv28 — Obliterate. Suliman's ultimate. The single hardest hit in the game.
+OBLITERATE|SULIMAN|Obliterate|Suliman disappears from sight — then reappears behind the enemy in an explosion of force!|Suliman's ultimate. 7.5x damage. With STR 3.0 and buffs active, this ends fights. One use.|hefty_blow|0||0|DAMAGE:ENEMY:7.5:0|1|28

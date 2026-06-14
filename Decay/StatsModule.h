@@ -158,7 +158,7 @@ private:
 	bool currentInstance;
 	bool lastClicked;
 
-	const std::string& id;
+	std::string id;
 	std::string buttonId;
 	std::string tipText;
 

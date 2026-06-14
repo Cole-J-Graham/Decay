@@ -26,6 +26,14 @@ void TravelHudComponent::initButtons()
         active,
         false
     );
+
+    this->buttons["OPENINVENTORY"] = std::make_unique<Button>(
+        1580, 775, 100, 25, 0.5f, "Inventory",
+        idle,
+        hover,
+        active,
+        false
+    );
 }
 
 void TravelHudComponent::update(sf::Vector2f mousePos)
@@ -36,12 +44,20 @@ void TravelHudComponent::update(sf::Vector2f mousePos)
 
     if (this->buttons["OPENPARTY"]->isPressed()) {
         this->partyVisible = !this->partyVisible;
-        this->statsVisible = false;  // close stats when opening party
+        this->statsVisible = false;     // close stats when opening party
+        this->inventoryVisible = false; // close inventory when opening party
     }
 
     if (this->buttons["OPENSTATS"]->isPressed()) {
         this->statsVisible = !this->statsVisible;
-        this->partyVisible = false;  // close party when opening stats
+        this->partyVisible = false;     // close party when opening stats
+        this->inventoryVisible = false; // close inventory when opening stats
+    }
+
+    if (this->buttons["OPENINVENTORY"]->isPressed()) {
+        this->inventoryVisible = !this->inventoryVisible;
+        this->partyVisible = false;  // close party when opening inventory
+        this->statsVisible = false;  // close stats when opening inventory
     }
 }
 
@@ -60,4 +76,5 @@ void TravelHudComponent::hidePanels()
 {
     this->partyVisible = false;
     this->statsVisible = false;
+    this->inventoryVisible = false;
 }

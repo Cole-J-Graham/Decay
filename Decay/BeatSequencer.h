@@ -55,10 +55,26 @@ private:
     void dispatchGiveExp(const GiveExpBlock& block);
     void dispatchGiveOnChoice(const GiveOnChoiceBlock& block);
 
+    void dispatchTakeGold(const TakeGoldBlock& block);
+    void dispatchTakeItem(const TakeItemBlock& block);
+    void dispatchTakeDamage(const TakeDamageBlock& block);
+    void dispatchTakeOnChoice(const TakeOnChoiceBlock& block);
+
     // Rewards helpers
     void giveGold(int amount);
     void giveItem(const std::string& itemId, int quantity);
     void giveExpToParty(float amount);
+
+    // Penalty helpers
+    void takeGold(int amount);
+    void takeItem(const std::string& itemId, int quantity);
+    void damagePartyMembers(float amount);
+
+    // [IF_FOLLOWER]/[END_IF] resolution. Strips CONDITION_START/CONDITION_END
+    // markers from the beat list before playback — drops the bracketed beats
+    // entirely if the named follower isn't currently in the party, or
+    // unwraps (keeps) them if present.
+    std::vector<Beat> resolveConditionals(const std::vector<Beat>& inBeats);
 
     std::vector<Beat>          beats;
     int                        currentBeatIndex = -1;

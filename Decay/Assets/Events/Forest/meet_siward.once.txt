@@ -3,6 +3,21 @@ NPC: SIWARD
 EMOTION: NEUTRAL
 LINE: *You can hear clunky metal armor behind a tree nearby. You slightly ready yourself until you notice it greets you.* Why hello, traveler!
 
+[IF_FOLLOWER]
+FOLLOWER: ZIN
+
+[SPEAK_CHARACTER]
+CHARACTER: ZIN
+EMOTION: SUSPICIOUS
+LINE: A knight, way out here? Something about that doesn't sit right with me.
+
+[SPEAK_NPC]
+NPC: SIWARD
+EMOTION: NEUTRAL
+LINE: Ha! Sharp eyes on this one. Don't worry, I assure you I'm harmless... mostly.
+
+[END_IF]
+
 [SPEAK_CHARACTER]
 RESPONSE_A: Hello?
 RESPONSE_B: I didn't really expect to meet anyone out here, I'll be honest.

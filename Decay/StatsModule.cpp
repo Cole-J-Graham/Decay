@@ -106,6 +106,7 @@ void StatsModule::increaseLevel() {
             auto moves = CharacterMoveDatabase::getInstance().getMovesForOwner(this->id);
             for (const auto* move : moves)
             {
+                if (!move) continue;
                 if (move->levelRequirement != this->level) continue;
 
                 const std::string unlockFlag = "move_unlocked_" + move->id;

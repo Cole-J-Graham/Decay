@@ -18,6 +18,7 @@ TravelState::TravelState(sf::RenderWindow* window, std::stack<State*>* states)
 
     this->travelInput = std::make_unique<TravelInputComponent>();
     this->travelHud = std::make_unique<TravelHudComponent>();
+    this->inventoryPanel = std::make_unique<InventoryPanel>();
 
     this->combatChanceMin = 1;
     this->combatChanceMax = 11;
@@ -93,6 +94,10 @@ void TravelState::update()
     if (this->travelHud->statsPanelVisible()) {
         CharacterManager::getInstance().updateStatsPanel(this->getMousePosView());
     }
+
+    if (this->travelHud->inventoryPanelVisible()) {
+        this->inventoryPanel->update();
+    }
 }
 
 void TravelState::render(sf::RenderTarget* target)
@@ -106,6 +111,10 @@ void TravelState::render(sf::RenderTarget* target)
 
     if (this->travelHud->statsPanelVisible()) {
         CharacterManager::getInstance().renderStatsPanel(target);
+    }
+
+    if (this->travelHud->inventoryPanelVisible()) {
+        this->inventoryPanel->render(target);
     }
 
     this->travelInput->render(target);
