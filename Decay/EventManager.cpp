@@ -237,5 +237,11 @@ void EventManager::getEventsInDirectory(const std::string& directoryPath)
 
 bool EventManager::eventCanPlay(const EventDefinition& event) const
 {
-    return !(event.oneTime && event.hasPlayed);
+    if (!event.oneTime) return true;
+
+    // Check GameFlags live rather than the cached hasPlayed snapshot, so
+    // this stays correct even after an in-game load that doesn't
+    // reconstruct this EventManager (MapCore instances for already-built
+    // maps persist across a pause-menu load).
+    return !GameFlags::getInstance().has(event.playedFlagKey);
 }

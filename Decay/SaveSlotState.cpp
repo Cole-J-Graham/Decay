@@ -112,7 +112,6 @@ std::string SaveSlotState::buildSlotLabel(int slot) const
 void SaveSlotState::update()
 {
     this->updateMousePositions();
-    this->panel.update(this->getMousePosView());
 
     const bool escDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
 
@@ -124,15 +123,20 @@ void SaveSlotState::update()
     }
     this->escWasDown = escDown;
 
-    // Ignore button presses until the click that opened this state (from
-    // PauseMenuState's SAVE/LOAD button) has been released — see header
-    // comment on clickReleasedOnce.
+    // Don't touch the panel at all until the click that opened this state
+    // has been released. Calling panel.update() while that click is still
+    // "down" would register a press edge on the overlapping button below —
+    // and whatever SFX/side-effects Button::update() fires on that edge
+    // would happen regardless of what our logic below does with isPressed().
+    // Deferring the update entirely means that spurious edge never occurs.
     if (!sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
         this->clickReleasedOnce = true;
     }
     if (!this->clickReleasedOnce) {
         return;
     }
+
+    this->panel.update(this->getMousePosView());
 
     if (this->panel.button("BACK").isPressed()) {
         this->quit = true;
