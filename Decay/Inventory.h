@@ -68,6 +68,10 @@ public:
     int getExperience() const;
     bool spendGold(int amount);
 
+    // Save/Load support: direct set, used to restore an exact saved value
+    // rather than adding/removing relative to current (post-init) state.
+    void setGold(int amount);
+
     bool hasItem(const std::string& itemId, int quantity = 1) const;
     int getQuantity(const std::string& itemId) const;
 

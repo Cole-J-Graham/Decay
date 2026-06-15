@@ -51,6 +51,7 @@ private:
     float revealTimer = 0.f;
     sf::Clock typewriterClock;
     static constexpr float secondsPerChar = 0.02f; // ~50 chars/sec
+    static constexpr int blipEveryNChars = 2;       // typing-sound throttle
 
     bool mainDialogueVisible = false;
 

@@ -130,10 +130,11 @@ void MapViewer::navigateLeft()
 }
 
 
-void MapViewer::navigateToMap(int index)
+void MapViewer::navigateToMap(int index, bool bypassUnlockCheck)
 {
     if (index < 0 || index >= static_cast<int>(this->mapOrder.size())) return;
-    if (!this->isMapUnlocked(index)) return;
+    if (!bypassUnlockCheck && !this->isMapUnlocked(index)) return;
+    if (index == this->currentMapIndex) return; // no-op if already here (e.g. load onto starting map)
 
     // Hide current
     const std::string& currentId = this->mapOrder[this->currentMapIndex];
@@ -458,4 +459,59 @@ void MapViewer::renderMaps(sf::RenderTarget* target)
     const std::string& id = this->mapOrder[this->currentMapIndex];
     auto it = this->maps.find(id);
     if (it != this->maps.end()) it->second->render(target);
+}
+
+// ---------------------------------------------------------------------------
+// Save/Load support
+// ---------------------------------------------------------------------------
+
+std::vector<std::string> MapViewer::getUnlockedMapIds() const
+{
+    std::vector<std::string> result;
+
+    for (size_t i = 0; i < this->mapOrder.size(); ++i) {
+        if (i < this->mapUnlocked.size() && this->mapUnlocked[i]) {
+            result.push_back(this->mapOrder[i]);
+        }
+    }
+
+    return result;
+}
+
+void MapViewer::setUnlockedMapIds(const std::vector<std::string>& unlockedIds)
+{
+    for (size_t i = 0; i < this->mapUnlocked.size(); ++i) {
+        this->mapUnlocked[i] = false;
+    }
+
+    for (const std::string& id : unlockedIds) {
+        for (size_t i = 0; i < this->mapOrder.size(); ++i) {
+            if (this->mapOrder[i] == id) {
+                this->mapUnlocked[i] = true;
+
+                // Reveal at least the first area button so a freshly-rebuilt
+                // MapCore (post-load) isn't unlocked but buttonless.
+                // NOTE: doesn't restore per-area exploration progress within
+                // the map — that would need MapCore-level save/restore.
+                auto it = this->maps.find(id);
+                if (it != this->maps.end()) {
+                    it->second->revealNextAreaButton();
+                }
+
+                break;
+            }
+        }
+    }
+}
+
+bool MapViewer::setCurrentMapById(const std::string& mapId)
+{
+    for (int i = 0; i < static_cast<int>(this->mapOrder.size()); ++i) {
+        if (this->mapOrder[i] == mapId) {
+            this->navigateToMap(i, true);
+            return true;
+        }
+    }
+
+    return false;
 }

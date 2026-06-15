@@ -194,6 +194,8 @@
     <ClCompile Include="PauseMenuState.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="RewardSystem.cpp" />
+    <ClCompile Include="SaveManager.cpp" />
+    <ClCompile Include="SaveSlotState.cpp" />
     <ClCompile Include="SettingsManager.cpp" />
     <ClCompile Include="SettingsMenuState.cpp" />
     <ClCompile Include="SfxManager.cpp" />
@@ -260,6 +262,8 @@
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="RewardSystem.h" />
     <ClInclude Include="RewardTypes.h" />
+    <ClInclude Include="SaveManager.h" />
+    <ClInclude Include="SaveSlotState.h" />
     <ClInclude Include="SettingsManager.h" />
     <ClInclude Include="SettingsMenuState.h" />
     <ClInclude Include="SfxManager.h" />

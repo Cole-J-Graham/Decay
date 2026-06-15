@@ -53,6 +53,10 @@ private:
         std::string path;
         bool        oneTime = false;
         bool        hasPlayed = false;
+
+        // GameFlags key used to persist hasPlayed for one-time events
+        // across EventManager reconstructions (area revisits, save/load).
+        std::string playedFlagKey;
     };
 
     void getEventsInDirectory(const std::string& directoryPath);

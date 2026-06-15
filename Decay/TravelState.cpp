@@ -1,6 +1,7 @@
 #include "TravelState.h"
 #include "MusicManager.h"
 #include "PauseMenuState.h"
+#include "SaveManager.h"
 
 //Constructors and Destructors
 TravelState::TravelState(sf::RenderWindow* window, std::stack<State*>* states)
@@ -9,6 +10,13 @@ TravelState::TravelState(sf::RenderWindow* window, std::stack<State*>* states)
     //Initialization
     this->initRects();
     this->map = new MapComponent();
+
+    // If a save was just loaded from the main menu (no MapComponent existed
+    // yet at that point), apply its stashed map/unlock state now.
+    if (SaveManager::getInstance().hasPendingMapState()) {
+        SaveManager::getInstance().applyPendingMapState(this->map);
+    }
+
     this->lastMapId = this->map->getCurrentMapId();
     this->combat = new CombatState(window, states);
     this->music = std::make_unique<MusicPlayer>();
@@ -42,11 +50,12 @@ TravelState::~TravelState()
 void TravelState::checkForQuit()
 {
     // Replicates the base ESC edge-detect, but pushes PauseMenuState with
-    // the music pointer so settings can actually control music volume.
+    // the music pointer (for settings) and map pointer (for save/load) so
+    // both can actually function.
     const bool escDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
 
     if (!this->escWasDown && escDown) {
-        this->states->push(new PauseMenuState(this->window, this->states, this->music.get()));
+        this->states->push(new PauseMenuState(this->window, this->states, this->music.get(), this->map));
     }
 
     this->escWasDown = escDown;

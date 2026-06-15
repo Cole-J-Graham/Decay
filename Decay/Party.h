@@ -21,6 +21,11 @@ public:
     bool removeCharacter(const std::shared_ptr<Character>& character);
     void removePartyMemberOnRightClick();
 
+    // Save/Load support — empties the active party so a saved composition
+    // can be restored via addToSlot(). Mirrors removeCharacter's cleanup
+    // (frame positions) but for all members at once.
+    void clear();
+
     // Party Functions
     void renderPartyMembers(sf::RenderTarget* target);
     void updatePartyMembers(const sf::Vector2f mousePos);

@@ -6,6 +6,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 class MapComponent
 {
@@ -34,6 +35,11 @@ public:
     // Event passthrough
     bool rollEvent() { return this->mapView->rollEventForCurrentMap(); }
     bool eventIsActive() const { return this->mapView->currentEventIsActive(); }
+
+    // Save/Load support
+    std::vector<std::string> getUnlockedMapIds() const { return this->mapView->getUnlockedMapIds(); }
+    void setUnlockedMapIds(const std::vector<std::string>& unlockedIds) { this->mapView->setUnlockedMapIds(unlockedIds); }
+    bool setCurrentMapById(const std::string& mapId) { return this->mapView->setCurrentMapById(mapId); }
 
 private:
     void initButtons();

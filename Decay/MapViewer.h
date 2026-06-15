@@ -46,9 +46,29 @@ public:
     bool rollEventForCurrentMap();
     bool currentEventIsActive() const;
 
+    // ------------------------------------------------------------------
+    // Save/Load support
+    // ------------------------------------------------------------------
+    // Returns the map ids (in mapOrder) that are currently unlocked.
+    std::vector<std::string> getUnlockedMapIds() const;
+
+    // Restores unlock state from a save. Any map not in unlockedIds is
+    // treated as locked. Newly-unlocked maps get their first area button
+    // revealed (mirrors tryUnlockNextMap), though per-area exploration
+    // progress within a map isn't restored here — that would need
+    // MapCore-level save/restore.
+    void setUnlockedMapIds(const std::vector<std::string>& unlockedIds);
+
+    // Jumps directly to a map by id, bypassing the unlock check (the save
+    // already represents a previously-valid, unlocked state). Returns
+    // false if mapId isn't found in mapOrder.
+    bool setCurrentMapById(const std::string& mapId);
+
 private:
     // Map navigation
-    void navigateToMap(int index);
+    // bypassUnlockCheck lets save/load jump to a map regardless of
+    // mapUnlocked state (used by setCurrentMapById).
+    void navigateToMap(int index, bool bypassUnlockCheck = false);
     bool canNavigateRight() const;
     bool canNavigateLeft()  const;
 

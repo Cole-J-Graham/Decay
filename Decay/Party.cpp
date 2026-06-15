@@ -166,6 +166,12 @@ bool Party::addToSlot(int slot, const std::shared_ptr<Character>& character)
     return true;
 }
 
+void Party::clear()
+{
+    this->party.clear();
+    this->updateFramePositions();
+}
+
 // UI Functions
 void Party::initUi()
 {

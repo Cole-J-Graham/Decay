@@ -25,5 +25,7 @@ private:
 
     //Stat Functions
     void initStats();
-};
 
+    //Lore Functions
+    void initLore();
+};

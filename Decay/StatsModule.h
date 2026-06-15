@@ -55,6 +55,31 @@ public:
 	//Setters
 	void setButtonId(std::string& id) { this->buttonId = id; }
 
+	// Live current/max HP, shown near the top of the panel. Called every
+	// frame from Character::updateText().
+	void setHp(float hp, float hpMax);
+
+	// Character blurb shown below the stat rows. Set once during
+	// InitializeCharacters::initLore() — wraps to the panel's content width.
+	void setTipText(const std::string& tip);
+
+	// ------------------------------------------------------------------
+	// Save/Load support
+	// ------------------------------------------------------------------
+	float getExp() const { return this->exp; }
+	int getSp() const { return this->sp; }
+
+	void setLevel(int level) { this->level = level; this->updateText(); }
+	void setExp(float exp) { this->exp = exp; this->updateText(); }
+	void setSp(int sp) { this->sp = sp; this->updateText(); }
+
+	// Enumerate stat keys (e.g. "STRENGTH", "VITALITY") registered via
+	// createStat(), so SaveManager can iterate without hardcoding names.
+	std::vector<std::string> getStatKeys() const;
+
+	int getStatCount(const std::string& key) const;
+	void setStatCount(const std::string& key, int count);
+
 private:
 	class Stat
 	{
@@ -129,6 +154,19 @@ private:
 			std::ostringstream oss;
 			oss << std::fixed << std::setprecision(1) << stat;
 			return modifiedStatName + "  " + oss.str();
+		}
+
+		// Save/Load support — invested point count for this stat.
+		// setStatCount only updates statCount + the display labels; it does
+		// NOT touch the underlying stat float, since SaveManager restores
+		// that (hp/hpMax/damage/etc.) separately to its exact saved value.
+		int getStatCount() const { return this->statCount; }
+
+		void setStatCount(int count)
+		{
+			this->statCount = count;
+			text->setString(buildStatLabel());
+			statText->setString(buildDerivedLabel());
 		}
 
 	private:

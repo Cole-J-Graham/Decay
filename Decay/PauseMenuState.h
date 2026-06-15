@@ -7,13 +7,15 @@
 #include "Text.h"
 
 class MusicPlayer;
+class MapComponent;
 
 class PauseMenuState : public State
 {
 public:
     PauseMenuState(sf::RenderWindow* window,
         std::stack<State*>* states,
-        MusicPlayer* musicPlayer = nullptr);
+        MusicPlayer* musicPlayer = nullptr,
+        MapComponent* map = nullptr);
     ~PauseMenuState() = default;
 
     void update() override;
@@ -28,6 +30,7 @@ private:
     UiPanel panel;
 
     MusicPlayer* musicPlayer = nullptr;  // non-owning; forwarded to SettingsMenuState
+    MapComponent* map = nullptr;         // non-owning; forwarded to SaveSlotState
 
     bool escWasDown = false;      // edge-detect for ESC toggle
     bool escReleasedOnce = false;

@@ -140,8 +140,18 @@ void EventManager::updateEvents()
 void EventManager::onSequenceFinished()
 {
     if (activeEventIndex >= 0 && activeEventIndex < (int)events.size())
-        if (events[activeEventIndex].oneTime)
-            events[activeEventIndex].hasPlayed = true;
+    {
+        auto& ev = events[activeEventIndex];
+        if (ev.oneTime)
+        {
+            ev.hasPlayed = true;
+
+            // Persist via GameFlags so this survives EventManager being
+            // reconstructed (area revisits, save/load) — see [FLAGS]
+            // section of the save format.
+            GameFlags::getInstance().set(ev.playedFlagKey);
+        }
+    }
 
     if (!completionFlag.empty())
         GameFlags::getInstance().set(completionFlag);
@@ -206,7 +216,11 @@ void EventManager::getEventsInDirectory(const std::string& directoryPath)
             EventDefinition ev;
             ev.path = entry.path().string();
             ev.oneTime = entry.path().filename().string().find(".once.") != std::string::npos;
-            ev.hasPlayed = false;
+
+            // Key format: "event_played:<areaName>:<filename>" — area+filename
+            // is stable and portable (avoids OS path-separator differences).
+            ev.playedFlagKey = "event_played:" + this->areaName + ":" + entry.path().filename().string();
+            ev.hasPlayed = ev.oneTime && GameFlags::getInstance().has(ev.playedFlagKey);
 
             events.push_back(ev);
         }

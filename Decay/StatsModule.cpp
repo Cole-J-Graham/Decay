@@ -140,6 +140,10 @@ void StatsModule::initRects() {
 
     this->rectangles["HEADERDIV"] = std::make_unique<Rectangle>(1400, 82, 270, 1,
         sf::Color(255, 255, 255, 60), sf::Color::Transparent, 0.f, false);
+
+    // Divider separating the stat rows from the character blurb below
+    this->rectangles["LOREDIV"] = std::make_unique<Rectangle>(1400, 240, 270, 1,
+        sf::Color(255, 255, 255, 40), sf::Color::Transparent, 0.f, false);
 }
 
 void StatsModule::renderRects(sf::RenderTarget* target) {
@@ -193,9 +197,19 @@ void StatsModule::initText() {
         buildSpString(),
         sf::Color(130, 220, 130, 255), false);
 
-    this->text["TIPTEXT"] = std::make_unique<Text>(1410, 100, 11,
-        this->tipText,
-        sf::Color(255, 200, 80, 200), false);
+    // Current HP — kept live via setHp(), called every frame from
+    // Character::updateText(). Sits in the gap between the EXP/SP row
+    // and the stat rows.
+    this->text["HPTEXT"] = std::make_unique<Text>(1410, 100, 12,
+        "HP --/--",
+        sf::Color(230, 140, 140, 255), false);
+
+    // Character blurb — below the stat rows and LOREDIV, populated via
+    // setTipText() (InitializeCharacters::initLore()). Wrapped to fit the
+    // panel's content width.
+    this->text["TIPTEXT"] = std::make_unique<Text>(1410, 250, 11,
+        "",
+        sf::Color(200, 190, 170, 220), false);
 }
 
 void StatsModule::renderText(sf::RenderTarget* target) {
@@ -223,4 +237,44 @@ std::string StatsModule::buildExpString() const {
 
 std::string StatsModule::buildSpString() const {
     return "SP  " + std::to_string(this->sp);
+}
+
+// HP / Lore
+void StatsModule::setHp(float hp, float hpMax)
+{
+    this->text["HPTEXT"]->setString(
+        "HP " + this->toStringWithPrecision(hp, 0) + " / " + this->toStringWithPrecision(hpMax, 0)
+    );
+}
+
+void StatsModule::setTipText(const std::string& tip)
+{
+    this->tipText = tip;
+    this->text["TIPTEXT"]->setString(Text::wrapText(this->tipText, 240.f));
+}
+
+// ------------------------------------------------------------------
+// Save/Load support
+// ------------------------------------------------------------------
+std::vector<std::string> StatsModule::getStatKeys() const
+{
+    std::vector<std::string> keys;
+    for (const auto& it : this->stats) {
+        keys.push_back(it.first);
+    }
+    return keys;
+}
+
+int StatsModule::getStatCount(const std::string& key) const
+{
+    auto it = this->stats.find(key);
+    if (it == this->stats.end() || !it->second) return 0;
+    return it->second->getStatCount();
+}
+
+void StatsModule::setStatCount(const std::string& key, int count)
+{
+    auto it = this->stats.find(key);
+    if (it == this->stats.end() || !it->second) return;
+    it->second->setStatCount(count);
 }

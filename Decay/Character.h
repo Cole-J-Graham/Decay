@@ -167,6 +167,7 @@ public:
         auto it = this->moveMp.find(moveId);
         return it != this->moveMp.end() ? it->second : defaultVal;
     }
+    const std::map<std::string, int>& getAllMoveMp() const { return this->moveMp; }
 
     void clearWaitingForMouseRelease() { this->waitingForMouseRelease = false; }
     const std::string& getId() { return this->id; }

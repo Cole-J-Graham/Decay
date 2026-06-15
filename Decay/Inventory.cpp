@@ -262,6 +262,11 @@ int Inventory::getExperience() const
     return this->experience;
 }
 
+void Inventory::setGold(int amount)
+{
+    this->gold = (amount < 0) ? 0 : amount;
+}
+
 // Helpers
 Inventory::ItemCategory Inventory::stringToCategory(const std::string& category) const
 {

@@ -274,6 +274,10 @@ void Character::updateText()
         "HP: " + toStringWithPrecision(this->hp) + "/" + toStringWithPrecision(this->hpMax) +
         " BLK: " + toStringWithPrecision(this->block)
     );
+
+    if (this->stats) {
+        this->stats->setHp(this->hp, this->hpMax);
+    }
 }
 
 std::string Character::toStringWithPrecision(double value, int precision)

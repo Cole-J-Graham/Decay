@@ -1,6 +1,7 @@
 #include "MainMenuState.h"
 #include "TravelState.h"
 #include "SettingsMenuState.h"
+#include "SaveSlotState.h"
 
 #include <iostream>
 #include <memory>
@@ -47,6 +48,10 @@ void MainMenuState::update()
     if (this->ui.button("EXIT_STATE").isPressed()) {
         this->quit = true;
     }
+
+    if (this->ui.button("LOAD_STATE").isPressed()) {
+        this->states->push(new SaveSlotState(this->window, this->states, SaveSlotState::Mode::Load));
+    }
 }
 
 void MainMenuState::render(sf::RenderTarget* target)
@@ -92,6 +97,14 @@ void MainMenuState::initUi()
 
     this->ui.addButton("EXIT_STATE", std::make_unique<Button>(
         100, 175, 100, 25, 0.5f, "Quit",
+        idle,
+        hover,
+        active,
+        false
+    ));
+
+    this->ui.addButton("LOAD_STATE", std::make_unique<Button>(
+        100, 200, 100, 25, 0.5f, "Load",
         idle,
         hover,
         active,

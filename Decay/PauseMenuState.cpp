@@ -1,11 +1,14 @@
 #include "PauseMenuState.h"
 #include "SettingsMenuState.h"
+#include "SaveSlotState.h"
 
 PauseMenuState::PauseMenuState(sf::RenderWindow* window,
     std::stack<State*>* states,
-    MusicPlayer* musicPlayer)
+    MusicPlayer* musicPlayer,
+    MapComponent* map)
     : State(window, states)
     , musicPlayer(musicPlayer)
+    , map(map)
 {
     this->initOverlay();
     this->initPanel();
@@ -64,12 +67,12 @@ void PauseMenuState::initPanel()
         btnX, panelY + 60.f, 300.f, 28.f, 0.5f, "Continue",
         idle, hover, active, false));
 
-    // Save (stubbed)
+    // Save
     this->panel.addButton("SAVE", std::make_unique<Button>(
         btnX, panelY + 100.f, 300.f, 28.f, 0.5f, "Save",
         idle, sf::Color(100, 120, 160, 200), active, false));
 
-    // Load (stubbed)
+    // Load
     this->panel.addButton("LOAD", std::make_unique<Button>(
         btnX, panelY + 140.f, 300.f, 28.f, 0.5f, "Load",
         idle, sf::Color(100, 120, 160, 200), active, false));
@@ -113,11 +116,13 @@ void PauseMenuState::update()
     }
 
     if (this->panel.button("SAVE").isPressed()) {
-        // TODO
+        this->states->push(new SaveSlotState(
+            this->window, this->states, SaveSlotState::Mode::Save, this->map));
     }
 
     if (this->panel.button("LOAD").isPressed()) {
-        // TODO
+        this->states->push(new SaveSlotState(
+            this->window, this->states, SaveSlotState::Mode::Load, this->map));
     }
 
     if (this->panel.button("QUIT").isPressed()) {

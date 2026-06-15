@@ -1,5 +1,8 @@
 #include "DialogueInputComponent.h"
 #include "Text.h"
+#include "SfxManager.h"
+#include <cctype>
+#include <cstdlib>
 
 DialogueInputComponent::DialogueInputComponent()
 {
@@ -65,7 +68,8 @@ void DialogueInputComponent::updateTypewriter()
         if (clicked)
         {
             // Click while typing skips straight to the full line instead
-            // of advancing the sequence.
+            // of advancing the sequence. No blips here — a burst of them
+            // all at once on skip would just sound like noise.
             this->revealedChars = this->fullMainDialogueText.size();
         }
         else
@@ -75,15 +79,26 @@ void DialogueInputComponent::updateTypewriter()
             while (this->revealTimer >= secondsPerChar
                 && this->revealedChars < this->fullMainDialogueText.size())
             {
+                const char revealedChar = this->fullMainDialogueText[this->revealedChars];
                 this->revealedChars++;
                 this->revealTimer -= secondsPerChar;
+
+                // Skip whitespace (spaces/newlines from wrapping), and only
+                // blip every other character — one blip per char at full
+                // speed reads as a buzz rather than discrete typing sounds.
+                // Retune via blipEveryNChars / secondsPerChar.
+                if (!std::isspace(static_cast<unsigned char>(revealedChar))
+                    && (this->revealedChars % blipEveryNChars) == 0)
+                {
+                    const float pitch = 0.95f + (static_cast<float>(rand() % 11) * 0.01f); // 0.95-1.05
+                    SfxManager::getInstance().play("dialogue_blip", 50.f, pitch);
+                }
             }
         }
 
         std::string revealedText = this->fullMainDialogueText.substr(0, this->revealedChars);
         this->buttons["DIALOGUEBOXCENTER"]->setText(revealedText);
 
-        // This click was consumed by speeding up the text, not by advancing.
         this->mainDialogueActive = false;
     }
     else
