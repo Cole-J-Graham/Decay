@@ -184,6 +184,12 @@
     <ClCompile Include="SaveSlotState.cpp">
       <Filter>States\UIStates</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterUnlockRegistry.cpp">
+      <Filter>Character\CharacterManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="CompanionConversationManager.cpp">
+      <Filter>Character\CharacterManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -383,6 +389,12 @@
     </ClInclude>
     <ClInclude Include="SaveSlotState.h">
       <Filter>States\UIStates</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterUnlockRegistry.h">
+      <Filter>Character\CharacterManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="CompanionConversationManager.h">
+      <Filter>Character\CharacterManagement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

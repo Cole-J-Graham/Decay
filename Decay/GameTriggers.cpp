@@ -1,6 +1,7 @@
 #include "GameTriggers.h"
 #include "TriggerManager.h"
 #include "GameFlags.h"
+#include "CharacterUnlockRegistry.h"
 #include "Text.h"
 #include <iostream>
 #include <memory>
@@ -113,4 +114,31 @@ void GameTriggers::registerAll()
         {
             GameFlags::getInstance().set("doctor_intro_played");
         });
+
+    // ── Character unlocks ─────────────────────────────────────────────────
+    // Each trigger fires when the unlock condition is met (end of intro
+    // event, boss defeat, quest completion, etc.).  The character must
+    // already be registered in CharacterUnlockRegistry at startup via
+    // InitializeCharacters.
+    //
+    // To add a new unlockable character:
+    //   1. Construct and register them in InitializeCharacters::initCharacters()
+    //      using CharacterUnlockRegistry::getInstance().registerCharacter(...)
+    //   2. Add a triggers.on("unlock_<id>", ...) block here.
+    //   3. Fire "unlock_<id>" from wherever the unlock condition is met —
+    //      typically the completionTrigger of an EventManager, or a state
+    //      transition after a boss fight.
+    //
+    // Characters that start unlocked should be added directly to
+    // CharacterManager in InitializeCharacters instead.
+
+    triggers.on("unlock_siward", []()
+        {
+            CharacterUnlockRegistry::getInstance().unlockCharacter("SIWARD");
+        });
+
+    // triggers.on("unlock_lira", []()
+    //     {
+    //         CharacterUnlockRegistry::getInstance().unlockCharacter("LIRA");
+    //     });
 }

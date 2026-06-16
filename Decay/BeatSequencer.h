@@ -39,7 +39,11 @@ public:
     State getState() const { return currentState; }
 
     bool isRunning()  const { return running; }
-    bool isFinished() const { return started && !running; }
+
+    // isFinished() stays true after the sequence ends until reset() is called.
+    // This gives EventManager a reliable one-frame window to detect completion
+    // even after the sequencer has internally cleaned up.
+    bool isFinished() const { return finished; }
 
     void reset();
 
@@ -49,6 +53,9 @@ private:
 
     void showNPCBeat(const NPCBlock& block, const std::string& line);
     void showChoiceBeat(const CharacterBlock& block);
+
+    void dispatchFireTrigger(const FireTriggerBlock& block);
+    void dispatchFireOnChoice(const FireOnChoiceBlock& block);
 
     void dispatchGiveItem(const GiveItemBlock& block);
     void dispatchGiveGold(const GiveGoldBlock& block);
@@ -60,7 +67,7 @@ private:
     void dispatchTakeDamage(const TakeDamageBlock& block);
     void dispatchTakeOnChoice(const TakeOnChoiceBlock& block);
 
-    // Rewards helpers
+    // Reward helpers
     void giveGold(int amount);
     void giveItem(const std::string& itemId, int quantity);
     void giveExpToParty(float amount);
@@ -70,22 +77,19 @@ private:
     void takeItem(const std::string& itemId, int quantity);
     void damagePartyMembers(float amount);
 
-    // [IF_FOLLOWER]/[END_IF] resolution. Strips CONDITION_START/CONDITION_END
-    // markers from the beat list before playback — drops the bracketed beats
-    // entirely if the named follower isn't currently in the party, or
-    // unwraps (keeps) them if present.
+    // [IF_FOLLOWER]/[END_IF] resolution
     std::vector<Beat> resolveConditionals(const std::vector<Beat>& inBeats);
 
-    std::vector<Beat>          beats;
-    int                        currentBeatIndex = -1;
+    std::vector<Beat>       beats;
+    int                     currentBeatIndex = -1;
 
-    Choice                     lastChoice = Choice::NONE;
-    State                      currentState = State::IDLE;
-    std::string                activeNPCName;
-    std::string                activeEmotion;
+    Choice                  lastChoice = Choice::NONE;
+    State                   currentState = State::IDLE;
+    std::string             activeNPCName;
+    std::string             activeEmotion;
 
-    bool                       running = false;
-    bool                       started = false;
+    bool                    running = false;
+    bool                    finished = false; // stays true until reset()
 
     DialogueInputComponent* dialogue = nullptr;
 };

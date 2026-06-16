@@ -162,8 +162,10 @@
     <ClCompile Include="CharacterMoveExecutor.cpp" />
     <ClCompile Include="CharacterPose.cpp" />
     <ClCompile Include="CharacterStatus.cpp" />
+    <ClCompile Include="CharacterUnlockRegistry.cpp" />
     <ClCompile Include="CombatComponent.cpp" />
     <ClCompile Include="CombatState.cpp" />
+    <ClCompile Include="CompanionConversationManager.cpp" />
     <ClCompile Include="DialogueInputComponent.cpp" />
     <ClCompile Include="EmotionDatabase.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -229,8 +231,10 @@
     <ClInclude Include="CharacterMoveTypes.h" />
     <ClInclude Include="CharacterPose.h" />
     <ClInclude Include="CharacterStatus.h" />
+    <ClInclude Include="CharacterUnlockRegistry.h" />
     <ClInclude Include="CombatComponent.h" />
     <ClInclude Include="CombatState.h" />
+    <ClInclude Include="CompanionConversationManager.h" />
     <ClInclude Include="DialogueInputComponent.h" />
     <ClInclude Include="EmotionDatabase.h" />
     <ClInclude Include="EncounterResult.h" />

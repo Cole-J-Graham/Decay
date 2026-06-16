@@ -1,5 +1,6 @@
 #pragma once
 #include "CharacterManager.h"
+#include "CharacterUnlockRegistry.h"
 
 class InitializeCharacters
 {
@@ -28,4 +29,7 @@ private:
 
     //Lore Functions
     void initLore();
+
+    // Restore characters whose unlock flags are already set (save/load)
+    void restoreUnlockedCharacters();
 };

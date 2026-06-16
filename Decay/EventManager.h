@@ -22,7 +22,7 @@
 class EventManager
 {
 public:
-    // General-purpose constructor.
+    // General-purpose constructor — scans a directory for event files.
     EventManager(const std::string& areaName);
 
     // One-time intro constructor — auto-activates and sets a
@@ -30,6 +30,15 @@ public:
     EventManager(const std::string& areaName,
         const std::string& completionFlag,
         const std::string& completionTrigger = "");
+
+    // Direct-file constructor — plays exactly one specific file.
+    // suppressPortrait = true skips NPC/character portrait rendering,
+    // used by BonfireState where the sprite is already visible in the slot.
+    EventManager(const std::string& areaName,
+        const std::string& filePath,
+        bool directFile,
+        const std::string& completionTrigger = "",
+        bool suppressPortrait = false);
 
     ~EventManager();
 
@@ -45,7 +54,11 @@ public:
 
     // Getters
     bool isEventActive() const { return eventActivated; }
-    bool hasFinished()   const { return sequencer.isFinished(); }
+
+    // hasFinished() is set by EventManager itself when onSequenceFinished()
+    // runs, and stays true until this EventManager is destroyed.
+    // It does NOT delegate to the sequencer (which resets itself immediately).
+    bool hasFinished() const { return finished; }
 
 private:
     struct EventDefinition
@@ -53,13 +66,11 @@ private:
         std::string path;
         bool        oneTime = false;
         bool        hasPlayed = false;
-
-        // GameFlags key used to persist hasPlayed for one-time events
-        // across EventManager reconstructions (area revisits, save/load).
         std::string playedFlagKey;
     };
 
     void getEventsInDirectory(const std::string& directoryPath);
+    void loadSingleFile(const std::string& filePath);
     bool eventCanPlay(const EventDefinition& event) const;
     void onSequenceFinished();
 
@@ -78,6 +89,14 @@ private:
     float eventIncrease = 1.f;
     float eventThresholdMax = 1000.f;
     float eventThresholdMin = 0.f;
+
+    // Set in onSequenceFinished(), stays true — callers poll this
+    bool finished = false;
+
+    // When true, render() skips NPC/character portrait drawing.
+    // Used for bonfire companion conversations where the sprite
+    // is already rendered in the party preview slot.
+    bool suppressPortrait = false;
 
     // Area
     std::string areaName;

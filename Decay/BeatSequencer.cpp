@@ -2,6 +2,7 @@
 #include "Inventory.h"
 #include "CharacterManager.h"
 #include "GameTriggers.h"
+#include "TriggerManager.h"
 #include "Text.h"
 #include <iostream>
 
@@ -25,7 +26,7 @@ void BeatSequencer::start(std::vector<Beat> inBeats, DialogueInputComponent* dlg
     activeNPCName = "";
     activeEmotion = "";
     running = true;
-    started = true;
+    finished = false;
 
     advanceBeat();
 }
@@ -46,7 +47,7 @@ void BeatSequencer::reset()
     activeNPCName = "";
     activeEmotion = "";
     running = false;
-    started = false;
+    finished = false;
     dialogue = nullptr;
 }
 
@@ -79,24 +80,19 @@ std::vector<Beat> BeatSequencer::resolveConditionals(const std::vector<Beat>& in
 
             if (followerPresent)
             {
-                // Follower is here — keep the inner beats, drop just this marker.
-                continue;
+                continue; // keep inner beats, drop marker
             }
 
-            // Follower isn't here — skip everything up to and including the
-            // matching END_IF. If no END_IF is found (malformed event file),
-            // this consumes the rest of the sequence.
+            // Skip to END_IF
             while (i < inBeats.size() && inBeats[i].type != Beat::Type::CONDITION_END)
                 ++i;
 
-            continue; // also drops the CONDITION_END itself
+            continue; // drop CONDITION_END too
         }
 
         if (beat.type == Beat::Type::CONDITION_END)
         {
-            // Block was kept (its CONDITION_START fell through above) —
-            // drop the closing marker too.
-            continue;
+            continue; // drop closing marker
         }
 
         resolved.push_back(beat);
@@ -154,6 +150,7 @@ void BeatSequencer::advanceBeat()
         activeNPCName = "";
         activeEmotion = "";
         running = false;
+        finished = true; // stays true until reset() — gives callers a reliable signal
         std::cout << "BeatSequencer: sequence finished.\n";
         return;
     }
@@ -163,8 +160,7 @@ void BeatSequencer::advanceBeat()
     if (beat.type == Beat::Type::NPC)
     {
         const std::string& line = (lastChoice == Choice::B)
-            ? beat.npc.lineB
-            : beat.npc.lineA;
+            ? beat.npc.lineB : beat.npc.lineA;
         showNPCBeat(beat.npc, line);
     }
     else if (beat.type == Beat::Type::CHARACTER)
@@ -172,36 +168,38 @@ void BeatSequencer::advanceBeat()
         const std::string& cid = beat.character.characterId;
 
         bool inParty = false;
-
         if (!cid.empty()) {
             for (const auto& member : CharacterManager::getInstance().getAllPartyMembers()) {
-                if (member && member->getId() == cid) {
-                    inParty = true;
-                    break;
-                }
+                if (member && member->getId() == cid) { inParty = true; break; }
             }
         }
         else {
-            inParty = true; // no ID, always show (choice blocks without a character)
+            inParty = true; // choice blocks with no character id always show
         }
 
         if (!inParty) {
-            advanceBeat(); // not in party, skip silently
+            advanceBeat();
             return;
         }
 
-        if (!beat.character.line.empty())
+        // Spoken line (supports LINE, LINE_A, LINE_B)
+        if (!beat.character.line.empty() ||
+            !beat.character.lineA.empty() ||
+            !beat.character.lineB.empty())
         {
-            // Spoken line — show like NPC but with character portrait
+            const std::string& line = (!beat.character.lineA.empty() || !beat.character.lineB.empty())
+                ? (lastChoice == Choice::B ? beat.character.lineB : beat.character.lineA)
+                : beat.character.line;
+
             activeNPCName = cid;
-            activeEmotion = beat.character.emotion;  // empty string is fine, setEmotion handles it
-            std::string line = beat.character.line;
-            dialogue->setMainDialogueText(line);
+            activeEmotion = beat.character.emotion;
+            std::string displayLine = line;
+            dialogue->setMainDialogueText(displayLine);
             dialogue->showMainDialogue();
-            currentState = State::SHOWING_NPC; // reuse NPC click-to-continue flow
+            currentState = State::SHOWING_NPC;
         }
         else {
-            showChoiceBeat(beat.character); // existing choice behaviour
+            showChoiceBeat(beat.character);
         }
     }
     else if (beat.type == Beat::Type::GIVE_ITEM)
@@ -244,6 +242,16 @@ void BeatSequencer::advanceBeat()
         dispatchTakeOnChoice(beat.takeOnChoice);
         advanceBeat();
     }
+    else if (beat.type == Beat::Type::FIRE_TRIGGER)
+    {
+        dispatchFireTrigger(beat.fireTrigger);
+        advanceBeat();
+    }
+    else if (beat.type == Beat::Type::FIRE_ON_CHOICE)
+    {
+        dispatchFireOnChoice(beat.fireOnChoice);
+        advanceBeat();
+    }
     else
     {
         std::cerr << "BeatSequencer: unknown beat type at index " << currentBeatIndex << "\n";
@@ -255,12 +263,10 @@ void BeatSequencer::showNPCBeat(const NPCBlock& block, const std::string& line)
 {
     activeNPCName = block.npc;
 
-    if (!block.emotionA.empty() || !block.emotionB.empty()) {
+    if (!block.emotionA.empty() || !block.emotionB.empty())
         activeEmotion = (lastChoice == Choice::B) ? block.emotionB : block.emotionA;
-    }
-    else {
+    else
         activeEmotion = block.emotion;
-    }
 
     std::string displayLine = line.empty() ? block.lineA : line;
     dialogue->setMainDialogueText(displayLine);
@@ -284,43 +290,57 @@ void BeatSequencer::showChoiceBeat(const CharacterBlock& block)
 }
 
 // ============================================================
+//  Trigger dispatch
+// ============================================================
+
+void BeatSequencer::dispatchFireTrigger(const FireTriggerBlock& block)
+{
+    if (block.triggerId.empty()) return;
+    std::cout << "BeatSequencer: firing trigger: " << block.triggerId << "\n";
+    TriggerManager::getInstance().fire(block.triggerId);
+}
+
+void BeatSequencer::dispatchFireOnChoice(const FireOnChoiceBlock& block)
+{
+    if (lastChoice == Choice::B)
+    {
+        if (!block.triggerB.empty())
+        {
+            std::cout << "BeatSequencer: firing trigger (choice B): " << block.triggerB << "\n";
+            TriggerManager::getInstance().fire(block.triggerB);
+        }
+    }
+    else
+    {
+        if (!block.triggerA.empty())
+        {
+            std::cout << "BeatSequencer: firing trigger (choice A): " << block.triggerA << "\n";
+            TriggerManager::getInstance().fire(block.triggerA);
+        }
+    }
+}
+
+// ============================================================
 //  Reward dispatch
 // ============================================================
 
-void BeatSequencer::dispatchGiveItem(const GiveItemBlock& block)
-{
-    giveItem(block.itemId, block.quantity);
-}
-
-void BeatSequencer::dispatchGiveGold(const GiveGoldBlock& block)
-{
-    giveGold(block.amount);
-}
-
-void BeatSequencer::dispatchGiveExp(const GiveExpBlock& block)
-{
-    giveExpToParty(block.amount);
-}
+void BeatSequencer::dispatchGiveItem(const GiveItemBlock& block) { giveItem(block.itemId, block.quantity); }
+void BeatSequencer::dispatchGiveGold(const GiveGoldBlock& block) { giveGold(block.amount); }
+void BeatSequencer::dispatchGiveExp(const GiveExpBlock& block) { giveExpToParty(block.amount); }
 
 void BeatSequencer::dispatchGiveOnChoice(const GiveOnChoiceBlock& block)
 {
     if (lastChoice == Choice::B)
     {
-        if (block.choiceBGold > 0)
-            giveGold(block.choiceBGold);
-        if (!block.choiceBItemId.empty())
-            giveItem(block.choiceBItemId, block.choiceBQuantity);
-        if (block.choiceBExp > 0.f)
-            giveExpToParty(block.choiceBExp);
+        if (block.choiceBGold > 0)        giveGold(block.choiceBGold);
+        if (!block.choiceBItemId.empty()) giveItem(block.choiceBItemId, block.choiceBQuantity);
+        if (block.choiceBExp > 0.f)       giveExpToParty(block.choiceBExp);
     }
-    else // Choice::A or NONE defaults to A
+    else
     {
-        if (block.choiceAGold > 0)
-            giveGold(block.choiceAGold);
-        if (!block.choiceAItemId.empty())
-            giveItem(block.choiceAItemId, block.choiceAQuantity);
-        if (block.choiceAExp > 0.f)
-            giveExpToParty(block.choiceAExp);
+        if (block.choiceAGold > 0)        giveGold(block.choiceAGold);
+        if (!block.choiceAItemId.empty()) giveItem(block.choiceAItemId, block.choiceAQuantity);
+        if (block.choiceAExp > 0.f)       giveExpToParty(block.choiceAExp);
     }
 }
 
@@ -328,40 +348,23 @@ void BeatSequencer::dispatchGiveOnChoice(const GiveOnChoiceBlock& block)
 //  Penalty dispatch
 // ============================================================
 
-void BeatSequencer::dispatchTakeGold(const TakeGoldBlock& block)
-{
-    takeGold(block.amount);
-}
-
-void BeatSequencer::dispatchTakeItem(const TakeItemBlock& block)
-{
-    takeItem(block.itemId, block.quantity);
-}
-
-void BeatSequencer::dispatchTakeDamage(const TakeDamageBlock& block)
-{
-    damagePartyMembers(block.amount);
-}
+void BeatSequencer::dispatchTakeGold(const TakeGoldBlock& block) { takeGold(block.amount); }
+void BeatSequencer::dispatchTakeItem(const TakeItemBlock& block) { takeItem(block.itemId, block.quantity); }
+void BeatSequencer::dispatchTakeDamage(const TakeDamageBlock& block) { damagePartyMembers(block.amount); }
 
 void BeatSequencer::dispatchTakeOnChoice(const TakeOnChoiceBlock& block)
 {
     if (lastChoice == Choice::B)
     {
-        if (block.choiceBGold > 0)
-            takeGold(block.choiceBGold);
-        if (!block.choiceBItemId.empty())
-            takeItem(block.choiceBItemId, block.choiceBQuantity);
-        if (block.choiceBDamage > 0.f)
-            damagePartyMembers(block.choiceBDamage);
+        if (block.choiceBGold > 0)        takeGold(block.choiceBGold);
+        if (!block.choiceBItemId.empty()) takeItem(block.choiceBItemId, block.choiceBQuantity);
+        if (block.choiceBDamage > 0.f)    damagePartyMembers(block.choiceBDamage);
     }
-    else // Choice::A or NONE defaults to A
+    else
     {
-        if (block.choiceAGold > 0)
-            takeGold(block.choiceAGold);
-        if (!block.choiceAItemId.empty())
-            takeItem(block.choiceAItemId, block.choiceAQuantity);
-        if (block.choiceADamage > 0.f)
-            damagePartyMembers(block.choiceADamage);
+        if (block.choiceAGold > 0)        takeGold(block.choiceAGold);
+        if (!block.choiceAItemId.empty()) takeItem(block.choiceAItemId, block.choiceAQuantity);
+        if (block.choiceADamage > 0.f)    damagePartyMembers(block.choiceADamage);
     }
 }
 
@@ -372,7 +375,6 @@ void BeatSequencer::dispatchTakeOnChoice(const TakeOnChoiceBlock& block)
 void BeatSequencer::giveGold(int amount)
 {
     if (amount <= 0) return;
-
     Inventory::getInstance().addGold(amount);
     GameTriggers::showNotification("+" + std::to_string(amount) + " Gold");
     std::cout << "BeatSequencer: gave gold: " << amount << "\n";
@@ -386,7 +388,6 @@ void BeatSequencer::giveItem(const std::string& itemId, int quantity)
         const std::string displayName = (def != nullptr) ? def->displayName : itemId;
         GameTriggers::showNotification("Obtained: " + displayName + " x" + std::to_string(quantity));
     }
-
     std::cout << "BeatSequencer: gave item: " << itemId << " x" << quantity << "\n";
 }
 
@@ -395,7 +396,6 @@ void BeatSequencer::giveExpToParty(float amount)
     if (amount <= 0.f) return;
 
     bool anyGained = false;
-
     for (auto& member : CharacterManager::getInstance().getAllPartyMembers())
     {
         if (member && member->getStats())
@@ -418,15 +418,11 @@ void BeatSequencer::giveExpToParty(float amount)
 void BeatSequencer::takeGold(int amount)
 {
     if (amount <= 0) return;
-
     const int currentGold = Inventory::getInstance().getGold();
     const int actualLoss = (amount < currentGold) ? amount : currentGold;
-
     Inventory::getInstance().removeGold(amount);
-
     if (actualLoss > 0)
         GameTriggers::showNotification("-" + std::to_string(actualLoss) + " Gold");
-
     std::cout << "BeatSequencer: took gold: " << amount << "\n";
 }
 
@@ -438,7 +434,6 @@ void BeatSequencer::takeItem(const std::string& itemId, int quantity)
         const std::string displayName = (def != nullptr) ? def->displayName : itemId;
         GameTriggers::showNotification("Lost: " + displayName + " x" + std::to_string(quantity));
     }
-
     std::cout << "BeatSequencer: took item: " << itemId << " x" << quantity << "\n";
 }
 
@@ -447,7 +442,6 @@ void BeatSequencer::damagePartyMembers(float amount)
     if (amount <= 0.f) return;
 
     bool anyDamaged = false;
-
     for (auto& member : CharacterManager::getInstance().getAllPartyMembers())
     {
         if (member)
@@ -460,5 +454,6 @@ void BeatSequencer::damagePartyMembers(float amount)
     }
 
     if (anyDamaged)
-        GameTriggers::showNotification("The party takes " + std::to_string(static_cast<int>(amount)) + " damage!");
+        GameTriggers::showNotification("The party takes "
+            + std::to_string(static_cast<int>(amount)) + " damage!");
 }

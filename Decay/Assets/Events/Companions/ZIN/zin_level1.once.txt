@@ -1,0 +1,19 @@
+[SPEAK_CHARACTER]
+CHARACTER: ZIN
+EMOTION: NEUTRAL
+LINE: *Zin settles near the fire, watching the flames for a moment before glancing over at you.* You doing alright?
+
+[SPEAK_CHARACTER]
+RESPONSE_A: I'm fine. Just thinking.
+RESPONSE_B: Honestly? Not really.
+
+[SPEAK_CHARACTER]
+CHARACTER: ZIN
+EMOTION: NEUTRAL
+LINE_A: Good. You had me wondering back there for a second.
+LINE_B: Yeah. I figured. *She doesn't press further, just keeps her eyes on the fire.* For what it's worth -- I'm glad you're still here.
+
+[SPEAK_CHARACTER]
+CHARACTER: ZIN
+EMOTION: NEUTRAL
+LINE: We should rest while we can. It's not going to get easier from here.

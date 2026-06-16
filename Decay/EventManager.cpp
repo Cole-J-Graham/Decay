@@ -34,6 +34,20 @@ EventManager::EventManager(const std::string& areaName,
     this->forceEvent();
 }
 
+EventManager::EventManager(const std::string& areaName,
+    const std::string& filePath,
+    bool /*directFile*/,
+    const std::string& completionTrigger,
+    bool suppressPortrait)
+    : areaName(areaName)
+    , completionTrigger(completionTrigger)
+    , suppressPortrait(suppressPortrait)
+{
+    this->dialogueInput = std::make_unique<DialogueInputComponent>();
+    this->loadSingleFile(filePath);
+    this->forceEvent();
+}
+
 EventManager::~EventManager() {}
 
 // ============================================================
@@ -59,24 +73,28 @@ void EventManager::render(sf::RenderTarget* target)
 
     dialogueInput->render(target);
 
-    const std::string& activeName = sequencer.getActiveNPCName();
-    if (activeName.empty()) return;
-
-    // Check NPCManager first
-    NPC* npc = NPCManager::getInstance().getNPC(activeName);
-    if (npc)
+    // Portrait rendering — skipped when suppressPortrait is set
+    if (!suppressPortrait)
     {
-        npc->setEmotion(sequencer.getActiveEmotion());
-        npc->renderPreview(target, EVENT_PORTRAIT_X, EVENT_PORTRAIT_Y);
-        return;
-    }
-
-    // Fall back to CharacterManager — party characters can speak too
-    auto character = CharacterManager::getInstance().getCharacter(activeName);
-    if (character)
-    {
-        character->setEmotion(sequencer.getActiveEmotion());
-        character->renderPreview(target, EVENT_PORTRAIT_X, EVENT_PORTRAIT_Y);
+        const std::string& activeName = sequencer.getActiveNPCName();
+        if (!activeName.empty())
+        {
+            NPC* npc = NPCManager::getInstance().getNPC(activeName);
+            if (npc)
+            {
+                npc->setEmotion(sequencer.getActiveEmotion());
+                npc->renderPreview(target, EVENT_PORTRAIT_X, EVENT_PORTRAIT_Y);
+            }
+            else
+            {
+                auto character = CharacterManager::getInstance().getCharacter(activeName);
+                if (character)
+                {
+                    character->setEmotion(sequencer.getActiveEmotion());
+                    character->renderPreview(target, EVENT_PORTRAIT_X, EVENT_PORTRAIT_Y);
+                }
+            }
+        }
     }
 }
 
@@ -145,10 +163,6 @@ void EventManager::onSequenceFinished()
         if (ev.oneTime)
         {
             ev.hasPlayed = true;
-
-            // Persist via GameFlags so this survives EventManager being
-            // reconstructed (area revisits, save/load) — see [FLAGS]
-            // section of the save format.
             GameFlags::getInstance().set(ev.playedFlagKey);
         }
     }
@@ -161,6 +175,11 @@ void EventManager::onSequenceFinished()
     sequencer.reset();
     eventActivated = false;
     activeEventIndex = -1;
+
+    // Set our own finished flag AFTER the sequencer is reset.
+    // BeatSequencer::finished is now false, but EventManager::finished
+    // stays true so callers (BonfireState) can reliably detect completion.
+    finished = true;
 
     std::cout << "EventManager: event finished.\n";
 }
@@ -217,9 +236,8 @@ void EventManager::getEventsInDirectory(const std::string& directoryPath)
             ev.path = entry.path().string();
             ev.oneTime = entry.path().filename().string().find(".once.") != std::string::npos;
 
-            // Key format: "event_played:<areaName>:<filename>" — area+filename
-            // is stable and portable (avoids OS path-separator differences).
-            ev.playedFlagKey = "event_played:" + this->areaName + ":" + entry.path().filename().string();
+            ev.playedFlagKey = "event_played:" + this->areaName + ":"
+                + entry.path().filename().string();
             ev.hasPlayed = ev.oneTime && GameFlags::getInstance().has(ev.playedFlagKey);
 
             events.push_back(ev);
@@ -231,6 +249,22 @@ void EventManager::getEventsInDirectory(const std::string& directoryPath)
     }
 }
 
+void EventManager::loadSingleFile(const std::string& filePath)
+{
+    const std::string filename = std::filesystem::path(filePath).filename().string();
+
+    EventDefinition ev;
+    ev.path = filePath;
+    ev.oneTime = filename.find(".once.") != std::string::npos;
+    ev.playedFlagKey = "event_played:" + this->areaName + ":" + filename;
+    ev.hasPlayed = ev.oneTime && GameFlags::getInstance().has(ev.playedFlagKey);
+
+    events.push_back(ev);
+    activeEventIndex = 0;
+
+    std::cout << "EventManager: loaded single file: " << filePath << "\n";
+}
+
 // ============================================================
 //  Helper
 // ============================================================
@@ -238,10 +272,5 @@ void EventManager::getEventsInDirectory(const std::string& directoryPath)
 bool EventManager::eventCanPlay(const EventDefinition& event) const
 {
     if (!event.oneTime) return true;
-
-    // Check GameFlags live rather than the cached hasPlayed snapshot, so
-    // this stays correct even after an in-game load that doesn't
-    // reconstruct this EventManager (MapCore instances for already-built
-    // maps persist across a pause-menu load).
     return !GameFlags::getInstance().has(event.playedFlagKey);
 }

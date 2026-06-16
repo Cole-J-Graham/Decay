@@ -23,6 +23,10 @@ private:
     Beat parseGiveGoldBlock();
     Beat parseGiveExpBlock();
     Beat parseGiveOnChoiceBlock();
+    Beat parseFireTriggerBlock();
+    Beat parseFireOnChoiceBlock();
+    Beat parseConditionStartBlock();
+    Beat parseConditionEndBlock();
 
     std::string readLine();
     std::string parseValue(const std::string& line);
