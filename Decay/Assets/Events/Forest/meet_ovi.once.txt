@@ -1,7 +1,7 @@
 [SPEAK_CHARACTER]
-NPC: OVI
+CHARACTER: OVI
 EMOTION: NEUTRAL
-LINE: 
+LINE: *Something small and woolly is blocking the path. It stares up at you with wide, unbothered eyes.*
 
 [IF_FOLLOWER]
 FOLLOWER: ZIN
@@ -9,54 +9,76 @@ FOLLOWER: ZIN
 [SPEAK_CHARACTER]
 CHARACTER: ZIN
 EMOTION: HAPPY
-LINE: 
+LINE: Oh. Oh no. He's so small.
 
-[SPEAK_NPC]
-NPC: OVI
+[SPEAK_CHARACTER]
+CHARACTER: PLAYER
 EMOTION: NEUTRAL
-LINE: 
+LINE: Zin. We are not keeping it.
+
+[SPEAK_CHARACTER]
+CHARACTER: ZIN
+EMOTION: HAPPY
+LINE: I'm already keeping him.
 
 [END_IF]
 
 [SPEAK_CHARACTER]
-RESPONSE_A:
-RESPONSE_B: 
-
-[SPEAK_NPC]
-NPC: OVI
+CHARACTER: OVI
 EMOTION: NEUTRAL
-LINE_A: 
-LINE_B:
+LINE: *blinks slowly. Does not move.*
 
 [SPEAK_CHARACTER]
-RESPONSE_A: 
-RESPONSE_B: 
-
-[SPEAK_NPC]
-NPC: OVI
-EMOTION: NEUTRAL
-LINE_A: 
-LINE_B: 
+RESPONSE_A: ...Is it dangerous?
+RESPONSE_B: We don't have time for this.
 
 [SPEAK_CHARACTER]
-RESPONSE_A:
-RESPONSE_B:
-
-[SPEAK_NPC]
-NPC: OVI
+CHARACTER: OVI
 EMOTION: NEUTRAL
-LINE_A: 
-LINE_B: 
+LINE_A: *The create tilts head, letting out a small, relatively un-intimidating sound...*
+LINE_B: *The create sits down directly on your boot.*
 
 [SPEAK_CHARACTER]
-RESPONSE_A: 
-RESPONSE_B: 
+RESPONSE_A: Okay. Fine. What even is it?
+RESPONSE_B: We are leaving it here.
 
-[SPEAK_NPC]
-NPC: OVI
+[IF_FOLLOWER]
+FOLLOWER: ZIN
+
+[SPEAK_CHARACTER]
+CHARACTER: ZIN
+EMOTION: HAPPY
+LINE_A: I have absolutely no idea. But look at him.
+LINE_B: We are absolutely not leaving him here.
+
+[END_IF]
+
+[SPEAK_CHARACTER]
+CHARACTER: OVI
 EMOTION: NEUTRAL
-LINE_A: 
-LINE_B: 
+LINE_A: *sniffs your hand. Approves, apparently.*
+LINE_B: *follows you anyway.*
+
+[SPEAK_CHARACTER]
+RESPONSE_A: ...Fine. It can come.
+RESPONSE_B: I'm serious. We are not bringing this... creature into a death zone.
+
+[IF_FOLLOWER]
+FOLLOWER: ZIN
+
+[SPEAK_CHARACTER]
+CHARACTER: ZIN
+EMOTION: HAPPY
+LINE_A: I knew you'd come around.
+LINE_B: I hear you. I really do. *she picks him up anyway.* His name is Ovi.
+
+[END_IF]
+
+[SPEAK_CHARACTER]
+CHARACTER: OVI
+EMOTION: NEUTRAL
+LINE_A: *The creature slowly trots forwards, almost hitting a tree with its head accidently. It missed though. Barely...*
+LINE_B: *The creature peers over Zin's arm, seemingly entirely unbothered by being held... What an odd creature.*
 
 [FIRE_TRIGGER]
 TRIGGER: unlock_ovi

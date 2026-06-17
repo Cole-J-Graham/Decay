@@ -1,6 +1,7 @@
 #include "BeatSequencer.h"
 #include "Inventory.h"
 #include "CharacterManager.h"
+#include "CharacterUnlockRegistry.h"
 #include "GameTriggers.h"
 #include "TriggerManager.h"
 #include "Text.h"
@@ -169,9 +170,14 @@ void BeatSequencer::advanceBeat()
 
         bool inParty = false;
         if (!cid.empty()) {
+            // Check active party first
             for (const auto& member : CharacterManager::getInstance().getAllPartyMembers()) {
                 if (member && member->getId() == cid) { inParty = true; break; }
             }
+            // Also allow characters that exist in the registry (not yet unlocked)
+            // so they can appear in their own introduction events
+            if (!inParty && CharacterUnlockRegistry::getInstance().getPending(cid))
+                inParty = true;
         }
         else {
             inParty = true; // choice blocks with no character id always show

@@ -24,12 +24,39 @@ zin_scared|texture|Assets/Sprites/zinScared.png
 zin_happy|texture|Assets/Sprites/zinHappy.png
 zin_annoyed|texture|Assets/Sprites/zinAnnoyed.png
 
-thom_sprite|texture|Assets/Sprites/thomNormal.png
+sulliman_sprite|texture|Assets/Sprites/sulliman_normal.png
+sulliman_concerened|texture|Assets/Sprites/sulliman_suprised.png
+sulliman_sad|texture|Assets/Sprites/sulliman_sad.png
+sulliman_happy|texture|Assets/Sprites/sulliman_happy.png
+sulliman_angry|texture|Assets/Sprites/sulliman_angry.png
+
+june_sprite|texture|Assets/Sprites/june_normal.png
+june_concerned|texture|Assets/Sprites/june_concerned.png
+june_sad|texture|Assets/Sprites/june_sad.png
+june_scared|texture|Assets/Sprites/june_scared.png
+june_happy|texture|Assets/Sprites/june_happy.png
+june_annoyed|texture|Assets/Sprites/june_annoyed.png
+
+lyra_sprite|texture|Assets/Sprites/lyra_normal.png
+lyra_concerned|texture|Assets/Sprites/lyra_concerned.png
+lyra_sad|texture|Assets/Sprites/lyra_sad.png
+lyra_suprised|texture|Assets/Sprites/lyra_suprised.png
+lyra_happy|texture|Assets/Sprites/lyra_happy.png
+lyra_annoyed|texture|Assets/Sprites/lyra_annoyed.png
+
+ovi_sprite|texture|Assets/Sprites/ovi_normal.png
+ovi_concerned|texture|Assets/Sprites/ovi_concerned.png
+ovi_sad|texture|Assets/Sprites/ovi_sad.png
+ovi_rage|texture|Assets/Sprites/ovi_rage.png
+ovi_happy|texture|Assets/Sprites/ovi_happy.png
+ovi_scared|texture|Assets/Sprites/ovi_scared.png
 
 #NPC Sprites
 doctor_sprite|texture|Assets/Sprites/plaugeguy.png
+doctor_angry|texture|Assets/Sprites/plagueguy_fucku.png
 speaking_tree_portrait|texture|Assets/Entities/entityTree.jpeg
 siward_sprite|texture|Assets/Sprites/siward.png
+ri|texture|Assets/Sprites/ri.png
 
 #Hostile Sprites
 wolf_sprite|texture|Assets/HostileSprites/wolfsprite.png

@@ -3,6 +3,7 @@
 #include "TriggerManager.h"
 #include "NPCManager.h"
 #include "CharacterManager.h"
+#include "CharacterUnlockRegistry.h"
 #include <iostream>
 
 namespace
@@ -88,6 +89,11 @@ void EventManager::render(sf::RenderTarget* target)
             else
             {
                 auto character = CharacterManager::getInstance().getCharacter(activeName);
+
+                // Fall back to registry for characters not yet unlocked
+                if (!character)
+                    character = CharacterUnlockRegistry::getInstance().getPending(activeName);
+
                 if (character)
                 {
                     character->setEmotion(sequencer.getActiveEmotion());

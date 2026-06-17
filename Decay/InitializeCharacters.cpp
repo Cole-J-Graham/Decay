@@ -35,12 +35,11 @@ void InitializeCharacters::initCharacters()
     // ── Unlocked from the start ───────────────────────────────────────────
     CharacterManager::getInstance().addCharacter("PLAYER", std::make_shared<Character>("PLAYER", "Player", 40, 40, 10, 10, 0, 25.f, 150.f, 0.319f, "Assets/Sprites/Player.png", true));
     CharacterManager::getInstance().addCharacter("ZIN", std::make_shared<Character>("ZIN", "Zin", 30, 30, 10, 10, 5, 25.f, 420.f, 0.066f, "Assets/Sprites/zinSprite.png", false));
-
     // ── Must be unlocked ──────────────────────────────────────────────────
-    CharacterUnlockRegistry::getInstance().registerCharacter("OVI", std::make_shared<Character>("OVI", "Ovi", 40, 40, 10, 10, 0, 25.f, 690.f, 0.625f, "Assets/Sprites/thomNormal.png", false));
-    CharacterUnlockRegistry::getInstance().registerCharacter("JUNE", std::make_shared<Character>("JUNE", "June", 50, 50, 10, 10, 0, 25.f, 960.f, 0.625f, "Assets/Sprites/june.png", false));
-    CharacterUnlockRegistry::getInstance().registerCharacter("SULIMAN", std::make_shared<Character>("SULIMAN", "Suliman", 10, 10, 20, 10, 0, 25.f, 960.f, 0.590f, "Assets/Sprites/suliman.png", false));
-    CharacterUnlockRegistry::getInstance().registerCharacter("LYRA", std::make_shared<Character>("LYRA", "Lyra", 35, 35, 14, 10, 3, 25.f, 960.f, 1.f, "Assets/Sprites/Lyra.png", false));
+    CharacterUnlockRegistry::getInstance().registerCharacter("OVI", std::make_shared<Character>("OVI", "Ovi", 40, 40, 10, 10, 0, 25.f, 690.f, 0.625f, "Assets/Sprites/ovi_normal.png", false));
+    CharacterUnlockRegistry::getInstance().registerCharacter("JUNE", std::make_shared<Character>("JUNE", "June", 50, 50, 10, 10, 0, 25.f, 960.f, 0.625f, "Assets/Sprites/june_normal.png", false));
+    CharacterUnlockRegistry::getInstance().registerCharacter("SULIMAN", std::make_shared<Character>("SULIMAN", "Suliman", 10, 10, 20, 10, 0, 25.f, 960.f, 0.590f, "Assets/Sprites/sulliman_normal.png", false));
+    CharacterUnlockRegistry::getInstance().registerCharacter("LYRA", std::make_shared<Character>("LYRA", "Lyra", 35, 35, 14, 10, 3, 25.f, 960.f, 1.f, "Assets/Sprites/Lyra_normal.png", false));
 }
 
 // Initialize NPCs for game
@@ -164,27 +163,27 @@ void InitializeCharacters::initLore()
     auto& reg = CharacterUnlockRegistry::getInstance();
 
     cm.getCharacter("PLAYER")->getStats()->setTipText(
-        "A reluctant adventurer, more years on the road than years of practice with that sword. Whatever's waiting out in the decay, it's not going to introduce itself first."
+        "A top tier knight reduced to a decaying reluctant adventurer. More years with a sword than years on the road."
     );
 
     cm.getCharacter("ZIN")->getStats()->setTipText(
-        "Zin keeps the party standing more than anyone cares to admit. Quick with a poultice, quicker with a kind word -- though anyone who's seen her in a real fight knows not to call her harmless."
+        "A young mage from the capital that has practiced extensively. Zin keeps the party standing more than anyone cares to admit. Quick with a lightning bolt but she truly excels at mending those as they fall apart."
     );
 
     reg.getPending("OVI")->getStats()->setTipText(
-        "Ovi has a way of making everyone fight just a little harder before the first blow even lands. Nobody's quite sure how it works. Ovi isn't telling."
+        "Ovi has a way of making everyone fight just a little harder before the first blow even lands. Nobody's quite sure how it works, -- Ovi isn't telling."
     );
 
     reg.getPending("JUNE")->getStats()->setTipText(
-        "June plants herself between danger and everyone else without a second thought -- slow to strike, slower still to fall."
+        "A young warrior from the frontier who has seen too much of the world. June plants herself between danger and everyone else -- slow to strike, slower still to fall."
     );
 
     reg.getPending("SULIMAN")->getStats()->setTipText(
-        "Suliman hits like the decay itself wants him gone -- and breaks just as easily. Keep him standing, and let the rest take care of itself."
+        "An old wizard from a land too far away. Suliman doesn't look like much, but he's got a way of making the most of every situation."
     );
 
     reg.getPending("LYRA")->getStats()->setTipText(
-        "Lyra moves with the grace of someone who's spent years learning to dance with death. Her presence is a reminder that even in the darkest moments, there's always a way to find your footing."
+        "An ancient druid from the forest who can commune with nature itself. Lyra is a master of using the elements to force foes into submission."
     );
 }
 

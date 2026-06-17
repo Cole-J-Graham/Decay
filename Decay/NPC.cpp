@@ -2,7 +2,7 @@
 #include <iostream>
 
 NPC::NPC(const std::string& id, const std::string& displayName, const std::string& assetId, float scale)
-    : id(id), displayName(displayName), assetId(assetId)
+    : id(id), displayName(displayName), assetId(assetId), scale(scale)
 {
     if (AssetDatabase::getInstance().has(assetId))
     {
@@ -53,4 +53,7 @@ void NPC::setEmotion(const std::string& emotion)
         if (AssetDatabase::getInstance().has(assetId))
             sprite.setTexture(AssetDatabase::getInstance().getTexture(assetId));
     }
+
+    // Reapply scale — texture swap resets it to 1.0
+    sprite.setScale(scale, scale);
 }

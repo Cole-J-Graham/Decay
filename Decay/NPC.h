@@ -21,6 +21,7 @@ private:
     std::string displayName;
     std::string assetId;        // default/neutral asset
     std::string currentEmotion;
+    float       scale = 1.f;    // stored so setEmotion can reapply after texture swap
     sf::Sprite sprite;
 
     std::unordered_map<std::string, std::string> emotionAssets;

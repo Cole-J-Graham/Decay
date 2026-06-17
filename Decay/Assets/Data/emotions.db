@@ -1,18 +1,14 @@
 #type|id|displayName|assetId|scale|emotions
+
 # NPCs
-NPC|TREE|Speaking Tree|speaking_tree_portrait|0.2|NEUTRAL:speaking_tree_portrait
-NPC|SIWARD|Speaking Tree|siward_sprite|0.319|NEUTRAL:siward_sprite
+NPC|TREE|Speaking Tree|-|0.2|NEUTRAL:speaking_tree_portrait
+NPC|SIWARD|Siward|-|0.319|NEUTRAL:siward_sprite
+NPC|DOCTOR|Doctor|-|0.319|NEUTRAL:doctor_sprite;ANGRY:doctor_angry
 
-# Characters  
-CHARACTER|PLAYER|Player|Assets/Sprites/Player.png|0.319|NEUTRAL:player_neutral;HAPPY:player_happy
-
-#Zin
-CHARACTER|ZIN|Zin|zin_sprite|0.066|NEUTRAL:zin_sprite
-CHARACTER|ZIN|Zin|zin_neutral|0.066|CONCERNED:zin_concerned
-CHARACTER|ZIN|Zin|zin_neutral|0.066|SAD:zin_sad
-CHARACTER|ZIN|Zin|zin_neutral|0.066|SCARED:zin_scared
-CHARACTER|ZIN|Zin|zin_neutral|0.066|HAPPY:zin_happy
-CHARACTER|ZIN|Zin|zin_neutral|0.066|ANNOYED:zin_happy
-
-CHARACTER|OVI|Ovi|Assets/Sprites/thomNormal.png|0.625|NEUTRAL:ovi_neutral;ANGRY:ovi_angry
-CHARACTER|JUNE|June|Assets/Sprites/june.png|0.625|NEUTRAL:june_neutral
+# Characters
+CHARACTER|PLAYER|Player|-|0.319|NEUTRAL:player_sprite;HAPPY:player_sprite
+CHARACTER|ZIN|Zin|-|0.066|NEUTRAL:zin_sprite;CONCERNED:zin_concerned;SAD:zin_sad;SCARED:zin_scared;HAPPY:zin_happy;ANNOYED:zin_annoyed
+CHARACTER|OVI|Ovi|-|0.625|NEUTRAL:ovi_sprite;CONCERNED:ovi_concerned;SAD:ovi_sad;SCARED:ovi_scared;HAPPY:ovi_happy;ANGRY:ovi_rage
+CHARACTER|JUNE|June|-|0.625|NEUTRAL:june_sprite;CONCERNED:june_concerned;SAD:june_sad;SCARED:june_scared;HAPPY:june_happy;ANNOYED:june_annoyed
+CHARACTER|SULIMAN|Suliman|-|0.590|NEUTRAL:sulliman_sprite;CONCERNED:sulliman_concerened;SAD:sulliman_sad;HAPPY:sulliman_happy;ANGRY:sulliman_angry
+CHARACTER|LYRA|Lyra|-|1.0|NEUTRAL:lyra_sprite;CONCERNED:lyra_concerned;SAD:lyra_sad;SURPRISED:lyra_suprised;HAPPY:lyra_happy;ANNOYED:lyra_annoyed
