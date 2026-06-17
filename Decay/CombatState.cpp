@@ -37,6 +37,7 @@ void CombatState::render(sf::RenderTarget* target)
     this->console.render(*target);
     this->renderCombat(target);
     this->renderCombatAnimations(target);
+    this->renderStatusEffects(target);
 }
 
 // ── Combat loop ───────────────────────────────────────────────────────────
@@ -407,6 +408,45 @@ void CombatState::handleCharacterTurn(int partyIndex, const sf::Vector2f mousePo
 
     character->clearJustContinued();
 
+    // ── Tick poison exactly once per round per character ──────────────
+    // poisonTickedThisRound prevents re-ticking each frame while turns
+    // remain. Cleared in Character::resetTurn() at end of round.
+    if (character->isPoisoned()
+        && !character->isWaitingForPoisonContinue()
+        && !character->hasPoisonTickedThisRound())
+    {
+        const float poisonDmg = character->tickPoison();
+        if (poisonDmg > 0.f)
+        {
+            character->takeDamage(poisonDmg);
+            character->setPoisonTickedThisRound(true);
+
+            const std::string poisonMsg = character->getId()
+                + " takes " + std::to_string(static_cast<int>(poisonDmg))
+                + " poison damage!"
+                + (character->isPoisoned()
+                    ? " (" + std::to_string(character->getPoisonTurns()) + " turns remaining)"
+                    : " The poison fades.");
+
+            this->console.enableContinue();
+            this->console.setMessage(poisonMsg);
+            this->console.showMessage();
+            character->setWaitingForPoisonContinue(true);
+        }
+    }
+
+    if (character->isWaitingForPoisonContinue())
+    {
+        if (this->console.continueClicked())
+        {
+            character->setWaitingForPoisonContinue(false);
+            this->console.disableContinue();
+            this->console.setMessage("");
+            this->console.hideMessage();
+        }
+        return;
+    }
+
     if (character->isStunned())
     {
         this->console.enableContinue();
@@ -470,6 +510,80 @@ void CombatState::handleEnemyTurn(const sf::Vector2f mousePos)
         {
             enemy->continueTurn(this->combatFrame);
             this->console.disableContinue();
+        }
+    }
+}
+
+// ── Status effect overlay ─────────────────────────────────────────────────
+// Draws small poison/debuff tags beneath each party member's sprite.
+// Positions mirror the party slot layout in CombatComponent::renderCharacters.
+
+void CombatState::renderStatusEffects(sf::RenderTarget* target)
+{
+    if (target == nullptr) return;
+
+    const auto& party = CharacterManager::getInstance().getAllPartyMembers();
+
+    constexpr float kTagW = 110.f;
+    constexpr float kTagH = 18.f;
+    constexpr float kTagGap = 4.f;
+    constexpr float kBorderW = 200.f;
+    constexpr float kTagXOffset = kBorderW + 8.f;  // right of border
+    constexpr float kTagOffsetY = 40.f;
+
+    for (const auto& member : party)
+    {
+        if (!member) continue;
+
+        const float tagX = member->getX() + kTagXOffset;
+        float tagY = member->getY() + kTagOffsetY;
+
+        // ── Poison ────────────────────────────────────────────────────
+        if (member->isPoisoned())
+        {
+            sf::RectangleShape bg(sf::Vector2f(kTagW, kTagH));
+            bg.setPosition(tagX, tagY);
+            bg.setFillColor(sf::Color(30, 100, 30, 210));
+            bg.setOutlineColor(sf::Color(80, 200, 80, 200));
+            bg.setOutlineThickness(1.f);
+            target->draw(bg);
+
+            Text label(tagX + 4.f, tagY + 2.f, 11,
+                "POISON  " + std::to_string(member->getPoisonTurns()) + "t",
+                sf::Color(160, 255, 160, 255), false);
+            label.render(target);
+
+            tagY += kTagH + kTagGap;
+        }
+
+        // ── Buffs and debuffs ─────────────────────────────────────────
+        for (const auto& effect : member->getTemporaryStatMultipliers())
+        {
+            if (effect.stat != "DAMAGE" && effect.stat != "DEFENSE") continue;
+
+            const bool isBuff = effect.multiplier > 1.f;
+
+            const sf::Color fillColor = isBuff ? sf::Color(20, 60, 120, 210) : sf::Color(100, 50, 15, 210);
+            const sf::Color outlineColor = isBuff ? sf::Color(80, 160, 255, 200) : sf::Color(220, 120, 40, 200);
+            const sf::Color textColor = isBuff ? sf::Color(160, 210, 255, 255) : sf::Color(255, 200, 120, 255);
+
+            sf::RectangleShape bg(sf::Vector2f(kTagW, kTagH));
+            bg.setPosition(tagX, tagY);
+            bg.setFillColor(fillColor);
+            bg.setOutlineColor(outlineColor);
+            bg.setOutlineThickness(1.f);
+            target->draw(bg);
+
+            const std::string statLabel = (effect.stat == "DAMAGE") ? "ATK" : "DEF";
+            const int pct = static_cast<int>(std::abs(1.f - effect.multiplier) * 100.f);
+            const std::string sign = isBuff ? "+" : "-";
+            const std::string labelStr = statLabel + " " + sign + std::to_string(pct)
+                + "%  " + std::to_string(effect.turnsRemaining) + "t";
+
+            Text tag(tagX + 4.f, tagY + 2.f, 11, labelStr, textColor, false);
+            tag.render(target);
+
+            tagY += kTagH + kTagGap;
         }
     }
 }

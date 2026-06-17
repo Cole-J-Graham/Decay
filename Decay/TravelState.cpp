@@ -186,10 +186,23 @@ void TravelState::updateTravelInputVisibility()
         this->map->mapIsSelected() &&
         !eventActive;
 
-    if (canMove)
-        this->travelInput->showMoveArrows();
-    else
+    if (!canMove)
+    {
         this->travelInput->hideMoveArrows();
+    }
+    else
+    {
+        // Show/hide each arrow independently based on frame position
+        if (this->map->isAtFrameEnd())
+            this->travelInput->hideRightArrow();
+        else
+            this->travelInput->showRightArrow();
+
+        if (this->map->isAtFrameStart())
+            this->travelInput->hideLeftArrow();
+        else
+            this->travelInput->showLeftArrow();
+    }
 
     if (eventActive)
         this->map->hideMapButton();

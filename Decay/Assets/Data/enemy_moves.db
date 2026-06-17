@@ -1,9 +1,95 @@
-id|type|target|message|sfxId|power
-CLAW|DAMAGE|RANDOM_PARTY|The creature tears into the party with sharp claws!|bash_light|1.0
-BITE|DAMAGE|RANDOM_PARTY|The creature lunges forward and bites viciously!|bash_light|1.25
-WEAK_SWIPE|DAMAGE|RANDOM_PARTY|The creature makes a clumsy swipe!|bash_light|0.75
-SWEEP|DAMAGE|ALL_PARTY|The creature sweeps across the whole party!|bash_light|0.65
-SCREECH|STUN|RANDOM_PARTY|The creature lets out a piercing screech!|bash_light|1
-DREAD_HOWL|STUN|ALL_PARTY|The creature's dreadful howl freezes the party!|bash_light|1
-BRANCH_SPEAR|DAMAGE|RANDOM_PARTY|The creature strikes forwards with one of its branches, piercing like a spear!|strike_long|3.25
-BRICK_TOSS|DAMAGE|RANDOM_PARTY|The entity levitates a brick and hurls it!|strike_long|3.25
+# id|type|target|message|sfxId|power|durationTurns
+# durationTurns is optional — omit or set 0 for non-duration moves
+#
+# BALANCE REFERENCE
+# Forest enemies:  5-7 base damage.  Power 1.0 = 5-7 dmg. Party HP ~30-55.
+# Castle enemies: 10-15 base damage. Power 1.0 = 10-15 dmg. Party HP ~50-80.
+# Decay enemies:  20-25 base damage. Power 1.0 = 20-25 dmg. Party HP ~80-120.
+#
+# RANDOM_PARTY targets one member. ALL_PARTY hits everyone — keep power lower.
+# Combo moves (e.g. SLAM + SLAM_DEBUFF) are listed together and assigned together
+# in enemies.db so they fire in sequence on the same turn.
+
+#RAW DAMAGE MOVES BASIC
+CLAW|DAMAGE|RANDOM_PARTY|The creature tears into the party with sharp claws!|bash_light|1.0|0
+BITE|DAMAGE|RANDOM_PARTY|The creature lunges forward and bites viciously!|bash_light|1.3|0
+WEAK_SWIPE|DAMAGE|RANDOM_PARTY|The creature makes a clumsy swipe!|bash_light|0.75|0
+SWEEP|DAMAGE|ALL_PARTY|The creature sweeps across the whole party!|bash_light|0.5|0
+LUNGE|DAMAGE|RANDOM_PARTY|The creature hurls itself forward with reckless force!|bash_light|1.5|0
+TAIL_WHIP|DAMAGE|ALL_PARTY|The creature whips its tail across the entire party!|bash_light|0.45|0
+GNAW|DAMAGE|RANDOM_PARTY|The creature latches on and gnaws savagely!|bash_light|1.1|0
+BRANCH_SPEAR|DAMAGE|RANDOM_PARTY|The creature strikes forwards with one of its branches, piercing like a spear!|strike_long|2.0|0
+
+#RAW DAMAGE MOVES INTERMEDIATE
+UPPERCUT|DAMAGE|RANDOM_PARTY|The hostile directly upper cuts your party member!|bash_light|1.8|0
+BRICK_TOSS|DAMAGE|RANDOM_PARTY|The entity levitates a brick and hurls it at a party member!|strike_long|2.2|0
+SLAM|DAMAGE|ALL_PARTY|The creature raises itself up and crashes down onto the party!|strike_long|0.9|0
+FERAL_CHARGE|DAMAGE|RANDOM_PARTY|The creature lowers its head and charges at full speed!|strike_long|2.5|0
+RAKING_BLOW|DAMAGE|ALL_PARTY|The creature rakes across the party with jagged claws in a wide arc!|bash_light|0.8|0
+CRUSHING_GRIP|DAMAGE|RANDOM_PARTY|The creature seizes a party member and squeezes with terrible force!|strike_long|2.8|0
+DOUBLE_STRIKE|DAMAGE|RANDOM_PARTY|The creature strikes twice in rapid succession before you can react!|bash_light|1.4|0
+GREATSWORD_SLASH|DAMAGE|ALL_PARTY|The knight lifts his sword in the air and angles it, striking the entire party!|strike_long|1.2|0
+
+#RAW DAMAGE MOVES ADVANCED
+DEATH_BLOW|DAMAGE|RANDOM_PARTY|The creature winds up and delivers a devastating blow aimed to kill!|strike_long|3.5|0
+APOCALYPSE_SWEEP|DAMAGE|ALL_PARTY|The creature tears through the entire party in one catastrophic motion!|strike_long|1.8|0
+BONE_SHATTER|DAMAGE|RANDOM_PARTY|The creature strikes with such force it feels like something breaks!|strike_long|4.0|0
+VOID_STRIKE|DAMAGE|RANDOM_PARTY|Something dark and formless drives through the target like a needle!|strike_long|3.2|0
+TREMOR_SLAM|DAMAGE|ALL_PARTY|The creature strikes the ground with enough force to shake the earth beneath the party!|strike_long|1.6|0
+
+#STUN MOVES BASIC
+SCREECH|STUN|RANDOM_PARTY|The creature lets out a piercing screech!|bash_light|1|1
+DREAD_HOWL|STUN|ALL_PARTY|The creature's dreadful howl freezes the party!|bash_light|1|1
+
+#STUN MOVES INTERMEDIATE
+PETRIFYING_GAZE|STUN|RANDOM_PARTY|The creature fixes a single target with a paralyzing stare!|bash_light|1|2
+CONCUSSIVE_BLOW|STUN|RANDOM_PARTY|The creature delivers a blow aimed squarely at the head!|bash_light|1|1
+SHOCKWAVE|STUN|ALL_PARTY|The creature unleashes a burst of force that staggers the entire party!|strike_long|1|1
+
+#STUN MOVES ADVANCED
+MIND_BREAK|STUN|RANDOM_PARTY|The creature invades the target's mind, leaving them unable to act!|bash_light|1|3
+PARALYTIC_HOWL|STUN|ALL_PARTY|The creature's shriek reaches a frequency that locks every muscle in place!|bash_light|1|2
+
+#POISON MOVES BASIC
+VENOM_SPIT|POISON|RANDOM_PARTY|The creature spits a stream of venom — it burns where it lands!|bash_light|4.0|3
+ROTTING_TOUCH|POISON|ALL_PARTY|The creature's decayed limbs brush across the party, leaving a foul toxin!|bash_light|2.5|2
+ENVENOMED_STRIKE_POISON|POISON|RANDOM_PARTY|The wound festers — poison takes hold!|bash_light|3.5|3
+
+#POISON MOVES INTERMEDIATE
+TOXIC_CLOUD|POISON|ALL_PARTY|The creature exhales a thick cloud of toxic gas across the entire party!|bash_light|6.0|3
+PLAGUE_BITE|POISON|RANDOM_PARTY|The creature's bite carries something deeply wrong — a creeping sickness sets in!|bash_light|8.0|2
+INFECTIOUS_SLASH|POISON|RANDOM_PARTY|The creature's claws are coated in something foul — the wound festers immediately!|bash_light|7.0|3
+
+#POISON MOVES ADVANCED
+NECROTIC_AURA|POISON|ALL_PARTY|The creature radiates a decaying energy that rots everything it touches!|bash_light|12.0|4
+VENOM_NOVA|POISON|ALL_PARTY|The creature detonates a burst of concentrated venom in all directions!|bash_light|15.0|3
+DEATH_BLIGHT|POISON|RANDOM_PARTY|An ancient and virulent toxin is driven directly into the bloodstream!|bash_light|20.0|4
+
+#DEBUFF MOVES BASIC
+WEAKENING_HOWL|DEBUFF_DAMAGE|ALL_PARTY|The creature's haunting cry saps the party's resolve!|bash_light|0.6|2
+BRITTLE_CURSE|DEBUFF_DEFENSE|ALL_PARTY|The creature rasps a curse — the party's skin feels paper-thin!|bash_light|0.55|3
+
+#DEBUFF MOVES INTERMEDIATE
+DEMORALIZE|DEBUFF_DAMAGE|ALL_PARTY|The creature unleashes a crushing display of force that breaks the party's fighting spirit!|bash_light|0.5|2
+EXPOSE_WEAKNESS|DEBUFF_DEFENSE|RANDOM_PARTY|The creature finds a gap in the target's guard and tears it wide open!|bash_light|0.45|3
+CURSE_OF_FRAILTY|DEBUFF_DEFENSE|ALL_PARTY|The creature utters something guttural — the party's bones feel hollow!|bash_light|0.55|2
+SUNDER|DEBUFF_DEFENSE|RANDOM_PARTY|The creature batters relentlessly at one target, wearing down their defenses!|bash_light|0.5|3
+
+#DEBUFF MOVES ADVANCED
+ANNIHILATING_PRESENCE|DEBUFF_DAMAGE|ALL_PARTY|The creature's very existence drains the will to fight from all who face it!|bash_light|0.4|3
+TOTAL_EXPOSURE|DEBUFF_DEFENSE|ALL_PARTY|The creature tears through every defense the party has — they stand completely open!|bash_light|0.35|3
+ENTROPY_CURSE|DEBUFF_DAMAGE|ALL_PARTY|Reality itself seems to work against the party as the creature's curse takes hold!|bash_light|0.45|4
+SHATTER_GUARD|DEBUFF_DEFENSE|RANDOM_PARTY|The creature focuses everything into destroying a single target's defenses utterly!|bash_light|0.3|3
+
+#COMBO MOVES INTERMEDIATE
+ENVENOMED_STRIKE|DAMAGE|RANDOM_PARTY|The creature drives a poison-laced claw deep into its target!|bash_light|1.5|0
+WEAKENING_BITE|DAMAGE|RANDOM_PARTY|The creature bites down hard — and something in the wound drains the target's strength!|bash_light|1.8|0
+WEAKENING_BITE_DEBUFF|DEBUFF_DAMAGE|RANDOM_PARTY|The venom from the bite seeps in, sapping the target's power!|bash_light|0.65|2
+
+#COMBO MOVES ADVANCED
+SHATTERING_SLAM|DAMAGE|ALL_PARTY|The creature drives into the entire party — bones crack and guards crumble!|strike_long|1.4|0
+SHATTERING_SLAM_DEBUFF|DEBUFF_DEFENSE|ALL_PARTY|The force of the blow leaves the whole party vulnerable!|bash_light|0.5|2
+PLAGUE_CRUSH|DAMAGE|RANDOM_PARTY|The creature drives a festering limb into the target with full body weight!|strike_long|2.8|0
+PLAGUE_CRUSH_POISON|POISON|RANDOM_PARTY|The wound ruptures — whatever was in that limb is now in the bloodstream!|bash_light|10.0|3
+TERROR_STRIKE|DAMAGE|RANDOM_PARTY|The creature strikes with enough savagery to rattle the whole party's nerves!|strike_long|3.0|0
+TERROR_STRIKE_DEBUFF|DEBUFF_DAMAGE|ALL_PARTY|The sheer violence of the blow shatters the party's confidence!|bash_light|0.55|2

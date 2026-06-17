@@ -106,6 +106,7 @@ void StatsModule::increaseLevel() {
             this->exp -= this->expNext;
             this->level++;
             this->sp++;
+            this->expNext = 100 + (this->level * this->level * 15);
 
             auto moves = CharacterMoveDatabase::getInstance().getMovesForOwner(this->id);
             for (const auto* move : moves)

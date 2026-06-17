@@ -36,6 +36,10 @@ public:
     bool rollEvent() { return this->mapView->rollEventForCurrentMap(); }
     bool eventIsActive() const { return this->mapView->currentEventIsActive(); }
 
+    // Frame position — used by TravelState to show/hide directional arrows independently
+    bool isAtFrameStart() const { return this->mapView->isAtFrameStart(); }
+    bool isAtFrameEnd()   const { return this->mapView->isAtFrameEnd(); }
+
     // Save/Load support
     std::vector<std::string> getUnlockedMapIds() const { return this->mapView->getUnlockedMapIds(); }
     void setUnlockedMapIds(const std::vector<std::string>& unlockedIds) { this->mapView->setUnlockedMapIds(unlockedIds); }

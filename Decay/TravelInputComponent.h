@@ -20,6 +20,10 @@ public:
 
     void showMoveArrows();
     void hideMoveArrows();
+    void showRightArrow() { this->buttons["BUTTON_RIGHT"]->show(); }
+    void hideRightArrow() { this->buttons["BUTTON_RIGHT"]->hide(); }
+    void showLeftArrow() { this->buttons["BUTTON_LEFT"]->show(); }
+    void hideLeftArrow() { this->buttons["BUTTON_LEFT"]->hide(); }
 
 private:
     void initButtons();

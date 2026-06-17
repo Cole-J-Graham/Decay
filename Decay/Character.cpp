@@ -95,6 +95,7 @@ void Character::resetTurn()
     this->justContinued = false;
     this->turnActive = false;
     this->characterFrame = 0;
+    this->poisonTickedThisRound = false;
 
     if (this->buttons.count("ENDTURN") > 0) {
         this->buttons["ENDTURN"]->setIdle();

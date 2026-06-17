@@ -80,6 +80,8 @@ private:
         std::string         framesFile;
         std::unique_ptr<Button> button;
         bool                explored;
+        float               buttonX = 0.f;
+        float               buttonY = 0.f;
     };
 
     // Ordered by areaIndex so reveal logic is straightforward

@@ -77,9 +77,15 @@ public:
 	float getExp() const { return this->exp; }
 	int getSp() const { return this->sp; }
 
-	void setLevel(int level) { this->level = level; this->updateText(); }
+	void setLevel(int level)
+	{
+		this->level = level;
+		this->expNext = 100 + (level * level * 15);
+		this->updateText();
+	}
 	void setExp(float exp) { this->exp = exp; this->updateText(); }
 	void setSp(int sp) { this->sp = sp; this->updateText(); }
+	float getExpNext() const { return this->expNext; }
 
 	std::vector<std::string> getStatKeys() const;
 	int  getStatCount(const std::string& key) const;

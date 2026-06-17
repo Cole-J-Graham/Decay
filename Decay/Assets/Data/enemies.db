@@ -1,5 +1,23 @@
 id|name|hp|hpMax|damage|defense|scale|spritePath|viewerPath|items|goldMin|goldMax|expMin|expMax|moves|spawnAreas
-WOLF|Wolf|25|25|5|5|0.195|Assets/HostileSprites/wolfsprite.png|Assets/Entities/wolfEntity.jpeg|SMITHING_STONE:1|20|35|100|150|CLAW,BITE,SCREECH|Forest
-WALKER|Walker|35|35|5|5|0.195|Assets/HostileSprites/decaywalkersprite.jpeg|Assets/Entities/decayEntity.jpeg|HEALTH_POTION:1,SMITHING_STONE:1|35|55|200|250|CLAW,WEAK_SWIPE|Forest
-PHANTOM|Phantom|40|40|5|5|0.195|Assets/HostileSprites/phantomSprite.jpeg|Assets/Entities/phantomEntity.jpeg|SMITHING_STONE:2|60|90|275|350|WEAK_SWIPE,DREAD_HOWL|Forest
-WALL_MIMIC|Phantom|40|40|5|5|0.195|Assets/HostileSprites/wallMimicSprite.jpeg|Assets/Entities/wallMimicEntity.jpeg|SMITHING_STONE:2|60|90|275|350|BRICK_TOSS|Castle
+
+#Forest — early game. Low damage, low HP, simple move sets.
+#         Party starts at ~30-50 HP. Enemies should be beatable in 3-5 turns.
+#         Basic moves deal 5-10 damage. expNext curve: lv1=115, lv3=235, lv5=475
+#         Target: finish forest at lv6-8 with 2-4 fights per level.
+WOLF|Wolf|30|30|5|3|0.195|Assets/HostileSprites/wolfsprite.png|Assets/Entities/wolfEntity.jpeg|SMITHING_STONE:1|20|35|60|90|CLAW,BITE,SCREECH|Forest
+WALKER|Walker|45|45|6|4|0.195|Assets/HostileSprites/decaywalkersprite.jpeg|Assets/Entities/decayEntity.jpeg|HEALTH_POTION:1,SMITHING_STONE:1|35|55|100|140|WEAK_SWIPE,CLAW,ROTTING_TOUCH|Forest
+PHANTOM|Phantom|55|55|7|5|0.195|Assets/HostileSprites/phantomSprite.jpeg|Assets/Entities/phantomEntity.jpeg|SMITHING_STONE:2|60|90|140|180|ENVENOMED_STRIKE,ENVENOMED_STRIKE_POISON,WEAKENING_HOWL|Forest
+
+#Castle — mid game. Higher HP and damage. Introduce debuffs and combos.
+#         Party should be lv6-10. Enemies deal 15-25 per hit.
+#         Target: finish castle at lv14-18 with 3-6 fights per level.
+WALL_MIMIC|Wall Mimic|80|80|12|8|0.195|Assets/HostileSprites/wallMimicSprite.jpeg|Assets/Entities/wallMimicEntity.jpeg|SMITHING_STONE:2|60|90|200|260|BRICK_TOSS,BRITTLE_CURSE,CONCUSSIVE_BLOW|Castle
+CASTLE_KNIGHT|Castle Knight|120|120|15|12|0.195|Assets/HostileSprites/wolfsprite.png|Assets/Entities/wolfEntity.jpeg|HEALTH_POTION:2,SMITHING_STONE:2|80|120|280|360|GREATSWORD_SLASH,UPPERCUT,DEMORALIZE,SHOCKWAVE|Castle
+PLAGUE_WRAITH|Plague Wraith|90|90|10|6|0.195|Assets/HostileSprites/phantomSprite.jpeg|Assets/Entities/phantomEntity.jpeg|HEALTH_POTION:1|70|100|240|300|TOXIC_CLOUD,WEAKENING_HOWL,BRITTLE_CURSE,PLAGUE_BITE|Castle
+
+#Decay — late game. High HP, high damage, punishing move sets.
+#        Party should be lv18-25. Enemies deal 25-50+ per hit.
+#        Target: push players to lv28-30 over the course of the area.
+DECAY_HULK|Decay Hulk|200|200|22|15|0.195|Assets/HostileSprites/decaywalkersprite.jpeg|Assets/Entities/decayEntity.jpeg|HEALTH_POTION:2,SMITHING_STONE:3|120|180|420|520|SLAM,FERAL_CHARGE,SHATTERING_SLAM,SHATTERING_SLAM_DEBUFF,CURSE_OF_FRAILTY|Decay
+ABOMINATION|Abomination|250|250|25|18|0.195|Assets/HostileSprites/wolfsprite.png|Assets/Entities/wolfEntity.jpeg|HEALTH_POTION:3|150|220|520|650|DEATH_BLOW,NECROTIC_AURA,ANNIHILATING_PRESENCE,MIND_BREAK,PLAGUE_CRUSH,PLAGUE_CRUSH_POISON|Decay
+VOID_STALKER|Void Stalker|180|180|20|10|0.195|Assets/HostileSprites/phantomSprite.jpeg|Assets/Entities/phantomEntity.jpeg|SMITHING_STONE:3,HEALTH_POTION:2|130|190|460|580|VOID_STRIKE,TERROR_STRIKE,TERROR_STRIKE_DEBUFF,TOTAL_EXPOSURE,DEATH_BLIGHT|Decay

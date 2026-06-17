@@ -46,8 +46,35 @@ void MapCore::render(sf::RenderTarget* target)
 {
     if (!this->hidden) {
         target->draw(this->mapSprite);
-        for (const auto& state : this->areaStates) {
+
+        for (int i = 0; i < static_cast<int>(this->areaStates.size()); ++i)
+        {
+            const auto& state = this->areaStates[i];
             state.button->render(target);
+
+            if (i >= this->buttonsRevealed) continue;
+
+            // Position indicator above the button using stored coords
+            const float cx = state.buttonX;
+            const float indicatorY = state.buttonY - 10.f;
+
+            if (state.explored)
+            {
+                // Small grey-green circle — explored
+                sf::CircleShape dot(4.f);
+                dot.setFillColor(sf::Color(80, 160, 80, 200));
+                dot.setPosition(cx - 4.f, indicatorY - 4.f);
+                target->draw(dot);
+            }
+            else if (i == this->buttonsRevealed - 1)
+            {
+                // Bright amber pulsing diamond — frontier / next area
+                sf::CircleShape diamond(6.f, 4);
+                diamond.setFillColor(sf::Color(255, 190, 40, 230));
+                diamond.setRotation(45.f);
+                diamond.setPosition(cx - 6.f, indicatorY - 6.f);
+                target->draw(diamond);
+            }
         }
     }
 
@@ -211,6 +238,8 @@ void MapCore::initButtons(const std::vector<const AreaDefinition*>& areaDefs)
         state.areaId = def->id;
         state.framesFile = def->framesFile;
         state.explored = false;
+        state.buttonX = def->buttonX;
+        state.buttonY = def->buttonY;
         state.button = std::make_unique<Button>(
             sf::Vector2f(def->buttonX, def->buttonY),
             0, 25.f, 0.5f, def->name,

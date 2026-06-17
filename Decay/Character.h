@@ -136,6 +136,23 @@ public:
     void consumeStunTurn() { this->status.consumeStunTurn(); }
     int getStunTurns() const { return this->status.getStunTurns(); }
 
+    // Poison
+    void  applyPoison(float damagePerTurn, int turns) { this->status.applyPoison(damagePerTurn, turns); }
+    float tickPoison() { return this->status.tickPoison(); }
+    bool  isPoisoned()    const { return this->status.isPoisoned(); }
+    int   getPoisonTurns() const { return this->status.getPoisonTurns(); }
+    float getPoisonDamage() const { return this->status.getPoisonDamage(); }
+
+    // Debuff read-access for status overlay rendering
+    const std::vector<CharacterStatus::TemporaryStatMultiplier>& getTemporaryStatMultipliers() const
+    {
+        return this->status.getTemporaryStatMultipliers();
+    }
+
+    // Gates character turn until player clicks through poison damage message
+    void setWaitingForPoisonContinue(bool v) { this->waitingForPoisonContinue = v; }
+    bool isWaitingForPoisonContinue() const { return this->waitingForPoisonContinue; }
+
     // Getters
     float& getDamage() { return this->damage; }
     float& getHp() { return this->hp; }
@@ -143,6 +160,8 @@ public:
     float& getDefense() { return this->defense; }
     float& getHealing() { return this->healing; }
     float getBlock() const { return this->block; }
+    float getX() const { return this->x; }
+    float getY() const { return this->y; }
     int& getCoolDown() { return this->coolDown; }
     int& getCharacterFrame() { return this->characterFrame; }
     bool& isTurnActive() { return this->turnActive; }
@@ -169,6 +188,9 @@ public:
     }
     const std::map<std::string, int>& getAllMoveMp() const { return this->moveMp; }
 
+    void setPoisonTickedThisRound(bool v) { this->poisonTickedThisRound = v; }
+    bool hasPoisonTickedThisRound() const { return this->poisonTickedThisRound; }
+
     void clearWaitingForMouseRelease() { this->waitingForMouseRelease = false; }
     const std::string& getId() { return this->id; }
     std::map<std::string, Move*>& getMoves() { return this->moveButtons; }
@@ -192,6 +214,8 @@ private:
     float block = 0.f;
     int coolDown;
     bool waitingForMouseRelease = false;
+    bool waitingForPoisonContinue = false;
+    bool poisonTickedThisRound = false;
 
     // Turn / Asset Variables
     int characterFrame;

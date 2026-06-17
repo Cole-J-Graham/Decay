@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 struct AnimationEffectRequest
@@ -49,7 +50,21 @@ struct AnimationEffectRequest
 class AnimationEffectManager
 {
 public:
+    // Play a fully-specified request (existing API, unchanged)
     void play(const AnimationEffectRequest& request);
+
+    // ── Named animation registry ──────────────────────────────────────
+    // Register a template request under a name. Position/scale in the
+    // template are ignored — callers supply those at play time.
+    // Call once at startup (e.g. from CombatComponent constructor).
+    void registerAnimation(const std::string& name,
+        const AnimationEffectRequest& requestTemplate);
+
+    // Play a registered animation at a specific position and scale.
+    // If the name isn't registered, silently does nothing.
+    void playNamed(const std::string& name,
+        float x, float y,
+        float scaleX = 3.f, float scaleY = 3.f);
 
     void update();
     void render(sf::RenderTarget* target);
@@ -57,4 +72,7 @@ public:
 
 private:
     std::vector<std::unique_ptr<AnimationPlayer>> activeAnimations;
+
+    // Named templates — position/scale overridden at play time
+    std::unordered_map<std::string, AnimationEffectRequest> namedAnimations;
 };

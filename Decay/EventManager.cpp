@@ -209,7 +209,7 @@ bool EventManager::eventChance()
         std::cout << "Event triggered!\n";
         eventActivated = true;
         eventOdds = 0.f;
-        eventIncrease = 1.f;
+        eventIncrease = 4.f;
         return true;
     }
 
@@ -223,7 +223,7 @@ void EventManager::forceEvent()
 {
     eventActivated = true;
     eventOdds = 0.f;
-    eventIncrease = 1.f;
+    eventIncrease = 4.f;
 }
 
 // ============================================================

@@ -46,6 +46,31 @@ void AnimationEffectManager::play(const AnimationEffectRequest& request)
     this->activeAnimations.push_back(std::move(animation));
 }
 
+void AnimationEffectManager::registerAnimation(const std::string& name,
+    const AnimationEffectRequest& requestTemplate)
+{
+    this->namedAnimations[name] = requestTemplate;
+}
+
+void AnimationEffectManager::playNamed(const std::string& name,
+    float x, float y,
+    float scaleX, float scaleY)
+{
+    if (name.empty() || name == "none") return;
+
+    auto it = this->namedAnimations.find(name);
+    if (it == this->namedAnimations.end()) return;
+
+    // Copy the template and override position/scale
+    AnimationEffectRequest req = it->second;
+    req.x = x;
+    req.y = y;
+    req.scaleX = scaleX;
+    req.scaleY = scaleY;
+
+    this->play(req);
+}
+
 void AnimationEffectManager::update()
 {
     for (auto& animation : this->activeAnimations) {
@@ -66,9 +91,7 @@ void AnimationEffectManager::update()
 
 void AnimationEffectManager::render(sf::RenderTarget* target)
 {
-    if (target == nullptr) {
-        return;
-    }
+    if (target == nullptr) return;
 
     for (auto& animation : this->activeAnimations) {
         if (animation != nullptr) {

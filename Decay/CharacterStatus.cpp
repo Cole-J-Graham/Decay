@@ -119,9 +119,48 @@ float CharacterStatus::getEffectiveDefense(float baseDefense) const
     return result;
 }
 
+// ── Poison ────────────────────────────────────────────────────────────────
+
+void CharacterStatus::applyPoison(float damagePerTurn, int turns)
+{
+    if (turns <= 0 || damagePerTurn <= 0.f) return;
+
+    // Refresh to the worse of the two — higher damage or longer duration
+    this->poisonDamage = std::max(this->poisonDamage, damagePerTurn);
+    this->poisonTurns = std::max(this->poisonTurns, turns);
+    this->poisonMultiplier = 1.f; // reset multiplier on fresh application
+}
+
+void CharacterStatus::buffPoison(float multiplier)
+{
+    if (multiplier <= 0.f) return;
+    this->poisonMultiplier *= multiplier;
+}
+
+float CharacterStatus::tickPoison()
+{
+    if (this->poisonTurns <= 0) return 0.f;
+
+    const float damage = this->poisonDamage * this->poisonMultiplier;
+    this->poisonTurns--;
+
+    if (this->poisonTurns <= 0)
+    {
+        this->poisonDamage = 0.f;
+        this->poisonMultiplier = 1.f;
+    }
+
+    return damage;
+}
+
+// ── Clear ─────────────────────────────────────────────────────────────────
+
 void CharacterStatus::clear()
 {
     this->stunTurns = 0;
     this->actionLockTurns = 0;
+    this->poisonDamage = 0.f;
+    this->poisonTurns = 0;
+    this->poisonMultiplier = 1.f;
     this->temporaryStatMultipliers.clear();
 }

@@ -42,6 +42,10 @@ public:
     std::string getCurrentMapName() const;
     std::string getCurrentMapId()   const;
 
+    // Frame position queries — used to show/hide directional arrows
+    bool isAtFrameStart() const { return this->mapFrame <= 0; }
+    bool isAtFrameEnd()   const { return this->mapFramesMaxSize >= 0 && this->mapFrame >= this->mapFramesMaxSize; }
+
     // Event passthrough
     bool rollEventForCurrentMap();
     bool currentEventIsActive() const;

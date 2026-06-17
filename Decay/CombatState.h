@@ -45,6 +45,8 @@ private:
     void applyCombatMusic(const std::string& areaId,
         const std::string& overrideContext = "");
 
+    void renderStatusEffects(sf::RenderTarget* target);
+
     CombatConsole console;
 
     bool stateEnd = false;

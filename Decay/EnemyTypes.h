@@ -14,6 +14,7 @@ struct EnemyMoveDefinition
     std::string sfxId;
 
     float power = 1.f;
+    int   durationTurns = 0;    // turns for STUN, POISON, DEBUFF_* moves
 };
 
 struct EnemyDefinition

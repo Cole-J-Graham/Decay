@@ -61,6 +61,7 @@ private:
     void playHitAnimationAt(float x, float y, float scaleX = 3.f, float scaleY = 3.f);
     void playEnemyAttackAnimationAt(float x, float y);
     void playSlashAnimation();
+    void registerCombatAnimations();
 
 private:
     AnimationEffectManager combatAnimations;

@@ -13,6 +13,39 @@ CombatComponent::CombatComponent()
     this->enemyId = "";
     this->currentArea = "FOREST";
     this->movesInitialized = false;
+    this->registerCombatAnimations();
+}
+
+void CombatComponent::registerCombatAnimations()
+{
+    // ── slash — physical hit on the enemy zone ────────────────────────
+    {
+        AnimationEffectRequest req;
+        req.sourceType = AnimationEffectRequest::SourceType::SpriteSheet;
+        req.spriteSheetTextureId = "hit_animation";
+        req.frameWidth = 64;
+        req.frameHeight = 64;
+        req.frameCount = 6;
+        req.row = 0;
+        req.frameTime = 0.05f;
+        req.looping = false;
+        this->combatAnimations.registerAnimation("slash", req);
+    }
+
+    // ── flash — magical / energy hit ─────────────────────────────────
+    {
+        AnimationEffectRequest req;
+        req.sourceType = AnimationEffectRequest::SourceType::SpriteSheet;
+        req.spriteSheetTextureId = "hit_animation_flash";
+        req.frameWidth = 64;
+        req.frameHeight = 64;
+        req.frameCount = 6;
+        req.row = 0;
+        req.frameTime = 0.05f;
+        req.looping = false;
+        this->combatAnimations.registerAnimation("flash", req);
+    }
+    // "none" requires no registration — playNamed treats it as a no-op
 }
 
 CombatComponent::~CombatComponent()
@@ -102,7 +135,13 @@ void CombatComponent::initMoves()
                         *moveDefinition,
                         *characterPtr,
                         *activeEnemy,
-                        [this]() { this->playSlashAnimation(); }
+                        [this, moveDefinition]() {
+                            // Resolve animation from sfxId — magic sfx → flash, else slash
+                            const std::string& sfx = moveDefinition->sfxId;
+                            const std::string anim =
+                                (sfx == "smite" || sfx == "hellBlaze") ? "flash" : "slash";
+                            this->combatAnimations.playNamed(anim, 1695.f, 420.f, 3.f, 3.f);
+                        }
                     );
                 },
                 moveDefinition->sfxId
@@ -243,8 +282,14 @@ void CombatComponent::initEnemyMoves()
                 EnemyMoveExecutor::execute(
                     *moveDefinition,
                     *enemy,
-                    [this](float x, float y) {
-                        this->playEnemyAttackAnimationAt(x, y);
+                    [this, moveDefinition](float x, float y) {
+                        // Resolve animation from move type
+                        const std::string& type = moveDefinition->type;
+                        const std::string anim =
+                            (type == "POISON") ? "flash" :
+                            (type == "STUN" || type == "DEBUFF_DAMAGE" || type == "DEBUFF_DEFENSE") ? "none" :
+                            "slash";
+                        this->combatAnimations.playNamed(anim, x, y, 3.f, 3.f);
                     }
                 );
             },
@@ -315,33 +360,15 @@ void CombatComponent::clearCombatAnimations()
 
 void CombatComponent::playHitAnimationAt(float x, float y, float scaleX, float scaleY)
 {
-    AnimationEffectRequest request;
-
-    request.sourceType = AnimationEffectRequest::SourceType::SpriteSheet;
-    request.spriteSheetTextureId = "hit_animation";
-
-    request.frameWidth = 64;
-    request.frameHeight = 64;
-    request.frameCount = 6;
-    request.row = 0;
-
-    request.frameTime = 0.05f;
-    request.looping = false;
-
-    request.x = x;
-    request.y = y;
-    request.scaleX = scaleX;
-    request.scaleY = scaleY;
-
-    this->combatAnimations.play(request);
+    this->combatAnimations.playNamed("slash", x, y, scaleX, scaleY);
 }
 
 void CombatComponent::playEnemyAttackAnimationAt(float x, float y)
 {
-    this->playHitAnimationAt(x, y, 3.f, 3.f);
+    this->combatAnimations.playNamed("slash", x, y, 3.f, 3.f);
 }
 
 void CombatComponent::playSlashAnimation()
 {
-    this->playHitAnimationAt(1695.f, 420.f, 3.f, 3.f);
+    this->combatAnimations.playNamed("slash", 1695.f, 420.f, 3.f, 3.f);
 }
