@@ -132,13 +132,23 @@ void GameTriggers::registerAll()
     // Characters that start unlocked should be added directly to
     // CharacterManager in InitializeCharacters instead.
 
-    triggers.on("unlock_siward", []()
+    triggers.on("unlock_ovi", []()
         {
-            CharacterUnlockRegistry::getInstance().unlockCharacter("SIWARD");
+            CharacterUnlockRegistry::getInstance().unlockCharacter("OVI");
         });
 
-    // triggers.on("unlock_lira", []()
-    //     {
-    //         CharacterUnlockRegistry::getInstance().unlockCharacter("LIRA");
-    //     });
+    triggers.on("unlock_suliman", []()
+         {
+             CharacterUnlockRegistry::getInstance().unlockCharacter("SULIMAN");
+         });
+
+    triggers.on("unlock_june", []()
+        {
+            CharacterUnlockRegistry::getInstance().unlockCharacter("JUNE");
+        });
+
+    triggers.on("unlock_lyra", []()
+        {
+            CharacterUnlockRegistry::getInstance().unlockCharacter("LYRA");
+        });
 }

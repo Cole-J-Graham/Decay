@@ -15,10 +15,12 @@ public:
     void saveToFile();
 
     float getMusicVolume() const { return musicVolume; }
-    float getSfxVolume() const { return sfxVolume; }
+    float getSfxVolume()   const { return sfxVolume; }
+    bool  isFullscreen()   const { return fullscreen; }
 
     void setMusicVolume(float volume);
     void setSfxVolume(float volume);
+    void setFullscreen(bool value) { fullscreen = value; }
 
 private:
     SettingsManager() = default;
@@ -28,4 +30,5 @@ private:
 
     float musicVolume = 70.f;
     float sfxVolume = 70.f;
+    bool  fullscreen = false;
 };

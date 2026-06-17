@@ -179,6 +179,7 @@
     <ClCompile Include="GameFlags.h" />
     <ClCompile Include="GameTriggers.cpp" />
     <ClCompile Include="InitializeCharacters.cpp" />
+    <ClCompile Include="IntroState.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="InventoryPanel.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -249,6 +250,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameTriggers.h" />
     <ClInclude Include="InitializeCharacters.h" />
+    <ClInclude Include="IntroState.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="InventoryPanel.h" />
     <ClInclude Include="MainMenuState.h" />

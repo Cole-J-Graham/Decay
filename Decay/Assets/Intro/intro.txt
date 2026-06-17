@@ -1,0 +1,31 @@
+[SLIDE]
+IMAGE: Assets/Intro/slide1.png
+TEXT: The world did not end all at once.
+
+[SLIDE]
+IMAGE: Assets/Intro/slide2.png
+TEXT: It decayed. Slowly at first. Then all at once. It tooks peoples minds, and their bodies.
+
+[SLIDE]
+IMAGE: Assets/Intro/slide3.png
+TEXT: You were once a knight of the capital.
+
+[SLIDE]
+IMAGE: Assets/Intro/slide4.png
+TEXT: You were not supposed to be here. Nobody was.
+
+[SLIDE]
+IMAGE: Assets/Intro/slide5.png
+TEXT: You were not supposed to be here. Nobody was.
+
+[SLIDE]
+IMAGE: Assets/Intro/slide6.png
+TEXT: You were not supposed to be here. Nobody was.
+
+[SLIDE]
+IMAGE: Assets/Intro/slide7.png
+TEXT: You were not supposed to be here. Nobody was.
+
+[SLIDE]
+IMAGE: Assets/Intro/slide8.png
+TEXT: You were not supposed to be here. Nobody was.

@@ -1,4 +1,5 @@
 #include "MainMenuState.h"
+#include "IntroState.h"
 #include "TravelState.h"
 #include "SettingsMenuState.h"
 #include "SaveSlotState.h"
@@ -37,8 +38,9 @@ void MainMenuState::update()
     this->ui.update(this->getMousePosView());
 
     if (this->ui.button("GAME_STATE").isPressed()) {
-        this->states->push(new TravelState(this->window, this->states));
-        std::cout << "Starting gamestate!" << "\n";
+        // New game — play the intro before entering the world
+        this->states->push(new IntroState(this->window, this->states));
+        std::cout << "Starting intro!\n";
     }
 
     if (this->ui.button("SETTINGS_STATE").isPressed()) {
@@ -50,6 +52,7 @@ void MainMenuState::update()
     }
 
     if (this->ui.button("LOAD_STATE").isPressed()) {
+        // Load goes straight to SaveSlotState — no intro on a loaded save
         this->states->push(new SaveSlotState(this->window, this->states, SaveSlotState::Mode::Load));
     }
 }
@@ -81,50 +84,33 @@ void MainMenuState::initUi()
 
     this->ui.addButton("GAME_STATE", std::make_unique<Button>(
         100, 100, 100, 25, 0.5f, "Start",
-        idle,
-        hover,
-        active,
-        false
-    ));
+        idle, hover, active, false));
 
     this->ui.addButton("SETTINGS_STATE", std::make_unique<Button>(
         100, 150, 100, 25, 0.5f, "Settings",
-        idle,
-        hover,
-        active,
-        false
-    ));
+        idle, hover, active, false));
 
     this->ui.addButton("EXIT_STATE", std::make_unique<Button>(
         100, 175, 100, 25, 0.5f, "Quit",
-        idle,
-        hover,
-        active,
-        false
-    ));
+        idle, hover, active, false));
 
     this->ui.addButton("LOAD_STATE", std::make_unique<Button>(
         100, 200, 100, 25, 0.5f, "Load",
-        idle,
-        hover,
-        active,
-        false
-    ));
+        idle, hover, active, false));
 
     this->ui.addAnimation("DECAY_LOGO_ANIMATION", std::make_unique<AnimationPlayer>());
 
-    //Animations
     auto decayLogo = std::make_unique<AnimationPlayer>();
 
     decayLogo->setFramesFromTextureIds({ "decay_menu_1","decay_menu_2","decay_menu_3","decay_menu_4","decay_menu_5","decay_menu_6" });
 
     decayLogo->setFrameTimes({
-        1.65f, // slow hold
-        1.60f, // slow hold
-        1.55f, // slow hold
-        0.57f, // drip starts moving
-        0.57f, // fast
-        0.55f  // fastest
+        1.65f,
+        1.60f,
+        1.55f,
+        0.57f,
+        0.57f,
+        0.55f
         });
 
     decayLogo->setLooping(true);
@@ -133,6 +119,7 @@ void MainMenuState::initUi()
 
     this->ui.addAnimation("DECAY_LOGO_ANIMATION", std::move(decayLogo));
 }
+
 // Character Functions
 void MainMenuState::initCharacters()
 {

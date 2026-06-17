@@ -51,6 +51,8 @@ void StatsModule::render(sf::RenderTarget* target) {
 
 // Stat Functions
 void StatsModule::updateStats(const sf::Vector2f mousePos) {
+	if (!this->currentInstance) return; // Only update stats if this is the active instance
+
     for (auto& it : this->stats) {
         if (it.second) {
             it.second->update(mousePos);

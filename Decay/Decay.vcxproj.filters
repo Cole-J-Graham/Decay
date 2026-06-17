@@ -190,6 +190,9 @@
     <ClCompile Include="CompanionConversationManager.cpp">
       <Filter>Character\CharacterManagement</Filter>
     </ClCompile>
+    <ClCompile Include="IntroState.cpp">
+      <Filter>States\PlayStates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -395,6 +398,9 @@
     </ClInclude>
     <ClInclude Include="CompanionConversationManager.h">
       <Filter>Character\CharacterManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroState.h">
+      <Filter>States\PlayStates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
