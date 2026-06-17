@@ -1,57 +1,56 @@
 #pragma once
 
-// States
 #include "State.h"
-
-// Modules
 #include "CombatComponent.h"
-#include "UiPanel.h"
+#include "CombatConsole.h"
 #include "RewardSystem.h"
 
 class CombatState : public State, public CombatComponent
 {
 public:
-    // Constructors and Destructors
     CombatState(sf::RenderWindow* window, std::stack<State*>* states);
     ~CombatState() = default;
 
-    // Core Functions
+    // Core
     void combatLoop(const sf::Vector2f mousePos);
     bool detectEnemyDeath();
+    bool detectPartyWipe();
     void resetCombat();
-    bool startCombat(const std::string& areaId);
 
-    // State Functions
+    bool startCombat(const std::string& areaId);
+    bool startBossCombat(const std::string& enemyId,
+        const std::string& areaId,
+        const std::string& defeatedFlag,
+        const std::string& musicContext = "");
+
+    // State interface
     void updateKeybinds();
     void update();
     void render(sf::RenderTarget* target = nullptr);
 
-    // Character Functions
     void resetAllCharacterTurns();
 
 private:
-    // UI Functions
-    void initUi();
-
-    // Combat Turn Helpers
     void handleCharacterTurn(int partyIndex, const sf::Vector2f mousePos);
     void handleEnemyTurn(const sf::Vector2f mousePos);
     void resetAllCharactersForNewCombat();
 
-    // Combat Ending Helpers
     void beginCombatEnd();
     void finishCombatEnd();
 
-    // Combat Console Helpers
-    void enableCombatConsoleContinue();
-    void disableCombatConsoleContinue();
-    bool combatConsoleClicked();
+    void beginDefeat();
+    void handleReturnToBonfire();
+    void handleLoadLastSave();
 
-private:
+    void applyCombatMusic(const std::string& areaId,
+        const std::string& overrideContext = "");
+
+    CombatConsole console;
+
     bool stateEnd = false;
-    bool combatConsoleActive = false;
+    bool defeatState = false;
+    int  combatFrame = 0;
 
-    int combatFrame = 0;
-
-    UiPanel ui;
+    std::string pendingDefeatedFlag;
+    std::string currentAreaIdForBonfire;
 };

@@ -27,6 +27,7 @@ Character::Character(const std::string id, std::string characterName, float hp, 
 
     this->initText();
     this->initButtons();
+    this->updateText(); // initialises HP display immediately
 }
 
 Character::~Character()
@@ -346,7 +347,7 @@ void Character::takeDamage(float amount)
     if (amount > 0.f)
     {
         this->hp -= amount;
-
+        std::cout << this->id << " HP after damage: " << this->hp << "\n";
         if (this->hp < 0.f)
         {
             this->hp = 0.f;

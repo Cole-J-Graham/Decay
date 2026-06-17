@@ -1,81 +1,187 @@
 #include "CombatState.h"
+#include "BonfireState.h"
 #include "RewardSystem.h"
 #include "MusicManager.h"
+#include "EnemyDatabase.h"
+#include "GameFlags.h"
+#include "TriggerManager.h"
+#include "SaveManager.h"
 #include <iostream>
+#include <algorithm>
 
-// Constructors and Destructors
+// ── Constructor ───────────────────────────────────────────────────────────
+
 CombatState::CombatState(sf::RenderWindow* window, std::stack<State*>* states)
     : State(window, states)
-{
-    this->initUi();
+{}
 
-    this->combatFrame = 0;
-    this->stateEnd = false;
-    this->combatConsoleActive = false;
+// ── State interface ───────────────────────────────────────────────────────
+
+void CombatState::updateKeybinds() {}
+
+void CombatState::update()
+{
+    this->checkForQuit();
+    this->updateMousePositions();
+
+    this->console.update(this->getMousePosView());
+    this->updateCombat(this->getMousePosView());
+    this->combatLoop(this->getMousePosView());
+    this->updateCombatAnimations();
 }
 
-// Core Functions
+void CombatState::render(sf::RenderTarget* target)
+{
+    if (target == nullptr) return;
+
+    this->console.render(*target);
+    this->renderCombat(target);
+    this->renderCombatAnimations(target);
+}
+
+// ── Combat loop ───────────────────────────────────────────────────────────
+
 void CombatState::combatLoop(const sf::Vector2f mousePos)
 {
-    if (this->stateEnd) {
-        this->enableCombatConsoleContinue();
-
-        if (this->combatConsoleClicked()) {
-            this->finishCombatEnd();
-        }
-
+    // Defeat screen
+    if (this->defeatState)
+    {
+        if (this->console.defeatBonfireClicked()) this->handleReturnToBonfire();
+        if (this->console.defeatLoadClicked())    this->handleLoadLastSave();
         return;
     }
+
+    // Victory screen
+    if (this->stateEnd)
+    {
+        this->console.enableContinue();
+        if (this->console.continueClicked()) this->finishCombatEnd();
+        return;
+    }
+
+    if (this->detectPartyWipe()) return;
 
     this->detectEnemyDeath();
+    if (this->stateEnd) return;
 
-    if (this->stateEnd) {
-        return;
-    }
-
-    switch (this->combatFrame) {
-    case 0:
-        this->handleCharacterTurn(0, mousePos);
-        break;
-
-    case 1:
-        this->handleCharacterTurn(1, mousePos);
-        break;
-
-    case 2:
-        this->handleCharacterTurn(2, mousePos);
-        break;
-
-    case 3:
-        this->handleEnemyTurn(mousePos);
-        break;
-
+    switch (this->combatFrame)
+    {
+    case 0: this->handleCharacterTurn(0, mousePos); break;
+    case 1: this->handleCharacterTurn(1, mousePos); break;
+    case 2: this->handleCharacterTurn(2, mousePos); break;
+    case 3: this->handleEnemyTurn(mousePos);        break;
     case 4:
         this->resetAllCharacterTurns();
         this->combatFrame = 0;
-        this->disableCombatConsoleContinue();
+        this->console.disableContinue();
         break;
-
     default:
         this->combatFrame = 0;
-        this->disableCombatConsoleContinue();
+        this->console.disableContinue();
         break;
     }
 }
 
+// ── Party wipe ────────────────────────────────────────────────────────────
+
+bool CombatState::detectPartyWipe()
+{
+    if (this->defeatState) return true;
+
+    const auto& party = CharacterManager::getInstance().getAllPartyMembers();
+    if (party.empty()) return false;
+
+    for (const auto& member : party)
+        if (member && member->isAlive()) return false;
+
+    this->beginDefeat();
+    return true;
+}
+
+void CombatState::beginDefeat()
+{
+    if (this->defeatState) return;
+
+    std::cout << "CombatState: party wiped.\n";
+
+    this->defeatState = true;
+    this->combatFrame = 0;
+
+    this->resetAllCharacterTurns();
+    this->console.disableContinue();
+    this->console.setTurnIndicator("");
+    this->console.showDefeatPanel();
+
+    MusicManager::getInstance().pop();
+}
+
+void CombatState::handleReturnToBonfire()
+{
+    CharacterManager::getInstance().restParty();
+
+    this->clearCurrentEnemy();
+    this->clearCombatMoves();
+    this->resetAllCharactersForNewCombat();
+
+    this->defeatState = false;
+    this->combatFrame = 0;
+
+    this->console.hideDefeatPanel();
+
+    if (!this->states->empty()) this->states->pop();
+
+    this->states->push(new BonfireState(
+        this->window, this->states, this->currentAreaIdForBonfire));
+}
+
+void CombatState::handleLoadLastSave()
+{
+    // Find most recent save by timestamp
+    int         latestSlot = -1;
+    std::string latestTimestamp = "";
+
+    for (int i = 0; i < SaveManager::maxSlots; ++i)
+    {
+        const auto summary = SaveManager::getInstance().getSlotSummary(i);
+        if (!summary.exists) continue;
+        if (summary.timestamp > latestTimestamp)
+        {
+            latestTimestamp = summary.timestamp;
+            latestSlot = i;
+        }
+    }
+
+    if (latestSlot == -1)
+    {
+        std::cout << "CombatState: no save found, falling back to bonfire.\n";
+        this->handleReturnToBonfire();
+        return;
+    }
+
+    SaveManager::getInstance().loadFromSlot(latestSlot, nullptr);
+
+    this->clearCurrentEnemy();
+    this->clearCombatMoves();
+    this->resetAllCharactersForNewCombat();
+
+    this->defeatState = false;
+    this->combatFrame = 0;
+    this->console.hideDefeatPanel();
+
+    if (!this->states->empty()) this->states->pop();
+}
+
+// ── Enemy death (victory) ─────────────────────────────────────────────────
+
 bool CombatState::detectEnemyDeath()
 {
-    if (this->getEnemyId().empty()) {
-        return false;
-    }
+    if (this->getEnemyId().empty()) return false;
 
     auto it = this->enemies.find(this->getEnemyId());
+    if (it == this->enemies.end() || !it->second) return false;
 
-    if (it == this->enemies.end() || it->second == nullptr) {
-        return false;
-    }
-
-    if (it->second->getHp() <= 0) {
+    if (it->second->getHp() <= 0)
+    {
         this->beginCombatEnd();
         return true;
     }
@@ -85,92 +191,70 @@ bool CombatState::detectEnemyDeath()
 
 void CombatState::beginCombatEnd()
 {
-    if (this->stateEnd) {
-        return;
-    }
+    if (this->stateEnd) return;
 
-    std::cout << "Enemy " << this->getEnemyId() << " has been defeated." << "\n";
+    std::cout << "Enemy " << this->getEnemyId() << " defeated.\n";
+
+    if (!this->pendingDefeatedFlag.empty())
+    {
+        GameFlags::getInstance().set(this->pendingDefeatedFlag);
+        TriggerManager::getInstance().fire("boss_defeated:" + this->pendingDefeatedFlag);
+        this->pendingDefeatedFlag = "";
+    }
 
     this->stateEnd = true;
     this->combatFrame = 0;
-
     this->resetAllCharacterTurns();
 
     auto it = this->enemies.find(this->getEnemyId());
 
-    std::ostringstream rewardMessage;
-    rewardMessage << "Enemy defeated.";
+    std::ostringstream msg;
+    msg << "Enemy defeated.";
 
-    if (it != this->enemies.end() && it->second != nullptr) {
+    if (it != this->enemies.end() && it->second)
+    {
         it->second->resetTurn();
 
         RewardResult rewards = RewardSystem::grantRewards(
-            it->second->getRewards(),
-            Inventory::getInstance()
-        );
+            it->second->getRewards(), Inventory::getInstance());
 
-        if (rewards.expGranted > 0) {
-            CharacterManager::getInstance().addExpToParty(static_cast<float>(rewards.expGranted));
-        }
+        if (rewards.expGranted > 0)
+            CharacterManager::getInstance().addExpToParty(
+                static_cast<float>(rewards.expGranted));
 
-        if (rewards.anyRewardGranted) {
-            rewardMessage << " Received ";
+        if (rewards.anyRewardGranted)
+        {
+            msg << " Received ";
+            bool first = true;
 
-            bool firstReward = true;
+            auto comma = [&]() { if (!first) msg << ", "; first = false; };
 
-            if (rewards.goldGranted > 0) {
-                rewardMessage << "Gold x" << rewards.goldGranted;
-                firstReward = false;
+            if (rewards.goldGranted > 0) { comma(); msg << "Gold x" << rewards.goldGranted; }
+            if (rewards.expGranted > 0) { comma(); msg << "EXP x" << rewards.expGranted; }
+
+            for (const auto& r : rewards.grantedRewards)
+            {
+                const auto* def = Inventory::getInstance().getItemDefinition(r.itemId);
+                comma();
+                msg << (def ? def->displayName : r.itemId) << " x" << r.quantity;
             }
-
-            if (rewards.expGranted > 0) {
-                if (!firstReward) {
-                    rewardMessage << ", ";
-                }
-
-                rewardMessage << "EXP x" << rewards.expGranted;
-                firstReward = false;
-            }
-
-            for (const auto& reward : rewards.grantedRewards) {
-                const Inventory::ItemDefinition* definition =
-                    Inventory::getInstance().getItemDefinition(reward.itemId);
-
-                std::string itemName = reward.itemId;
-
-                if (definition != nullptr) {
-                    itemName = definition->displayName;
-                }
-
-                if (!firstReward) {
-                    rewardMessage << ", ";
-                }
-
-                rewardMessage << itemName << " x" << reward.quantity;
-                firstReward = false;
-            }
-
-            rewardMessage << ".";
+            msg << ".";
         }
-        else {
-            rewardMessage << " No rewards received.";
-        }
+        else msg << " No rewards received.";
     }
 
-    rewardMessage << " Click to continue...";
+    msg << " Click to continue...";
 
-    this->ui.text("COMBAT_MESSAGE").setString(rewardMessage.str());
-    this->ui.text("COMBAT_MESSAGE").setShown();
-
-    this->enableCombatConsoleContinue();
+    this->console.setMessage(msg.str());
+    this->console.showMessage();
+    this->console.enableContinue();
 }
 
 void CombatState::finishCombatEnd()
 {
-    this->disableCombatConsoleContinue();
-
-    this->ui.text("COMBAT_MESSAGE").setString("");
-    this->ui.text("COMBAT_MESSAGE").setShown();
+    this->console.disableContinue();
+    this->console.setMessage("");
+    this->console.showMessage();
 
     this->clearCurrentEnemy();
     this->clearCombatMoves();
@@ -179,291 +263,213 @@ void CombatState::finishCombatEnd()
     this->combatFrame = 0;
     this->stateEnd = false;
 
-    MusicManager::getInstance().pop();  // resume area music
+    MusicManager::getInstance().pop();
 
-    if (!this->states->empty()) {
-        this->states->pop();
-    }
+    if (!this->states->empty()) this->states->pop();
 }
+
+// ── Combat start ──────────────────────────────────────────────────────────
 
 void CombatState::resetCombat()
 {
-    this->disableCombatConsoleContinue();
-
-    this->ui.text("COMBAT_MESSAGE").setString("");
-    this->ui.text("COMBAT_MESSAGE").setHidden();
+    this->console.disableContinue();
+    this->console.setMessage("");
+    this->console.hideMessage();
+    this->console.hideDefeatPanel();
 
     this->clearCurrentEnemy();
     this->clearCombatMoves();
-	this->resetAllCharactersForNewCombat();
+    this->resetAllCharactersForNewCombat();
 
     this->combatFrame = 0;
     this->stateEnd = false;
+    this->defeatState = false;
+    this->pendingDefeatedFlag = "";
 }
 
 bool CombatState::startCombat(const std::string& areaId)
 {
     this->resetCombat();
     this->setCurrentArea(areaId);
+    this->currentAreaIdForBonfire = areaId;
 
-    const bool spawnedEnemy = this->enemyPool(this->getCurrentArea());
-    if (!spawnedEnemy) return false;
+    if (!this->enemyPool(this->getCurrentArea())) return false;
 
     this->combatFrame = 0;
     this->stateEnd = false;
-    this->disableCombatConsoleContinue();
-
-	//Transform areaID to lowercase for db matching, but keep original for logging
-    std::string areaIdLower = areaId;
-    std::transform(areaIdLower.begin(), areaIdLower.end(), areaIdLower.begin(), ::tolower);
-    const std::string combatContext = "combat_" + areaIdLower;
-    // Match db format: "combat_forest", "combat_castle", etc.
-    if (MusicManager::getInstance().hasContext(combatContext)) {
-        MusicManager::getInstance().play(combatContext);
-    }
-    else {
-        std::cout << "No combat music found for area " << areaId
-            << ". Attempted: " << combatContext << "\n";
-        // No generic fallback exists in db, so just leave travel music playing
-    }
-
+    this->console.disableContinue();
+    this->applyCombatMusic(areaId);
     return true;
 }
 
-// State Functions
-void CombatState::updateKeybinds()
-{}
-
-void CombatState::update()
+bool CombatState::startBossCombat(const std::string& enemyId,
+    const std::string& areaId,
+    const std::string& defeatedFlag,
+    const std::string& musicContext)
 {
-    this->checkForQuit();
-    this->updateMousePositions();
+    this->resetCombat();
+    this->setCurrentArea(areaId);
+    this->currentAreaIdForBonfire = areaId;
 
-    this->ui.update(this->getMousePosView());
+    const EnemyDefinition* def = EnemyDatabase::getInstance().getEnemy(enemyId);
+    if (!def)
+    {
+        std::cerr << "CombatState::startBossCombat: enemy not found: " << enemyId << "\n";
+        return false;
+    }
 
-    this->updateCombat(this->getMousePosView());
-    this->combatLoop(this->getMousePosView());
-    this->updateCombatAnimations();
+    this->clearCurrentEnemy();
+    this->enemies[def->id] = new Enemy(
+        def->name, def->hp, def->hpMax, def->damage, def->defense,
+        def->scale, def->spritePath, def->viewerPath, def->rewards, false);
+
+    this->setEnemyId(def->id);
+    this->pendingDefeatedFlag = defeatedFlag;
+
+    this->combatFrame = 0;
+    this->stateEnd = false;
+    this->console.disableContinue();
+    this->applyCombatMusic(areaId, musicContext);
+    return true;
 }
 
-void CombatState::render(sf::RenderTarget* target)
+void CombatState::applyCombatMusic(const std::string& areaId,
+    const std::string& overrideContext)
 {
-    if (target == nullptr) {
+    if (!overrideContext.empty() &&
+        MusicManager::getInstance().hasContext(overrideContext))
+    {
+        MusicManager::getInstance().play(overrideContext);
         return;
     }
 
-    this->ui.render(*target);
-    this->renderCombat(target);
-    this->renderCombatAnimations(target);
+    std::string lower = areaId;
+    std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+    const std::string ctx = "combat_" + lower;
+
+    if (MusicManager::getInstance().hasContext(ctx))
+        MusicManager::getInstance().play(ctx);
+    else
+        std::cout << "CombatState: no combat music for: " << areaId << "\n";
 }
 
-// Character Functions
+// ── Character helpers ─────────────────────────────────────────────────────
+
 void CombatState::resetAllCharacterTurns()
 {
-	// Mid combat turn resets should only reset the turn state, not the pose or combat status effects, so that stuns and locks persist across turns but still consume their duration properly.
-    auto& allCharacters = CharacterManager::getInstance().getAllCharacters();
-
-    for (auto& pair : allCharacters) {
+    for (auto& pair : CharacterManager::getInstance().getAllCharacters())
         pair.second->resetTurn();
-    }
 }
 
 void CombatState::resetAllCharactersForNewCombat()
 {
-	// Full combat resets should clear turn state, pose, and combat status effects, so that characters start fresh in the new combat.
-    auto& allCharacters = CharacterManager::getInstance().getAllCharacters();
-    for (auto& pair : allCharacters) {
-        auto& c = pair.second;
-        c->resetTurn();
-        c->resetPose();
-        c->clearCombatStatus();
+    for (auto& pair : CharacterManager::getInstance().getAllCharacters())
+    {
+        pair.second->resetTurn();
+        pair.second->resetPose();
+        pair.second->clearCombatStatus();
     }
 }
 
-// Combat Turn Helpers
+// ── Turn handlers ─────────────────────────────────────────────────────────
+
 void CombatState::handleCharacterTurn(int partyIndex, const sf::Vector2f mousePos)
 {
     auto& party = CharacterManager::getInstance().getParty();
 
-    if (party.size() <= partyIndex) {
+    if (party.size() <= partyIndex)
+    {
         this->combatFrame++;
-        this->disableCombatConsoleContinue();
+        this->console.disableContinue();
         return;
     }
 
     auto character = party.getCharacter(partyIndex);
-
-    if (character == nullptr) {
+    if (!character)
+    {
         this->combatFrame++;
-        this->disableCombatConsoleContinue();
+        this->console.disableContinue();
         return;
     }
 
-    this->ui.text("TURN_INDICATOR_TEXT").setString("TURN  " + character->getId());
+    this->console.setTurnIndicator("TURN  " + character->getId());
 
-    // ← Check this FIRST before anything else can reset characterFrame
-    if (character->isWaitingForContinue()) {
-        this->enableCombatConsoleContinue();
-
-        if (this->combatConsoleClicked()) {
+    if (character->isWaitingForContinue())
+    {
+        this->console.enableContinue();
+        if (this->console.continueClicked())
+        {
             character->continueTurn(this->combatFrame);
-            this->disableCombatConsoleContinue();
+            this->console.disableContinue();
         }
         return;
     }
 
     character->clearJustContinued();
 
-    if (character->isStunned()) {
-        this->enableCombatConsoleContinue();
-        this->ui.text("COMBAT_MESSAGE").setString(character->getId() + " is stunned and skips their turn.");
-        this->ui.text("COMBAT_MESSAGE").setShown();
+    if (character->isStunned())
+    {
+        this->console.enableContinue();
+        this->console.setMessage(character->getId() + " is stunned and skips their turn.");
+        this->console.showMessage();
 
-        if (this->combatConsoleClicked()) {
+        if (this->console.continueClicked())
+        {
             character->consumeStunTurn();
             character->resetTurn();
             this->combatFrame++;
-            this->disableCombatConsoleContinue();
-            this->ui.text("COMBAT_MESSAGE").setString("");
-            this->ui.text("COMBAT_MESSAGE").setHidden();
+            this->console.disableContinue();
+            this->console.setMessage("");
+            this->console.hideMessage();
         }
         return;
     }
 
-    if (character->isActionLocked()) {
+    if (character->isActionLocked())
+    {
         character->resetTurn();
-        this->enableCombatConsoleContinue();
-        this->ui.text("COMBAT_MESSAGE").setString(character->getId() + " is locked into their action and skips their turn.");
-        this->ui.text("COMBAT_MESSAGE").setShown();
+        this->console.enableContinue();
+        this->console.setMessage(character->getId() + " is locked and skips their turn.");
+        this->console.showMessage();
 
-        if (this->combatConsoleClicked()) {
+        if (this->console.continueClicked())
+        {
             character->consumeActionLockTurn();
             character->tickTemporaryEffects();
             character->consumePoseTurn();
             this->combatFrame++;
-            this->disableCombatConsoleContinue();
-            this->ui.text("COMBAT_MESSAGE").setString("");
-            this->ui.text("COMBAT_MESSAGE").setHidden();
+            this->console.disableContinue();
+            this->console.setMessage("");
+            this->console.hideMessage();
         }
         return;
     }
 
-    if (!sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+    if (!sf::Mouse::isButtonPressed(sf::Mouse::Left))
         character->clearWaitingForMouseRelease();
-    }
 
     character->characterTurn(this->combatFrame, mousePos);
 }
 
 void CombatState::handleEnemyTurn(const sf::Vector2f mousePos)
 {
-    if (this->getEnemyId().empty()) {
-        return;
-    }
+    if (this->getEnemyId().empty()) return;
 
     auto it = this->enemies.find(this->getEnemyId());
-
-    if (it == this->enemies.end() || it->second == nullptr) {
-        return;
-    }
+    if (it == this->enemies.end() || !it->second) return;
 
     Enemy* enemy = it->second;
 
-    if (!enemy->isWaitingForContinue()) {
+    if (!enemy->isWaitingForContinue())
         enemy->enemyTurn(this->combatFrame, mousePos);
-    }
 
-    if (enemy->isWaitingForContinue()) {
-        this->enableCombatConsoleContinue();
-
-        if (this->combatConsoleClicked()) {
+    if (enemy->isWaitingForContinue())
+    {
+        this->console.enableContinue();
+        if (this->console.continueClicked())
+        {
             enemy->continueTurn(this->combatFrame);
-            this->disableCombatConsoleContinue();
-            return;
+            this->console.disableContinue();
         }
     }
-}
-
-// Combat Console Helpers
-void CombatState::enableCombatConsoleContinue()
-{
-    if (!this->combatConsoleActive) {
-        this->combatConsoleActive = true;
-        this->ui.button("COMBAT_CONSOLE_CONTINUE").show();
-        this->ui.text("COMBAT_CONTINUE_HINT").setShown();
-    }
-}
-
-void CombatState::disableCombatConsoleContinue()
-{
-    this->combatConsoleActive = false;
-    this->ui.button("COMBAT_CONSOLE_CONTINUE").setIdle();
-    this->ui.button("COMBAT_CONSOLE_CONTINUE").hide();
-    this->ui.text("COMBAT_CONTINUE_HINT").setHidden();
-}
-
-bool CombatState::combatConsoleClicked()
-{
-    return this->combatConsoleActive &&
-        this->ui.button("COMBAT_CONSOLE_CONTINUE").isPressed();
-}
-
-// UI Functions
-void CombatState::initUi()
-{
-    // ── Enemy zone border ─────────────────────────────────────────────
-    this->ui.addRectangle("HOSTILEBORDER", std::make_unique<Rectangle>(
-        1695, 420, 200, 200,
-        sf::Color::Transparent,
-        sf::Color(255, 80, 80, 120),   // red tint — hostile zone
-        1.f, false
-    ));
-
-    // ── Combat console — filled dark panel ───────────────────────────
-    this->ui.addRectangle("COMBATCONSOLE_BG", std::make_unique<Rectangle>(
-        350, 825, 1250, 175,
-        sf::Color(10, 10, 20, 210),    // near-black fill
-        sf::Color(255, 255, 255, 50),
-        1.f, false
-    ));
-
-    // Thin gold accent bar along the top of the console
-    this->ui.addRectangle("COMBATCONSOLE_ACCENT", std::make_unique<Rectangle>(
-        350, 825, 1250, 2,
-        sf::Color(255, 200, 80, 160),
-        sf::Color::Transparent,
-        0.f, false
-    ));
-
-    // Main message text — slightly inset
-    this->ui.addText("COMBAT_MESSAGE", std::make_unique<Text>(
-        355, 835, 16, "", sf::Color::White, true
-    ));
-
-    // "Click to continue" hint — bottom-right of console
-    this->ui.addText("COMBAT_CONTINUE_HINT", std::make_unique<Text>(
-        1455, 830, 12, "[ Click to continue ]",
-        sf::Color(180, 180, 180, 140), true   // starts hidden
-    ));
-
-    // Invisible click target covering the whole console
-    this->ui.addButton("COMBAT_CONSOLE_CONTINUE", std::make_unique<Button>(
-        350, 825, 1250, 175, 0.5f, "",
-        sf::Color(0, 0, 0, 0),
-        sf::Color(255, 255, 255, 12),
-        sf::Color(255, 255, 255, 25),
-        true
-    ));
-
-    // ── Turn indicator bar above the console ─────────────────────────
-    this->ui.addRectangle("TURN_INDICATOR_BG", std::make_unique<Rectangle>(
-        350, 800, 1250, 22,
-        sf::Color(20, 20, 35, 200),
-        sf::Color(255, 255, 255, 40),
-        1.f, false
-    ));
-
-    this->ui.addText("TURN_INDICATOR_TEXT", std::make_unique<Text>(
-        360, 803, 12, "", sf::Color(160, 220, 255, 220), false
-    ));
 }

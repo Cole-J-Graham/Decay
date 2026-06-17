@@ -6,7 +6,6 @@
 // Constructors and Destructors
 StatsModule::StatsModule(const std::string& id, const std::string& tipText)
     : id(id), tipText(tipText) {
-    // Variables
     this->level = 0;
     this->exp = 0;
     this->expNext = 100;
@@ -16,7 +15,6 @@ StatsModule::StatsModule(const std::string& id, const std::string& tipText)
     this->currentInstance = false;
     this->lastClicked = false;
 
-    // Initialization
     this->initRects();
     this->initText();
     this->initButtons();
@@ -24,7 +22,6 @@ StatsModule::StatsModule(const std::string& id, const std::string& tipText)
 
 StatsModule::~StatsModule()
 {
-    //Delete Buttons
     for (auto& pair : this->buttons) {
         delete pair.second;
     }
@@ -51,7 +48,7 @@ void StatsModule::render(sf::RenderTarget* target) {
 
 // Stat Functions
 void StatsModule::updateStats(const sf::Vector2f mousePos) {
-	if (!this->currentInstance) return; // Only update stats if this is the active instance
+    if (!this->currentInstance) return;
 
     for (auto& it : this->stats) {
         if (it.second) {
@@ -61,10 +58,16 @@ void StatsModule::updateStats(const sf::Vector2f mousePos) {
     }
 }
 
-void StatsModule::createStat(const std::string& key, const std::string& statName,
-    const std::string& modifiedStatName, float& stat, float statModifier) {
+void StatsModule::createStat(const std::string& key,
+    const std::string& statName,
+    const std::string& modifiedStatName,
+    float& stat,
+    float statModifier,
+    std::function<void(float)> onStatUp)
+{
     if (this->stats.find(key) == this->stats.end()) {
-        this->stats[key] = std::make_shared<Stat>(statName, modifiedStatName, stat, statModifier);
+        this->stats[key] = std::make_shared<Stat>(
+            statName, modifiedStatName, stat, statModifier, std::move(onStatUp));
     }
 }
 
@@ -104,7 +107,6 @@ void StatsModule::increaseLevel() {
             this->level++;
             this->sp++;
 
-            // Check for newly unlocked moves at this level
             auto moves = CharacterMoveDatabase::getInstance().getMovesForOwner(this->id);
             for (const auto* move : moves)
             {
@@ -120,104 +122,85 @@ void StatsModule::increaseLevel() {
             }
         }
         else {
-            std::cout << "Not enough exp for level up..." << "\n";
+            std::cout << "Not enough exp for level up...\n";
         }
     }
 }
 
 void StatsModule::addExp(float amount)
 {
-    if (amount <= 0.f) {
-        return;
-    }
-
+    if (amount <= 0.f) return;
     this->exp += amount;
     this->updateText();
 }
 
 // Rectangle Functions
 void StatsModule::initRects() {
-    this->rectangles["STATSMENU"] = std::make_unique<Rectangle>(1400, 50, 270, 620, sf::Color::Transparent,
-        sf::Color::White, 1.f, false);
+    this->rectangles["STATSMENU"] = std::make_unique<Rectangle>(1400, 50, 270, 620,
+        sf::Color::Transparent, sf::Color::White, 1.f, false);
 
     this->rectangles["HEADERDIV"] = std::make_unique<Rectangle>(1400, 82, 270, 1,
         sf::Color(255, 255, 255, 60), sf::Color::Transparent, 0.f, false);
 
-    // Divider separating the stat rows from the character blurb below
     this->rectangles["LOREDIV"] = std::make_unique<Rectangle>(1400, 240, 270, 1,
         sf::Color(255, 255, 255, 40), sf::Color::Transparent, 0.f, false);
 }
 
 void StatsModule::renderRects(sf::RenderTarget* target) {
-    for (auto& it : this->rectangles) {
+    for (auto& it : this->rectangles)
         it.second->render(target);
-    }
 }
 
 // Button Functions
 void StatsModule::updateButtons(const sf::Vector2f mousePos) {
     for (auto& it : this->buttons) {
-        if (it.second) {
+        if (it.second)
             it.second->update(mousePos);
-        }
     }
 
-    if (this->currentInstance) {
+    if (this->currentInstance)
         this->increaseLevel();
-    }
 }
 
 void StatsModule::initButtons() {
-    if (this->buttonId.empty()) {
+    if (this->buttonId.empty())
         this->buttonId = this->id;
-    }
 
     this->buttons[this->buttonId] = new Button(1620, 53, 100, 22, 0.5f, this->id,
-        sf::Color(60, 90, 60, 160), sf::Color(100, 180, 100, 255), sf::Color(20, 20, 20, 70), false);
+        sf::Color(60, 90, 60, 160), sf::Color(100, 180, 100, 255),
+        sf::Color(20, 20, 20, 70), false);
 
     this->buttons["LEVELUP"] = new Button(1560, 53, 55, 22, 0.5f, "LVL++",
-        sf::Color(60, 100, 60, 160), sf::Color(100, 180, 100, 255), sf::Color(30, 60, 30, 180), false);
+        sf::Color(60, 100, 60, 160), sf::Color(100, 180, 100, 255),
+        sf::Color(30, 60, 30, 180), false);
 }
 
 void StatsModule::renderButtons(sf::RenderTarget* target) {
-    for (auto& it : this->buttons) {
+    for (auto& it : this->buttons)
         it.second->render(target);
-    }
 }
 
 // Text Functions
 void StatsModule::initText() {
     this->text["TITLE"] = std::make_unique<Text>(1410, 55, 13,
-        "CHARACTER STATS",
-        sf::Color(200, 200, 200, 220), false);
+        "CHARACTER STATS", sf::Color(200, 200, 200, 220), false);
 
     this->text["EXPTEXT"] = std::make_unique<Text>(1410, 84, 12,
-        buildExpString(),
-        sf::Color(255, 210, 100, 255), false);
+        buildExpString(), sf::Color(255, 210, 100, 255), false);
 
     this->text["SPTEXT"] = std::make_unique<Text>(1560, 84, 12,
-        buildSpString(),
-        sf::Color(130, 220, 130, 255), false);
+        buildSpString(), sf::Color(130, 220, 130, 255), false);
 
-    // Current HP — kept live via setHp(), called every frame from
-    // Character::updateText(). Sits in the gap between the EXP/SP row
-    // and the stat rows.
     this->text["HPTEXT"] = std::make_unique<Text>(1410, 100, 12,
-        "HP --/--",
-        sf::Color(230, 140, 140, 255), false);
+        "HP --/--", sf::Color(230, 140, 140, 255), false);
 
-    // Character blurb — below the stat rows and LOREDIV, populated via
-    // setTipText() (InitializeCharacters::initLore()). Wrapped to fit the
-    // panel's content width.
     this->text["TIPTEXT"] = std::make_unique<Text>(1410, 250, 11,
-        "",
-        sf::Color(200, 190, 170, 220), false);
+        "", sf::Color(200, 190, 170, 220), false);
 }
 
 void StatsModule::renderText(sf::RenderTarget* target) {
-    for (auto& it : this->text) {
+    for (auto& it : this->text)
         it.second->render(target);
-    }
 }
 
 void StatsModule::updateText() {
@@ -241,12 +224,11 @@ std::string StatsModule::buildSpString() const {
     return "SP  " + std::to_string(this->sp);
 }
 
-// HP / Lore
 void StatsModule::setHp(float hp, float hpMax)
 {
     this->text["HPTEXT"]->setString(
-        "HP " + this->toStringWithPrecision(hp, 0) + " / " + this->toStringWithPrecision(hpMax, 0)
-    );
+        "HP " + this->toStringWithPrecision(hp, 0)
+        + " / " + this->toStringWithPrecision(hpMax, 0));
 }
 
 void StatsModule::setTipText(const std::string& tip)
@@ -255,15 +237,12 @@ void StatsModule::setTipText(const std::string& tip)
     this->text["TIPTEXT"]->setString(Text::wrapText(this->tipText, 240.f));
 }
 
-// ------------------------------------------------------------------
 // Save/Load support
-// ------------------------------------------------------------------
 std::vector<std::string> StatsModule::getStatKeys() const
 {
     std::vector<std::string> keys;
-    for (const auto& it : this->stats) {
+    for (const auto& it : this->stats)
         keys.push_back(it.first);
-    }
     return keys;
 }
 

@@ -10,11 +10,13 @@
 #include "TravelInputComponent.h"
 #include "TravelHudComponent.h"
 #include "InventoryPanel.h"
+#include "EventManager.h"
 
-//Events
+// Events
 #include "TriggerManager.h"
 #include "GameFlags.h"
 #include "GameTriggers.h"
+#include "BossEncounterDatabase.h"
 
 // Managers
 #include "CharacterManager.h"
@@ -63,7 +65,12 @@ private:
     EncounterResult determineEncounterResult();
     void handleEncounterResult(EncounterResult result);
 
-    bool escWasDown = false;  // edge-detect for checkForQuit override
+    // Boss pre-fight event — active while a pre-fight cutscene plays
+    void updateBossPreFightEvent(const sf::Vector2f& mousePos);
+    void renderBossPreFightEvent(sf::RenderTarget* target);
+    bool bossPreFightEventActive() const;
+
+    bool escWasDown = false;
 
 private:
     int combatChanceMin;
@@ -71,11 +78,23 @@ private:
     float combatOdds;
     std::string lastMapId;
 
-    std::unique_ptr<TravelHudComponent> travelHud;
+    // Pending boss encounter — held while the pre-fight event plays,
+    // then consumed to start combat when the event finishes.
+    struct PendingBoss
+    {
+        std::string enemyId;
+        std::string areaId;
+        std::string defeatedFlag;
+        std::string musicContext;
+    };
+    std::unique_ptr<PendingBoss>  pendingBoss;
+    std::unique_ptr<EventManager> bossPreFightEvent;
+
+    std::unique_ptr<TravelHudComponent>   travelHud;
     std::unique_ptr<TravelInputComponent> travelInput;
-    std::unique_ptr<InventoryPanel> inventoryPanel;
-    std::vector<sf::Texture> mapData;
-    std::map<std::string, Rectangle*> rectangles;
+    std::unique_ptr<InventoryPanel>       inventoryPanel;
+    std::vector<sf::Texture>              mapData;
+    std::map<std::string, Rectangle*>     rectangles;
 
     CombatState* combat;
     MapComponent* map;

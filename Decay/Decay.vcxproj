@@ -156,6 +156,7 @@
     <ClCompile Include="AssetDatabase.cpp" />
     <ClCompile Include="BeatSequencer.cpp" />
     <ClCompile Include="BonfireState.cpp" />
+    <ClCompile Include="BossEncounterDatabase.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CharacterMoveDatabase.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="CharacterStatus.cpp" />
     <ClCompile Include="CharacterUnlockRegistry.cpp" />
     <ClCompile Include="CombatComponent.cpp" />
+    <ClCompile Include="CombatConsole.cpp" />
     <ClCompile Include="CombatState.cpp" />
     <ClCompile Include="CompanionConversationManager.cpp" />
     <ClCompile Include="DialogueInputComponent.cpp" />
@@ -224,6 +226,7 @@
     <ClInclude Include="Beat.h" />
     <ClInclude Include="BeatSequencer.h" />
     <ClInclude Include="BonfireState.h" />
+    <ClInclude Include="BossEncounterDatabase.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="CharacterManager.h" />
@@ -234,6 +237,7 @@
     <ClInclude Include="CharacterStatus.h" />
     <ClInclude Include="CharacterUnlockRegistry.h" />
     <ClInclude Include="CombatComponent.h" />
+    <ClInclude Include="CombatConsole.h" />
     <ClInclude Include="CombatState.h" />
     <ClInclude Include="CompanionConversationManager.h" />
     <ClInclude Include="DialogueInputComponent.h" />

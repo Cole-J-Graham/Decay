@@ -1,0 +1,14 @@
+# BossEncounterDatabase
+# Fields: mapId | enemyId | preFightEventPath | defeatedFlag | musicContext
+#
+# mapId           — exact value from MapComponent::getCurrentMapId()
+# enemyId         — must match an id in enemies.db
+# preFightEventPath — path to event file, or empty for no cutscene
+# defeatedFlag    — GameFlag set on victory; prevents re-triggering
+# musicContext    — MusicManager context key, or empty to use area default
+
+# Header row (skipped by parser)
+mapId|enemyId|preFightEventPath|defeatedFlag|musicContext
+
+# Example — replace FOREST_8 with your actual map node id
+FOREST_8|forest_boss|Assets/Events/Bosses/forest_boss_intro.txt|forest_boss_defeated|combat_boss

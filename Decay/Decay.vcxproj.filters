@@ -25,9 +25,6 @@
     <ClCompile Include="StatsModule.cpp">
       <Filter>Character\Stats</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Combat\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="ViewerModule.cpp">
       <Filter>Combat\Entities\EntityResources</Filter>
     </ClCompile>
@@ -96,9 +93,6 @@
     </ClCompile>
     <ClCompile Include="EnemyMoveDatabase.cpp">
       <Filter>Resources\Databases</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyMoveExecutor.cpp">
-      <Filter>Combat\Entities</Filter>
     </ClCompile>
     <ClCompile Include="CharacterMoveDatabase.cpp">
       <Filter>Resources\Databases</Filter>
@@ -193,6 +187,18 @@
     <ClCompile Include="IntroState.cpp">
       <Filter>States\PlayStates</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Combat\Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyMoveExecutor.cpp">
+      <Filter>Combat\Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="BossEncounterDatabase.cpp">
+      <Filter>Combat\Entities\Bosses</Filter>
+    </ClCompile>
+    <ClCompile Include="CombatConsole.cpp">
+      <Filter>Combat\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -215,9 +221,6 @@
     </ClInclude>
     <ClInclude Include="StatsModule.h">
       <Filter>Character\Stats</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Combat\Entities</Filter>
     </ClInclude>
     <ClInclude Include="ViewerModule.h">
       <Filter>Combat\Entities\EntityResources</Filter>
@@ -296,12 +299,6 @@
     </ClInclude>
     <ClInclude Include="EnemyMoveDatabase.h">
       <Filter>Resources\Databases</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyTypes.h">
-      <Filter>Combat\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyMoveExecutor.h">
-      <Filter>Combat\Entities</Filter>
     </ClInclude>
     <ClInclude Include="CharacterMoveTypes.h">
       <Filter>Character\CharacterResources</Filter>
@@ -402,6 +399,21 @@
     <ClInclude Include="IntroState.h">
       <Filter>States\PlayStates</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Combat\Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyMoveExecutor.h">
+      <Filter>Combat\Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyTypes.h">
+      <Filter>Combat\Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="BossEncounterDatabase.h">
+      <Filter>Combat\Entities\Bosses</Filter>
+    </ClInclude>
+    <ClInclude Include="CombatConsole.h">
+      <Filter>Combat\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">
@@ -469,6 +481,15 @@
     </Filter>
     <Filter Include="Events\EventLogic">
       <UniqueIdentifier>{d2ab432c-99fc-4a85-a730-1e6409d8fbe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Combat\Entities\Enemies">
+      <UniqueIdentifier>{aa354f52-034a-4539-b436-b65b8ec59a62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Combat\Entities\Bosses">
+      <UniqueIdentifier>{44a5b4b5-0386-4252-87fd-9e0b69f9705a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Combat\UI">
+      <UniqueIdentifier>{41ecc997-58fb-4c69-9cdd-181ab9148281}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

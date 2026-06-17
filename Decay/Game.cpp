@@ -4,6 +4,7 @@
 #include "EnemyMoveDatabase.h"
 #include "CharacterMoveDatabase.h"
 #include "EmotionDatabase.h"
+#include "BossEncounterDatabase.h"
 #include "SettingsManager.h"
 #include "Inventory.h"
 #include "GameTriggers.h"
@@ -23,6 +24,7 @@ Game::Game()
 
     MusicManager::getInstance().loadFromFile("Assets/Data/songs.db");
     SettingsManager::getInstance().loadFromFile("Assets/Data/settings.db");
+    BossEncounterDatabase::getInstance().loadFromFile("Assets/Data/boss_encounters.db");
 
     this->initWindow();
     this->initStates();
