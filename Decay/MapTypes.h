@@ -12,7 +12,8 @@ struct AreaDefinition
     std::string name;         // display name on button
     float       buttonX;
     float       buttonY;
-    std::string framesFile;   // path to .txt file listing frame image paths
+    std::string framesFile;   // path to .txt file listing frame ASSET IDS (one per line),
+    // each id must be registered in assets.db / AssetDatabase
 };
 
 // Defines a full map (one tab in the MapViewer)
@@ -21,6 +22,6 @@ struct MapDefinition
     std::string mapId;            // e.g. "forest"
     std::string name;             // display name e.g. "Forest"
     float       scale;
-    std::string mapImagePath;     // background map image
+    std::string mapImageId;       // asset id for the background map image, registered in assets.db
     std::string unlockCondition;  // "none" = always unlocked, otherwise a mapId that must be fully explored first
 };

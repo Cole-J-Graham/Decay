@@ -1,8 +1,9 @@
 #include "Enemy.h"
+#include "AssetDatabase.h"
 
 // Constructors and Deconstructors
 Enemy::Enemy(std::string enemyName, float hp, float hpMax, float damage, float defense,
-    float scale, std::string enemyTexture, std::string enemyView,
+    float scale, std::string enemySpriteAssetId, std::string enemyViewAssetId,
     const RewardBundle& rewards, bool turnActive)
     : enemyName(enemyName),
     hp(hp),
@@ -25,8 +26,15 @@ Enemy::Enemy(std::string enemyName, float hp, float hpMax, float damage, float d
     this->x = 1695;
     this->y = 420;
 
-    this->enemyTexture.loadFromFile(enemyTexture);
-    this->enemy.setTexture(this->enemyTexture);
+    // enemySpriteAssetId is an asset id registered in assets.db, not
+    // a raw file path — load via AssetDatabase's cache instead of disk.
+    try {
+        this->enemy.setTexture(AssetDatabase::getInstance().getTexture(enemySpriteAssetId));
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Enemy: failed to load sprite asset \"" << enemySpriteAssetId
+            << "\": " << e.what() << "\n";
+    }
     this->enemy.setPosition(this->x, this->y);
     this->enemy.setScale(scale, scale);
 
@@ -34,7 +42,7 @@ Enemy::Enemy(std::string enemyName, float hp, float hpMax, float damage, float d
 
     this->initText();
     this->initButtons();
-    this->closeViewer = new ViewerModule(enemyView, scale);
+    this->closeViewer = new ViewerModule(enemyViewAssetId, scale);
 }
 
 Enemy::~Enemy()

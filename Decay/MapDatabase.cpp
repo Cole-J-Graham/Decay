@@ -74,7 +74,8 @@ bool MapDatabase::loadFromFile(const std::string& filePath)
         std::vector<std::string> fields = splitKeepEmpty(line, '|');
 
         // ------------------------------------------------------------------
-        // MAPS:  id | name | scale | map_image | unlock_condition
+        // MAPS:  id | name | scale | map_image_id | unlock_condition
+        // map_image_id is an asset id registered in assets.db, not a path.
         // ------------------------------------------------------------------
         if (currentSection == Section::Maps) {
             if (fields.size() < 5) {
@@ -86,7 +87,7 @@ bool MapDatabase::loadFromFile(const std::string& filePath)
             def.mapId = fields[0];
             def.name = fields[1];
             def.scale = std::stof(fields[2]);
-            def.mapImagePath = fields[3];
+            def.mapImageId = fields[3];
             def.unlockCondition = fields[4];
 
             if (def.mapId.empty()) {

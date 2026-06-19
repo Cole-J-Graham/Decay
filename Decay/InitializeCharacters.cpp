@@ -33,13 +33,13 @@ void InitializeCharacters::initialize()
 void InitializeCharacters::initCharacters()
 {
     // ── Unlocked from the start ───────────────────────────────────────────
-    CharacterManager::getInstance().addCharacter("PLAYER", std::make_shared<Character>("PLAYER", "Player", 40, 40, 10, 10, 0, 25.f, 150.f, 0.319f, "Assets/Sprites/Player.png", true));
-    CharacterManager::getInstance().addCharacter("ZIN", std::make_shared<Character>("ZIN", "Zin", 30, 30, 10, 10, 5, 25.f, 420.f, 0.066f, "Assets/Sprites/zinSprite.png", false));
+    CharacterManager::getInstance().addCharacter("PLAYER", std::make_shared<Character>("PLAYER", "Player", 40, 40, 10, 10, 0, 25.f, 150.f, 0.319f, "player_sprite", true));
+    CharacterManager::getInstance().addCharacter("ZIN", std::make_shared<Character>("ZIN", "Zin", 30, 30, 10, 10, 5, 25.f, 420.f, 0.066f, "zin_sprite", false));
     // ── Must be unlocked ──────────────────────────────────────────────────
-    CharacterUnlockRegistry::getInstance().registerCharacter("OVI", std::make_shared<Character>("OVI", "Ovi", 40, 40, 10, 10, 0, 25.f, 690.f, 0.625f, "Assets/Sprites/ovi_normal.png", false));
-    CharacterUnlockRegistry::getInstance().registerCharacter("JUNE", std::make_shared<Character>("JUNE", "June", 50, 50, 10, 10, 0, 25.f, 960.f, 0.625f, "Assets/Sprites/june_normal.png", false));
-    CharacterUnlockRegistry::getInstance().registerCharacter("SULIMAN", std::make_shared<Character>("SULIMAN", "Suliman", 10, 10, 20, 10, 0, 25.f, 960.f, 0.590f, "Assets/Sprites/sulliman_normal.png", false));
-    CharacterUnlockRegistry::getInstance().registerCharacter("LYRA", std::make_shared<Character>("LYRA", "Lyra", 35, 35, 14, 10, 3, 25.f, 960.f, 1.f, "Assets/Sprites/Lyra_normal.png", false));
+    CharacterUnlockRegistry::getInstance().registerCharacter("OVI", std::make_shared<Character>("OVI", "Ovi", 40, 40, 10, 10, 0, 25.f, 690.f, 0.625f, "ovi_sprite", false));
+    CharacterUnlockRegistry::getInstance().registerCharacter("JUNE", std::make_shared<Character>("JUNE", "June", 50, 50, 10, 10, 0, 25.f, 960.f, 0.625f, "june_sprite", false));
+    CharacterUnlockRegistry::getInstance().registerCharacter("SULIMAN", std::make_shared<Character>("SULIMAN", "Suliman", 10, 10, 20, 10, 0, 25.f, 960.f, 0.590f, "sulliman_sprite", false));
+    CharacterUnlockRegistry::getInstance().registerCharacter("LYRA", std::make_shared<Character>("LYRA", "Lyra", 35, 35, 14, 10, 3, 25.f, 960.f, 1.f, "lyra_sprite", false));
 }
 
 // Initialize NPCs for game

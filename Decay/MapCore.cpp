@@ -1,4 +1,5 @@
 #include "MapCore.h"
+#include "AssetDatabase.h"
 
 #include <fstream>
 #include <iostream>
@@ -12,11 +13,18 @@ MapCore::MapCore(const MapDefinition& mapDef,
     this->mapId = mapDef.mapId;
     this->mapName = mapDef.name;
 
-    // Load background map image
-    if (!this->mapTexture.loadFromFile(mapDef.mapImagePath)) {
-        std::cerr << "MapCore: failed to load map image: " << mapDef.mapImagePath << "\n";
+    // Load background map image via AssetDatabase (cached, id-based) instead
+    // of loading the file directly. AssetDatabase::getTexture() throws on a
+    // missing/invalid id, so this is wrapped to preserve the previous
+    // log-and-continue behavior rather than crashing on a bad data entry.
+    try {
+        this->mapSprite.setTexture(AssetDatabase::getInstance().getTexture(mapDef.mapImageId));
     }
-    this->mapSprite.setTexture(this->mapTexture);
+    catch (const std::exception& e) {
+        std::cerr << "MapCore: failed to load map image asset \"" << mapDef.mapImageId
+            << "\": " << e.what() << "\n";
+    }
+
     this->mapSprite.setPosition(100, 100);
     this->mapSprite.setScale(mapDef.scale, mapDef.scale);
 

@@ -1,5 +1,6 @@
 #include "MapViewer.h"
 #include "MapDatabase.h"
+#include "AssetDatabase.h"
 #include "CharacterManager.h"
 #include "TriggerManager.h"
 
@@ -255,12 +256,15 @@ void MapViewer::setFrame(int frame)
     const auto& frames = it->second->getFrames();
     if (frame < 0 || frame >= static_cast<int>(frames.size())) return;
 
-    if (!this->frameTexture.loadFromFile(frames[frame])) {
-        std::cerr << "MapViewer: failed to load frame: " << frames[frame] << "\n";
-        return;
+    // frames[frame] is now an asset id (registered in assets.db), not a
+    // raw file path — load via AssetDatabase's cache instead of disk.
+    try {
+        this->frameSprite.setTexture(AssetDatabase::getInstance().getTexture(frames[frame]));
     }
-
-    this->frameSprite.setTexture(this->frameTexture);
+    catch (const std::exception& e) {
+        std::cerr << "MapViewer: failed to load frame asset \"" << frames[frame]
+            << "\": " << e.what() << "\n";
+    }
 }
 
 void MapViewer::moveFrames(bool moveRight, bool moveLeft)

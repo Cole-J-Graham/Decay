@@ -1,6 +1,8 @@
 #include "BonfireState.h"
 #include "ShopState.h"
 #include "CompanionConversationManager.h"
+#include "AssetDatabase.h"
+#include "Inventory.h"
 
 #include <algorithm>
 #include <iostream>
@@ -66,7 +68,6 @@ void BonfireState::update()
     this->ui.update(this->getMousePosView());
 
     if (this->ui.button("REST_PARTY").isPressed())    this->restParty();
-    if (this->ui.button("SMITH_WEAPON").isPressed())  this->smithWeapon();
     if (this->ui.button("VISIT_SHOP").isPressed())    this->visitShop();
     if (this->ui.button("LEAVE_BONFIRE").isPressed()) this->leaveBonfire();
 
@@ -300,39 +301,47 @@ void BonfireState::initUi()
 
     // ── Bonfire image — properly centred inside the main panel ────────
     {
-        const std::string imagePath = "Assets/Wallpapers/Bonfires/" + this->areaId + ".jpeg";
+        // Asset id follows the same "bonfire_<areaId>" convention the old
+        // path used ("Assets/Wallpapers/Bonfires/<areaId>.jpeg") — each
+        // area's bonfire image must be registered in assets.db under this
+        // exact id pattern for this to resolve.
+        const std::string imageAssetId = "bonfire_" + this->areaId;
 
-        if (!this->areaId.empty() && this->bonfireTexture.loadFromFile(imagePath))
+        this->hasBonfireImage = false;
+
+        if (!this->areaId.empty())
         {
-            sf::Sprite sprite(this->bonfireTexture);
-            const sf::FloatRect bounds = sprite.getLocalBounds();
-
-            if (bounds.width > 0.f && bounds.height > 0.f)
+            try
             {
-                // Scale to fit inside the panel box while preserving aspect ratio
-                const float scaleX = kMainPanelW / bounds.width;
-                const float scaleY = kMainPanelH / bounds.height;
-                const float scale = std::min(scaleX, scaleY);
+                sf::Sprite sprite(AssetDatabase::getInstance().getTexture(imageAssetId));
+                const sf::FloatRect bounds = sprite.getLocalBounds();
 
-                const float scaledW = bounds.width * scale;
-                const float scaledH = bounds.height * scale;
+                if (bounds.width > 0.f && bounds.height > 0.f)
+                {
+                    // Scale to fit inside the panel box while preserving aspect ratio
+                    const float scaleX = kMainPanelW / bounds.width;
+                    const float scaleY = kMainPanelH / bounds.height;
+                    const float scale = std::min(scaleX, scaleY);
 
-                // Centre horizontally and vertically within the panel
-                const float cx = kMainPanelX + (kMainPanelW - scaledW) / 2.f;
-                const float cy = kMainPanelY + (kMainPanelH - scaledH) / 2.f;
+                    const float scaledW = bounds.width * scale;
+                    const float scaledH = bounds.height * scale;
 
-                sprite.setScale(scale, scale);
-                sprite.setPosition(cx, cy);
+                    // Centre horizontally and vertically within the panel
+                    const float cx = kMainPanelX + (kMainPanelW - scaledW) / 2.f;
+                    const float cy = kMainPanelY + (kMainPanelH - scaledH) / 2.f;
+
+                    sprite.setScale(scale, scale);
+                    sprite.setPosition(cx, cy);
+                }
+
+                this->bonfireSprite = sprite;
+                this->hasBonfireImage = true;
             }
-
-            this->bonfireSprite = sprite;
-            this->hasBonfireImage = true;
-        }
-        else
-        {
-            if (!this->areaId.empty())
-                std::cerr << "BonfireState: could not load bonfire image: " << imagePath << "\n";
-            this->hasBonfireImage = false;
+            catch (const std::exception& e)
+            {
+                std::cerr << "BonfireState: could not load bonfire image asset \""
+                    << imageAssetId << "\": " << e.what() << "\n";
+            }
         }
     }
 
@@ -360,7 +369,7 @@ void BonfireState::initUi()
     this->ui.addRectangle("ACTION_HEADER_DIV", std::make_unique<Rectangle>(
         1400, 80, 290, 1, sf::Color(255, 255, 255, 40), transparent, 0.f, false));
 
-    const float btnX = 1410.f, btnW = 260.f, btnH = 30.f, btnGap = 12.f;
+    const float btnX = 1335.f, btnW = 260.f, btnH = 30.f, btnGap = 12.f;
     float btnY = 92.f;
 
     this->ui.addButton("REST_PARTY", std::make_unique<Button>(
@@ -392,12 +401,6 @@ void BonfireState::restParty()
     CharacterManager::getInstance().restParty();
     this->ui.text("MESSAGE").setString("The party rests at the bonfire. HP restored.");
     std::cout << "Party rested at bonfire.\n";
-}
-
-void BonfireState::smithWeapon()
-{
-    this->ui.text("MESSAGE").setString("Smithing is not wired yet.");
-    std::cout << "Smith weapon selected.\n";
 }
 
 void BonfireState::leaveBonfire()

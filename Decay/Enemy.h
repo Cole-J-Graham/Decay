@@ -19,7 +19,7 @@ public:
     // Constructors and Deconstructors
     Enemy() {};
     Enemy(std::string enemyName, float hp, float hpMax, float damage, float defense,
-        float scale, std::string enemyTexture, std::string enemyView,
+        float scale, std::string enemySpriteAssetId, std::string enemyViewAssetId,
         const RewardBundle& rewards, bool turnActive);
     ~Enemy();
 
@@ -105,8 +105,7 @@ private:
     float y;
     bool turnActive;
 
-    sf::Texture enemyTexture;
-    sf::Sprite enemy;
+    sf::Sprite enemy;   // texture owned by AssetDatabase's cache, not here
     std::string enemyName;
 
     ViewerModule* closeViewer;

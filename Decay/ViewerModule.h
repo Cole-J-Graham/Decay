@@ -5,7 +5,7 @@ class ViewerModule
 public:
 	//Constructors and Desctructors
 	ViewerModule() {};
-	ViewerModule(std::string imagePath, float scale);
+	ViewerModule(std::string imageAssetId, float scale);
 	~ViewerModule();
 
 	//Core Functions
@@ -13,7 +13,7 @@ public:
 	void render(sf::RenderTarget* target);
 
 	//Modifier Functions
-	void setView(std::string imagePath);
+	void setView(std::string imageAssetId);
 
 	//Rectangle Functions
 	void initRects();
@@ -28,8 +28,7 @@ private:
 	float y;
 	float scale;
 
-	//Viewer
-	sf::Texture imageTexture;
+	//Viewer — texture owned by AssetDatabase's cache, not here
 	sf::Sprite image;
 
 	std::map<std::string, Rectangle*> rectangles;

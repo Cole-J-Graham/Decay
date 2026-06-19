@@ -1,9 +1,19 @@
 #include "ViewerModule.h"
+#include "AssetDatabase.h"
+#include <iostream>
+
 //Constructors and Desctructors
-ViewerModule::ViewerModule(std::string imagePath, float scale)
+ViewerModule::ViewerModule(std::string imageAssetId, float scale)
 {
-    this->imageTexture.loadFromFile(imagePath);
-    this->image.setTexture(this->imageTexture);
+    // imageAssetId is an asset id registered in assets.db, not a raw file
+    // path — load via AssetDatabase's cache instead of disk.
+    try {
+        this->image.setTexture(AssetDatabase::getInstance().getTexture(imageAssetId));
+    }
+    catch (const std::exception& e) {
+        std::cerr << "ViewerModule: failed to load image asset \"" << imageAssetId
+            << "\": " << e.what() << "\n";
+    }
     this->image.setScale(scale, scale);
     this->x = 1490;
     this->y = 320;
@@ -35,19 +45,24 @@ void ViewerModule::render(sf::RenderTarget* target)
 }
 
 //Modifier Functions
-void ViewerModule::setView(std::string imagePath)
+void ViewerModule::setView(std::string imageAssetId)
 {
-    this->imageTexture.loadFromFile(imagePath);
-    this->image.setTexture(this->imageTexture);
+    try {
+        this->image.setTexture(AssetDatabase::getInstance().getTexture(imageAssetId));
+    }
+    catch (const std::exception& e) {
+        std::cerr << "ViewerModule: failed to load image asset \"" << imageAssetId
+            << "\": " << e.what() << "\n";
+    }
 }
 
 //Rectangle Functions
 void ViewerModule::initRects()
 {
-    this->rectangles["HOSTILEBORDER"] = new Rectangle(this->x, this->y, 200, 200, 
+    this->rectangles["HOSTILEBORDER"] = new Rectangle(this->x, this->y, 200, 200,
         sf::Color::Transparent, sf::Color::White, 1.f, false);
-    this->rectangles["BORDER_TITLE"] = new Rectangle("Close Vision Viewer", sf::Color::White, 16, 
-        this->x, this->y,  200, 25, sf::Color::Transparent, sf::Color::White, 1.f, false);
+    this->rectangles["BORDER_TITLE"] = new Rectangle("Close Vision Viewer", sf::Color::White, 16,
+        this->x, this->y, 200, 25, sf::Color::Transparent, sf::Color::White, 1.f, false);
 }
 
 void ViewerModule::updateRects(const sf::Vector2f mousePos)

@@ -7,11 +7,12 @@
 class CharacterPose
 {
 public:
-    bool loadIdleTexture(const std::string& texturePath, sf::Sprite& sprite);
+    // textureAssetId must be registered in assets.db / AssetDatabase
+    bool loadIdleTexture(const std::string& textureAssetId, sf::Sprite& sprite);
 
     void playTemporaryPose(
         sf::Sprite& sprite,
-        const std::string& texturePath,
+        const std::string& textureAssetId,
         int durationTurns
     );
 
@@ -20,8 +21,9 @@ public:
     void consumePoseTurn(sf::Sprite& sprite);
 
 private:
-    sf::Texture idleTexture;
-    sf::Texture poseTexture;
+    // Remembered so resetPose() can look the idle texture back up from
+    // AssetDatabase's cache — CharacterPose no longer owns Texture objects.
+    std::string idleAssetId;
 
     bool temporaryPoseActive = false;
     int temporaryPoseTurns = 0;

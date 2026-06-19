@@ -48,7 +48,7 @@ public:
 private:
     struct Slide
     {
-        std::string imagePath;
+        std::string imageAssetId;   // registered in assets.db
         std::string text;
     };
 
@@ -62,8 +62,7 @@ private:
     std::vector<Slide>   slides;
     int                  currentIndex = 0;
 
-    sf::Texture          slideTexture;
-    sf::Sprite           slideSprite;
+    sf::Sprite           slideSprite; // texture owned by AssetDatabase's cache, not here
     bool                 textureLoaded = false;
 
     // Bottom overlay so caption text is readable over bright images

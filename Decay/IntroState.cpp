@@ -3,6 +3,7 @@
 #include "CharacterManager.h"
 #include "TravelState.h"
 #include "MusicManager.h"
+#include "AssetDatabase.h"
 
 #include <fstream>
 #include <iostream>
@@ -175,7 +176,7 @@ void IntroState::loadSlides(const std::string& path)
 
         if (line == "[SLIDE]")
         {
-            if (inSlide && !current.imagePath.empty())
+            if (inSlide && !current.imageAssetId.empty())
                 slides.push_back(current);
             current = Slide{};
             inSlide = true;
@@ -190,11 +191,11 @@ void IntroState::loadSlides(const std::string& path)
         const std::string key = line.substr(0, sep);
         const std::string val = (sep + 2 <= line.size()) ? line.substr(sep + 2) : "";
 
-        if (key == "IMAGE")     current.imagePath = val;
+        if (key == "IMAGE")     current.imageAssetId = val;
         else if (key == "TEXT") current.text = val;
     }
 
-    if (inSlide && !current.imagePath.empty())
+    if (inSlide && !current.imageAssetId.empty())
         slides.push_back(current);
 
     std::cout << "IntroState: loaded " << slides.size() << " slides from " << path << "\n";
@@ -207,12 +208,20 @@ void IntroState::applySlide(int index)
     currentIndex = index;
     const Slide& slide = slides[index];
 
-    textureLoaded = slideTexture.loadFromFile(slide.imagePath);
+    // slide.imageAssetId is an asset id registered in assets.db, not a raw
+    // file path — load via AssetDatabase's cache instead of disk.
+    textureLoaded = false;
+    try {
+        slideSprite.setTexture(AssetDatabase::getInstance().getTexture(slide.imageAssetId), true);
+        textureLoaded = true;
+    }
+    catch (const std::exception& e) {
+        std::cerr << "IntroState: failed to load slide image asset \"" << slide.imageAssetId
+            << "\": " << e.what() << "\n";
+    }
 
     if (textureLoaded)
     {
-        slideSprite.setTexture(slideTexture, true);
-
         const sf::Vector2u winSize = window->getSize();
         const float winW = static_cast<float>(winSize.x);
         const float winH = static_cast<float>(winSize.y);
@@ -228,10 +237,6 @@ void IntroState::applySlide(int index)
                 (winW - bounds.width * scale) / 2.f,
                 (winH - bounds.height * scale) / 2.f);
         }
-    }
-    else
-    {
-        std::cerr << "IntroState: failed to load slide image: " << slide.imagePath << "\n";
     }
 
     if (captionText)
@@ -286,5 +291,9 @@ void IntroState::launchGame()
         states->pop();
 
     states->push(new TravelState(window, states, musicPlayer));
-    states->push(new BonfireState(window, states, "", musicPlayer));
+    // areaId must match the starting map's id in maps.db ("forest") so the
+    // bonfire background resolves on the very first visit — without this,
+    // BonfireState::initUi() builds "bonfire_" + "" and skips loading,
+    // only working correctly after a later area-aware bonfire return.
+    states->push(new BonfireState(window, states, "forest", musicPlayer));
 }

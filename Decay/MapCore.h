@@ -64,8 +64,7 @@ private:
     void initButtons(const std::vector<const AreaDefinition*>& areaDefs);
     void refreshButtonVisibility();
 
-    // Map visuals
-    sf::Texture mapTexture;
+    // Map visuals — texture is owned by AssetDatabase's cache, not here
     sf::Sprite  mapSprite;
 
     std::string mapId;

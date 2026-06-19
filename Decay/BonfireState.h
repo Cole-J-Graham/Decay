@@ -8,6 +8,8 @@
 #include "EventManager.h"
 #include "CompanionConversationManager.h"
 
+#include <memory>
+
 class MusicPlayer;   // forward declaration — full type only needed in .cpp
 
 class BonfireState : public State
@@ -36,7 +38,6 @@ private:
 
     // Bonfire Functions
     void restParty();
-    void smithWeapon();
     void leaveBonfire();
     void visitShop();
 
@@ -46,13 +47,9 @@ private:
     void renderConversation(sf::RenderTarget* target);
     bool isConversationActive() const;
 
-    // Pending message helper
-    bool anyPartyMemberPending() const;
-
 private:
     UiPanel      ui;
-    sf::Texture  bonfireTexture;
-    sf::Sprite   bonfireSprite;
+    sf::Sprite   bonfireSprite;   // texture owned by AssetDatabase's cache, not here
     bool         hasBonfireImage = false;
     std::string  areaId;
 

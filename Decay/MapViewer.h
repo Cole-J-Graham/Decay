@@ -126,8 +126,7 @@ private:
     sf::Sprite  mapIconSprite;   // small map icon always visible
     sf::Texture mapIconTexture;
 
-    sf::Sprite  frameSprite;     // area frame playback sprite
-    sf::Texture frameTexture;
+    sf::Sprite  frameSprite;     // area frame playback sprite — texture owned by AssetDatabase's cache
 
     std::unique_ptr<Text> message;
 };

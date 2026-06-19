@@ -4,7 +4,7 @@
 NPC|TREE|Speaking Tree|-|0.2|NEUTRAL:speaking_tree_portrait
 NPC|SIWARD|Siward|-|0.319|NEUTRAL:siward_sprite
 NPC|DOCTOR|Doctor|-|0.319|NEUTRAL:doctor_sprite;ANGRY:doctor_angry
-NPC|RI|Ri|-|0.319|NEUTRAL:ri_sprite
+NPC|RI|Ri|-|0.590|NEUTRAL:ri_sprite
 
 # Characters
 CHARACTER|PLAYER|Player|-|0.319|NEUTRAL:player_sprite;HAPPY:player_sprite

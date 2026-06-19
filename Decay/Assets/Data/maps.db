@@ -2,19 +2,22 @@
 # Map and area definitions for the MapSystem
 #
 # MAPS section
-#   id | name | scale | map_image | unlock_condition
+#   id | name | scale | map_image_id | unlock_condition
+#   map_image_id: asset id registered in assets.db (type=texture), NOT a path
 #   unlock_condition: "none" = always unlocked
 #                     a map id = unlocked when that map is fully explored
 #
 # AREAS section
 #   id | map_id | area_index | name | button_x | button_y | frames_file
 #   area_index: 0-based order within the map (controls button reveal order)
+#   frames_file: path to a .txt file listing FRAME ASSET IDS (one per line),
+#                each id must be registered in assets.db (type=texture)
 
 [MAPS]
-id|name|scale|map_image|unlock_condition
-forest|Forest|0.390|Assets/Wallpapers/Forest/forestmap.jpeg|none
-castle|Castle|0.385|Assets/Wallpapers/Castle/castleMap.jpeg|none
-decay|Decay|0.385|Assets/Wallpapers/Decay/decayMap.jpeg|none
+id|name|scale|map_image_id|unlock_condition
+forest|Forest|0.390|forest_map|none
+castle|Castle|0.385|castle_map|none
+decay|Decay|0.385|decay_map|none
 
 [AREAS]
 id|map_id|area_index|name|button_x|button_y|frames_file
