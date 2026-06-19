@@ -14,8 +14,8 @@ public:
     void update(sf::Vector2f mousePos);
     void render(sf::RenderTarget* target);
 
-    bool rightArrowClicked() const { return this->rightActive; }
-    bool leftArrowClicked() const { return this->leftActive; }
+    bool rightArrowClicked()    const { return this->rightActive; }
+    bool leftArrowClicked()     const { return this->leftActive; }
     bool returnBonfireClicked() const { return this->returnBonfireActive; }
 
     void showMoveArrows();

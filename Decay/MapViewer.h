@@ -1,8 +1,6 @@
 #pragma once
 
 #include "MapCore.h"
-#include "Button.h"
-#include "Rectangle.h"
 #include "Text.h"
 
 #include <SFML/Graphics.hpp>
@@ -31,10 +29,6 @@ public:
     // Map tab navigation — MapComponent calls these; unlock gating is internal
     void navigateRight();
     void navigateLeft();
-
-    // Visibility controls (for MapComponent to show/hide the open button)
-    void showOpenMapButton();
-    void hideOpenMapButton();
 
     // Getters used by MapComponent
     bool        isHidden()       const;
@@ -91,14 +85,7 @@ private:
     // Called when a map becomes fully explored — unlocks the next map if conditions are met
     void tryUnlockNextMap(const std::string& completedMapId);
 
-    // Init helpers
-    void initRects();
-    void initButtons();
-
     // Update/render helpers
-    void updateButtons(const sf::Vector2f& mousePos);
-    void renderButtons(sf::RenderTarget* target);
-    void renderRects(sf::RenderTarget* target);
     void updateMaps(const sf::Vector2f& mousePos);
     void renderMaps(sf::RenderTarget* target);
 
@@ -128,9 +115,9 @@ private:
     // Currently active area id (the one the player is exploring)
     std::string activeAreaId;
 
-    // UI state
-    float x, y;
-    bool  hidden;
+    // Edge-detect for the empty-party warning message (checked every
+    // frame now that there's no button press to gate it on)
+    bool partyEmptyLastFrame = false;
 
     sf::Clock clock;
     sf::Time  time;
@@ -143,7 +130,4 @@ private:
     sf::Texture frameTexture;
 
     std::unique_ptr<Text> message;
-
-    std::map<std::string, std::unique_ptr<Button>>    buttons;
-    std::map<std::string, std::unique_ptr<Rectangle>> rectangles;
 };

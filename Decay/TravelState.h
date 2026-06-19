@@ -4,7 +4,6 @@
 #include "State.h"
 #include "EncounterResult.h"
 #include "MapComponent.h"
-#include "MusicPlayer.h"
 #include "CombatState.h"
 #include "BonfireState.h"
 #include "TravelInputComponent.h"
@@ -21,11 +20,14 @@
 // Managers
 #include "CharacterManager.h"
 
+class MusicPlayer;   // forward declaration — full type only needed in .cpp
+
 class TravelState : public State
 {
 public:
     // Constructors and Destructors
-    TravelState(sf::RenderWindow* window, std::stack<State*>* states);
+    TravelState(sf::RenderWindow* window, std::stack<State*>* states,
+        MusicPlayer* musicPlayer = nullptr);
     ~TravelState();
 
     // Core Functions
@@ -99,5 +101,5 @@ private:
     CombatState* combat;
     MapComponent* map;
 
-    std::unique_ptr<MusicPlayer> music;
+    MusicPlayer* music;   // non-owning; owned by Game, forwarded to PauseMenuState
 };

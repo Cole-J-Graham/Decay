@@ -8,11 +8,15 @@
 #include "EventManager.h"
 #include "CompanionConversationManager.h"
 
+class MusicPlayer;   // forward declaration — full type only needed in .cpp
+
 class BonfireState : public State
 {
 public:
     // Constructors and Destructors
-    BonfireState(sf::RenderWindow* window, std::stack<State*>* states, const std::string& areaId = "");
+    BonfireState(sf::RenderWindow* window, std::stack<State*>* states,
+        const std::string& areaId = "",
+        MusicPlayer* musicPlayer = nullptr);
     ~BonfireState() = default;
 
     // State Functions
@@ -42,6 +46,9 @@ private:
     void renderConversation(sf::RenderTarget* target);
     bool isConversationActive() const;
 
+    // Pending message helper
+    bool anyPartyMemberPending() const;
+
 private:
     UiPanel      ui;
     sf::Texture  bonfireTexture;
@@ -51,6 +58,7 @@ private:
 
     // Active companion conversation — null when no conversation is running
     std::unique_ptr<EventManager> activeConversation;
+    sf::Vector2f lastMousePos;
 
     // Timed feedback message for "nothing to discuss" etc.
     sf::Clock    messageClock;
@@ -58,11 +66,13 @@ private:
     bool         messageTimerActive = false;
 
     // Slot geometry constants mirrored from renderPartyPreview
-    static constexpr float kSlotX = 25.f + 12.f;
+    static constexpr float kSlotX = 105.f + 12.f;
     static constexpr float kSlotStartY = 50.f + 40.f;
     static constexpr float kSlotW = 240.f - 24.f;
     static constexpr float kSlotH = 212.f;
     static constexpr float kSlotGap = 14.f;
+
+    MusicPlayer* musicPlayer = nullptr;   // non-owning; reserved for a future bonfire ambient track
 };
 
 #endif

@@ -1,24 +1,27 @@
 #include "TravelState.h"
 #include "MusicManager.h"
+#include "MusicPlayer.h"
 #include "PauseMenuState.h"
 #include "SaveManager.h"
 
-// Constructors and Destructors
-TravelState::TravelState(sf::RenderWindow* window, std::stack<State*>* states)
+// ── Constructors ──────────────────────────────────────────────────────────
+
+TravelState::TravelState(sf::RenderWindow* window, std::stack<State*>* states,
+    MusicPlayer* musicPlayer)
     : State(window, states)
+    , music(musicPlayer)
 {
     this->initRects();
     this->map = new MapComponent();
 
-    if (SaveManager::getInstance().hasPendingMapState()) {
+    if (SaveManager::getInstance().hasPendingMapState())
         SaveManager::getInstance().applyPendingMapState(this->map);
-    }
 
     this->lastMapId = this->map->getCurrentMapId();
     this->combat = new CombatState(window, states);
-    this->music = std::make_unique<MusicPlayer>();
-    MusicManager_setPlayer(this->music.get());
-    MusicManager::getInstance().preloadAll();
+
+    // MusicPlayer is owned by Game and wired into MusicManager once at boot —
+    // just start this area's playlist on the singleton.
     MusicManager::getInstance().play(lastMapId);
 
     this->travelInput = std::make_unique<TravelInputComponent>();
@@ -41,13 +44,14 @@ TravelState::~TravelState()
         delete it.second;
 }
 
-// Core Functions
+// ── Core ──────────────────────────────────────────────────────────────────
+
 void TravelState::checkForQuit()
 {
     const bool escDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
 
     if (!this->escWasDown && escDown)
-        this->states->push(new PauseMenuState(this->window, this->states, this->music.get(), this->map));
+        this->states->push(new PauseMenuState(this->window, this->states, this->music, this->map));
 
     this->escWasDown = escDown;
 }
@@ -58,7 +62,9 @@ void TravelState::update()
     MusicManager::getInstance().update();
     this->updateMousePositions();
 
-    // If a boss pre-fight event is playing, lock travel and wait for it to finish
+    // Feed current area name to the HUD every frame (cheap string compare inside)
+    this->travelHud->setAreaName(this->map->getCurrentMapId());
+
     if (bossPreFightEventActive())
     {
         updateBossPreFightEvent(this->getMousePosView());
@@ -76,7 +82,6 @@ void TravelState::update()
     );
 
     const std::string currentMap = this->map->getCurrentMapId();
-
     if (currentMap != this->lastMapId)
     {
         std::cout << "MAP CHANGED: " << this->lastMapId << " -> " << currentMap << "\n";
@@ -115,7 +120,6 @@ void TravelState::render(sf::RenderTarget* target)
     this->travelHud->render(target);
     GameTriggers::renderNotification(target);
 
-    // Render boss pre-fight event on top if active
     if (bossPreFightEventActive())
         renderBossPreFightEvent(target);
 }
@@ -137,7 +141,6 @@ void TravelState::updateBossPreFightEvent(const sf::Vector2f& mousePos)
     {
         bossPreFightEvent.reset();
 
-        // Now start the actual boss combat
         if (pendingBoss)
         {
             if (this->combat->startBossCombat(
@@ -159,7 +162,8 @@ void TravelState::renderBossPreFightEvent(sf::RenderTarget* target)
         bossPreFightEvent->render(target);
 }
 
-// Travel Functions
+// ── Travel ────────────────────────────────────────────────────────────────
+
 void TravelState::updateEventsFromMovement()
 {
     const EncounterResult result = this->determineEncounterResult();
@@ -168,9 +172,10 @@ void TravelState::updateEventsFromMovement()
 
 void TravelState::updateTravelActions()
 {
-    if (this->travelInput->returnBonfireClicked()) {
+    if (this->travelInput->returnBonfireClicked())
+    {
         this->states->push(new BonfireState(this->window, this->states,
-            this->map->getCurrentMapId()));
+            this->map->getCurrentMapId(), this->music));
         return;
     }
 
@@ -182,17 +187,16 @@ void TravelState::updateTravelInputVisibility()
     const bool eventActive = this->map->eventIsActive() || bossPreFightEventActive();
 
     const bool canMove =
-        this->map->mapIsOpen() &&
         this->map->mapIsSelected() &&
         !eventActive;
 
+    // Arrow visibility — independent per side
     if (!canMove)
     {
         this->travelInput->hideMoveArrows();
     }
     else
     {
-        // Show/hide each arrow independently based on frame position
         if (this->map->isAtFrameEnd())
             this->travelInput->hideRightArrow();
         else
@@ -203,22 +207,43 @@ void TravelState::updateTravelInputVisibility()
         else
             this->travelInput->showLeftArrow();
     }
-
-    if (eventActive)
-        this->map->hideMapButton();
-    else
-        this->map->showMapButton();
 }
 
-// Rectangle Functions
+// ── Rectangles ────────────────────────────────────────────────────────────
+
 void TravelState::initRects()
 {
-    this->rectangles["BORDER"] = new Rectangle(560, 5, 800, 800,
-        sf::Color::Transparent, sf::Color::White, 1.f, false);
-    this->rectangles["LEFTBOX"] = new Rectangle(0, 5, 555, 800,
-        sf::Color::Transparent, sf::Color::White, 1.f, false);
-    this->rectangles["RIGHTBOX"] = new Rectangle(1365, 5, 555, 800,
-        sf::Color::Transparent, sf::Color::White, 1.f, false);
+    // Map panel border — centre column
+    this->rectangles["BORDER"] = new Rectangle(
+        560, 5, 800, 800,
+        sf::Color::Transparent, sf::Color(255, 255, 255, 50), 1.f, false);
+
+    // Left column — map viewer lives here, height matches center panel
+    this->rectangles["LEFTBOX"] = new Rectangle(
+        5, 5, 550, 800,
+        sf::Color::Transparent, sf::Color(255, 255, 255, 50), 1.f, false);
+
+    // Left column header divider
+    this->rectangles["LEFT_HEADER_DIV"] = new Rectangle(
+        5, 36, 550, 1,
+        sf::Color(255, 255, 255, 25), sf::Color::Transparent, 0.f, false);
+
+    // Right column — panels open here, same height
+    this->rectangles["RIGHTBOX"] = new Rectangle(
+        1365, 5, 550, 800,
+        sf::Color::Transparent, sf::Color(255, 255, 255, 50), 1.f, false);
+
+    // Right column header divider
+    this->rectangles["RIGHT_HEADER_DIV"] = new Rectangle(
+        1365, 36, 550, 1,
+        sf::Color(255, 255, 255, 25), sf::Color::Transparent, 0.f, false);
+
+    // Bottom bar — spans full width, docked inside the bottom of the
+    // three columns (ends flush with their bottom edge at y=805) so it
+    // no longer collides with the dialogue box starting at y=806.
+    this->rectangles["BOTTOM_BAR"] = new Rectangle(
+        0, 770, 1920, 35,
+        sf::Color(10, 10, 10, 160), sf::Color(255, 255, 255, 30), 1.f, false);
 }
 
 void TravelState::renderRects(sf::RenderTarget* target)
@@ -226,6 +251,8 @@ void TravelState::renderRects(sf::RenderTarget* target)
     for (auto& it : this->rectangles)
         it.second->render(target);
 }
+
+// ── Encounters ────────────────────────────────────────────────────────────
 
 bool TravelState::didPlayerMove() const
 {
@@ -241,7 +268,6 @@ EncounterResult TravelState::determineEncounterResult()
     if (this->map->eventIsActive())
         return EncounterResult::None;
 
-    // ── Boss check — highest priority after events ────────────────────
     const std::string currentMapId = this->map->getCurrentMapId();
     const BossEncounterDefinition* boss =
         BossEncounterDatabase::getInstance().getBoss(currentMapId);
@@ -249,11 +275,9 @@ EncounterResult TravelState::determineEncounterResult()
     if (boss != nullptr && !GameFlags::getInstance().has(boss->defeatedFlag))
         return EncounterResult::Boss;
 
-    // ── Normal event roll ─────────────────────────────────────────────
     if (this->map->rollEvent())
         return EncounterResult::Event;
 
-    // ── Random combat roll ────────────────────────────────────────────
     std::random_device dev;
     std::mt19937 rng(dev());
     std::uniform_int_distribution<std::mt19937::result_type> combatRange(
@@ -273,7 +297,6 @@ void TravelState::handleEncounterResult(EncounterResult result)
         break;
 
     case EncounterResult::Event:
-        // rollEvent() already activated the event inside MapComponent.
         break;
 
     case EncounterResult::Combat:
@@ -289,7 +312,6 @@ void TravelState::handleEncounterResult(EncounterResult result)
 
         if (!boss) break;
 
-        // Store the boss details for after the pre-fight event finishes
         pendingBoss = std::make_unique<PendingBoss>();
         pendingBoss->enemyId = boss->enemyId;
         pendingBoss->areaId = this->map->getCurrentAreaId();
@@ -298,18 +320,13 @@ void TravelState::handleEncounterResult(EncounterResult result)
 
         if (!boss->preFightEventPath.empty())
         {
-            // Play the pre-fight cutscene — combat starts when it finishes
             bossPreFightEvent = std::make_unique<EventManager>(
-                "",                          // areaName unused for direct file
-                boss->preFightEventPath,
-                true                         // directFile
-            );
+                "", boss->preFightEventPath, true);
             std::cout << "TravelState: boss pre-fight event started: "
                 << boss->preFightEventPath << "\n";
         }
         else
         {
-            // No cutscene — go straight to combat
             if (this->combat->startBossCombat(
                 pendingBoss->enemyId,
                 pendingBoss->areaId,

@@ -8,24 +8,24 @@ TEXT: It decayed. Slowly at first. Then all at once. It tooks peoples minds, and
 
 [SLIDE]
 IMAGE: Assets/Intro/slide3.png
-TEXT: You were once a knight of the capital.
+TEXT: You were once a knight of the capital, nearly head of the guard. Second in command. The decay piled at the front gates to the castle like hell itself was opened upon your world.
 
 [SLIDE]
 IMAGE: Assets/Intro/slide4.png
-TEXT: You were not supposed to be here. Nobody was.
+TEXT: You were afflicted with the decay along many on the front lines of the war against the demons. Your mind being resilient meant it could only feast on your body... for the time being. The king had ordered the best priests in the hold to treat your wounds.
 
 [SLIDE]
 IMAGE: Assets/Intro/slide5.png
-TEXT: You were not supposed to be here. Nobody was.
+TEXT: Battered and still wounded, you insisted on fighting along your fellow knights. In one final stand, the walls were torn down as you fought until your vision went dark. Countless demons slain under your blade was nowhere near enough to save this hold.
 
 [SLIDE]
 IMAGE: Assets/Intro/slide6.png
-TEXT: You were not supposed to be here. Nobody was.
+TEXT: Though it felt like a dream, you could recall faint hoofs pattering along the rocks of the path. The loud screams and flames echoing growing fainter and fainter as the hooves kept steady.
 
 [SLIDE]
 IMAGE: Assets/Intro/slide7.png
-TEXT: You were not supposed to be here. Nobody was.
+TEXT: You awake to a horse that has been slain by what looks to be a gruesome thunderbolt, as the decay had clearly taken part of it. Slightly in the distance, a figure sat beneath a tree. As you approached, noticing your wounds were rather healed, you saw one of the apprentice priests from the castle sitting.
 
 [SLIDE]
 IMAGE: Assets/Intro/slide8.png
-TEXT: You were not supposed to be here. Nobody was.
+TEXT: She surely is the one that saved you from a fate of being shredded to pieces on the ground of that castle once you became unconscious. She looks, somewhat cold... Before it felt as though any time had passed, you made a small fire pit and sparked a flame, watching it arise...

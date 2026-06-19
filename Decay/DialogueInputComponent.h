@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Button.h"
-#include "Rectangle.h"
 #include "Text.h"
 
 #include <map>
@@ -31,12 +30,10 @@ public:
 
 private:
     void initButtons();
-    void initRects();
     void updateTypewriter();
 
 private:
     std::map<std::string, std::unique_ptr<Button>> buttons;
-    std::map<std::string, std::unique_ptr<Rectangle>> rectangles;
 
     bool topDialogueActive = false;
     bool bottomDialogueActive = false;

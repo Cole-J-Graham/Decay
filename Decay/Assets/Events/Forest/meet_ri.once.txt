@@ -1,0 +1,79 @@
+[SPEAK_NPC]
+NPC: RI
+EMOTION: NEUTRAL
+LINE: *Peering out from behind a tree in the distance, you notice what looks to be a large metallic object. Once getting closer, you notice it's a sword larger than yourself... strapped to the back of a child? You prepare yourself mentally and signal to your party to be cautious with a hand gesture. The party grows deafeningly silent as everyone approaches the figure...*
+
+[SPEAK_CHARACTER]
+RESPONSE_A: *Stay silent*
+RESPONSE_B: *Shout* Hello?!
+
+[SPEAK_NPC]
+NPC: RI
+EMOTION: NEUTRAL
+LINE_A: *The girl approaches and waves her arms towards the party* Hello there! How's it going?
+LINE_B: Hello! *The figure comes into view and seems to be friendly... for the moment.*
+
+[IF_FOLLOWER]
+FOLLOWER: JUNE
+
+[SPEAK_CHARACTER]
+CHARACTER: JUNE
+EMOTION: CONCERNED
+LINE: *June eyes the girl up and down with concern* I find it hard to believe a child can survive out here... *She looks to you quickly.* Knight, ready your axe.
+
+[SPEAK_NPC]
+NPC: RI
+EMOTION: NEUTRAL
+LINE: Woah, hold on a minute there, lady. Just because I'm young for a dwarf doesn't mean I can't defend myself out in these woods.
+
+[END_IF]
+
+[SPEAK_CHARACTER]
+RESPONSE_A: So uh... *Glance at the greatsword strapped to her back* is that enough sword for you?
+RESPONSE_B: I'm not gonna lie, I think you're the last thing I expected to find out in these woods.
+
+[SPEAK_NPC]
+NPC: RI
+EMOTION: NEUTRAL
+LINE_A: Typically. The demons out here though aren't very strong compared to the ones further along in the castle.
+LINE_B: You guys aren't exactly the most normal looking bunch yourself. Besides, to be out here heading along the path to the castle, you'd have to be a little odd, don't you agree?
+
+[SPEAK_CHARACTER]
+RESPONSE_A: The castle still stands? After I passed out and woke in the woods I was certain it had fallen by now...
+RESPONSE_B: This is the correct way to the castle? Are the knights still holding there?
+
+[SPEAK_NPC]
+NPC: RI
+EMOTION: NEUTRAL
+LINE_A: Well, if by still standing you're referring to the foundation under it, then yes! If by standing you mean not overrun with demons, then no. How do you know so much about the castle?
+LINE_B: This is the correct path! Though, no. The knights held out for a little while and then, well. No sane knights are left in that place. How do you know so much about the castle?
+
+[SPEAK_CHARACTER]
+RESPONSE_A: I was a knight. Before the place fell, that is.
+RESPONSE_B: No reason in particular.
+
+[SPEAK_NPC]
+NPC: RI
+EMOTION: NEUTRAL
+LINE_A: That explains how you're all still alive out here. I'm surprised there's still knights living and breathing after what happened there.
+LINE_B: Alright mister, keep your secrets! But I think you still should know what happened there if you intend on returning.
+
+[SPEAK_CHARACTER]
+RESPONSE_A: What happened?
+RESPONSE_B: The place was assaulted by the demons of the decay and brought the castle to its knees. Is that not the whole story?
+
+[SPEAK_NPC]
+NPC: RI
+EMOTION: NEUTRAL
+LINE_A: Well, the demons were only one piece to the attack. But we learned that the decay is capable of taking peoples minds well before their body. The knights fought one another, the decay rotting their brains as they saw red all around them. It's what ultimately led to their destruction on the front lines. If you return to the castle, know you'll have to face those husks of knights.
+LINE_B: The demons were one part of it, yes. But the decay can latch onto peoples minds before their body falls apart. It's how the front lines fell so quickly, the knights turned on one another. If you return to the castle, know you'll have to face those husks of knights.
+
+[SPEAK_CHARACTER]
+RESPONSE_A: I appreciate the warning, however I have something I must tend to.
+RESPONSE_B: If you don't intend on returning to the castle, where do you intend to go on this path?
+
+[SPEAK_NPC]
+NPC: RI
+EMOTION: NEUTRAL
+LINE_A: Don't we all? Well, best of luck to you and your band of misfits mister! I'm heading back out! *She states somewhat enthusiastically as she begins walking into the dark woods in the opposite direction your party was heading.*
+LINE_B: I'm heading home. My village is far from the decay and I need to check on them. Luckily is dwarves live in the coldest and hardiest parts of the region. The decay won't touch there... I hope. Well, I need to continue heading off. *She states as she begins walking into the dark woods in the opposite direction your party was heading, giving one last wave to the party...*

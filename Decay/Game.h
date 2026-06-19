@@ -3,6 +3,10 @@
 #include"MainMenuState.h"
 #include"AssetDatabase.h"
 
+#include <memory>
+
+class MusicPlayer;   // forward declaration — full type only needed in .cpp
+
 class Game
 {
 public:
@@ -35,6 +39,11 @@ private:
 	//Initialization
 	void initWindow();
 	void initStates();
+	void initMusic();
+
+	// Single persistent MusicPlayer for the whole application lifetime.
+	// Wired into MusicManager once at boot via MusicManager_setPlayer().
+	std::unique_ptr<MusicPlayer> musicPlayer;
 
 };
 

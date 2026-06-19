@@ -29,10 +29,13 @@
 #include <vector>
 #include <memory>
 
+class MusicPlayer;   // forward declaration — full type only needed in .cpp
+
 class IntroState : public State
 {
 public:
     IntroState(sf::RenderWindow* window, std::stack<State*>* states,
+        MusicPlayer* musicPlayer = nullptr,
         const std::string& slideFilePath = "Assets/Intro/intro.txt");
     ~IntroState() = default;
 
@@ -84,4 +87,6 @@ private:
     bool                 enterWasDown = false;
 
     bool                 finished = false;
+
+    MusicPlayer* musicPlayer = nullptr;   // non-owning; forwarded to TravelState/BonfireState
 };

@@ -16,9 +16,6 @@ MapViewer::MapViewer()
     , mapSelected(false)
     , areaReset(false)
     , areaEnd(false)
-    , x(100.f)
-    , y(100.f)
-    , hidden(true)
     , moveTime(0.1f)
 {
     this->message = std::make_unique<Text>(16, "Cannot travel with no party members!",
@@ -29,9 +26,6 @@ MapViewer::MapViewer()
 
     this->frameSprite.setPosition(560, 5);
     this->frameSprite.setScale(0.78f, 0.78f);
-
-    this->initRects();
-    this->initButtons();
 }
 
 // ---------------------------------------------------------------------------
@@ -67,6 +61,15 @@ void MapViewer::buildFromDatabase()
 
     // Ensure index is valid
     this->currentMapIndex = 0;
+
+    // Map view is always open now — show the starting map immediately
+    // instead of waiting for a button press that no longer exists.
+    if (!this->mapOrder.empty()) {
+        auto it = this->maps.find(this->mapOrder[this->currentMapIndex]);
+        if (it != this->maps.end()) {
+            it->second->show();
+        }
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -75,7 +78,16 @@ void MapViewer::buildFromDatabase()
 
 void MapViewer::update(const sf::Vector2f& mousePos, bool moveRight, bool moveLeft)
 {
-    this->updateButtons(mousePos);
+    // Map view is always open now, so this can't be gated behind a button
+    // press anymore — check every frame instead. Message text only needs
+    // to be set once when the empty state is first detected.
+    const bool partyEmpty = CharacterManager::getInstance().getParty().size() <= 0;
+    if (partyEmpty && !this->partyEmptyLastFrame) {
+        this->message->setShown();
+        this->message->setString("Cannot travel with no party members!");
+    }
+    this->partyEmptyLastFrame = partyEmpty;
+
     this->updateMaps(mousePos);
     this->moveFrames(moveRight, moveLeft);
 
@@ -101,17 +113,13 @@ void MapViewer::render(sf::RenderTarget* target)
 {
     target->draw(this->mapIconSprite);
 
-    if (!this->hidden) {
-        this->renderRects(target);
-        this->renderMaps(target);
+    this->renderMaps(target);
 
-        // Draw frame playback sprite if an area is being explored
-        if (this->mapSelected) {
-            target->draw(this->frameSprite);
-        }
+    // Draw frame playback sprite if an area is being explored
+    if (this->mapSelected) {
+        target->draw(this->frameSprite);
     }
 
-    this->renderButtons(target);
     this->message->render(target);
 }
 
@@ -319,13 +327,13 @@ void MapViewer::tryUnlockNextMap(const std::string& completedMapId)
 }
 
 // ---------------------------------------------------------------------------
-// Visibility controls
+// Visibility
 // ---------------------------------------------------------------------------
 
-void MapViewer::showOpenMapButton() { this->buttons["OPENMAP"]->show(); }
-void MapViewer::hideOpenMapButton() { this->buttons["OPENMAP"]->hide(); }
-
-bool MapViewer::isHidden()      const { return this->hidden; }
+// The map view is always open now — kept for API compatibility with
+// MapComponent::mapIsOpen(), which callers still use to mean "the map
+// view is currently visible," which is now unconditionally true.
+bool MapViewer::isHidden()      const { return false; }
 bool MapViewer::isMapSelected() const { return this->mapSelected; }
 
 std::string MapViewer::getCurrentMapId() const
@@ -367,83 +375,8 @@ bool MapViewer::currentEventIsActive() const
 }
 
 // ---------------------------------------------------------------------------
-// Init helpers
-// ---------------------------------------------------------------------------
-
-void MapViewer::initRects()
-{
-    this->rectangles["MAPVIEWER"] = std::make_unique<Rectangle>(
-        x, y, 400, 400,
-        sf::Color::Transparent, sf::Color::White, 1.f, false
-    );
-}
-
-void MapViewer::initButtons()
-{
-    this->buttons["OPENMAP"] = std::make_unique<Button>(
-        450, 775, 100, 25, 0.5f, "Map",
-        sf::Color(70, 70, 70, 70),
-        sf::Color(150, 150, 150, 255),
-        sf::Color(20, 20, 20, 70),
-        false
-    );
-}
-
-// ---------------------------------------------------------------------------
 // Update/render helpers
 // ---------------------------------------------------------------------------
-
-void MapViewer::updateButtons(const sf::Vector2f& mousePos)
-{
-    for (const auto& it : this->buttons) {
-        it.second->update(mousePos);
-    }
-
-    if (this->buttons["OPENMAP"]->isPressed()) {
-        if (CharacterManager::getInstance().getParty().size() <= 0) {
-            this->message->setShown();
-            this->message->setString("Cannot travel with no party members!");
-            if (!this->mapOrder.empty()) {
-                const std::string& id = this->mapOrder[this->currentMapIndex];
-                auto it = this->maps.find(id);
-                if (it != this->maps.end()) it->second->hide();
-            }
-            this->hidden = true;
-        }
-        else if (this->hidden) {
-            if (!this->mapOrder.empty()) {
-                const std::string& id = this->mapOrder[this->currentMapIndex];
-                auto it = this->maps.find(id);
-                if (it != this->maps.end()) it->second->show();
-            }
-            this->rectangles["MAPVIEWER"]->show();
-            this->hidden = false;
-        }
-        else {
-            if (!this->mapOrder.empty()) {
-                const std::string& id = this->mapOrder[this->currentMapIndex];
-                auto it = this->maps.find(id);
-                if (it != this->maps.end()) it->second->hide();
-            }
-            this->rectangles["MAPVIEWER"]->show();
-            this->hidden = true;
-        }
-    }
-}
-
-void MapViewer::renderButtons(sf::RenderTarget* target)
-{
-    for (const auto& it : this->buttons) {
-        it.second->render(target);
-    }
-}
-
-void MapViewer::renderRects(sf::RenderTarget* target)
-{
-    for (const auto& it : this->rectangles) {
-        it.second->render(target);
-    }
-}
 
 void MapViewer::updateMaps(const sf::Vector2f& mousePos)
 {

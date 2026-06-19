@@ -60,17 +60,17 @@ void MapCore::render(sf::RenderTarget* target)
 
             if (state.explored)
             {
-                // Small grey-green circle — explored
+                // Small muted green circle — explored
                 sf::CircleShape dot(4.f);
-                dot.setFillColor(sf::Color(80, 160, 80, 200));
+                dot.setFillColor(sf::Color(90, 150, 110, 180));
                 dot.setPosition(cx - 4.f, indicatorY - 4.f);
                 target->draw(dot);
             }
             else if (i == this->buttonsRevealed - 1)
             {
-                // Bright amber pulsing diamond — frontier / next area
+                // Muted amber diamond — frontier / next area
                 sf::CircleShape diamond(6.f, 4);
-                diamond.setFillColor(sf::Color(255, 190, 40, 230));
+                diamond.setFillColor(sf::Color(210, 165, 70, 210));
                 diamond.setRotation(45.f);
                 diamond.setPosition(cx - 6.f, indicatorY - 6.f);
                 target->draw(diamond);
@@ -231,6 +231,13 @@ bool MapCore::isEventActive() const
 
 void MapCore::initButtons(const std::vector<const AreaDefinition*>& areaDefs)
 {
+    // Matches the idle/hover/active palette used by TravelInputComponent
+    // and TravelHudComponent so area buttons read as part of the same
+    // bottom-bar/panel UI system rather than a separate visual style.
+    const sf::Color idle(20, 20, 20, 160);
+    const sf::Color hover(80, 80, 80, 255);
+    const sf::Color active(10, 10, 10, 200);
+
     this->areaStates.reserve(areaDefs.size());
 
     for (const auto* def : areaDefs) {
@@ -243,9 +250,7 @@ void MapCore::initButtons(const std::vector<const AreaDefinition*>& areaDefs)
         state.button = std::make_unique<Button>(
             sf::Vector2f(def->buttonX, def->buttonY),
             0, 25.f, 0.5f, def->name,
-            sf::Color(70, 70, 70, 70),
-            sf::Color(150, 150, 150, 255),
-            sf::Color(20, 20, 20, 70),
+            idle, hover, active,
             false
         );
         this->areaStates.push_back(std::move(state));

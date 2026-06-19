@@ -7,7 +7,6 @@
 DialogueInputComponent::DialogueInputComponent()
 {
     this->initButtons();
-    this->initRects();
 
     // Small "continue" indicator shown once the current line has fully
     // typed out. Sits in the bottom-right corner of the main dialogue box.
@@ -26,27 +25,22 @@ void DialogueInputComponent::initButtons()
     const sf::Color hover(150, 150, 150, 255);
     const sf::Color active(20, 20, 20, 70);
 
-    this->buttons["DIALOGUEBOXTOP"] = std::make_unique<Button>(0, 806, 1920, 140, 0.5f, "...", idle, hover, active, true);
-    this->buttons["DIALOGUEBOXBOTTOM"] = std::make_unique<Button>(0, 947, 1920, 140, 0.5f, "...", idle, hover, active, true);
+    // DIALOGUEBOXTOP shares the same top edge as DIALOGUEBOXCENTER (810)
+    // so NPC lines and the first player choice line up exactly when the
+    // UI transitions between SHOWING_NPC and SHOWING_CHOICES — otherwise
+    // the 4px gap reads as a small vertical jump between the two states.
+    this->buttons["DIALOGUEBOXTOP"] = std::make_unique<Button>(0, 810, 1920, 140, 0.5f, "...", idle, hover, active, true);
+    this->buttons["DIALOGUEBOXBOTTOM"] = std::make_unique<Button>(0, 951, 1920, 140, 0.5f, "...", idle, hover, active, true);
     this->buttons["DIALOGUEBOXCENTER"] = std::make_unique<Button>(1, 810, 1918, 275, 0.5f, "...", idle, hover, active, true);
 
-    this->buttons["DIALOGUEBOXTOP"]->setTextPosition(10.f, 816.f);
-    this->buttons["DIALOGUEBOXBOTTOM"]->setTextPosition(10.f, 957.f);
+    this->buttons["DIALOGUEBOXTOP"]->setTextPosition(10.f, 820.f);
+    this->buttons["DIALOGUEBOXBOTTOM"]->setTextPosition(10.f, 961.f);
     this->buttons["DIALOGUEBOXCENTER"]->setTextPosition(10.f, 820.f);
-}
-
-void DialogueInputComponent::initRects()
-{
-    this->rectangles["DIALOGUE_BOX"] = std::make_unique<Rectangle>("", sf::Color::White, 16, 1, 810, 1918, 275, sf::Color::Transparent, sf::Color::White, 1.f, false);
 }
 
 void DialogueInputComponent::update(sf::Vector2f mousePos)
 {
     for (auto& pair : this->buttons) {
-        pair.second->update(mousePos);
-    }
-
-    for (auto& pair : this->rectangles) {
         pair.second->update(mousePos);
     }
 
@@ -131,10 +125,6 @@ void DialogueInputComponent::render(sf::RenderTarget* target)
     }
 
     for (auto& pair : this->buttons) {
-        pair.second->render(target);
-    }
-
-    for (auto& pair : this->rectangles) {
         pair.second->render(target);
     }
 

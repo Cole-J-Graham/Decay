@@ -11,7 +11,7 @@
 static constexpr float kMessageDuration = 3.f;
 
 // Panel geometry — keep in sync with initUi()
-static constexpr float kMainPanelX = 360.f;
+static constexpr float kMainPanelX = 440.f;
 static constexpr float kMainPanelW = 950.f;
 static constexpr float kMainPanelY = 60.f;   // below title bar
 static constexpr float kMainPanelH = 750.f;
@@ -19,9 +19,10 @@ static constexpr float kMainPanelH = 750.f;
 // ── Constructors ──────────────────────────────────────────────────────────
 
 BonfireState::BonfireState(sf::RenderWindow* window, std::stack<State*>* states,
-    const std::string& areaId)
+    const std::string& areaId, MusicPlayer* musicPlayer)
     : State(window, states)
     , areaId(areaId)
+    , musicPlayer(musicPlayer)
 {
     this->initUi();
     CompanionConversationManager::getInstance().onBonfireEntered();
@@ -137,6 +138,7 @@ void BonfireState::renderPartyPreview(sf::RenderTarget* target)
     if (target == nullptr) return;
 
     const auto& partyMembers = CharacterManager::getInstance().getAllPartyMembers();
+    static sf::Clock pulseClock;
 
     for (int i = 0; i < static_cast<int>(partyMembers.size()); i++)
     {
@@ -167,13 +169,43 @@ void BonfireState::renderPartyPreview(sf::RenderTarget* target)
 
         if (pending)
         {
-            sf::RectangleShape badge(sf::Vector2f(16.f, 16.f));
-            badge.setPosition(sx + sw - 20.f, sy + 4.f);
+            // Pulse: smooth sine wave between 0 and 1
+            const float pulse = (std::sin(pulseClock.getElapsedTime().asSeconds() * 4.f) + 1.f) / 2.f;
+
+            // Slot border glows bright gold when pending
+            Rectangle slotBorder(sx, sy, sw, sh,
+                sf::Color::Transparent,
+                sf::Color(255, 200, 60, static_cast<sf::Uint8>(120 + 135 * pulse)),
+                2.f, false);
+            slotBorder.render(target);
+
+            // Accent bar pulses between orange and bright gold
+            sf::RectangleShape accent(sf::Vector2f(sw, 4.f));
+            accent.setPosition(sx, sy);
+            accent.setFillColor(sf::Color(255, static_cast<sf::Uint8>(160 + 40 * pulse), 60, 255));
+            target->draw(accent);
+
+            // Badge — pulses in size
+            const float badgeSize = 14.f + 4.f * pulse;
+            sf::RectangleShape badge(sf::Vector2f(badgeSize, badgeSize));
+            badge.setPosition(sx + sw - badgeSize - 4.f, sy + 4.f);
             badge.setFillColor(sf::Color(255, 200, 60, 220));
             target->draw(badge);
 
-            Text pendingText(sx + sw - 16.f, sy + 4.f, 12, "!", sf::Color(20, 20, 20, 255), false);
+            Text pendingText(sx + sw - badgeSize, sy + 4.f, 12, "!", sf::Color(20, 20, 20, 255), false);
             pendingText.render(target);
+
+            // Hover tooltip — "Click to talk"
+            const sf::FloatRect slotRect(sx, sy, sw, sh);
+            // mousePos isn't in scope here, so pass it through or use a stored member
+        }
+        else
+        {
+            // Non-pending accent bar — dimmer, static
+            sf::RectangleShape accent(sf::Vector2f(sw, 3.f));
+            accent.setPosition(sx, sy);
+            accent.setFillColor(sf::Color(220, 140, 60, 180));
+            target->draw(accent);
         }
 
         partyMembers[i]->renderPreview(target, sx + 12.f, sy + 12.f);
@@ -250,13 +282,11 @@ void BonfireState::initUi()
 
     // ── Left panel – party preview ────────────────────────────────────
     this->ui.addRectangle("PARTY_PREVIEW_PANEL", std::make_unique<Rectangle>(
-        25, 50, 240, 750, transparent, panelBorder, 1.f, false));
-
+        105, 50, 240, 750, transparent, panelBorder, 1.f, false));
     this->ui.addRectangle("PARTY_HEADER_DIV", std::make_unique<Rectangle>(
-        25, 82, 240, 1, sf::Color(255, 255, 255, 40), transparent, 0.f, false));
-
+        105, 82, 240, 1, sf::Color(255, 255, 255, 40), transparent, 0.f, false));
     this->ui.addText("PARTY_PREVIEW_TITLE", std::make_unique<Text>(
-        38, 57, 13, "PARTY", sf::Color(200, 200, 200, 220), false));
+        118, 57, 13, "PARTY", sf::Color(200, 200, 200, 220), false));
 
     // ── Centre panel – main view ──────────────────────────────────────
     this->ui.addRectangle("MAIN_PANEL", std::make_unique<Rectangle>(
@@ -324,15 +354,13 @@ void BonfireState::initUi()
 
     // ── Right panel – actions ─────────────────────────────────────────
     this->ui.addRectangle("ACTION_PANEL", std::make_unique<Rectangle>(
-        1320, 50, 290, 260, transparent, panelBorder, 1.f, false));
-
+        1400, 50, 290, 260, transparent, panelBorder, 1.f, false));
     this->ui.addText("ACTION_TITLE", std::make_unique<Text>(
-        1335, 58, 13, "ACTIONS", sf::Color(200, 200, 200, 220), false));
-
+        1415, 58, 13, "ACTIONS", sf::Color(200, 200, 200, 220), false));
     this->ui.addRectangle("ACTION_HEADER_DIV", std::make_unique<Rectangle>(
-        1320, 80, 290, 1, sf::Color(255, 255, 255, 40), transparent, 0.f, false));
+        1400, 80, 290, 1, sf::Color(255, 255, 255, 40), transparent, 0.f, false));
 
-    const float btnX = 1335.f, btnW = 260.f, btnH = 30.f, btnGap = 12.f;
+    const float btnX = 1410.f, btnW = 260.f, btnH = 30.f, btnGap = 12.f;
     float btnY = 92.f;
 
     this->ui.addButton("REST_PARTY", std::make_unique<Button>(

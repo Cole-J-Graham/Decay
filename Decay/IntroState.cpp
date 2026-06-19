@@ -1,5 +1,8 @@
 #include "IntroState.h"
+#include "BonfireState.h"
+#include "CharacterManager.h"
 #include "TravelState.h"
+#include "MusicManager.h"
 
 #include <fstream>
 #include <iostream>
@@ -7,8 +10,9 @@
 // ── Constructor ───────────────────────────────────────────────────────────
 
 IntroState::IntroState(sf::RenderWindow* window, std::stack<State*>* states,
-    const std::string& slideFilePath)
+    MusicPlayer* musicPlayer, const std::string& slideFilePath)
     : State(window, states)
+    , musicPlayer(musicPlayer)
 {
     loadSlides(slideFilePath);
 
@@ -50,6 +54,10 @@ IntroState::IntroState(sf::RenderWindow* window, std::stack<State*>* states,
         sf::Color(160, 160, 160, 160),
         false
     );
+
+    // Play music
+
+    MusicManager::getInstance().play("intro_music");
 
     applySlide(0);
 }
@@ -229,6 +237,15 @@ void IntroState::applySlide(int index)
     if (captionText)
         captionText->setString(slide.text);
 
+    // Wrap text to fit within the window width, accounting for margins
+    if (captionText)
+    {
+        const float captionX = 60.f;
+        const float winW = static_cast<float>(window->getSize().x);
+        const float maxWidth = winW - (captionX * 2.f);   // 60px margin each side
+        captionText->setString(Text::wrapText(slide.text, maxWidth, 20));
+    }
+
     // Fade in the new slide
     fadeAlpha = 255.f;
     fadingIn = true;
@@ -261,8 +278,13 @@ void IntroState::launchGame()
 {
     endState();
 
+    // Seed the starting party before any state that needs it
+    CharacterManager::getInstance().addCharacterToParty("PLAYER");
+    CharacterManager::getInstance().addCharacterToParty("ZIN");
+
     if (!states->empty())
         states->pop();
 
-    states->push(new TravelState(window, states));
+    states->push(new TravelState(window, states, musicPlayer));
+    states->push(new BonfireState(window, states, "", musicPlayer));
 }

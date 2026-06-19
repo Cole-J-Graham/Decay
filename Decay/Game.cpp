@@ -9,6 +9,7 @@
 #include "Inventory.h"
 #include "GameTriggers.h"
 #include "MusicManager.h"
+#include "MusicPlayer.h"
 
 // Constructor and Destructors
 Game::Game()
@@ -27,6 +28,7 @@ Game::Game()
     BossEncounterDatabase::getInstance().loadFromFile("Assets/Data/boss_encounters.db");
 
     this->initWindow();
+    this->initMusic();
     this->initStates();
 
     // Must come after initStates so CharacterManager already has all characters registered
@@ -75,9 +77,20 @@ void Game::initWindow()
     this->window->setVerticalSyncEnabled(vsync);
 }
 
+void Game::initMusic()
+{
+    // Single MusicPlayer for the whole application lifetime — wired into
+    // MusicManager once here so every state (IntroState, TravelState, etc.)
+    // can play music through the singleton from the moment it's pushed,
+    // including states constructed before TravelState used to exist.
+    this->musicPlayer = std::make_unique<MusicPlayer>();
+    MusicManager_setPlayer(this->musicPlayer.get());
+    MusicManager::getInstance().preloadAll();
+}
+
 void Game::initStates()
 {
-    this->states.push(new MainMenuState(window, &states));
+    this->states.push(new MainMenuState(window, &states, this->musicPlayer.get()));
 }
 
 // Update

@@ -22,10 +22,6 @@ public:
     void update(const sf::Vector2f& mousePos, bool moveRight, bool moveLeft);
     void render(sf::RenderTarget* target);
 
-    // Map open/close button visibility
-    void showMapButton() { this->mapView->showOpenMapButton(); }
-    void hideMapButton() { this->mapView->hideOpenMapButton(); }
-
     // State queries
     bool        mapIsOpen()      const;
     bool        mapIsSelected()  const;

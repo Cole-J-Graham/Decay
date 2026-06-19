@@ -51,14 +51,14 @@ MIND_BREAK|STUN|RANDOM_PARTY|The creature invades the target's mind, leaving the
 PARALYTIC_HOWL|STUN|ALL_PARTY|The creature's shriek reaches a frequency that locks every muscle in place!|bash_light|1|2
 
 #POISON MOVES BASIC
-VENOM_SPIT|POISON|RANDOM_PARTY|The creature spits a stream of venom — it burns where it lands!|bash_light|4.0|3
+VENOM_SPIT|POISON|RANDOM_PARTY|The creature spits a stream of venom! It burns where it lands!|bash_light|4.0|3
 ROTTING_TOUCH|POISON|ALL_PARTY|The creature's decayed limbs brush across the party, leaving a foul toxin!|bash_light|2.5|2
-ENVENOMED_STRIKE_POISON|POISON|RANDOM_PARTY|The wound festers — poison takes hold!|bash_light|3.5|3
+ENVENOMED_STRIKE_POISON|POISON|RANDOM_PARTY|The wound festers, a poison takes hold!|bash_light|3.5|3
 
 #POISON MOVES INTERMEDIATE
 TOXIC_CLOUD|POISON|ALL_PARTY|The creature exhales a thick cloud of toxic gas across the entire party!|bash_light|6.0|3
-PLAGUE_BITE|POISON|RANDOM_PARTY|The creature's bite carries something deeply wrong — a creeping sickness sets in!|bash_light|8.0|2
-INFECTIOUS_SLASH|POISON|RANDOM_PARTY|The creature's claws are coated in something foul — the wound festers immediately!|bash_light|7.0|3
+PLAGUE_BITE|POISON|RANDOM_PARTY|The creature's bite carries something deeply wrong, a creeping sickness sets in!|bash_light|8.0|2
+INFECTIOUS_SLASH|POISON|RANDOM_PARTY|The creature's claws are coated in something foul, the wound festers immediately!|bash_light|7.0|3
 
 #POISON MOVES ADVANCED
 NECROTIC_AURA|POISON|ALL_PARTY|The creature radiates a decaying energy that rots everything it touches!|bash_light|12.0|4
@@ -67,7 +67,7 @@ DEATH_BLIGHT|POISON|RANDOM_PARTY|An ancient and virulent toxin is driven directl
 
 #DEBUFF MOVES BASIC
 WEAKENING_HOWL|DEBUFF_DAMAGE|ALL_PARTY|The creature's haunting cry saps the party's resolve!|bash_light|0.6|2
-BRITTLE_CURSE|DEBUFF_DEFENSE|ALL_PARTY|The creature rasps a curse — the party's skin feels paper-thin!|bash_light|0.55|3
+BRITTLE_CURSE|DEBUFF_DEFENSE|ALL_PARTY|The creature rasps a curse, the party's skin feels paper-thin!|bash_light|0.55|3
 
 #DEBUFF MOVES INTERMEDIATE
 DEMORALIZE|DEBUFF_DAMAGE|ALL_PARTY|The creature unleashes a crushing display of force that breaks the party's fighting spirit!|bash_light|0.5|2
@@ -83,13 +83,13 @@ SHATTER_GUARD|DEBUFF_DEFENSE|RANDOM_PARTY|The creature focuses everything into d
 
 #COMBO MOVES INTERMEDIATE
 ENVENOMED_STRIKE|DAMAGE|RANDOM_PARTY|The creature drives a poison-laced claw deep into its target!|bash_light|1.5|0
-WEAKENING_BITE|DAMAGE|RANDOM_PARTY|The creature bites down hard — and something in the wound drains the target's strength!|bash_light|1.8|0
+WEAKENING_BITE|DAMAGE|RANDOM_PARTY|The creature bites down hard and something in the wound drains the target's strength!|bash_light|1.8|0
 WEAKENING_BITE_DEBUFF|DEBUFF_DAMAGE|RANDOM_PARTY|The venom from the bite seeps in, sapping the target's power!|bash_light|0.65|2
 
 #COMBO MOVES ADVANCED
-SHATTERING_SLAM|DAMAGE|ALL_PARTY|The creature drives into the entire party — bones crack and guards crumble!|strike_long|1.4|0
+SHATTERING_SLAM|DAMAGE|ALL_PARTY|The creature drives into the entire party, bones crack and guards crumble!|strike_long|1.4|0
 SHATTERING_SLAM_DEBUFF|DEBUFF_DEFENSE|ALL_PARTY|The force of the blow leaves the whole party vulnerable!|bash_light|0.5|2
 PLAGUE_CRUSH|DAMAGE|RANDOM_PARTY|The creature drives a festering limb into the target with full body weight!|strike_long|2.8|0
-PLAGUE_CRUSH_POISON|POISON|RANDOM_PARTY|The wound ruptures — whatever was in that limb is now in the bloodstream!|bash_light|10.0|3
+PLAGUE_CRUSH_POISON|POISON|RANDOM_PARTY|The wound ruptures, whatever was in that limb is now in the bloodstream!|bash_light|10.0|3
 TERROR_STRIKE|DAMAGE|RANDOM_PARTY|The creature strikes with enough savagery to rattle the whole party's nerves!|strike_long|3.0|0
 TERROR_STRIKE_DEBUFF|DEBUFF_DAMAGE|ALL_PARTY|The sheer violence of the blow shatters the party's confidence!|bash_light|0.55|2

@@ -7,20 +7,36 @@ TravelInputComponent::TravelInputComponent()
 
 void TravelInputComponent::initButtons()
 {
-    const sf::Color idle(70, 70, 70, 70);
-    const sf::Color hover(150, 150, 150, 255);
-    const sf::Color active(20, 20, 20, 70);
+    const sf::Color idle(20, 20, 20, 160);
+    const sf::Color hover(80, 80, 80, 255);
+    const sf::Color active(10, 10, 10, 200);
 
-    this->buttons["RETURN_BONFIRE"] = std::make_unique<Button>(415, 10, 135, 25, 0.5f, "Return->Bonfire", idle, hover, active, false);
-    this->buttons["BUTTON_RIGHT"] = std::make_unique<Button>(1335, 780, 20, 20, 0.5f, "->", idle, hover, active, false);
-    this->buttons["BUTTON_LEFT"] = std::make_unique<Button>(565, 780, 20, 20, 0.5f, "<-", idle, hover, active, false);
+    const sf::Color dangerIdle(35, 15, 15, 180);
+    const sf::Color dangerHover(100, 40, 40, 255);
+    const sf::Color dangerActive(15, 5, 5, 200);
+
+    // Bottom bar strip spans y=770-805 — all buttons share this baseline
+    // Left travel arrow — sits just left of the map panel
+    this->buttons["BUTTON_LEFT"] = std::make_unique<Button>(
+        568, 776, 80, 24, 0.5f, "< Prev",
+        idle, hover, active, false);
+
+    // Right travel arrow — sits just right of the map panel
+    this->buttons["BUTTON_RIGHT"] = std::make_unique<Button>(
+        1272, 776, 80, 24, 0.5f, "Next >",
+        idle, hover, active, false);
+
+    // Bonfire button — far left of the bottom bar, danger-toned so it reads
+    // as a meaningful action rather than a navigation control
+    this->buttons["RETURN_BONFIRE"] = std::make_unique<Button>(
+        8, 776, 140, 24, 0.5f, "Rest at Bonfire",
+        dangerIdle, dangerHover, dangerActive, false);
 }
 
 void TravelInputComponent::update(sf::Vector2f mousePos)
 {
-    for (auto& pair : this->buttons) {
+    for (auto& pair : this->buttons)
         pair.second->update(mousePos);
-    }
 
     this->rightActive = this->buttons["BUTTON_RIGHT"]->isPressed();
     this->leftActive = this->buttons["BUTTON_LEFT"]->isPressed();
@@ -29,13 +45,10 @@ void TravelInputComponent::update(sf::Vector2f mousePos)
 
 void TravelInputComponent::render(sf::RenderTarget* target)
 {
-    if (target == nullptr) {
-        return;
-    }
+    if (target == nullptr) return;
 
-    for (auto& pair : this->buttons) {
+    for (auto& pair : this->buttons)
         pair.second->render(target);
-    }
 }
 
 void TravelInputComponent::showMoveArrows()
