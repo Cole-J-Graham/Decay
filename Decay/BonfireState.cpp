@@ -369,7 +369,7 @@ void BonfireState::initUi()
     this->ui.addRectangle("ACTION_HEADER_DIV", std::make_unique<Rectangle>(
         1400, 80, 290, 1, sf::Color(255, 255, 255, 40), transparent, 0.f, false));
 
-    const float btnX = 1335.f, btnW = 260.f, btnH = 30.f, btnGap = 12.f;
+    const float btnX = 1410.f, btnW = 260.f, btnH = 30.f, btnGap = 12.f;
     float btnY = 92.f;
 
     this->ui.addButton("REST_PARTY", std::make_unique<Button>(
