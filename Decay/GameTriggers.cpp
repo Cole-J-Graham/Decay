@@ -101,11 +101,18 @@ void GameTriggers::registerAll()
         });
 
     // ── Map unlock notifications ──────────────────────────────────────────
+    triggers.on("map_unlocked:Castle", []()
+        {
+            enqueueNotification("New area unlocked: Castle", 6.f);
+        });
+
+    triggers.on("map_unlocked:Decay", []()
+        {
+            enqueueNotification("New area unlocked: The Decay", 6.f);
+        });
+
     triggers.on("map_unlocked:Plateau", []()
         {
-            auto& flags = GameFlags::getInstance();
-            if (flags.has("plateau_unlock_notified")) return;
-            flags.set("plateau_unlock_notified");
             enqueueNotification("New location unlocked: Plateau", 6.f);
         });
 

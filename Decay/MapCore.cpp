@@ -60,23 +60,21 @@ void MapCore::render(sf::RenderTarget* target)
             const auto& state = this->areaStates[i];
             state.button->render(target);
 
-            if (i >= this->buttonsRevealed) continue;
+            if (i >= this->buttonsRevealed) continue; // not yet revealed, no indicator
 
-            // Position indicator above the button using stored coords
             const float cx = state.buttonX;
             const float indicatorY = state.buttonY - 10.f;
 
             if (state.explored)
             {
-                // Small muted green circle — explored
                 sf::CircleShape dot(4.f);
                 dot.setFillColor(sf::Color(90, 150, 110, 180));
                 dot.setPosition(cx - 4.f, indicatorY - 4.f);
                 target->draw(dot);
             }
-            else if (i == this->buttonsRevealed - 1)
+            else
             {
-                // Muted amber diamond — frontier / next area
+                // Frontier — this is the next area to explore
                 sf::CircleShape diamond(6.f, 4);
                 diamond.setFillColor(sf::Color(210, 165, 70, 210));
                 diamond.setRotation(45.f);
@@ -259,10 +257,12 @@ void MapCore::initButtons(const std::vector<const AreaDefinition*>& areaDefs)
             sf::Vector2f(def->buttonX, def->buttonY),
             0, 25.f, 0.5f, def->name,
             idle, hover, active,
-            false
+            true
         );
         this->areaStates.push_back(std::move(state));
     }
+
+    this->refreshButtonVisibility();
 }
 
 void MapCore::refreshButtonVisibility()

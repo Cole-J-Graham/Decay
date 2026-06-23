@@ -302,29 +302,18 @@ void MapViewer::tryUnlockNextMap(const std::string& completedMapId)
 {
     const auto& db = MapDatabase::getInstance();
 
-    // Walk through mapOrder and unlock any map whose unlockCondition == completedMapId
     for (int i = 0; i < static_cast<int>(this->mapOrder.size()); ++i) {
         const MapDefinition* def = db.getMap(this->mapOrder[i]);
         if (def && def->unlockCondition == completedMapId) {
             if (!this->mapUnlocked[i]) {
                 this->mapUnlocked[i] = true;
 
-                // Reveal the first area button of the newly unlocked map
-                auto it = this->maps.find(this->mapOrder[i]);
-                if (it != this->maps.end()) {
-                    it->second->revealNextAreaButton();
-                }
-
                 std::cout << "MapViewer: unlocked map \"" << this->mapOrder[i] << "\"\n";
 
-                // Fire the unlock notification trigger.
-                // Key pattern: "map_unlocked:<displayName>"
-                // Registrations live in GameTriggers.cpp.
                 const MapDefinition* newDef = db.getMap(this->mapOrder[i]);
                 if (newDef) {
                     TriggerManager::getInstance().fire("map_unlocked:" + newDef->name);
                 }
-
             }
         }
     }
@@ -425,16 +414,6 @@ void MapViewer::setUnlockedMapIds(const std::vector<std::string>& unlockedIds)
         for (size_t i = 0; i < this->mapOrder.size(); ++i) {
             if (this->mapOrder[i] == id) {
                 this->mapUnlocked[i] = true;
-
-                // Reveal at least the first area button so a freshly-rebuilt
-                // MapCore (post-load) isn't unlocked but buttonless.
-                // NOTE: doesn't restore per-area exploration progress within
-                // the map — that would need MapCore-level save/restore.
-                auto it = this->maps.find(id);
-                if (it != this->maps.end()) {
-                    it->second->revealNextAreaButton();
-                }
-
                 break;
             }
         }
