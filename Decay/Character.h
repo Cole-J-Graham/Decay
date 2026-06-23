@@ -92,7 +92,7 @@ public:
     sf::Sprite& getSprite() { return this->character; }
 
     // Helpers
-    void renderPreview(sf::RenderTarget* target, float x, float y);
+    void renderPreview(sf::RenderTarget* target, float x, float y, bool drawBorder = false);
     bool idButtonIsClicked() const;
     void updateIdButton(const sf::Vector2f mousePos);
     bool idButtonLeftClicked() const;

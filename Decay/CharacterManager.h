@@ -128,7 +128,7 @@ public:
                 border.setOutlineThickness(0.f);
 
                 target->draw(border);
-                pair.second->renderPreview(target, portraitX, portraitY);
+                pair.second->renderPreview(target, portraitX, portraitY, false);
             }
         }
     }

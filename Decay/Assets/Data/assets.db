@@ -59,23 +59,36 @@ speaking_tree_portrait|texture|Assets/Entities/entityTree.jpeg
 siward_sprite|texture|Assets/Sprites/siward.png
 ri_sprite|texture|Assets/Sprites/ri.png
 
-#Hostile Sprites
+#Hostile Sprites Forest
 wolf_sprite|texture|Assets/HostileSprites/wolfsprite.png
-wolf_view|texture|Assets/Entities/wolfEntity.jpeg
-
 walker_sprite|texture|Assets/HostileSprites/decaywalkersprite.jpeg
-walker_view|texture|Assets/Entities/decayEntity.jpeg
-
 phantom_sprite|texture|Assets/HostileSprites/phantomSprite.jpeg
-phantom_view|texture|Assets/Entities/phantomEntity.jpeg
+haze_demon_sprite|texture|Assets/HostileSprites/hazedemonSprite.jpeg
+hostile_tree_sprite|texture|Assets/HostileSprites/hostileTreeSprite.png
+hostile_figure_sprite|texture|Assets/HostileSprites/hostileFigure.jpeg
+lost_nun_sprite|texture|Assets/HostileSprites/lostNunSprite.jpeg
 
-decay_sprite|texture|Assets/HostileSprites/wolfsprite.png|Assets/Entities/decayknight.png
-
-mimic_sprite|texture|Assets/HostileSprites/wallMimicSprite.jpeg
-mimicentity_view|texture|Assets/Entities/wallMimicEntity.jpeg
-
+#Hostile Sprites Castle
+decay_knight_sprite|texture|Assets/HostileSprites/decayknight.png
+wall_mimic_sprite|texture|Assets/HostileSprites/wallMimicSprite.jpeg
 phantom_sprite|texture|Assets/HostileSprites/phantomSprite.jpeg
-phantom_view|texture|Assets/Entities/phantomEntity.jpeg
+court_jester_sprite|texture|Assets/HostileSprites/courtJesterSprite.jpeg
+lost_knight_sprite|texture|Assets/HostileSprites/lostKnightSprite.jpeg
+possessed_armor_sprite|texture|Assets/HostileSprites/possessedArmor.jpeg
+skin_eater_sprite|texture|Assets/HostileSprites/skinEaterEntity.jpeg
+wall_heads_sprite|texture|Assets/HostileSprites/wallHeads.jpeg
+
+#Hostile Sprites Decay
+abyssal_decapod_sprite|texture|Assets/HostileSprites/abyssalDecapodSprite.jpeg
+rot_beast_sprite|texture|Assets/HostileSprites/beastOfRotEntity.png
+gaping_maw_sprite|texture|Assets/HostileSprites/gapingMaw.png
+burrower_sprite|texture|Assets/HostileSprites/burrowerEntity.jpeg
+decay_spider_sprite|texture|Assets/HostileSprites/decaySpider.png
+chatter_mouth_sprite|texture|Assets/HostileSprites/chatterMouthEntity.jpeg
+limb_splitter_sprite|texture|Assets/HostileSprites/limbSplitterEntity.jpeg
+face_demon_sprite|texture|Assets/HostileSprites/faceDemon.png
+reclus_sprite|texture|Assets/HostileSprites/reclusEntity.jpeg
+tendril_alpha_sprite|texture|Assets/HostileSprites/tendrilAlphaSprite.jpeg
 
 # Intro slideshow images
 intro_slide_1|texture|Assets/Intro/slide1.png

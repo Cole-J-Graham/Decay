@@ -290,17 +290,32 @@ std::string Character::toStringWithPrecision(double value, int precision)
 }
 
 // Helpers
-void Character::renderPreview(sf::RenderTarget* target, float x, float y)
+void Character::renderPreview(sf::RenderTarget* target, float x, float y, bool drawBorder)
 {
     if (target == nullptr) {
         return;
     }
 
     const sf::Vector2f oldPosition = this->character.getPosition();
-
     this->character.setPosition(x, y);
-    target->draw(this->character);
 
+    if (drawBorder)
+    {
+        const float padding = 1.f;
+        sf::FloatRect bounds = this->character.getGlobalBounds();
+
+        sf::RectangleShape border(sf::Vector2f(
+            bounds.width + padding * 2.f,
+            bounds.height + padding * 2.f));
+
+        border.setPosition(x - padding, y - padding);
+        border.setFillColor(sf::Color::White);
+        border.setOutlineThickness(0.f);
+
+        target->draw(border);
+    }
+
+    target->draw(this->character);
     this->character.setPosition(oldPosition);
 }
 

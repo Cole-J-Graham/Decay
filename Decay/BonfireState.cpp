@@ -209,7 +209,7 @@ void BonfireState::renderPartyPreview(sf::RenderTarget* target)
             target->draw(accent);
         }
 
-        partyMembers[i]->renderPreview(target, sx + 12.f, sy + 12.f);
+        partyMembers[i]->renderPreview(target, sx + 12.f, sy + 12.f, false);
     }
 }
 

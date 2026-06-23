@@ -15,6 +15,9 @@
 namespace
 {
     std::unique_ptr<Text> gNotification;
+    // Position of notifications in the travelstate
+    const float NOTIFICATION_X = 35.f;
+    const float NOTIFICATION_Y = 45.f;
 
     // Pending notifications waiting to be shown. Each entry is
     // (message, durationSeconds). The active notification's remaining
@@ -28,7 +31,7 @@ namespace
     {
         if (!gNotification) {
             gNotification = std::make_unique<Text>(
-                20.f, 760.f,
+                NOTIFICATION_X, NOTIFICATION_Y,
                 18,
                 "",
                 sf::Color(220, 200, 170, 255),

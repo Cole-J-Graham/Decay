@@ -97,7 +97,7 @@ void EventManager::render(sf::RenderTarget* target)
                 if (character)
                 {
                     character->setEmotion(sequencer.getActiveEmotion());
-                    character->renderPreview(target, EVENT_PORTRAIT_X, EVENT_PORTRAIT_Y);
+                    character->renderPreview(target, EVENT_PORTRAIT_X, EVENT_PORTRAIT_Y, true);
                 }
             }
         }

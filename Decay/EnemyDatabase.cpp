@@ -86,7 +86,7 @@ bool EnemyDatabase::loadFromFile(const std::string& filePath)
 
         std::vector<std::string> fields = split(line, '|');
 
-        if (fields.size() < 16) {
+        if (fields.size() < 15) {
             std::cerr << "Invalid enemy line: " << line << "\n";
             continue;
         }
@@ -103,16 +103,15 @@ bool EnemyDatabase::loadFromFile(const std::string& filePath)
         enemy.scale = std::stof(fields[6]);
 
         enemy.spritePath = fields[7];
-        enemy.viewerPath = fields[8];
 
-        enemy.rewards.items = parseRewardItems(fields[9]);
-        enemy.rewards.gold.min = std::stoi(fields[10]);
-        enemy.rewards.gold.max = std::stoi(fields[11]);
-        enemy.rewards.exp.min = std::stoi(fields[12]);
-        enemy.rewards.exp.max = std::stoi(fields[13]);
+        enemy.rewards.items = parseRewardItems(fields[8]);
+        enemy.rewards.gold.min = std::stoi(fields[9]);
+        enemy.rewards.gold.max = std::stoi(fields[10]);
+        enemy.rewards.exp.min = std::stoi(fields[11]);
+        enemy.rewards.exp.max = std::stoi(fields[12]);
 
-        enemy.moveIds = split(fields[14], ',');
-        enemy.spawnAreas = split(fields[15], ',');
+        enemy.moveIds = split(fields[13], ',');
+        enemy.spawnAreas = split(fields[14], ',');
 
         if (enemy.id.empty()) {
             std::cerr << "Enemy has empty id: " << line << "\n";
