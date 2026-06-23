@@ -338,15 +338,15 @@ void BeatSequencer::dispatchGiveOnChoice(const GiveOnChoiceBlock& block)
 {
     if (lastChoice == Choice::B)
     {
-        if (block.choiceBGold > 0)        giveGold(block.choiceBGold);
-        if (!block.choiceBItemId.empty()) giveItem(block.choiceBItemId, block.choiceBQuantity);
-        if (block.choiceBExp > 0.f)       giveExpToParty(block.choiceBExp);
+        if (block.choiceBGiveGold > 0)        giveGold(block.choiceBGiveGold);
+        if (!block.choiceBGiveItemId.empty()) giveItem(block.choiceBGiveItemId, block.choiceBGiveQuantity);
+        if (block.choiceBGiveExp > 0.f)       giveExpToParty(block.choiceBGiveExp);
     }
     else
     {
-        if (block.choiceAGold > 0)        giveGold(block.choiceAGold);
-        if (!block.choiceAItemId.empty()) giveItem(block.choiceAItemId, block.choiceAQuantity);
-        if (block.choiceAExp > 0.f)       giveExpToParty(block.choiceAExp);
+        if (block.choiceAGiveGold > 0)        giveGold(block.choiceAGiveGold);
+        if (!block.choiceAGiveItemId.empty()) giveItem(block.choiceAGiveItemId, block.choiceAGiveQuantity);
+        if (block.choiceAGiveExp > 0.f)       giveExpToParty(block.choiceAGiveExp);
     }
 }
 
@@ -362,15 +362,15 @@ void BeatSequencer::dispatchTakeOnChoice(const TakeOnChoiceBlock& block)
 {
     if (lastChoice == Choice::B)
     {
-        if (block.choiceBGold > 0)        takeGold(block.choiceBGold);
-        if (!block.choiceBItemId.empty()) takeItem(block.choiceBItemId, block.choiceBQuantity);
-        if (block.choiceBDamage > 0.f)    damagePartyMembers(block.choiceBDamage);
+        if (block.choiceBLoseGold > 0)        takeGold(block.choiceBLoseGold);
+        if (!block.choiceBLoseItemId.empty()) takeItem(block.choiceBLoseItemId, block.choiceBLoseQuantity);
+        if (block.choiceBTakeDamage > 0.f)    damagePartyMembers(block.choiceBTakeDamage);
     }
     else
     {
-        if (block.choiceAGold > 0)        takeGold(block.choiceAGold);
-        if (!block.choiceAItemId.empty()) takeItem(block.choiceAItemId, block.choiceAQuantity);
-        if (block.choiceADamage > 0.f)    damagePartyMembers(block.choiceADamage);
+        if (block.choiceALoseGold > 0)        takeGold(block.choiceALoseGold);
+        if (!block.choiceALoseItemId.empty()) takeItem(block.choiceALoseItemId, block.choiceALoseQuantity);
+        if (block.choiceATakeDamage > 0.f)    damagePartyMembers(block.choiceATakeDamage);
     }
 }
 

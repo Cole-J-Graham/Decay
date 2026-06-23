@@ -54,6 +54,14 @@ ovi_scared|texture|Assets/Sprites/ovi_scared.png
 
 #NPC Sprites
 speaking_tree_portrait|texture|Assets/Entities/entityTree.jpeg
+court_jester_portrait|texture|Assets/Entities/courtJesterEntity.jpeg
+decay_portrait|texture|Assets/Entities/decayEntity.jpeg
+horse_portrait|texture|Assets/Entities/horseEntity.jpeg
+obelisk_portrait|texture|Assets/Entities/obeliskEntity.jpeg
+phantom_portrait|texture|Assets/Entities/phantomEntity.jpeg
+child_portrait|texture|Assets/Entities/childEntity.jpeg
+
+#Human-ish NPC Sprites
 siward_sprite|texture|Assets/Sprites/siward.png
 
 doctor_sprite|texture|Assets/Sprites/plaugeguy.png

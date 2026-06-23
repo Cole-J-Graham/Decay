@@ -47,17 +47,15 @@ struct GiveExpBlock
 
 struct GiveOnChoiceBlock
 {
-    // Choice A
-    int         choiceAGold = 0;
-    std::string choiceAItemId;
-    int         choiceAQuantity = 1;
-    float       choiceAExp = 0.f;
+    int         choiceAGiveGold = 0;
+    std::string choiceAGiveItemId;
+    int         choiceAGiveQuantity = 1;
+    float       choiceAGiveExp = 0.f;
 
-    // Choice B
-    int         choiceBGold = 0;
-    std::string choiceBItemId;
-    int         choiceBQuantity = 1;
-    float       choiceBExp = 0.f;
+    int         choiceBGiveGold = 0;
+    std::string choiceBGiveItemId;
+    int         choiceBGiveQuantity = 1;
+    float       choiceBGiveExp = 0.f;
 };
 
 struct TakeGoldBlock
@@ -78,15 +76,15 @@ struct TakeDamageBlock
 
 struct TakeOnChoiceBlock
 {
-    int         choiceAGold = 0;
-    std::string choiceAItemId;
-    int         choiceAQuantity = 1;
-    float       choiceADamage = 0.f;
+    int         choiceALoseGold = 0;
+    std::string choiceALoseItemId;
+    int         choiceALoseQuantity = 1;
+    float       choiceATakeDamage = 0.f;
 
-    int         choiceBGold = 0;
-    std::string choiceBItemId;
-    int         choiceBQuantity = 1;
-    float       choiceBDamage = 0.f;
+    int         choiceBLoseGold = 0;
+    std::string choiceBLoseItemId;
+    int         choiceBLoseQuantity = 1;
+    float       choiceBTakeDamage = 0.f;
 };
 
 // [IF_FOLLOWER] / [END_IF] markers.

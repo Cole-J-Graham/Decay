@@ -26,20 +26,20 @@ LINE: I'm already keeping him.
 [SPEAK_CHARACTER]
 CHARACTER: OVI
 EMOTION: NEUTRAL
-LINE: *blinks slowly. Does not move.*
+LINE: *The odd creature seems to look almost sheep like... It blinks slowly, not moving on the sight of your party.*
 
 [SPEAK_CHARACTER]
 RESPONSE_A: ...Is it dangerous?
-RESPONSE_B: We don't have time for this.
+RESPONSE_B: Zin, look, we don't have time for this...
 
 [SPEAK_CHARACTER]
 CHARACTER: OVI
 EMOTION: NEUTRAL
-LINE_A: *The create tilts head, letting out a small, relatively un-intimidating sound...*
-LINE_B: *The create sits down directly on your boot.*
+LINE_A: *The creature slowly tilts head, letting out a small, relatively un-intimidating sound...*
+LINE_B: *The creature approaches you relatively unbothered. You brace as it sits down directly on your boot, seemingly causing you no harm.*
 
 [SPEAK_CHARACTER]
-RESPONSE_A: Okay. Fine. What even is it?
+RESPONSE_A: I mean- What even is it?
 RESPONSE_B: We are leaving it here.
 
 [IF_FOLLOWER]
@@ -56,12 +56,12 @@ LINE_B: We are absolutely not leaving him here.
 [SPEAK_CHARACTER]
 CHARACTER: OVI
 EMOTION: NEUTRAL
-LINE_A: *sniffs your hand. Approves, apparently.*
-LINE_B: *follows you anyway.*
+LINE_A: *The creature proceeds to sniff your hand. It approves, apparently, as it continues to be oddly tame...*
+LINE_B: *You step away, however it looks as though the odd creature is already following you despite your lack of interest...*
 
 [SPEAK_CHARACTER]
 RESPONSE_A: ...Fine. It can come.
-RESPONSE_B: I'm serious. We are not bringing this... creature into a death zone.
+RESPONSE_B: I'm serious. We are not bringing this... creature- into what I can only describe as a death zone.
 
 [IF_FOLLOWER]
 FOLLOWER: ZIN
@@ -70,7 +70,7 @@ FOLLOWER: ZIN
 CHARACTER: ZIN
 EMOTION: HAPPY
 LINE_A: I knew you'd come around.
-LINE_B: I hear you. I really do. *she picks him up anyway.* His name is Ovi.
+LINE_B: I hear you. I really do. *she proceeds to pick him up anyway.* His name is Ovi.
 
 [END_IF]
 

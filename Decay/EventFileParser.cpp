@@ -33,6 +33,10 @@ std::vector<Beat> EventFileParser::parse(const std::string& path)
         else if (line == "[FIRE_ON_CHOICE]")   beats.push_back(parseFireOnChoiceBlock());
         else if (line == "[IF_FOLLOWER]")      beats.push_back(parseConditionStartBlock());
         else if (line == "[END_IF]")           beats.push_back(parseConditionEndBlock());
+        else if (line == "[TAKE_DAMAGE]")    beats.push_back(parseTakeDamageBlock());
+        else if (line == "[TAKE_GOLD]")      beats.push_back(parseTakeGoldBlock());
+        else if (line == "[TAKE_ITEM]")      beats.push_back(parseTakeItemBlock());
+        else if (line == "[TAKE_ON_CHOICE]") beats.push_back(parseTakeOnChoiceBlock());
         else
             std::cout << "EventFileParser: unknown block header: " << line << "\n";
     }
@@ -183,25 +187,23 @@ Beat EventFileParser::parseGiveOnChoiceBlock()
     while (std::getline(ifs, line))
     {
         if (line.empty()) break;
-
         auto sep = line.find(':');
         if (sep == std::string::npos) continue;
-
         std::string key = line.substr(0, sep);
         std::string val = (sep + 2 <= line.size()) ? line.substr(sep + 2) : "";
 
-        if (key == "CHOICE_A_GOLD")          beat.giveOnChoice.choiceAGold = std::stoi(val);
-        else if (key == "CHOICE_A_ITEM")     beat.giveOnChoice.choiceAItemId = val;
-        else if (key == "CHOICE_A_QUANTITY") beat.giveOnChoice.choiceAQuantity = std::stoi(val);
-        else if (key == "CHOICE_A_EXP")      beat.giveOnChoice.choiceAExp = std::stof(val);
-        else if (key == "CHOICE_B_GOLD")     beat.giveOnChoice.choiceBGold = std::stoi(val);
-        else if (key == "CHOICE_B_ITEM")     beat.giveOnChoice.choiceBItemId = val;
-        else if (key == "CHOICE_B_QUANTITY") beat.giveOnChoice.choiceBQuantity = std::stoi(val);
-        else if (key == "CHOICE_B_EXP")      beat.giveOnChoice.choiceBExp = std::stof(val);
+        if (key == "CHOICE_A_GIVEGOLD")          beat.giveOnChoice.choiceAGiveGold = std::stoi(val);
+        else if (key == "CHOICE_A_GIVEITEM")      beat.giveOnChoice.choiceAGiveItemId = val;
+        else if (key == "CHOICE_A_GIVEQUANTITY")  beat.giveOnChoice.choiceAGiveQuantity = std::stoi(val);
+        else if (key == "CHOICE_A_GIVEEXP")       beat.giveOnChoice.choiceAGiveExp = std::stof(val);
+        else if (key == "CHOICE_B_GIVEGOLD")      beat.giveOnChoice.choiceBGiveGold = std::stoi(val);
+        else if (key == "CHOICE_B_GIVEITEM")      beat.giveOnChoice.choiceBGiveItemId = val;
+        else if (key == "CHOICE_B_GIVEQUANTITY")  beat.giveOnChoice.choiceBGiveQuantity = std::stoi(val);
+        else if (key == "CHOICE_B_GIVEEXP")       beat.giveOnChoice.choiceBGiveExp = std::stof(val);
     }
-
     return beat;
 }
+
 
 Beat EventFileParser::parseFireTriggerBlock()
 {
@@ -274,6 +276,87 @@ Beat EventFileParser::parseConditionEndBlock()
 {
     Beat beat;
     beat.type = Beat::Type::CONDITION_END;
+    return beat;
+}
+
+Beat EventFileParser::parseTakeDamageBlock()
+{
+    Beat beat;
+    beat.type = Beat::Type::TAKE_DAMAGE;
+
+    std::string line;
+    while (std::getline(ifs, line))
+    {
+        if (line.empty()) break;
+        auto sep = line.find(':');
+        if (sep == std::string::npos) continue;
+        std::string key = line.substr(0, sep);
+        std::string val = (sep + 2 <= line.size()) ? line.substr(sep + 2) : "";
+        if (key == "AMOUNT") beat.takeDamage.amount = std::stof(val);
+    }
+    return beat;
+}
+
+Beat EventFileParser::parseTakeGoldBlock()
+{
+    Beat beat;
+    beat.type = Beat::Type::TAKE_GOLD;
+
+    std::string line;
+    while (std::getline(ifs, line))
+    {
+        if (line.empty()) break;
+        auto sep = line.find(':');
+        if (sep == std::string::npos) continue;
+        std::string key = line.substr(0, sep);
+        std::string val = (sep + 2 <= line.size()) ? line.substr(sep + 2) : "";
+        if (key == "AMOUNT") beat.takeGold.amount = std::stoi(val);
+    }
+    return beat;
+}
+
+Beat EventFileParser::parseTakeItemBlock()
+{
+    Beat beat;
+    beat.type = Beat::Type::TAKE_ITEM;
+
+    std::string line;
+    while (std::getline(ifs, line))
+    {
+        if (line.empty()) break;
+        auto sep = line.find(':');
+        if (sep == std::string::npos) continue;
+        std::string key = line.substr(0, sep);
+        std::string val = (sep + 2 <= line.size()) ? line.substr(sep + 2) : "";
+        if (key == "ITEM")          beat.takeItem.itemId = val;
+        else if (key == "QUANTITY") beat.takeItem.quantity = std::stoi(val);
+    }
+    return beat;
+}
+
+Beat EventFileParser::parseTakeOnChoiceBlock()
+{
+    Beat beat;
+    beat.type = Beat::Type::TAKE_ON_CHOICE;
+
+    std::string line;
+    while (std::getline(ifs, line))
+    {
+        if (line.empty()) break;
+        auto sep = line.find(':');
+        if (sep == std::string::npos) continue;
+        std::string key = line.substr(0, sep);
+        std::string val = (sep + 2 <= line.size()) ? line.substr(sep + 2) : "";
+
+        if (key == "CHOICE_A_TAKEDAMAGE")        beat.takeOnChoice.choiceATakeDamage = std::stof(val);
+        else if (key == "CHOICE_A_LOSEGOLD")     beat.takeOnChoice.choiceALoseGold = std::stoi(val);
+        else if (key == "CHOICE_A_LOSEITEM")     beat.takeOnChoice.choiceALoseItemId = val;
+        else if (key == "CHOICE_A_LOSEQUANTITY") beat.takeOnChoice.choiceALoseQuantity = std::stoi(val);
+        else if (key == "CHOICE_B_TAKEDAMAGE")   beat.takeOnChoice.choiceBTakeDamage = std::stof(val);
+        else if (key == "CHOICE_B_LOSEGOLD")     beat.takeOnChoice.choiceBLoseGold = std::stoi(val);
+        else if (key == "CHOICE_B_LOSEITEM")     beat.takeOnChoice.choiceBLoseItemId = val;
+        else if (key == "CHOICE_B_LOSEQUANTITY") beat.takeOnChoice.choiceBLoseQuantity = std::stoi(val);
+    }
     return beat;
 }
 

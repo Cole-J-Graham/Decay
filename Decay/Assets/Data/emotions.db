@@ -2,6 +2,14 @@
 
 # NPCs
 NPC|TREE|Speaking Tree|-|0.2|NEUTRAL:speaking_tree_portrait
+NPC|JESTER|Court Jester|-|0.2|NEUTRAL:court_jester_portrait
+NPC|DECAY|Decaying Creature|-|0.2|NEUTRAL:decay_portrait
+NPC|HORSE|Horse|-|0.2|NEUTRAL:horse_portrait
+NPC|OBELISK|Obelisk|-|0.2|NEUTRAL:obelisk_portrait
+NPC|PHANTOM|Phantom|-|0.2|NEUTRAL:phantom_portrait
+NPC|CHILD|Lost Child|-|0.2|NEUTRAL:child_portrait
+
+# Human-ish NPCs
 NPC|SIWARD|Siward|-|0.319|NEUTRAL:siward_sprite
 NPC|DOCTOR|Doctor|-|0.719|NEUTRAL:doctor_sprite;ANGRY:doctor_angry
 NPC|RI|Ri|-|0.590|NEUTRAL:ri_sprite;CONCERNED:ri_concerned;SUPRISED:ri_suprised;ANNOYED:ri_annoyed;SAD:ri_sad;HAPPY:ri_happy
