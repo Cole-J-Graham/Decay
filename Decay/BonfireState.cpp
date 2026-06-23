@@ -71,6 +71,14 @@ void BonfireState::update()
     if (this->ui.button("VISIT_SHOP").isPressed())    this->visitShop();
     if (this->ui.button("LEAVE_BONFIRE").isPressed()) this->leaveBonfire();
 
+    // Keep shop button label in sync with flag state
+    if (this->areaId == "castle")
+    {
+        const std::string label = GameFlags::getInstance().has("doctor_intro_played")
+            ? "Visit Doctor" : "Investigate Noises";
+        this->ui.button("VISIT_SHOP").setTextConst(label);
+    }
+
     this->updatePartyPreview(this->getMousePosView());
 }
 

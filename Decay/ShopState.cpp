@@ -26,7 +26,15 @@ ShopState::ShopState(sf::RenderWindow* window, std::stack<State*>* states)
     this->refreshInventoryList();
 
     // Intro event
-    if (!GameFlags::getInstance().has("doctor_intro_played")){ this->introEvent = std::make_unique<EventManager>("Castle", "doctor_intro_played"); }
+    if (!GameFlags::getInstance().has("doctor_intro_played"))
+    {
+        this->introEvent = std::make_unique<EventManager>(
+            "Shop",
+            "Assets/Events/OneTimeEvents/doctor_intro.once.txt",
+            true /*directFile*/,
+            "doctor_intro_complete",
+            false /*suppressPortrait*/);
+    }
 }
 
 // ── State interface ───────────────────────────────────────────────────────────
@@ -132,86 +140,88 @@ void ShopState::render(sf::RenderTarget* target)
 {
     if (target == nullptr) return;
 
-    this->ui.render(*target);
-
-    // ── Draw buy list rows ─────────────────────────────────────────────────
+    if (!this->introEvent)
     {
-        const float colX = 30.f;
-        const float colY = 110.f;
-        const float colW = 430.f;
-        const float rowH = 28.f;
+        this->ui.render(*target);
 
-        for (int i = 0; i < kVisibleRows; ++i) {
-            const int realIndex = shopScrollOffset + i;
-            if (realIndex >= static_cast<int>(shopItemIds.size())) break;
+        // ── Draw buy list rows ─────────────────────────────────────────────────
+        {
+            const float colX = 30.f;
+            const float colY = 110.f;
+            const float colW = 430.f;
+            const float rowH = 28.f;
 
-            const std::string& id = shopItemIds[realIndex];
-            const ShopItemDefinition* def = ShopDatabase::getInstance().findItem(id);
-            if (!def) continue;
+            for (int i = 0; i < kVisibleRows; ++i) {
+                const int realIndex = shopScrollOffset + i;
+                if (realIndex >= static_cast<int>(shopItemIds.size())) break;
 
-            const float ry = colY + i * rowH;
-            const bool  selected = (realIndex == shopSelectedIndex);
+                const std::string& id = shopItemIds[realIndex];
+                const ShopItemDefinition* def = ShopDatabase::getInstance().findItem(id);
+                if (!def) continue;
 
-            if (selected) {
-                sf::RectangleShape hl(sf::Vector2f(colW, rowH - 2.f));
-                hl.setPosition(colX, ry);
-                hl.setFillColor(sf::Color(220, 140, 60, 50));
-                target->draw(hl);
+                const float ry = colY + i * rowH;
+                const bool  selected = (realIndex == shopSelectedIndex);
+
+                if (selected) {
+                    sf::RectangleShape hl(sf::Vector2f(colW, rowH - 2.f));
+                    hl.setPosition(colX, ry);
+                    hl.setFillColor(sf::Color(220, 140, 60, 50));
+                    target->draw(hl);
+                }
+
+                const std::string stockStr = (def->stock < 0)
+                    ? "∞"
+                    : std::to_string(def->stock);
+
+                this->renderListRow(target,
+                    def->itemId,
+                    goldStr(def->buyPrice) + "  [" + stockStr + "]",
+                    colX, ry, colW,
+                    selected);
             }
-
-            const std::string stockStr = (def->stock < 0)
-                ? "∞"
-                : std::to_string(def->stock);
-
-            this->renderListRow(target,
-                def->itemId,
-                goldStr(def->buyPrice) + "  [" + stockStr + "]",
-                colX, ry, colW,
-                selected);
         }
-    }
 
-    // ── Draw sell / inventory list rows ────────────────────────────────────
-    {
-        const float colX = 1260.f;
-        const float colY = 110.f;
-        const float colW = 350.f;
-        const float rowH = 28.f;
+        // ── Draw sell / inventory list rows ────────────────────────────────────
+        {
+            const float colX = 1260.f;
+            const float colY = 110.f;
+            const float colW = 350.f;
+            const float rowH = 28.f;
 
-        for (int i = 0; i < kVisibleRows; ++i) {
-            const int realIndex = invScrollOffset + i;
-            if (realIndex >= static_cast<int>(sellEntries.size())) break;
+            for (int i = 0; i < kVisibleRows; ++i) {
+                const int realIndex = invScrollOffset + i;
+                if (realIndex >= static_cast<int>(sellEntries.size())) break;
 
-            const SellEntry& entry = sellEntries[realIndex];
-            const ShopItemDefinition* def = ShopDatabase::getInstance().findItem(entry.itemId);
+                const SellEntry& entry = sellEntries[realIndex];
+                const ShopItemDefinition* def = ShopDatabase::getInstance().findItem(entry.itemId);
 
-            const float ry = colY + i * rowH;
-            const bool  selected = (realIndex == invSelectedIndex);
+                const float ry = colY + i * rowH;
+                const bool  selected = (realIndex == invSelectedIndex);
 
-            if (selected) {
-                sf::RectangleShape hl(sf::Vector2f(colW, rowH - 2.f));
-                hl.setPosition(colX, ry);
-                hl.setFillColor(sf::Color(80, 180, 80, 50));
-                target->draw(hl);
+                if (selected) {
+                    sf::RectangleShape hl(sf::Vector2f(colW, rowH - 2.f));
+                    hl.setPosition(colX, ry);
+                    hl.setFillColor(sf::Color(80, 180, 80, 50));
+                    target->draw(hl);
+                }
+
+                const int sellPrice = def
+                    ? static_cast<int>(std::floor(def->buyPrice * def->sellMultiplier))
+                    : 0;
+
+                this->renderListRow(target,
+                    entry.itemId + " x" + std::to_string(entry.count),
+                    goldStr(sellPrice),
+                    colX, ry, colW,
+                    selected,
+                    sf::Color(180, 230, 180, 220));
             }
-
-            const int sellPrice = def
-                ? static_cast<int>(std::floor(def->buyPrice * def->sellMultiplier))
-                : 0;
-
-            this->renderListRow(target,
-                entry.itemId + " x" + std::to_string(entry.count),
-                goldStr(sellPrice),
-                colX, ry, colW,
-                selected,
-                sf::Color(180, 230, 180, 220));
         }
     }
 
     // ── Intro event overlay — rendered on top of everything else ───────────
-    if (this->introEvent) {
+    if (this->introEvent)
         this->introEvent->render(target);
-    }
 }
 
 // ── Private: UI setup ─────────────────────────────────────────────────────────

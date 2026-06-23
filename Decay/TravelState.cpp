@@ -87,6 +87,9 @@ void TravelState::update()
         std::cout << "MAP CHANGED: " << this->lastMapId << " -> " << currentMap << "\n";
         MusicManager::getInstance().transition(currentMap);
         this->lastMapId = currentMap;
+
+        if (currentMap == "castle" && !GameFlags::getInstance().has("castle_visited"))
+            TriggerManager::getInstance().fire("castle_first_visit");
     }
 
     this->updateTravelInputVisibility();

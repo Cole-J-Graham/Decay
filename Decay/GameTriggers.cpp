@@ -97,7 +97,7 @@ void GameTriggers::registerAll()
             auto& flags = GameFlags::getInstance();
             if (flags.has("castle_visited")) return;
             flags.set("castle_visited");
-            enqueueNotification("Strange noises echo from within the medical ward...", 6.f);
+            enqueueNotification("You hear strange noises near the bonfire...", 6.f);
         });
 
     // ── Map unlock notifications ──────────────────────────────────────────
