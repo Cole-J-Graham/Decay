@@ -1,0 +1,55 @@
+[SPEAK_NPC]
+NPC: CHILD
+EMOTION: NEUTRAL
+LINE: *A small figure sits at the base of a large tree, knees pulled to their chest. They look up as your party approaches, not frightened, just... tired.*
+
+[IF_FOLLOWER]
+FOLLOWER: JUNE
+
+[SPEAK_CHARACTER]
+CHARACTER: JUNE
+EMOTION: CONCERNED
+LINE: *June steps forward instinctively, hand already moving toward her shield before she stops herself.* Easy. They're just a child.
+
+[END_IF]
+
+[SPEAK_CHARACTER]
+RESPONSE_A: Hey. Are you alright?
+RESPONSE_B: *Crouch down to their level.*
+
+[SPEAK_NPC]
+NPC: CHILD
+EMOTION: NEUTRAL
+LINE_A: *They look at you for a long moment.* I was with my father. He told me to stay here. That was... a while ago.
+LINE_B: *They don't flinch. Just watch you with large, calm eyes.* My father went ahead. He said he'd be back before dark.
+
+[IF_FOLLOWER]
+FOLLOWER: ZIN
+
+[SPEAK_CHARACTER]
+CHARACTER: ZIN
+EMOTION: CONCERNED
+LINE: *She kneels beside them quietly.* How long have you been sitting here?
+
+[SPEAK_NPC]
+NPC: CHILD
+EMOTION: NEUTRAL
+LINE: ...Two days, I think. Maybe three.
+
+[END_IF]
+
+[SPEAK_CHARACTER]
+RESPONSE_A: *Leave something with them before moving on.*
+RESPONSE_B: *There's nothing you can do. You have to keep moving.*
+
+[GIVE_ON_CHOICE]
+CHOICE_A_GIVEEXP: 60
+
+[TAKE_ON_CHOICE]
+CHOICE_A_LOSEGOLD: 40
+
+[SPEAK_NPC]
+NPC: CHILD
+EMOTION: NEUTRAL
+LINE_A: *You press what coin you can spare into their hands and point them toward the nearest settlement. They nod, slowly, and stand. Something about the way they carry themselves makes you think they'll make it.* -40 Gold, +60 Party EXP.
+LINE_B: *You move on. Nobody says anything for a while.*

@@ -181,6 +181,15 @@ void Enemy::initText()
         sf::Color::White,
         false
     );
+
+    this->text["NAME"] = new Text(
+        this->x,
+        this->y - 20.f,
+        16,
+        this->enemyName,
+        sf::Color::White,
+        false
+    );
 }
 
 void Enemy::renderText(sf::RenderTarget* target)

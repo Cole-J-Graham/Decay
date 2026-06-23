@@ -1,0 +1,40 @@
+[SPEAK_NPC]
+NPC: PHANTOM
+EMOTION: NEUTRAL
+LINE: *A figure drifts through the far end of the corridor. Translucent. Slow. It hasn't seen you- or if it has, it doesn't seem to care.*
+
+[IF_FOLLOWER]
+FOLLOWER: JUNE
+
+[SPEAK_CHARACTER]
+CHARACTER: JUNE
+EMOTION: CONCERNED
+LINE: *She grabs your arm without looking at you.* Don't.
+
+[END_IF]
+
+[SPEAK_CHARACTER]
+RESPONSE_A: *Follow it.*
+RESPONSE_B: *Press against the wall and wait for it to pass.*
+
+[SPEAK_NPC]
+NPC: PHANTOM
+EMOTION: NEUTRAL
+LINE_A: *It leads you through two turns and stops at a collapsed section of wall. Then it's gone. But something glints in the rubble.*
+LINE_B: *It drifts past without turning. The temperature drops noticeably as it goes. Then returns to normal. Like nothing happened.*
+
+[SPEAK_CHARACTER]
+RESPONSE_A: *Search the rubble.*
+RESPONSE_B: *Move on.*
+
+[GIVE_ON_CHOICE]
+CHOICE_A_GIVEGOLD: 120
+
+[TAKE_ON_CHOICE]
+CHOICE_A_TAKEDAMAGE: 15
+
+[SPEAK_NPC]
+NPC: PHANTOM
+EMOTION: NEUTRAL
+LINE_A: *You find coin. Real, solid coin, wedged in the stone. Whatever touched you getting there left a mark though. Your hands feel wrong for a moment.* +120 Gold, -15 HP.
+LINE_B: *You move on. The corridor stays quiet. Sometimes that's enough.*

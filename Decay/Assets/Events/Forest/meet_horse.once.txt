@@ -1,0 +1,57 @@
+[SPEAK_NPC]
+NPC: HORSE
+EMOTION: NEUTRAL
+LINE: *A horse stands alone in a small clearing off the path. No saddle, no rider, no sign of where it came from. It watches your party approach without moving.*
+
+[IF_FOLLOWER]
+FOLLOWER: ZIN
+
+[SPEAK_CHARACTER]
+CHARACTER: ZIN
+EMOTION: HAPPY
+LINE: Oh. Oh that's a horse.
+
+[SPEAK_CHARACTER]
+CHARACTER: PLAYER
+EMOTION: NEUTRAL
+LINE: Yes. That is a horse.
+
+[SPEAK_CHARACTER]
+CHARACTER: ZIN
+EMOTION: HAPPY
+LINE: A horse, out here. Just... standing there.
+
+[END_IF]
+
+[SPEAK_CHARACTER]
+RESPONSE_A: *Approach slowly.*
+RESPONSE_B: *Keep your distance. Something feels off.*
+
+[SPEAK_NPC]
+NPC: HORSE
+EMOTION: NEUTRAL
+LINE_A: *The horse doesn't bolt. It holds eye contact with you in a way that feels, somehow, deliberate.*
+LINE_B: *It hasn't moved. It's been watching you since you arrived. Still watching.*
+
+[SPEAK_CHARACTER]
+RESPONSE_A: Where did you even come from?
+RESPONSE_B: Is it... alone out here?
+
+[SPEAK_NPC]
+NPC: HORSE
+EMOTION: NEUTRAL
+LINE_A: *No answer. Obviously. It lowers its head and nudges something at its feet, a worn satchel, partially buried in the grass.*
+LINE_B: *It steps aside, just slightly. Enough to reveal something behind it. A worn satchel, half-hidden under a root.*
+
+[SPEAK_CHARACTER]
+RESPONSE_A: *Open the satchel.*
+RESPONSE_B: *Leave it. This feels like a trap.*
+
+[GIVE_ON_CHOICE]
+CHOICE_A_GIVEGOLD: 80
+
+[SPEAK_NPC]
+NPC: HORSE
+EMOTION: NEUTRAL
+LINE_A: *Inside, there's coin. A fair amount of it. You look back up, but the horse is already walking away into the trees. Unhurried. Like it was waiting specifically for you.* +80 Gold gained.
+LINE_B: *You leave the satchel where it is. The horse watches you go. You get the distinct feeling it expected that.*

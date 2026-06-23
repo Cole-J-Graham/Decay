@@ -1,0 +1,47 @@
+[SPEAK_NPC]
+NPC: DECAY
+EMOTION: NEUTRAL
+LINE: *Something that used to be human is crouched in the path ahead. It isn't moving. It might not have noticed you yet. Might.*
+
+[IF_FOLLOWER]
+FOLLOWER: JUNE
+
+[SPEAK_CHARACTER]
+CHARACTER: JUNE
+EMOTION: CONCERNED
+LINE: *She steps up beside you without a word, axe low.* I've seen this before. Don't make a sound.
+
+[END_IF]
+
+[SPEAK_CHARACTER]
+RESPONSE_A: *Hold still. Wait.*
+RESPONSE_B: *Signal the party to go around.*
+
+[SPEAK_NPC]
+NPC: DECAY
+EMOTION: NEUTRAL
+LINE_A: *It tilts its head. Slowly. Not toward you, toward something else entirely. Then it goes still again.*
+LINE_B: *You give it a wide berth. Halfway around, it shifts. Just once. Then nothing.*
+
+[SPEAK_CHARACTER]
+RESPONSE_A: *Don't move.*
+RESPONSE_B: *Keep going. Don't look back.*
+
+[SPEAK_NPC]
+NPC: DECAY
+EMOTION: NEUTRAL
+LINE_A: *A long moment passes. Then it stands, turns, and walks into the trees. Away from you. You let out a breath you didn't know you were holding.*
+LINE_B: *You make it past. When you finally glance back, it's gone. No sound. No trail. Just gone.*
+
+[IF_FOLLOWER]
+FOLLOWER: ZIN
+
+[SPEAK_CHARACTER]
+CHARACTER: ZIN
+EMOTION: CONCERNED
+LINE: *quietly* That's what the decay does to people. That's what we're walking toward.
+
+[END_IF]
+
+[GIVE_EXP]
+AMOUNT: 45

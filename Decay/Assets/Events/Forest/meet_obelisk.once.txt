@@ -1,0 +1,58 @@
+[SPEAK_NPC]
+NPC: OBELISK
+EMOTION: NEUTRAL
+LINE: *Carved from black stone and taller than anything that has any right to be in the middle of a forest path, the obelisk simply stands. No markings. No base. Just stone, humming faintly.*
+
+[IF_FOLLOWER]
+FOLLOWER: ZIN
+
+[SPEAK_CHARACTER]
+CHARACTER: ZIN
+EMOTION: CONCERNED
+LINE: That's... old. Very old. I've never seen stonework like that.
+
+[END_IF]
+
+[SPEAK_CHARACTER]
+RESPONSE_A: *Touch it.*
+RESPONSE_B: *Walk around it carefully.*
+
+[SPEAK_NPC]
+NPC: OBELISK
+EMOTION: NEUTRAL
+LINE_A: *The hum intensifies the moment your hand makes contact. Not painful, just present. Like something noticing you.*
+LINE_B: *From the other side, you can see faint engravings. Spirals. Repeated. Getting smaller toward the center.*
+
+[SPEAK_CHARACTER]
+RESPONSE_A: What is this thing?
+RESPONSE_B: *Press your palm flat against the stone.*
+
+[IF_FOLLOWER]
+FOLLOWER: ZIN
+
+[SPEAK_CHARACTER]
+CHARACTER: ZIN
+EMOTION: CONCERNED
+LINE_A: I don't know. But it knows we're here.
+LINE_B: *She doesn't stop you. But she takes a half-step back.*
+
+[END_IF]
+
+[SPEAK_NPC]
+NPC: OBELISK
+EMOTION: NEUTRAL
+LINE_A: *Nothing answers. But you feel, briefly, like something very far away just turned its head in your direction.*
+LINE_B: *The spirals seem to shift slightly under your hand. Then stop. The humming fades. Like a door closing.*
+
+[SPEAK_CHARACTER]
+RESPONSE_A: *Step back. Leave it alone.*
+RESPONSE_B: *Stand there a moment longer.*
+
+[GIVE_ON_CHOICE]
+CHOICE_B_GIVEEXP: 90
+
+[SPEAK_NPC]
+NPC: OBELISK
+EMOTION: NEUTRAL
+LINE_A: *Probably the right call. The forest feels quieter after, somehow.*
+LINE_B: *Whatever it is, it doesn't take. It just... weighs you. You walk away feeling like you passed something.* +90 Party EXP.
