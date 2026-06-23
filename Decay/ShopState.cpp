@@ -252,7 +252,7 @@ void ShopState::initUi()
     }
 
     this->ui.addButton("BUY_ITEM", std::make_unique<Button>(
-        38.f, 730.f, 200.f, 30.f, 0.5f, "Buy Selected",
+        38.f, 750.f, 200.f, 30.f, 0.5f, "Buy Selected",
         btnBuyIdle, btnBuyHover, btnBuyActive, false));
 
     // ── Centre panel: doctor dialogue ─────────────────────────────────────
@@ -297,32 +297,32 @@ void ShopState::initUi()
         522, 726, 14, feedbackMessage, sf::Color(220, 200, 170, 255), false));
 
     this->ui.addButton("LEAVE_SHOP", std::make_unique<Button>(
-        660.f, 792.f, 200.f, 30.f, 0.5f, "Leave",
+        550.f, 815.f, 200.f, 30.f, 0.5f, "Leave",
         btnDangerIdle, btnDangerHover, btnDangerActive, false));
 
     // ── Right panel: player inventory ─────────────────────────────────────
     this->ui.addRectangle("INV_PANEL", std::make_unique<Rectangle>(
-        1255, 50, 380, 750, transparent, border, 1.f, false));
+        1430, 50, 380, 750, transparent, border, 1.f, false));
 
     this->ui.addText("INV_TITLE", std::make_unique<Text>(
-        1268, 57, 13, "YOUR PACK", sf::Color(200, 200, 200, 220), false));
+        1443, 57, 13, "YOUR PACK", sf::Color(200, 200, 200, 220), false));
 
     this->ui.addRectangle("INV_HEADER_DIV", std::make_unique<Rectangle>(
-        1255, 82, 380, 1, divider, transparent, 0.f, false));
+        1430, 82, 380, 1, divider, transparent, 0.f, false));
 
     for (int i = 0; i < kVisibleRows; ++i) {
         const float ry = 110.f + i * 28.f;
         this->ui.addButton("INV_ROW_" + std::to_string(i),
-            std::make_unique<Button>(1260.f, ry, 350.f, 26.f, 0.f, "",
+            std::make_unique<Button>(1435.f, ry, 350.f, 26.f, 0.f, "",
                 transparent, sf::Color(255, 255, 255, 15), transparent, false));
     }
 
     this->ui.addButton("SELL_ITEM", std::make_unique<Button>(
-        1268.f, 730.f, 200.f, 30.f, 0.5f, "Sell Selected",
+        1493.f, 750.f, 200.f, 30.f, 0.5f, "Sell Selected",
         btnIdle, btnHover, btnActive, false));
 
     // ── Doctor portrait ───────────────────────────────────────────────────────
-    const float portraitX = 1255.f;
+    const float portraitX = 1430.f;
     const float portraitY = 420.f;
     const float portraitW = 380.f;
     const float portraitH = 320.f;

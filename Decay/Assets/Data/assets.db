@@ -53,11 +53,18 @@ ovi_happy|texture|Assets/Sprites/ovi_happy.png
 ovi_scared|texture|Assets/Sprites/ovi_scared.png
 
 #NPC Sprites
-doctor_sprite|texture|Assets/Sprites/plaugeguy.png
-doctor_angry|texture|Assets/Sprites/plagueguy_fucku.png
 speaking_tree_portrait|texture|Assets/Entities/entityTree.jpeg
 siward_sprite|texture|Assets/Sprites/siward.png
+
+doctor_sprite|texture|Assets/Sprites/plaugeguy.png
+doctor_angry|texture|Assets/Sprites/plagueguy_fucku.png
+
 ri_sprite|texture|Assets/Sprites/ri.png
+ri_concerned|texture|Assets/Sprites/riconcerned.png
+ri_suprised|texture|Assets/Sprites/risuprised.png
+ri_annoyed|texture|Assets/Sprites/riannoyed.png
+ri_sad|texture|Assets/Sprites/risad.png
+ri_happy|texture|Assets/Sprites/rihappy.png
 
 #Hostile Sprites Forest
 wolf_sprite|texture|Assets/HostileSprites/wolfsprite.png

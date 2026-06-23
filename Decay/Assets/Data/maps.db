@@ -25,7 +25,6 @@ forest_entrance|forest|0|Forest Entrance|150|150|Assets/Wallpapers/ForestTextFil
 forest_darkplains|forest|1|Dark Plains|150|250|Assets/Wallpapers/ForestTextFiles/forestdepths.txt
 forest_depths|forest|2|Forest Depths|200|200|Assets/Wallpapers/ForestTextFiles/abyssalwoods.txt
 forest_corruption|forest|3|Corruption|300|250|Assets/Wallpapers/ForestTextFiles/abyssaldepths.txt
-forest_deepdark|forest|4|Deep Dark|375|400|Assets/Wallpapers/ForestTextFiles/forest.txt
 
 castle_entrance|castle|0|Castle Entrance|150|150|Assets/Wallpapers/CastleTextFiles/castle.txt
 castle_depths|castle|1|Castle Depths|150|250|Assets/Wallpapers/CastleTextFiles/castledepths.txt
