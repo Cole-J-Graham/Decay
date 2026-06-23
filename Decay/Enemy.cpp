@@ -3,8 +3,7 @@
 
 // Constructors and Deconstructors
 Enemy::Enemy(std::string enemyName, float hp, float hpMax, float damage, float defense,
-    float scale, std::string enemySpriteAssetId, std::string enemyViewAssetId,
-    const RewardBundle& rewards, bool turnActive)
+    float scale, std::string enemySpriteAssetId, const RewardBundle& rewards, bool turnActive)
     : enemyName(enemyName),
     hp(hp),
     hpMax(hpMax),
@@ -42,14 +41,10 @@ Enemy::Enemy(std::string enemyName, float hp, float hpMax, float damage, float d
 
     this->initText();
     this->initButtons();
-    this->closeViewer = new ViewerModule(enemyViewAssetId, scale);
 }
 
 Enemy::~Enemy()
 {
-    delete this->closeViewer;
-    this->closeViewer = nullptr;
-
     for (auto& pair : this->buttons) {
         delete pair.second;
         pair.second = nullptr;
@@ -70,18 +65,10 @@ void Enemy::update(const sf::Vector2f mousePos)
 {
     this->updateText();
     this->updateButtons(mousePos);
-
-    if (this->closeViewer != nullptr) {
-        this->closeViewer->update(mousePos);
-    }
 }
 
 void Enemy::render(sf::RenderTarget* target)
 {
-    if (this->closeViewer != nullptr) {
-        this->closeViewer->render(target);
-    }
-
     target->draw(this->enemy);
     this->renderText(target);
 

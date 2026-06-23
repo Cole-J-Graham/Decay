@@ -216,7 +216,6 @@
     <ClCompile Include="UiPanel.cpp" />
     <ClCompile Include="UiSprite.cpp" />
     <ClCompile Include="UserInputComponent.cpp" />
-    <ClCompile Include="ViewerModule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationEffectManager.h" />
@@ -289,7 +288,6 @@
     <ClInclude Include="UiPanel.h" />
     <ClInclude Include="UiSprite.h" />
     <ClInclude Include="UserInputComponent.h" />
-    <ClInclude Include="ViewerModule.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

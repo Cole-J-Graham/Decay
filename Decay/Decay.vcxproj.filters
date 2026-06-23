@@ -25,9 +25,6 @@
     <ClCompile Include="StatsModule.cpp">
       <Filter>Character\Stats</Filter>
     </ClCompile>
-    <ClCompile Include="ViewerModule.cpp">
-      <Filter>Combat\Entities\EntityResources</Filter>
-    </ClCompile>
     <ClCompile Include="EventManager.cpp">
       <Filter>Events</Filter>
     </ClCompile>
@@ -221,9 +218,6 @@
     </ClInclude>
     <ClInclude Include="StatsModule.h">
       <Filter>Character\Stats</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewerModule.h">
-      <Filter>Combat\Entities\EntityResources</Filter>
     </ClInclude>
     <ClInclude Include="EventManager.h">
       <Filter>Events</Filter>

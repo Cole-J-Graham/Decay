@@ -140,7 +140,7 @@ void CombatComponent::initMoves()
                             const std::string& sfx = moveDefinition->sfxId;
                             const std::string anim =
                                 (sfx == "smite" || sfx == "hellBlaze") ? "flash" : "slash";
-                            this->combatAnimations.playNamed(anim, 1695.f, 420.f, 3.f, 3.f);
+                            this->combatAnimations.playNamed(anim, 1695.f, 420.f, 3.1f, 3.1f);
                         }
                     );
                 },
@@ -215,7 +215,6 @@ bool CombatComponent::enemyPool(const std::string& currentArea)
         selectedEnemy.defense,
         selectedEnemy.scale,
         selectedEnemy.spritePath,
-        selectedEnemy.viewerPath,
         selectedEnemy.rewards,
         false
     );
@@ -288,8 +287,8 @@ void CombatComponent::initEnemyMoves()
                         const std::string anim =
                             (type == "POISON") ? "flash" :
                             (type == "STUN" || type == "DEBUFF_DAMAGE" || type == "DEBUFF_DEFENSE") ? "none" :
-                            "slash";
-                        this->combatAnimations.playNamed(anim, x, y, 3.f, 3.f);
+                            "slash";//Only adjusts scale of enemy attack animation
+                        this->combatAnimations.playNamed(anim, x, y, 3.1f, 3.1f);
                     }
                 );
             },
@@ -365,10 +364,10 @@ void CombatComponent::playHitAnimationAt(float x, float y, float scaleX, float s
 
 void CombatComponent::playEnemyAttackAnimationAt(float x, float y)
 {
-    this->combatAnimations.playNamed("slash", x, y, 3.f, 3.f);
+    this->combatAnimations.playNamed("slash", x, y, 3.0f, 3.0f);
 }
 
 void CombatComponent::playSlashAnimation()
 {
-    this->combatAnimations.playNamed("slash", 1695.f, 420.f, 3.f, 3.f);
+    this->combatAnimations.playNamed("slash", 1695.f, 420.f, 3.0f, 3.0f);
 }

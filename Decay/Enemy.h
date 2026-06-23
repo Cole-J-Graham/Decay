@@ -9,7 +9,6 @@
 
 #include "Text.h"
 #include "Button.h"
-#include "ViewerModule.h"
 #include "EntityMove.h"
 #include "RewardTypes.h"
 
@@ -19,8 +18,7 @@ public:
     // Constructors and Deconstructors
     Enemy() {};
     Enemy(std::string enemyName, float hp, float hpMax, float damage, float defense,
-        float scale, std::string enemySpriteAssetId, std::string enemyViewAssetId,
-        const RewardBundle& rewards, bool turnActive);
+        float scale, std::string enemySpriteAssetId, const RewardBundle& rewards, bool turnActive);
     ~Enemy();
 
     // Core Functions
@@ -107,8 +105,6 @@ private:
 
     sf::Sprite enemy;   // texture owned by AssetDatabase's cache, not here
     std::string enemyName;
-
-    ViewerModule* closeViewer;
 
     std::map<int, std::unique_ptr<EntityMove>> moves;
     std::map<std::string, Button*> buttons;

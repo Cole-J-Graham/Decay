@@ -322,7 +322,7 @@ bool CombatState::startBossCombat(const std::string& enemyId,
     this->clearCurrentEnemy();
     this->enemies[def->id] = new Enemy(
         def->name, def->hp, def->hpMax, def->damage, def->defense,
-        def->scale, def->spritePath, def->viewerPath, def->rewards, false);
+        def->scale, def->spritePath, def->rewards, false);
 
     this->setEnemyId(def->id);
     this->pendingDefeatedFlag = defeatedFlag;

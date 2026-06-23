@@ -9,7 +9,7 @@
 namespace
 {
     constexpr float EVENT_PORTRAIT_X = 25.f;
-    constexpr float EVENT_PORTRAIT_Y = 585.f;
+    constexpr float EVENT_PORTRAIT_Y = 550.f;
 }
 
 // ============================================================
