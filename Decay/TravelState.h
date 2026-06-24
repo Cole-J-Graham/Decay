@@ -66,6 +66,7 @@ private:
     bool didPlayerMove() const;
     EncounterResult determineEncounterResult();
     void handleEncounterResult(EncounterResult result);
+    void checkPartyDeathFromEvent();
 
     // Boss pre-fight event — active while a pre-fight cutscene plays
     void updateBossPreFightEvent(const sf::Vector2f& mousePos);

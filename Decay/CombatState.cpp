@@ -34,6 +34,13 @@ void CombatState::render(sf::RenderTarget* target)
 {
     if (target == nullptr) return;
 
+    if (this->defeatState && this->getEnemyId().empty())
+    {
+        // Defeat from travel — only draw the defeat panel, nothing else
+        this->console.render(*target);
+        return;
+    }
+
     this->console.render(*target);
     this->renderCombat(target);
     this->renderCombatAnimations(target);
@@ -170,6 +177,25 @@ void CombatState::handleLoadLastSave()
     this->console.hideDefeatPanel();
 
     if (!this->states->empty()) this->states->pop();
+}
+
+void CombatState::startDefeat(const std::string& areaId)
+{
+    this->resetCombat();
+    this->currentAreaIdForBonfire = areaId;
+
+    // Don't call beginDefeat() directly — it pops music we never pushed
+    if (this->defeatState) return;
+
+    std::cout << "CombatState: party wiped from event damage.\n";
+
+    this->defeatState = true;
+    this->combatFrame = 0;
+
+    this->resetAllCharacterTurns();
+    this->console.disableContinue();
+    this->console.setTurnIndicator("");
+    this->console.showDefeatPanel();
 }
 
 // ── Enemy death (victory) ─────────────────────────────────────────────────

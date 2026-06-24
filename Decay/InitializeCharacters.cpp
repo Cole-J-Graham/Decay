@@ -33,8 +33,8 @@ void InitializeCharacters::initialize()
 void InitializeCharacters::initCharacters()
 {
     // ── Unlocked from the start ───────────────────────────────────────────
-    CharacterManager::getInstance().addCharacter("PLAYER", std::make_shared<Character>("PLAYER", "Player", 40, 40, 10, 10, 0, 25.f, 150.f, 0.319f, "player_sprite", true));
-    CharacterManager::getInstance().addCharacter("ZIN", std::make_shared<Character>("ZIN", "Zin", 30, 30, 10, 10, 5, 25.f, 420.f, 0.066f, "zin_sprite", false));
+    CharacterManager::getInstance().addCharacter("PLAYER", std::make_shared<Character>("PLAYER", "Player", 1, 1, 10, 10, 0, 25.f, 150.f, 0.319f, "player_sprite", true));
+    CharacterManager::getInstance().addCharacter("ZIN", std::make_shared<Character>("ZIN", "Zin", 1, 1, 10, 10, 5, 25.f, 420.f, 0.066f, "zin_sprite", false));
     // ── Must be unlocked ──────────────────────────────────────────────────
     CharacterUnlockRegistry::getInstance().registerCharacter("OVI", std::make_shared<Character>("OVI", "Ovi", 40, 40, 10, 10, 0, 25.f, 690.f, 0.625f, "ovi_sprite", false));
     CharacterUnlockRegistry::getInstance().registerCharacter("JUNE", std::make_shared<Character>("JUNE", "June", 50, 50, 10, 10, 0, 25.f, 960.f, 0.625f, "june_sprite", false));

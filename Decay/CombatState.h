@@ -18,6 +18,7 @@ public:
     void resetCombat();
 
     bool startCombat(const std::string& areaId);
+    void startDefeat(const std::string& areaId);
     bool startBossCombat(const std::string& enemyId,
         const std::string& areaId,
         const std::string& defeatedFlag,
@@ -48,6 +49,8 @@ private:
     void renderStatusEffects(sf::RenderTarget* target);
 
     CombatConsole console;
+
+    bool pendingReturnToBonfire = false;
 
     bool stateEnd = false;
     bool defeatState = false;

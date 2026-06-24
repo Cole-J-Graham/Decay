@@ -69,6 +69,7 @@ void CombatConsole::showDefeatPanel()
     this->ui.rectangle("COMBATCONSOLE_BG").hide();
     this->ui.rectangle("COMBATCONSOLE_ACCENT").hide();
     this->ui.text("COMBAT_MESSAGE").setHidden();
+    this->ui.rectangle("HOSTILEBORDER").hide();
 
     // Show defeat panel
     this->ui.rectangle("DEFEAT_BG").show();
@@ -91,6 +92,7 @@ void CombatConsole::hideDefeatPanel()
     // Restore normal console
     this->ui.rectangle("COMBATCONSOLE_BG").show();
     this->ui.rectangle("COMBATCONSOLE_ACCENT").show();
+    this->ui.rectangle("HOSTILEBORDER").show();
 }
 
 bool CombatConsole::defeatBonfireClicked() const
@@ -155,29 +157,29 @@ void CombatConsole::initUi()
 
     // ── Defeat panel — hidden until party wipes ───────────────────────
     this->ui.addRectangle("DEFEAT_BG", std::make_unique<Rectangle>(
-        350, 780, 1250, 220,
+        560, 390, 800, 220,
         sf::Color(20, 5, 5, 230), sf::Color(180, 40, 40, 120), 1.f, true));
 
     this->ui.addRectangle("DEFEAT_ACCENT", std::make_unique<Rectangle>(
-        350, 780, 1250, 2,
+        560, 390, 800, 2,
         sf::Color(200, 60, 60, 220), sf::Color::Transparent, 0.f, true));
 
     this->ui.addText("DEFEAT_TITLE", std::make_unique<Text>(
-        660, 795, 22, "THE PARTY HAS FALLEN",
+        760, 405, 22, "THE PARTY HAS FALLEN",
         sf::Color(220, 100, 100, 255), true));
 
     this->ui.addText("DEFEAT_SUBTITLE", std::make_unique<Text>(
-        580, 825, 13,
+        620, 438, 13,
         "The decay claims another... but perhaps not forever.",
         sf::Color(180, 160, 160, 200), true));
 
     this->ui.addButton("DEFEAT_BONFIRE", std::make_unique<Button>(
-        450, 860, 380, 35, 0.5f, "Return to Last Bonfire",
+        580, 475, 320, 35, 0.5f, "Return to Last Bonfire",
         sf::Color(80, 40, 20, 180), sf::Color(180, 100, 40, 255),
         sf::Color(40, 20, 10, 200), true));
 
     this->ui.addButton("DEFEAT_LOAD", std::make_unique<Button>(
-        870, 860, 280, 35, 0.5f, "Load Last Save",
+        920, 475, 220, 35, 0.5f, "Load Last Save",
         sf::Color(40, 40, 60, 180), sf::Color(100, 100, 180, 255),
         sf::Color(20, 20, 40, 200), true));
 }

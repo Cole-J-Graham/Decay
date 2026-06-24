@@ -94,6 +94,7 @@ void TravelState::update()
 
     this->updateTravelInputVisibility();
     this->updateTravelActions();
+    this->checkPartyDeathFromEvent();
 
     if (this->travelHud->partyPanelVisible())
         CharacterManager::getInstance().updatePartyPanel(this->getMousePosView());
@@ -210,6 +211,21 @@ void TravelState::updateTravelInputVisibility()
         else
             this->travelInput->showLeftArrow();
     }
+}
+
+void TravelState::checkPartyDeathFromEvent()
+{
+    // Don't check mid-event — wait until the event has fully finished
+    if (this->map->eventIsActive()) return;
+
+    const auto& party = CharacterManager::getInstance().getAllPartyMembers();
+    if (party.empty()) return;
+
+    for (const auto& member : party)
+        if (member && member->isAlive()) return;
+
+    this->combat->startDefeat(this->map->getCurrentMapId());
+    this->states->push(this->combat);
 }
 
 // ── Rectangles ────────────────────────────────────────────────────────────
