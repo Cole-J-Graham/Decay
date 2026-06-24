@@ -22,6 +22,7 @@ void CombatConsole::enableContinue()
     if (!this->consoleActive)
     {
         this->consoleActive = true;
+        this->ui.button("COMBAT_CONSOLE_CONTINUE").setIdle();
         this->ui.button("COMBAT_CONSOLE_CONTINUE").show();
         this->ui.text("COMBAT_CONTINUE_HINT").setShown();
     }

@@ -313,7 +313,9 @@ void BonfireState::initUi()
         // path used ("Assets/Wallpapers/Bonfires/<areaId>.jpeg") — each
         // area's bonfire image must be registered in assets.db under this
         // exact id pattern for this to resolve.
-        const std::string imageAssetId = "bonfire_" + this->areaId;
+        std::string areaLower = this->areaId;
+        std::transform(areaLower.begin(), areaLower.end(), areaLower.begin(), ::tolower);
+        const std::string imageAssetId = "bonfire_" + areaLower;
 
         this->hasBonfireImage = false;
 
