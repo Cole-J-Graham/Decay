@@ -69,6 +69,8 @@ void CombatConsole::showDefeatPanel()
     // Hide normal console
     this->ui.rectangle("COMBATCONSOLE_BG").hide();
     this->ui.rectangle("COMBATCONSOLE_ACCENT").hide();
+    this->ui.rectangle("TURN_INDICATOR_BG").hide();
+    this->ui.text("TURN_INDICATOR_TEXT").setHidden();
     this->ui.text("COMBAT_MESSAGE").setHidden();
     this->ui.rectangle("HOSTILEBORDER").hide();
 
@@ -93,6 +95,7 @@ void CombatConsole::hideDefeatPanel()
     // Restore normal console
     this->ui.rectangle("COMBATCONSOLE_BG").show();
     this->ui.rectangle("COMBATCONSOLE_ACCENT").show();
+    this->ui.rectangle("TURN_INDICATOR_BG").show();
     this->ui.rectangle("HOSTILEBORDER").show();
 }
 
