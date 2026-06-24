@@ -419,6 +419,13 @@ void CombatState::handleCharacterTurn(int partyIndex, const sf::Vector2f mousePo
         return;
     }
 
+    if (!character->isAlive())
+    {
+        this->combatFrame++;
+        this->console.disableContinue();
+        return;
+    }
+
     this->console.setTurnIndicator("TURN  " + character->getId());
 
     if (character->isWaitingForContinue())
