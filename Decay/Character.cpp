@@ -155,6 +155,9 @@ void Character::rest()
     this->block = 0.f;
     this->coolDown = 0;
     this->moveMp.clear();
+    this->clearCombatStatus();
+    this->waitingForPoisonContinue = false;
+    this->poisonTickedThisRound = false;
     this->resetTurn();
     this->updateText();
 }
@@ -273,6 +276,13 @@ void Character::renderText(sf::RenderTarget* target)
 
 void Character::updateText()
 {
+    if (!this->isAlive())
+    {
+        this->text["HP"]->setString("DOWNED");
+        if (this->stats) this->stats->setHp(0.f, this->hpMax);
+        return;
+    }
+
     this->text["HP"]->setString(
         "HP: " + toStringWithPrecision(this->hp) + "/" + toStringWithPrecision(this->hpMax) +
         " BLK: " + toStringWithPrecision(this->block)
