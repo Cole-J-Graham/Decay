@@ -3,6 +3,7 @@
 #include "TravelState.h"
 #include "SettingsMenuState.h"
 #include "SaveSlotState.h"
+#include "MusicManager.h"
 
 #include <iostream>
 #include <memory>
@@ -17,6 +18,7 @@ MainMenuState::MainMenuState(sf::RenderWindow* window,
 {
     this->initUi();
     this->initCharacters();
+    MusicManager::getInstance().play("main_title");
 }
 
 // ── State Functions ───────────────────────────────────────────────────────
