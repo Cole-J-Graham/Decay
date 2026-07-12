@@ -500,7 +500,6 @@ void CombatState::handleCharacterTurn(int partyIndex, const sf::Vector2f mousePo
 
     if (character->isActionLocked())
     {
-        character->resetTurn();
         this->console.enableContinue();
         this->console.setMessage(character->getId() + " is locked and skips their turn.");
         this->console.showMessage();
@@ -510,6 +509,7 @@ void CombatState::handleCharacterTurn(int partyIndex, const sf::Vector2f mousePo
             character->consumeActionLockTurn();
             character->tickTemporaryEffects();
             character->consumePoseTurn();
+            character->resetTurn();
             this->combatFrame++;
             this->console.disableContinue();
             this->console.setMessage("");
